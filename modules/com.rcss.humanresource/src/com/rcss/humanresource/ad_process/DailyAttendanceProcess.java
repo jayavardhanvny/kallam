@@ -143,6 +143,10 @@ public class DailyAttendanceProcess {
                     logger.error("Error in Assigning the Shift");
                 }
                 RCPRShift shift = OBDal.getInstance().get(RCPRShift.class, shiftId);
+		logger.info("Employee Id "+emp.getDocumentNo());
+                RCPRShift shift = OBDal.getInstance().get(RCPRShift.class, shiftId);
+                logger.info("Shift : "+ shift);
+                logger.info("Shift getMinpunchesrequired : "+ shift.getMinpunchesrequired());
                 if (rchrDailyattend.getCount() >= shift.getMinpunchesrequired().intValue() || shift.getMinpunchesrequired().intValue() == 0 ) {
                     DailyAttendanceDemoTwo dailyAttendanceDemoTwo = new DailyAttendanceDemoTwo();
                     description = dailyAttendanceDemoTwo.execute(emp, rchrDailyattend, flag);
