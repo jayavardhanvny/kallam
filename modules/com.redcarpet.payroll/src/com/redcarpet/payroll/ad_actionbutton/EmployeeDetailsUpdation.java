@@ -37,6 +37,8 @@ public class EmployeeDetailsUpdation {
         employee.setOdapplicable(rchrJoinRejoinForm.isOdapplicable());
         employee.setImage(rchrJoinRejoinForm.getImage());
 	employee.setSenior(rchrJoinRejoinForm.isSenior());
+	employee.setRchrShiftgroup(rchrJoinRejoinForm.getRchrShiftgroup());
+        employee.setRelay(rchrJoinRejoinForm.getRelayName());
 	if (rchrJoinRejoinForm.getRchrMobalizer()!=null)
             employee.setRchrMobalizer(rchrJoinRejoinForm.getRchrMobalizer());
 	employee.setPreattddays(rchrJoinRejoinForm.getDeclareservicedays().longValue());
