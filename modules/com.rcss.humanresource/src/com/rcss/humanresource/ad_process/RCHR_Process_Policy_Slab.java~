@@ -1,0 +1,45 @@
+package com.rcss.humanresource.ad_process;
+
+import com.rcss.humanresource.data.RCHR_Emp_Loan;
+import com.rcss.humanresource.data.RCHR_Emp_Loanlines;
+import java.math.BigDecimal;
+import java.math.MathContext;
+import java.util.Calendar;
+import org.openbravo.base.provider.OBProvider;
+import org.openbravo.dal.service.OBDal;
+import org.openbravo.scheduling.ProcessBundle;
+import org.openbravo.service.db.DalBaseProcess;
+
+/**
+ *
+ * @author S.A. Mateen 
+ * @description Calculates Policy slab
+ */
+public class RCHR_Process_Policy_Slab extends DalBaseProcess {
+
+    @Override
+    protected void doExecute(ProcessBundle bundle) throws Exception {
+        final String id = bundle.getParams().get("Rchr_Emp_Loan_ID").toString();
+        RCHR_Emp_Loan loan = OBDal.getInstance().get(RCHR_Emp_Loan.class, id);
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(loan.getStartingDate());
+        BigDecimal lastCumulativeAmt = BigDecimal.ZERO;
+        for (int i = 1; i <= loan.getTenureMonths().intValue(); i++) {
+            RCHR_Emp_Loanlines line = OBProvider.getInstance().get(RCHR_Emp_Loanlines.class);
+            line.setLoanSchedule(loan);
+            line.setLineNo(Long.valueOf((i * 10) + ""));
+            line.setDueDate(cal.getTime());
+            line.setLoanAmount(loan.getLoanAmount().divide(loan.getTenureMonths(), MathContext.DECIMAL32));
+            line.setPaidAmount(BigDecimal.ZERO);
+            line.setPendingAmount(line.getLoanAmount().subtract(line.getPaidAmount()));
+            lastCumulativeAmt = line.getPendingAmount().add(lastCumulativeAmt);
+            line.setCumulativeAmount(lastCumulativeAmt);
+            line.setManual(false);
+            line.setPaid(false);
+            cal.add(Calendar.MONTH, +1);
+            OBDal.getInstance().save(line);
+        }
+        lastCumulativeAmt = BigDecimal.ZERO;
+        OBDal.getInstance().flush();
+    }
+}

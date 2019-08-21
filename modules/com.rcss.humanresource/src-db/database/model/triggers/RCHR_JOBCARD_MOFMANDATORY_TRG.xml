@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+  <database name="TRIGGER RCHR_JOBCARD_MOFMANDATORY_TRG">
+    <trigger name="RCHR_JOBCARD_MOFMANDATORY_TRG" table="RCHR_JOBCARD" fires="before" insert="true" update="true" delete="false" foreach="row">
+      <body><![CDATA[	v_clothtype_id VARCHAR(32);
+	v_rchr_orderstatus_id VARCHAR(32);
+	V_ID VARCHAR(32);
+BEGIN
+	IF(TG_OP='INSERT' OR TG_OP='UPDATE') THEN
+		SELECT rchr_orderstatus_id into v_rchr_orderstatus_id from rchr_orderstatus where rchr_orderstatus_id=:new.rchr_orderstatus_id;
+		if(v_rchr_orderstatus_id<>'3C47347D6C5841EDAFD72241509597C0' AND :new.epcg_mof_id is null) then 
+			RAISE exception 'MOF is Mandatory';
+		end if;
+	END IF;
+	
+	IF(TG_OP='DELETE') THEN RETURN OLD;ELSE RETURN NEW;
+	END IF;
+	END RCHR_JOBCARD_MOFMANDATORY_TRG
+]]></body>
+    </trigger>
+  </database>

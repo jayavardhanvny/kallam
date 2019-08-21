@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<SqlClass name="PayrollDBUtilityData" package="com.redcarpet.payroll.util" accessModifier="public">
+    <SqlClassComment></SqlClassComment>
+    <SqlMethod name="selectNetPayableSalary" type="preparedStatement" return="string">
+        <SqlMethodComment></SqlMethodComment>
+        <Sql>
+            SELECT COALESCE(SUM(additions),0) as netSal, '' as Rchr_Attd_Process_id, '' as periodno, '' as processingdays 
+            FROM RCPL_EmpPayHead 
+            WHERE RCPL_EmpPayrollProcess_id = ?  
+        </Sql>
+        <Parameter name="id"/>
+    </SqlMethod>
+   <SqlMethod name="selectIncenSalary" type="preparedStatement" return="string">
+           <SqlMethodComment></SqlMethodComment>
+           <Sql>
+                SELECT COALESCE(SUM(additions),0) as Incen, '' as Rchr_Attd_Process_id, '' as periodno, '' as processingdays
+               FROM RCPL_EmpPayIncentives
+               WHERE RCPL_EmpPayrollProcess_id = ?
+           </Sql>
+           <Parameter name="id"/>
+       </SqlMethod>
+
+    <SqlMethod name="selectPeriodRanges" type="preparedStatement" return="multiple">
+        <SqlMethodComment></SqlMethodComment>
+        <Sql>
+            select Rchr_Attd_Process_id, periodno, processingdays  from Rchr_Attd_Process where periodno in (
+
+            (select periodno from Rchr_Attd_Process 
+            where Rchr_Attd_Process_id = ?)  UNION 
+            (select periodno-1 from Rchr_Attd_Process 
+            where Rchr_Attd_Process_id = ?)  UNION
+            (select periodno-2 from Rchr_Attd_Process 
+            where Rchr_Attd_Process_id = ?)  
+            ) and rchr_year_id in 
+            (select rchr_year_id from Rchr_Attd_Process 
+            where Rchr_Attd_Process_id = ?)
+            and periodno = ? 
+        
+        </Sql>
+        <Parameter name="periodId"/>
+        <Parameter name="periodId"/>
+        <Parameter name="periodId"/>
+        <Parameter name="periodId"/>
+        <Parameter name="periodNo"/>
+    </SqlMethod> 
+   
+    <SqlMethod name="getNoOfEmployeesSharingRoom" type="preparedStatement" return="string">
+        <SqlMethodComment></SqlMethodComment>
+        <Sql>
+            select coalesce(count(*),0) from rchr_employee where rchr_room_id in 
+            (select rchr_room_id from rchr_employee where rchr_employee_id =? limit 1)
+        </Sql>
+        <Parameter name="employee"/>
+    </SqlMethod>
+   
+    <SqlMethod name="updateFineAmount" type="preparedStatement" return="rowCount">
+        <SqlMethodComment></SqlMethodComment>
+        <Sql>
+            UPDATE rcpl_emppaydead SET deductions=to_number(?) 
+            WHERE rcpl_emppayrollprocess_id = ?  
+            AND rcpl_paydeducitionshead_id = (SELECT rcpl_paydeducitionshead_id 
+            FROM rcpl_paydeducitionshead WHERE category='Fine' limit 1)
+        </Sql>
+        <Parameter name="fineAmount"/>
+        <Parameter name="empPayrollProcessId"/>
+    </SqlMethod>
+   
+    <SqlMethod name="getSumOfInstantOverTimeAmount" type="preparedStatement" return="string">
+        <SqlMethodComment></SqlMethodComment>
+        <Sql>
+            select coalesce(sum(line.amount),0) from rchr_overtimeheader head
+            left join rchr_overtime line on head.rchr_overtimeheader_id = line.rchr_overtimeheader_id 
+            where head.startdate between to_date(?,'yyyy-mm-dd') and to_date(?,'yyyy-mm-dd')
+            and line.rchr_employee_id =? and head.ispaid='Y' and line.ispaid='Y'
+        </Sql>
+        <Parameter name="fromDate"/>
+        <Parameter name="toDate"/>
+        <Parameter name="employeeId"/>
+    </SqlMethod>
+
+    <SqlMethod name="getSumOfShiftTimeInHoursFromDates" type="preparedStatement" return="string">
+        <SqlMethodComment></SqlMethodComment>
+        <Sql>
+            select coalesce(sum(shiftinmins)/60,0) from rchr_attend_line line
+            left join rchr_attendance att on att.rchr_attendance_id = line.rchr_attendance_id 
+            left join rcpr_shift sh on line.rcpr_shift_id = sh.rcpr_shift_id
+            where line.rchr_employee_id =?
+            and att.fromdate between 
+            to_date(?,'yyyy-mm-dd') and to_date(?,'yyyy-mm-dd')
+
+        </Sql>
+        <Parameter name="strEmployeeId"/>
+        <Parameter name="startDate"/>
+        <Parameter name="endDate"/>
+    </SqlMethod>
+
+    <SqlMethod name="getSumOfFineAmount" type="preparedStatement" return="string">
+        <SqlMethodComment></SqlMethodComment>
+        <Sql>
+            select coalesce(sum(line.amount),0) from rcpl_fine head
+            left join rcpl_fineline line on head.rcpl_fine_id = line.rcpl_fine_id
+            where  line.rchr_employee_id =? 
+            and head.startdate between 
+            to_date(?,'yyyy-mm-dd') and to_date(?,'yyyy-mm-dd')
+            and head.bonus='N'
+        </Sql>
+        <Parameter name="strEmployeeId"/>
+        <Parameter name="startDate"/>
+        <Parameter name="endDate"/>
+    </SqlMethod>
+    
+    <SqlMethod name="getSumOfBonusAmount" type="preparedStatement" return="string">
+        <SqlMethodComment></SqlMethodComment>
+        <Sql>
+            select coalesce(sum(line.amount),0) from rcpl_fine head
+            left join rcpl_fineline line on head.rcpl_fine_id = line.rcpl_fine_id
+            where  line.rchr_employee_id =? 
+            and head.startdate between 
+            to_date(?,'yyyy-mm-dd') and to_date(?,'yyyy-mm-dd')
+            and head.bonus='Y'
+        </Sql>
+        <Parameter name="strEmployeeId"/>
+        <Parameter name="startDate"/>
+        <Parameter name="endDate"/>
+    </SqlMethod>
+
+    <SqlMethod name="getAttendanceLineIdOnDate" type="preparedStatement" return="string">
+        <SqlMethodComment></SqlMethodComment>
+        <Sql>
+            select line.rchr_attend_line_id from rchr_attend_line line 
+            left join rchr_attendance att on att.rchr_attendance_id = line.rchr_attendance_id  
+            left join rcpr_shift sh on line.rcpr_shift_id = sh.rcpr_shift_id 
+            where line.rchr_employee_id =? 
+            and att.fromdate = to_date(?,'yyyy-mm-dd') 
+            and present='Y' limit 1 
+        </Sql>
+        <Parameter name="strEmployeeId"/>
+        <Parameter name="startDate"/>
+    </SqlMethod>
+
+       <SqlMethod name="getAttendanceLineIdOnLateDate" type="preparedStatement" return="string">
+        <SqlMethodComment></SqlMethodComment>
+        <Sql>
+            select line.rchr_attend_line_id from rchr_attend_line line 
+            left join rchr_attendance att on att.rchr_attendance_id = line.rchr_attendance_id  
+            left join rcpr_shift sh on line.rcpr_shift_id = sh.rcpr_shift_id 
+            where line.rchr_employee_id =? 
+            and att.fromdate = to_date(?,'yyyy-mm-dd') 
+            and line.islate='Y' limit 1 
+        </Sql>
+        <Parameter name="strEmployeeId"/>
+        <Parameter name="startDate"/>
+    </SqlMethod>
+       
+</SqlClass>

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<data>
+<!--0BCBA50E857C45E4AEE07EEC1C52B81A--><OBCQL_WIDGET_QUERY>
+<!--0BCBA50E857C45E4AEE07EEC1C52B81A-->  <OBCQL_WIDGET_QUERY_ID><![CDATA[0BCBA50E857C45E4AEE07EEC1C52B81A]]></OBCQL_WIDGET_QUERY_ID>
+<!--0BCBA50E857C45E4AEE07EEC1C52B81A-->  <AD_CLIENT_ID><![CDATA[0]]></AD_CLIENT_ID>
+<!--0BCBA50E857C45E4AEE07EEC1C52B81A-->  <AD_ORG_ID><![CDATA[0]]></AD_ORG_ID>
+<!--0BCBA50E857C45E4AEE07EEC1C52B81A-->  <ISACTIVE><![CDATA[Y]]></ISACTIVE>
+<!--0BCBA50E857C45E4AEE07EEC1C52B81A-->  <OBKMO_WIDGET_CLASS_ID><![CDATA[C9E883C218FB43C390A697285AEA5C84]]></OBKMO_WIDGET_CLASS_ID>
+<!--0BCBA50E857C45E4AEE07EEC1C52B81A-->  <HQL><![CDATA[SELECT org.name as orgname,tab.name as tabname,h.recordid,o.name as originator,h.decision as decision,h.requestdate as requestdate,h.id as hid,
+(select name from ADUser where id=h.approveuser.id) as apr,
+(select name from ADUser where id=h.approvebyuser.id) as aprby,
+h.lastapproved as lastapp
+FROM RCHR_ApprovalHistrory as h 
+join h.userContact AS o
+join h.tab AS tab 
+join h.organization AS org
+WHERE h.client.id=:client AND h.organization.id IN (:organizationList)
+AND @optional_filters@ AND h.decision='PE' AND (select id from ADUser where id=h.approveuser.id)=:user]]></HQL>
+<!--0BCBA50E857C45E4AEE07EEC1C52B81A-->  <TYPE><![CDATA[HQL]]></TYPE>
+<!--0BCBA50E857C45E4AEE07EEC1C52B81A--></OBCQL_WIDGET_QUERY>
+
+<!--53394A851D994E899B13D2845F4E1969--><OBCQL_WIDGET_QUERY>
+<!--53394A851D994E899B13D2845F4E1969-->  <OBCQL_WIDGET_QUERY_ID><![CDATA[53394A851D994E899B13D2845F4E1969]]></OBCQL_WIDGET_QUERY_ID>
+<!--53394A851D994E899B13D2845F4E1969-->  <AD_CLIENT_ID><![CDATA[0]]></AD_CLIENT_ID>
+<!--53394A851D994E899B13D2845F4E1969-->  <AD_ORG_ID><![CDATA[0]]></AD_ORG_ID>
+<!--53394A851D994E899B13D2845F4E1969-->  <ISACTIVE><![CDATA[Y]]></ISACTIVE>
+<!--53394A851D994E899B13D2845F4E1969-->  <OBKMO_WIDGET_CLASS_ID><![CDATA[A0406E04B55947ECBFFCADB9AB777EC3]]></OBKMO_WIDGET_CLASS_ID>
+<!--53394A851D994E899B13D2845F4E1969-->  <HQL><![CDATA[SELECT org.name as orgname,tab.name as tabname,h.recordid,o.name as originator,h.decision as decision,h.requestdate as requestdate,h.id as hid,
+(select name from ADUser where id=h.approveuser.id) as apr,
+(select name from ADUser where id=h.approvebyuser.id) as aprby,
+h.lastapproved as lastapp
+FROM RCHR_ApprovalHistrory as h 
+join h.userContact AS o
+join h.tab AS tab 
+join h.organization AS org
+WHERE h.client.id=:client AND h.organization.id IN (:organizationList)
+AND @optional_filters@ AND h.decision='APR'
+AND (select id from ADUser where id=h.approveuser.id)=:user]]></HQL>
+<!--53394A851D994E899B13D2845F4E1969-->  <TYPE><![CDATA[HQL]]></TYPE>
+<!--53394A851D994E899B13D2845F4E1969--></OBCQL_WIDGET_QUERY>
+
+<!--A22BB4EEF413403291BCE779F63A2FBC--><OBCQL_WIDGET_QUERY>
+<!--A22BB4EEF413403291BCE779F63A2FBC-->  <OBCQL_WIDGET_QUERY_ID><![CDATA[A22BB4EEF413403291BCE779F63A2FBC]]></OBCQL_WIDGET_QUERY_ID>
+<!--A22BB4EEF413403291BCE779F63A2FBC-->  <AD_CLIENT_ID><![CDATA[0]]></AD_CLIENT_ID>
+<!--A22BB4EEF413403291BCE779F63A2FBC-->  <AD_ORG_ID><![CDATA[0]]></AD_ORG_ID>
+<!--A22BB4EEF413403291BCE779F63A2FBC-->  <ISACTIVE><![CDATA[Y]]></ISACTIVE>
+<!--A22BB4EEF413403291BCE779F63A2FBC-->  <OBKMO_WIDGET_CLASS_ID><![CDATA[F45DDC7913E0495C8397AEBA5E454C91]]></OBKMO_WIDGET_CLASS_ID>
+<!--A22BB4EEF413403291BCE779F63A2FBC-->  <HQL><![CDATA[SELECT req.id as reqid,e.punchno as punchno,e.employeeName as ename,req.requisitiondate as reqdate,req.totalleaves as totalleaves,u.name as originator
+FROM
+RCHR_LeaveRequisition req,RCHR_ApprovalHistrory h,Rchr_Employee e,ADUser  u
+WHERE req.employee.id=e.id
+AND h.recordid=req.id
+AND u.id=h.userContact.id
+AND req.client.id=:client AND req.organization.id IN (:organizationList)
+AND @optional_filters@ AND req.documentStatus='AP'
+AND h.userContact.id=:user
+GROUP BY req.id,e.punchno,e.employeeName,req.requisitiondate,req.totalleaves,u.name
+]]></HQL>
+<!--A22BB4EEF413403291BCE779F63A2FBC-->  <TYPE><![CDATA[HQL]]></TYPE>
+<!--A22BB4EEF413403291BCE779F63A2FBC--></OBCQL_WIDGET_QUERY>
+
+</data>

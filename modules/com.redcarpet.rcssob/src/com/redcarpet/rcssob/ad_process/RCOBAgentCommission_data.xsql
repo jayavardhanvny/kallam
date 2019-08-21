@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<SqlClass name="RCOBAgentCommissionData" package="com.redcarpet.rcssob.ad_process">
+    <SqlClassComment></SqlClassComment>
+    <SqlMethod name="selectData" type="preparedStatement" return="multiple">
+        <SqlMethodComment></SqlMethodComment>
+        <Sql>
+    <![CDATA[
+        select inv.c_invoice_id, bp.c_bpartner_id, sum(il.linenetamt) as ordersum, inv.grandtotal,
+        (al.commission/100)  as comission, 
+        COALESCE((sum(il.linenetamt) * (al.commission/100)), 0) as finNetAmount,
+        COALESCE(((inv.grandtotal) * (al.commission/100)), 0) as finNetAmountNew 
+
+        from c_invoice inv
+		left join c_bpartner bp on inv.em_epcg_agent = bp.c_bpartner_id
+		left join c_invoiceline il on inv.c_invoice_id = il.c_invoice_id
+		left join rcob_agentline al on 	inv.c_invoice_id = al.c_invoice_id
+	where 
+		al.c_bpartner_id = ?   
+		and bp.isemployee='Y' and bp.iscustomer='Y' 
+		and inv.issotrx='Y' and inv.docstatus='CO'
+		and al.Isinvoicecreated='N'
+		and il.financial_invoice_line ='N' 
+	group by inv.c_invoice_id, bp.c_bpartner_id, al.commission, inv.grandtotal
+        
+      ]]></Sql>
+        <Parameter name="cBpartnerId"/>
+    </SqlMethod>
+  
+    <SqlMethod name="selectLineNo" type="preparedStatement" return="string">
+        <Sql>
+		<![CDATA[ 
+                        
+                    SELECT COALESCE(MAX(Line),0)+10 AS lineno FROM C_InvoiceLine 
+                            INNER JOIN C_Invoice on C_InvoiceLine.C_Invoice_ID = C_Invoice.C_Invoice_ID 
+                    WHERE C_Invoice.documentno = ?  
+                        
+                ]]>
+        </Sql>
+        <Parameter name="documentno"/>
+    </SqlMethod>
+  
+    <SqlMethod name="getAgentServiceAccount" type="preparedStatement" return="string">
+        <Sql>
+		<![CDATA[ 
+                    SELECT c_glitem_id from c_glitem where em_rcob_agentservice='Y'
+                ]]>
+        </Sql>
+    </SqlMethod>
+  
+</SqlClass>

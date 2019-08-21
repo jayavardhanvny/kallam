@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+  <vector>
+    <versionInfo version="3.0.21096"/>
+    <columnDataChange tablename="OBUIAPP_NAVBAR_COMPONENT" columnname="ISACTIVE" pkRow="0FB5D32155C84680B9B02CD8E9C81EE9">
+      <oldValue><![CDATA[Y]]></oldValue>
+      <newValue><![CDATA[N]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="OBUISEL_SELECTOR_FIELD" columnname="NAME" pkRow="616F97738AFD4595B74A6A60C8D4B5C4">
+      <oldValue><![CDATA[Name]]></oldValue>
+      <newValue><![CDATA[Commercial Name]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="OBUISEL_SELECTOR_FIELD" columnname="NAME" pkRow="EA8804B0011F4CDC822A91C1D07DBC8A">
+      <oldValue><![CDATA[Name]]></oldValue>
+      <newValue><![CDATA[Commercial Name]]></newValue>
+    </columnDataChange>
+  </vector>

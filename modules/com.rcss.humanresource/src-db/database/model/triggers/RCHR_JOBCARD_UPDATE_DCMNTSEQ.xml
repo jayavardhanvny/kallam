@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+  <database name="TRIGGER RCHR_JOBCARD_UPDATE_DCMNTSEQ">
+    <trigger name="RCHR_JOBCARD_UPDATE_DCMNTSEQ" table="RCHR_JOBCARD" fires="after" insert="true" update="false" delete="false" foreach="row">
+      <body><![CDATA[	v_clothtype_id VARCHAR(32);
+	v_sortmaster_Id VARCHAR(32);
+	V_ID VARCHAR(32);
+BEGIN
+	IF(TG_OP='INSERT') THEN
+		V_ID:=:NEW.rchr_jobcard_id;
+		v_sortmaster_Id:=:NEW.rchr_qualitystandard_id;
+		SELECT rchr_inspclothtype_id into v_clothtype_id from rchr_qualitystandard where rchr_qualitystandard_id=v_sortmaster_Id;
+	END IF;
+	IF(v_clothtype_id='436DBA61E1F04BACB00506D89C3408E7') THEN
+-- 		RAISE NO_DATA_FOUND ;
+		UPDATE ad_sequence set currentNext=incrementno+currentNext where ad_sequence_id='8C0EFAA5C2C247E6B34D25A9AE2F3109';
+	END IF;
+		
+	IF(TG_OP='DELETE') THEN RETURN OLD;
+	ELSE RETURN NEW;
+		
+	END IF;
+	END RCHR_JOBCARD_UPDATE_DCMNTSEQ
+]]></body>
+    </trigger>
+  </database>

@@ -1,0 +1,320 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="AttendanceMuster" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<property name="ireport.zoom" value="6.430766430000004"/>
+	<property name="ireport.x" value="57"/>
+	<property name="ireport.y" value="31"/>
+	<parameter name="Dept_ID" class="java.lang.String">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="SubDept_ID" class="java.lang.String">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="Emp_Type" class="java.lang.String">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="EmpName" class="java.lang.String">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="aux_empname" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[$P{EmpName}.equals("") ? " " : " AND e.RCHR_EMPLOYEE_ID = '" + $P{EmpName} + "'"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="Designation_ID" class="java.lang.String">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="aux_designation" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[$P{Designation_ID}.equals( "" ) ? " " : " and e.rchr_designation_id= '"+ $P{Designation_ID}+"' "]]></defaultValueExpression>
+	</parameter>
+	<parameter name="aux_department" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[$P{Dept_ID}.equals( "" ) ? "" : " and e.rchr_emp_dept_id='" + $P{Dept_ID}+"' "]]></defaultValueExpression>
+	</parameter>
+	<parameter name="aux_subdepartment" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[$P{SubDept_ID}.equals( "" ) ? " " : " and e.rchr_subdepartment_id='" +$P{SubDept_ID} + "' "]]></defaultValueExpression>
+	</parameter>
+	<parameter name="aux_emptype" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[$P{Emp_Type}.equals( "" ) ? " " : " and e.employeetype='" +$P{Emp_Type}+ "' "]]></defaultValueExpression>
+	</parameter>
+	<parameter name="FromD" class="java.util.Date">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="ToDate" class="java.util.Date">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[select documentno,employeename,
+
+(select case when dailyattendance.cnt>0 and dailyattendance.description='Correct Punch' then 'Y' else 'N' end)||'('||coalesce((select name from rcpr_shift where rcpr_shift_id=(select rcpr_shift_id from rchr_relay where $P{FromD} between fromdate and todate and rchr_mrelay_id=e.rchr_mrelay_id)),'')||')' as daily,
+(select case when production.cnt>0 then 'Y' else 'N' end)||'('||coalesce((select name from rcpr_shift where rcpr_shift_id=production.rcpr_shift_id),'')||')' as prod,
+(select case when timeoffice.cnt>0 then 'Y' else 'N' end)||'('||coalesce((select name from rcpr_shift where rcpr_shift_id=timeoffice.rcpr_shift_id),'')||')' as timeoffice,
+dailyattendance.errorlog as punchrecords,
+(select case
+when production.cnt is null and timeoffice.cnt is null and ((select case when dailyattendance.cnt>0 and dailyattendance.description='Correct Punch' then 'Y' else 'N' end))='Y' then 'PEM & TEM'
+
+when production.cnt is null and timeoffice.cnt is not null and ((select case when dailyattendance.cnt>0 and dailyattendance.description='Correct Punch' then 'Y' else 'N' end))='Y' then 'PEM'
+
+when timeoffice.cnt is null and production.cnt is not null and ((select case when dailyattendance.cnt>0 and dailyattendance.description='Correct Punch' then 'Y' else 'N' end))='Y' then 'TEM'
+
+when production.cnt is null and timeoffice.cnt is not null and ((select case when dailyattendance.cnt>0 and dailyattendance.description='Correct Punch' then 'Y' else 'N' end))='N' then CONCAT(dailyattendance.description,' AND PEM')
+
+when timeoffice.cnt is null and production.cnt is not null and ((select case when dailyattendance.cnt>0 and dailyattendance.description='Correct Punch' then 'Y' else 'N' end))='N' then CONCAT(dailyattendance.description,' AND TEM')
+
+when ((select case when dailyattendance.cnt>0 and dailyattendance.description='Correct Punch' then 'Y' else 'N' end))='N' and production.cnt is not null and timeoffice.cnt is not null then dailyattendance.description end)
+AS message,
+(select name from rcpr_shift where rcpr_shift_id=(select rcpr_shift_id from rchr_relay where $P{FromD} between fromdate and todate and rchr_mrelay_id=e.rchr_mrelay_id)) as regularshiftname
+
+from rchr_employee e
+
+left join
+(select count(*) as cnt,d1.description,d1.stremployee,d1.errorlog
+from rchr_dailyattend d1
+where d1.attdate=$P{FromD} group by d1.description,d1.stremployee,d1.errorlog) as dailyattendance
+on dailyattendance.stremployee=e.documentno
+
+left join
+(select count(*) as cnt,rchr_employee_id,rcpr_shift_id from Rchr_Attend_Prod_Line l,Rchr_Attendance_Prood p where p.Rchr_Attendance_Prood_id=l.Rchr_Attendance_Prood_id and p.fromdate=$P{FromD} group by l.rchr_employee_id,rcpr_shift_id) as production
+on production.rchr_employee_id=e.rchr_employee_id
+
+left join
+(select count(*) as cnt,rchr_employee_id,rcpr_shift_id from Rchr_Attendance_To_Line l,Rchr_Attendance_Timeoff p where p.Rchr_Attendance_Timeoff_id=l.Rchr_Attendance_Timeoff_id and p.fromdate=$P{FromD} group by l.rchr_employee_id,rcpr_shift_id) as timeoffice
+on timeoffice.rchr_employee_id=e.rchr_employee_id
+
+where
+(((select case when dailyattendance.cnt>0 and dailyattendance.description='Correct Punch' then 'Y' else 'N' end)!='Y' or (select case when production.cnt>0 then 'Y' else 'N' end)!='Y' or (select case when production.cnt>0 then 'Y' else 'N' end)!='Y'
+)
+and
+((select case when dailyattendance.cnt>0 and dailyattendance.description='Correct Punch' then 'Y' else 'N' end)!='N' or (select case when production.cnt>0 then 'Y' else 'N' end)!='N' or (select case when production.cnt>0 then 'Y' else 'N' end)!='N'
+))
+
+and e.employeestatus='W'
+--and e.employeetype='Operator'
+$P!{aux_empname}
+$P!{aux_designation}
+$P!{aux_department}
+$P!{SubDept_ID}
+$P!{aux_subdepartment}
+$P!{aux_emptype}
+order by e.documentno,dailyattendance.description]]>
+	</queryString>
+	<field name="documentno" class="java.lang.String">
+		<fieldDescription><![CDATA[--OBTG:NVARCHAR--]]></fieldDescription>
+	</field>
+	<field name="employeename" class="java.lang.String"/>
+	<field name="daily" class="java.lang.String"/>
+	<field name="prod" class="java.lang.String"/>
+	<field name="timeoffice" class="java.lang.String"/>
+	<field name="punchrecords" class="java.lang.String"/>
+	<field name="message" class="java.lang.String"/>
+	<field name="regularshiftname" class="java.lang.String"/>
+	<title>
+		<band height="13" splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band height="17" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="13" splitType="Stretch">
+			<staticText>
+				<reportElement x="19" y="1" width="31" height="12"/>
+				<textElement verticalAlignment="Middle" lineSpacing="Single">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[PunchNo]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="51" y="1" width="86" height="12"/>
+				<textElement verticalAlignment="Middle" lineSpacing="Single">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[employeename]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="253" y="1" width="35" height="12"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" lineSpacing="Single">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[P]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="289" y="1" width="42" height="12"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" lineSpacing="Single">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[T]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="211" y="1" width="41" height="12"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" lineSpacing="Single">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[D]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="332" y="1" width="137" height="12"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" lineSpacing="Single">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[punchrecords]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="470" y="1" width="84" height="12"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" lineSpacing="Single">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[message]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="138" y="1" width="72" height="12"/>
+				<textElement lineSpacing="Single">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Regular Shift]]></text>
+			</staticText>
+			<line>
+				<reportElement x="137" y="1" width="1" height="12"/>
+			</line>
+			<line>
+				<reportElement x="210" y="1" width="1" height="12"/>
+			</line>
+			<line>
+				<reportElement x="252" y="1" width="1" height="12"/>
+			</line>
+			<line>
+				<reportElement x="288" y="1" width="1" height="12"/>
+			</line>
+			<line>
+				<reportElement x="331" y="1" width="1" height="12"/>
+			</line>
+			<line>
+				<reportElement x="469" y="1" width="1" height="12"/>
+			</line>
+			<line>
+				<reportElement x="554" y="1" width="1" height="12"/>
+			</line>
+			<line>
+				<reportElement x="50" y="1" width="1" height="12"/>
+			</line>
+			<line>
+				<reportElement x="0" y="0" width="1" height="13"/>
+			</line>
+			<line>
+				<reportElement x="1" y="0" width="554" height="1"/>
+			</line>
+			<line>
+				<reportElement x="18" y="1" width="1" height="12"/>
+			</line>
+			<staticText>
+				<reportElement x="1" y="1" width="17" height="12"/>
+				<textElement verticalAlignment="Middle" lineSpacing="Single">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[S.No]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="28" splitType="Stretch">
+			<textField>
+				<reportElement x="19" y="3" width="31" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" lineSpacing="Single">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{documentno}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="51" y="1" width="86" height="19"/>
+				<textElement verticalAlignment="Middle" lineSpacing="Single">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{employeename}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="211" y="1" width="40" height="18"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" lineSpacing="Single">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{daily}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="253" y="1" width="35" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" lineSpacing="Single">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{prod}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="289" y="1" width="42" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" lineSpacing="Single">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{timeoffice}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="332" y="1" width="137" height="20"/>
+				<textElement verticalAlignment="Middle" lineSpacing="Single">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{punchrecords}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="470" y="1" width="84" height="20" isPrintWhenDetailOverflows="true"/>
+				<textElement verticalAlignment="Middle" lineSpacing="Single">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{message}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="138" y="1" width="72" height="18"/>
+				<textElement textAlignment="Center" lineSpacing="Single">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{regularshiftname}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="0" y="0" width="554" height="1"/>
+			</line>
+			<line>
+				<reportElement x="554" y="0" width="1" height="28"/>
+			</line>
+			<line>
+				<reportElement x="469" y="1" width="1" height="27"/>
+			</line>
+			<line>
+				<reportElement x="331" y="1" width="1" height="27"/>
+			</line>
+			<line>
+				<reportElement x="288" y="1" width="1" height="27"/>
+			</line>
+			<line>
+				<reportElement x="252" y="1" width="1" height="27"/>
+			</line>
+			<line>
+				<reportElement x="210" y="1" width="1" height="27"/>
+			</line>
+			<line>
+				<reportElement x="137" y="1" width="1" height="27"/>
+			</line>
+			<line>
+				<reportElement x="50" y="1" width="1" height="27"/>
+			</line>
+			<line>
+				<reportElement x="0" y="1" width="1" height="27"/>
+			</line>
+			<textField>
+				<reportElement x="2" y="3" width="16" height="20"/>
+				<textElement lineSpacing="Single">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Integer"><![CDATA[$V{COLUMN_COUNT}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="18" y="1" width="1" height="27"/>
+			</line>
+		</band>
+	</detail>
+	<summary>
+		<band height="10" splitType="Stretch">
+			<line>
+				<reportElement x="0" y="0" width="555" height="1"/>
+			</line>
+		</band>
+	</summary>
+</jasperReport>

@@ -1,0 +1,28 @@
+package com.redcarpet.freight.ad_callouts;
+
+import java.math.BigDecimal;
+import javax.servlet.ServletException;
+import org.openbravo.erpCommon.ad_callouts.SimpleCallout;
+
+/**
+ *
+ * @author S.A. Mateen
+ */
+public class RCFR_On_Product_Select_CottonLint_UnitPrice extends SimpleCallout {
+
+    @Override
+    protected void execute(CalloutInfo info) throws ServletException {
+
+        BigDecimal rcfrDiscount = info.getBigDecimalParameter("inpemRcfrDisco");
+        String strProduct = info.getStringParameter("inpmProductId", null);
+        BigDecimal netUnitPrice = info.getBigDecimalParameter("inppriceactual");
+        BigDecimal unitPrice = info.getBigDecimalParameter("inpemRcfrPrice");
+        BigDecimal unitFreight = info.getBigDecimalParameter("inpemRcfrFreight");
+        BigDecimal unitInsurance = info.getBigDecimalParameter("inpemRcfrInsurance");
+        BigDecimal unitPackaging = info.getBigDecimalParameter("inpemRcfrPnf");
+        BigDecimal obDiscount =  info.getBigDecimalParameter("inpdiscount");
+        RCFR_CalculationsUtil reCalc = new RCFR_CalculationsUtil(strProduct, unitPrice, unitFreight, unitInsurance, unitPackaging, obDiscount);
+        info.addResult("inppriceactual", reCalc.calculateCottonLintProductPrice());
+    }
+
+}

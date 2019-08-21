@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+ *************************************************************************
+ * The contents of this file are subject to the Openbravo  Public  License
+ * Version  1.1  (the  "License"),  being   the  Mozilla   Public  License
+ * Version 1.1  with a permitted attribution clause; you may not  use this
+ * file except in compliance with the License. You  may  obtain  a copy of
+ * the License at http://www.openbravo.com/legal/license.html 
+ * Software distributed under the License  is  distributed  on  an "AS IS"
+ * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+ * License for the specific  language  governing  rights  and  limitations
+ * under the License. 
+ * The Original Code is Openbravo ERP. 
+ * The Initial Developer of the Original Code is Openbravo SLU 
+ * All portions are Copyright (C) 2001-2012 Openbravo SLU 
+ * All Rights Reserved. 
+ * Contributor(s):  ______________________________________.
+ ************************************************************************
+-->
+
+
+
+
+
+<SqlClass name="CopyLoomsData" package="com.redcarpet.payroll.ad_process">
+
+
+
+<SqlMethod name="select" type="preparedStatement" return="multiple">
+    <SqlMethodComment></SqlMethodComment>
+    <Sql>
+      <![CDATA[
+      
+      		
+      
+       		SELECT  RCPL_LOOM.NAME,RCPL_LOOM.RCPL_LOOM_ID,RCPL_LOOM.AD_CLIENT_ID,RCPL_LOOM.AD_ORG_ID,
+       		(SELECT NOOFLOOMS FROM rcpl_prodincentive WHERE rcpl_prodincentive_id =?) AS NOOFLOOMS, '0' AS QTY
+       		FROM RCPL_LOOM WHERE RCPL_LOOM.RCPL_LOOMCATEGORY_ID=? and 
+			CASE 
+				WHEN NOT EXISTS(SELECT DATE FROM rcpl_prodincentiveline WHERE to_char(rcpl_prodincentiveline.DATE,'dd-MM-yyyy')=?) THEN
+				rcpl_loom.rcpl_loom_id not in (select rcpl_prodincentiveline.rcpl_loom_id from 
+				rcpl_prodincentiveline where to_char(rcpl_prodincentiveline.DATE,'dd-MM-yyyy')=?) 
+			ELSE CASE 
+			WHEN EXISTS(SELECT rcpr_shift_id FROM rcpl_prodincentiveline WHERE rcpl_prodincentiveline.rcpr_shift_id=?) THEN
+			rcpl_loom.rcpl_loom_id not in (select rcpl_prodincentiveline.rcpl_loom_id from 
+			rcpl_prodincentiveline where to_char(rcpl_prodincentiveline.DATE,'dd-MM-yyyy')=? AND rcpr_shift_id=?)
+			ELSE CASE 
+			WHEN NOT EXISTS(SELECT rcpr_shift_id FROM rcpl_prodincentiveline WHERE rcpl_prodincentiveline.rcpr_shift_id=?) THEN
+			rcpl_loom.rcpl_loom_id not in (select rcpl_prodincentiveline.rcpl_loom_id from 
+			rcpl_prodincentiveline where to_char(rcpl_prodincentiveline.DATE,'dd-MM-yyyy')=? AND rcpr_shift_id=?)
+			ELSE 
+			
+				(rcpl_loom.rcpl_loom_id NOT IN(select rcpl_prodincentiveline.rcpl_loom_id from 
+				rcpl_prodincentiveline where rcpl_prodincentiveline.rcpr_shift_id=?)
+				AND rcpl_loom.rcpl_loom_id NOT IN (select rcpl_prodincentiveline.rcpl_loom_id from 
+				rcpl_prodincentiveline where to_char(rcpl_prodincentiveline.DATE,'dd-MM-yyyy')=?))
+			END
+			END
+			END
+			ORDER BY RCPL_LOOM.NAME :: numeric                       
+      ]]>
+    </Sql>
+    <Field name="rownum" value="count"/>
+     <Parameter name="strKey1"/>    
+     <Parameter name="strLoomcg1"/>
+     <Parameter name="date1"/>
+     <Parameter name="date2"/>
+     <Parameter name="strShiftId1"/>
+     <Parameter name="date3"/>
+     <Parameter name="strShiftId2"/>
+     <Parameter name="strShiftId4"/>
+     <Parameter name="date5"/>
+     <Parameter name="strShiftId5"/>
+     <Parameter name="strShiftId3"/>
+     <Parameter name="date4"/>
+  </SqlMethod>
+  
+  
+  
+  
+  
+  
+  <SqlMethod name="selectAll" type="preparedStatement" return="multiple">
+    <SqlMethodComment></SqlMethodComment>
+    <Sql>
+     <![CDATA[
+      SELECT  RCPL_LOOM.NAME,RCPL_LOOM.RCPL_LOOM_ID,RCPL_LOOM.AD_CLIENT_ID,RCPL_LOOM.AD_ORG_ID,
+       		(SELECT NOOFLOOMS FROM rcpl_prodincentive WHERE rcpl_prodincentive_id =?) AS NOOFLOOMS, '0' AS QTY
+       		FROM RCPL_LOOM Where
+			CASE 
+				WHEN NOT EXISTS(SELECT DATE FROM rcpl_prodincentiveline WHERE to_char(rcpl_prodincentiveline.DATE,'dd-MM-yyyy')=?) THEN
+				rcpl_loom.rcpl_loom_id not in (select rcpl_prodincentiveline.rcpl_loom_id from 
+				rcpl_prodincentiveline where to_char(rcpl_prodincentiveline.DATE,'dd-MM-yyyy')=?) 
+			ELSE CASE 
+			WHEN EXISTS(SELECT rcpr_shift_id FROM rcpl_prodincentiveline WHERE rcpl_prodincentiveline.rcpr_shift_id=?) THEN
+			rcpl_loom.rcpl_loom_id not in (select rcpl_prodincentiveline.rcpl_loom_id from 
+			rcpl_prodincentiveline where to_char(rcpl_prodincentiveline.DATE,'dd-MM-yyyy')=? AND rcpr_shift_id=?)
+			ELSE CASE 
+			WHEN NOT EXISTS(SELECT rcpr_shift_id FROM rcpl_prodincentiveline WHERE rcpl_prodincentiveline.rcpr_shift_id=?) THEN
+			rcpl_loom.rcpl_loom_id not in (select rcpl_prodincentiveline.rcpl_loom_id from 
+			rcpl_prodincentiveline where to_char(rcpl_prodincentiveline.DATE,'dd-MM-yyyy')=? AND rcpr_shift_id=?)
+			ELSE 
+			
+				(rcpl_loom.rcpl_loom_id NOT IN(select rcpl_prodincentiveline.rcpl_loom_id from 
+				rcpl_prodincentiveline where rcpl_prodincentiveline.rcpr_shift_id=?)
+				AND rcpl_loom.rcpl_loom_id NOT IN (select rcpl_prodincentiveline.rcpl_loom_id from 
+				rcpl_prodincentiveline where to_char(rcpl_prodincentiveline.DATE,'dd-MM-yyyy')=?))
+			END
+			END
+			END
+       		ORDER BY RCPL_LOOM.NAME :: numeric                          
+      ]]>
+    </Sql>
+    <Field name="rownum" value="count"/>
+     <Parameter name="strKey1"/>         
+     <Parameter name="date1"/>
+     <Parameter name="date2"/>
+     <Parameter name="strShiftId1"/>
+     <Parameter name="date3"/>
+     <Parameter name="strShiftId2"/>
+     <Parameter name="strShiftId4"/>
+     <Parameter name="date5"/>
+     <Parameter name="strShiftId5"/>
+     <Parameter name="strShiftId3"/>
+     <Parameter name="date4"/>
+   
+  </SqlMethod>
+  
+  <SqlMethod name="set" type="constant" return="multiple">
+      <SqlMethodComment></SqlMethodComment>
+      <Sql></Sql>
+  </SqlMethod>
+  
+  <SqlMethod name="insertProdIncentiveLine" type="preparedStatement" connection="true" return="rowCount">
+    <SqlMethodComment></SqlMethodComment>
+    <Sql>
+      <![CDATA[
+        INSERT INTO RCPL_PRODINCENTIVELINE(RCPL_PRODINCENTIVELINE_ID, AD_CLIENT_ID, AD_ORG_ID, CREATED, CREATEDBY, UPDATED, UPDATEDBY,
+            RCPL_LOOM_ID,RCPL_PRODINCENTIVE_ID,DATE,RCPR_SHIFT_ID,EFFICIENCY,time1,rchr_detention_id,time2,detentiontwo,time3,detentionthree,time4,detentionfour,dyed,grey
+            
+        ) VALUES (?,?,?,NOW(),?,NOW(),?,?,?,to_timestamp(?, 'YYYY-MM-DD HH24:MI:SS'),?,?,to_timestamp(?,'HH24:MI:SS'),?,to_timestamp(?,'HH24:MI:SS'),?,
+        to_timestamp(?,'HH24:MI:SS'),?,to_timestamp(?,'HH24:MI:SS'),?,?,?)
+      ]]>
+    </Sql>
+    <Parameter name="strProIncentiveLine"/>
+    <Parameter name="adClientId"/>
+    <Parameter name="adOrgId"/>
+    <Parameter name="user"/>
+    <Parameter name="user"/>
+    <Parameter name="rcplLoomId"/>
+    <Parameter name="strKey"/>
+    <Parameter name="date1"/>
+    <Parameter name="strShiftId1"/>
+    <Parameter name="strQty"/>
+    <Parameter name="strTime1"/>
+    <Parameter name="strRemarks"/>
+	<Parameter name="strTime2"/>
+	<Parameter name="strRemarkstwo"/>
+	<Parameter name="strTime3"/>
+	<Parameter name="strRemarksthree"/>
+	<Parameter name="strTime4"/>
+	<Parameter name="strRemarksfour"/>
+	<Parameter name="dyed"/>
+	<Parameter name="grey"/>
+	
+  </SqlMethod>
+  
+
+</SqlClass>

@@ -1,0 +1,278 @@
+<?xml version="1.0"?>
+  <vector>
+    <versionInfo version="3.0.20857"/>
+    <columnRequiredChange tableName="RCPL_EMPSALSETUP" columnName="GROSSAMTPERYEAR">
+      <required>false</required>
+    </columnRequiredChange>
+    <columnRequiredChange tableName="RCPL_EMPSALSETUP" columnName="PERDAYSALARY">
+      <required>false</required>
+    </columnRequiredChange>
+    <columnRequiredChange tableName="RCHR_ELECTRICREADING" columnName="RCMR_METER_ID">
+      <required>true</required>
+    </columnRequiredChange>
+    <columnRequiredChange tableName="RCHR_EMP_BANK" columnName="BRANCHNAME">
+      <required>false</required>
+    </columnRequiredChange>
+    <columnRequiredChange tableName="RCHR_EMP_JOB" columnName="RCHR_EMP_DEPT_ID">
+      <required>false</required>
+    </columnRequiredChange>
+    <columnRequiredChange tableName="RCHR_EMP_JOB" columnName="RCHR_DESIGNATION_ID">
+      <required>false</required>
+    </columnRequiredChange>
+    <columnRequiredChange tableName="RCHR_EMP_JOB" columnName="RCHR_DIVISION_ID">
+      <required>false</required>
+    </columnRequiredChange>
+    <columnRequiredChange tableName="RCHR_EMP_JOB" columnName="RCHR_SUBDEPARTMENT_ID">
+      <required>false</required>
+    </columnRequiredChange>
+    <columnRequiredChange tableName="RCHR_EMP_POLICY" columnName="POLICYFROM">
+      <required>true</required>
+    </columnRequiredChange>
+    <columnRequiredChange tableName="RCHR_EMP_POLICY" columnName="POLICYTO">
+      <required>true</required>
+    </columnRequiredChange>
+    <columnDataChange tablename="AD_PROCESS" columnname="DESCRIPTION" pkRow="188EEC07A5AD4B96B7C3DF5373E95D4D">
+      <oldValue><![CDATA[Purchase Requisition   ]]></oldValue>
+      <newValue><![CDATA[Process To Quotation]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_PROCESS" columnname="HELP" pkRow="188EEC07A5AD4B96B7C3DF5373E95D4D">
+      <oldValue><![CDATA[Purchase Requisition ]]></oldValue>
+      <newValue><![CDATA[Process To Quotation]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_PROCESS" columnname="DESCRIPTION" pkRow="7B8C1F87E9564B70A70AF122F9BCDE09">
+      <oldValue><![CDATA[Create Purchase Requisition Lines from Indent for sepecified document number]]></oldValue>
+      <newValue><![CDATA[Create Lines From Indent]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_PROCESS" columnname="HELP" pkRow="7B8C1F87E9564B70A70AF122F9BCDE09">
+      <oldValue><![CDATA[Create Purchase Requisition Lines from Indent for sepecified document number]]></oldValue>
+      <newValue><![CDATA[Create Lines From Indent]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_PROCESS" columnname="DESCRIPTION" pkRow="F1D34F69F9334B6DB6F74B4EE3DC1F2D">
+      <oldValue><![CDATA[Purchase Quotation]]></oldValue>
+      <newValue><![CDATA[Purchase Quotation Process]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_PROCESS" columnname="HELP" pkRow="F1D34F69F9334B6DB6F74B4EE3DC1F2D">
+      <oldValue><![CDATA[Purchase Quotation ]]></oldValue>
+      <newValue><![CDATA[Purchase Quotation Process]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_MESSAGE" columnname="VALUE" pkRow="B31B17C5606540488420BE661B6BF187">
+      <oldValue><![CDATA[EPCG_ErrorMessage]]></oldValue>
+      <newValue><![CDATA[EPCG_PurchaseQuantityInvalid]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_MESSAGE" columnname="ISACTIVE" pkRow="FF8080813198F7290131995F17A8004E">
+      <oldValue><![CDATA[Y]]></oldValue>
+      <newValue><![CDATA[N]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_MESSAGE" columnname="ISACTIVE" pkRow="FF808181304F1CD101304F927C880049">
+      <oldValue><![CDATA[Y]]></oldValue>
+      <newValue><![CDATA[N]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_MESSAGE" columnname="ISACTIVE" pkRow="FF80818132D5240F0132D856F3D20023">
+      <oldValue><![CDATA[Y]]></oldValue>
+      <newValue><![CDATA[N]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="ISMANDATORY" pkRow="185ADDE6914A456BACB39F47E27C7EDE">
+      <oldValue><![CDATA[N]]></oldValue>
+      <newValue><![CDATA[Y]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="ISMANDATORY" pkRow="3365B50779DD45338CC980BE55C5C3DF">
+      <oldValue><![CDATA[N]]></oldValue>
+      <newValue><![CDATA[Y]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="AD_REFERENCE_ID" pkRow="61C4EF17EEE8498BBD1BE8B4E599CCE4">
+      <oldValue><![CDATA[10]]></oldValue>
+      <newValue><![CDATA[17]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="AD_REFERENCE_VALUE_ID" pkRow="61C4EF17EEE8498BBD1BE8B4E599CCE4">
+      <oldValue/>
+      <newValue><![CDATA[6419050329AB4ED3BC7A2B4FFCEFC8AA]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="DESCRIPTION" pkRow="A9FCCB11ADB141558ADAFF4AA08F0F3F">
+      <oldValue/>
+      <newValue><![CDATA[The number of a certain item.]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="HELP" pkRow="A9FCCB11ADB141558ADAFF4AA08F0F3F">
+      <oldValue/>
+      <newValue><![CDATA[Indicates the quantity of product needed to process one time the sequence.]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="AD_ELEMENT_ID" pkRow="A9FCCB11ADB141558ADAFF4AA08F0F3F">
+      <oldValue/>
+      <newValue><![CDATA[800315]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="ISMANDATORY" pkRow="E145F102678E45368ABBD7C13C75DBF3">
+      <oldValue><![CDATA[Y]]></oldValue>
+      <newValue><![CDATA[N]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="ISMANDATORY" pkRow="FFCDDDC7A20341EFBC2D7B6304409DB1">
+      <oldValue><![CDATA[N]]></oldValue>
+      <newValue><![CDATA[Y]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_FIELD" columnname="NAME" pkRow="142E75FA60964D9D8A4FCA21E36A26A9">
+      <oldValue><![CDATA[Uppe Limit]]></oldValue>
+      <newValue><![CDATA[Upper Limit]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_FIELD" columnname="ISCENTRALLYMAINTAINED" pkRow="142E75FA60964D9D8A4FCA21E36A26A9">
+      <oldValue><![CDATA[Y]]></oldValue>
+      <newValue><![CDATA[N]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_FIELD" columnname="NAME" pkRow="62A998E532844205B36B26220BE75E1B">
+      <oldValue><![CDATA[Permium]]></oldValue>
+      <newValue><![CDATA[Premium]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_FIELD" columnname="ISCENTRALLYMAINTAINED" pkRow="62A998E532844205B36B26220BE75E1B">
+      <oldValue><![CDATA[Y]]></oldValue>
+      <newValue><![CDATA[N]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_FIELD" columnname="DESCRIPTION" pkRow="63AF64FEB6674E1F962134D8C5723782">
+      <oldValue/>
+      <newValue><![CDATA[The number of a certain item.]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_FIELD" columnname="HELP" pkRow="63AF64FEB6674E1F962134D8C5723782">
+      <oldValue/>
+      <newValue><![CDATA[Indicates the quantity of product needed to process one time the sequence.]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_FIELD" columnname="ISREADONLY" pkRow="954CCC4CD7604A589EA33F15C531339B">
+      <oldValue><![CDATA[N]]></oldValue>
+      <newValue><![CDATA[Y]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_FIELD" columnname="ISSHOWNINSTATUSBAR" pkRow="954CCC4CD7604A589EA33F15C531339B">
+      <oldValue><![CDATA[N]]></oldValue>
+      <newValue><![CDATA[Y]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_FIELD" columnname="DESCRIPTION" pkRow="A2A5FD51FD04410AAD0F8A524905D0FB">
+      <oldValue><![CDATA[Purchase Quotation]]></oldValue>
+      <newValue><![CDATA[Purchase Quotation Process]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_FIELD" columnname="HELP" pkRow="A2A5FD51FD04410AAD0F8A524905D0FB">
+      <oldValue><![CDATA[Purchase Quotation ]]></oldValue>
+      <newValue><![CDATA[Purchase Quotation Process]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_FIELD" columnname="ISSHOWNINSTATUSBAR" pkRow="BD763011BD7244DB987FB47F70B44017">
+      <oldValue><![CDATA[N]]></oldValue>
+      <newValue><![CDATA[Y]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_FIELD" columnname="NAME" pkRow="F3B43B834AE442C0AEA95CFDB349BF7F">
+      <oldValue><![CDATA[Processenew]]></oldValue>
+      <newValue><![CDATA[Book]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_FIELD" columnname="ISCENTRALLYMAINTAINED" pkRow="F3B43B834AE442C0AEA95CFDB349BF7F">
+      <oldValue><![CDATA[Y]]></oldValue>
+      <newValue><![CDATA[N]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_TREENODE" columnname="SEQNO" pkRow="38C4CDB0258948578AC77D1BB2CCC24F">
+      <oldValue><![CDATA[30]]></oldValue>
+      <newValue><![CDATA[20]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_TREENODE" columnname="SEQNO" pkRow="44A3DA19113B41A689829A4302F60D21">
+      <oldValue><![CDATA[40]]></oldValue>
+      <newValue><![CDATA[30]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_TREENODE" columnname="SEQNO" pkRow="8EEFB00CEA3F40A8BA48582A06F6379A">
+      <oldValue><![CDATA[60]]></oldValue>
+      <newValue><![CDATA[50]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_TREENODE" columnname="SEQNO" pkRow="CDABFCE5E0CB4001AB2D12482181618B">
+      <oldValue><![CDATA[50]]></oldValue>
+      <newValue><![CDATA[40]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="OBKMO_WIDGET_CLASS" columnname="ISACTIVE" pkRow="0B90015CD9C84792A98F1E9357C262E2">
+      <oldValue><![CDATA[Y]]></oldValue>
+      <newValue><![CDATA[N]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="OBKMO_WIDGET_CLASS" columnname="ISACTIVE" pkRow="10DE6579FF7A4864AEB31FE957849461">
+      <oldValue><![CDATA[Y]]></oldValue>
+      <newValue><![CDATA[N]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="OBKMO_WIDGET_CLASS" columnname="ISACTIVE" pkRow="267D9C95EE4E4E59BC0627658D0B9B37">
+      <oldValue><![CDATA[Y]]></oldValue>
+      <newValue><![CDATA[N]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="OBKMO_WIDGET_CLASS" columnname="ISACTIVE" pkRow="479BC7D918D84F948F4C2BDA402D0AA3">
+      <oldValue><![CDATA[Y]]></oldValue>
+      <newValue><![CDATA[N]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="OBKMO_WIDGET_CLASS" columnname="ISACTIVE" pkRow="50F3F7AED43A4B31AF176F1AF0714284">
+      <oldValue><![CDATA[Y]]></oldValue>
+      <newValue><![CDATA[N]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="OBKMO_WIDGET_CLASS" columnname="ALLOW_ANONYMOUS_ACCESS" pkRow="50F3F7AED43A4B31AF176F1AF0714284">
+      <oldValue><![CDATA[Y]]></oldValue>
+      <newValue><![CDATA[N]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="OBKMO_WIDGET_CLASS" columnname="ACCESSLEVEL" pkRow="50F3F7AED43A4B31AF176F1AF0714284">
+      <oldValue><![CDATA[3]]></oldValue>
+      <newValue><![CDATA[4]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="OBKMO_WIDGET_CLASS" columnname="ISACTIVE" pkRow="5EA740A9473048CFA6B6F1FB6F5576AC">
+      <oldValue><![CDATA[Y]]></oldValue>
+      <newValue><![CDATA[N]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="OBKMO_WIDGET_CLASS" columnname="ISACTIVE" pkRow="6C1D7EC862F249B2AD1CD73A4F16A87F">
+      <oldValue><![CDATA[Y]]></oldValue>
+      <newValue><![CDATA[N]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="OBKMO_WIDGET_CLASS" columnname="ALLOW_ANONYMOUS_ACCESS" pkRow="6C1D7EC862F249B2AD1CD73A4F16A87F">
+      <oldValue><![CDATA[Y]]></oldValue>
+      <newValue><![CDATA[N]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="OBKMO_WIDGET_CLASS" columnname="ISACTIVE" pkRow="6E3AC867DCB34C068DEED85B40611FD8">
+      <oldValue><![CDATA[Y]]></oldValue>
+      <newValue><![CDATA[N]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="OBKMO_WIDGET_CLASS" columnname="ISACTIVE" pkRow="6FB59F927ADE4DD0B997BDDF615D3159">
+      <oldValue><![CDATA[Y]]></oldValue>
+      <newValue><![CDATA[N]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="OBKMO_WIDGET_CLASS" columnname="ISACTIVE" pkRow="862EEC18D6FC4FA68E7867E3CF337CC7">
+      <oldValue><![CDATA[Y]]></oldValue>
+      <newValue><![CDATA[N]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="OBKMO_WIDGET_CLASS" columnname="ISACTIVE" pkRow="8A6B99392E2B4192012E2B53EDF3003D">
+      <oldValue><![CDATA[Y]]></oldValue>
+      <newValue><![CDATA[N]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="OBKMO_WIDGET_CLASS" columnname="ISACTIVE" pkRow="8A6B99392E2B4192012E2B58F5790056">
+      <oldValue><![CDATA[Y]]></oldValue>
+      <newValue><![CDATA[N]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="OBKMO_WIDGET_CLASS" columnname="ISACTIVE" pkRow="8A6B99392E2D9088012E2DCFC39B005F">
+      <oldValue><![CDATA[Y]]></oldValue>
+      <newValue><![CDATA[N]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="OBKMO_WIDGET_CLASS" columnname="ISACTIVE" pkRow="8A6B99392E2D9088012E2DE2AD61008C">
+      <oldValue><![CDATA[Y]]></oldValue>
+      <newValue><![CDATA[N]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="OBKMO_WIDGET_CLASS" columnname="ISACTIVE" pkRow="8A6B99392E2D9088012E2DFD131900BD">
+      <oldValue><![CDATA[Y]]></oldValue>
+      <newValue><![CDATA[N]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="OBKMO_WIDGET_CLASS" columnname="ISACTIVE" pkRow="C26A68FD8CF347EC9D1FB7E274622450">
+      <oldValue><![CDATA[Y]]></oldValue>
+      <newValue><![CDATA[N]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="OBKMO_WIDGET_CLASS" columnname="ISACTIVE" pkRow="CD1B06C4ED974B5F905A5A01B097DF4E">
+      <oldValue><![CDATA[Y]]></oldValue>
+      <newValue><![CDATA[N]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="OBKMO_WIDGET_CLASS" columnname="ISACTIVE" pkRow="DEEFF28410DD488E9EF2EB28DCD6ADA1">
+      <oldValue><![CDATA[Y]]></oldValue>
+      <newValue><![CDATA[N]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="OBKMO_WIDGET_CLASS" columnname="ISACTIVE" pkRow="E4C82D04605C4256A74258B770AA8867">
+      <oldValue><![CDATA[Y]]></oldValue>
+      <newValue><![CDATA[N]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="OBKMO_WIDGET_CLASS" columnname="ISACTIVE" pkRow="E9DA175470B747268E09DEF5174FDD3A">
+      <oldValue><![CDATA[Y]]></oldValue>
+      <newValue><![CDATA[N]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="OBKMO_WIDGET_CLASS" columnname="ISACTIVE" pkRow="F41E327965084556BCF7EC7B271603AA">
+      <oldValue><![CDATA[Y]]></oldValue>
+      <newValue><![CDATA[N]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="OBKMO_WIDGET_CLASS" columnname="ISACTIVE" pkRow="FF8080812E144FAE012E1455F6020009">
+      <oldValue><![CDATA[Y]]></oldValue>
+      <newValue><![CDATA[N]]></newValue>
+    </columnDataChange>
+  </vector>

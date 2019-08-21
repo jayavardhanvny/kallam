@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+  <database name="FUNCTION EPCG_YARNCOSTTEMPLATE_DELETION">
+    <function name="EPCG_YARNCOSTTEMPLATE_DELETION" type="VARCHAR">
+      <body><![CDATA[declare 
+v_count NUMBER;
+
+begin
+IF (TG_OP = 'DELETE') THEN
+select count(epcg_yarncosttemplate_id) into v_count from epcg_yarncosttemplate 
+where Copylines='Y' and epcg_yarncosttemplate_id = OLD.epcg_yarncosttemplate_id;
+
+ IF(v_count>0) THEN
+ RAISE NO_DATA_FOUND;
+ END IF;
+ return old;
+ END if;
+END EPCG_YARNCOSTTEMPLATE_DELETION
+]]></body>
+    </function>
+  </database>

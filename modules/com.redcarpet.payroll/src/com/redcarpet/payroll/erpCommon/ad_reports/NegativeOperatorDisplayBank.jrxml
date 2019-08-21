@@ -1,0 +1,368 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="OperatorDisplayBank" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="ProcessID" class="java.lang.String"/>
+	<parameter name="Employee_ID" class="java.lang.String">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="aux_emp" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[$P{Employee_ID}.equals("") ? " " : " AND EMP.RCHR_EMPLOYEE_ID = '" + $P{Employee_ID} + "'"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="Dept_ID" class="java.lang.String">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="aux_dept" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[$P{Dept_ID}.equals("") ? " " : " AND EMPPP.RCHR_EMP_DEPT_ID = '" + $P{Dept_ID} + "'"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="EmpType" class="java.lang.String"/>
+	<parameter name="SubDept_ID" class="java.lang.String">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="aux_subdept" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[$P{SubDept_ID}.equals("") ? " " : " AND EMPPP.RCHR_SUBDEPARTMENT_ID = '" + $P{SubDept_ID} + "'"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="Emp_PF" class="java.lang.String">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="aux_emp_pf" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[$P{Emp_PF}.equals("") ? " " : " AND EMPPP.ISPFAPPLICABLE = '" + $P{Emp_PF} + "'"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="Emp_Bank" class="java.lang.String">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="aux_emp_bank" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[$P{Emp_Bank}.equals("") ? " " : " AND EMPPP.ISBANK = '" + $P{Emp_Bank} + "'"]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT emp.documentno AS Employeeid,emp.employeename AS name,
+emp.accountno as accntno,
+(SELECT rchr_designation.name FROM rchr_designation
+
+WHERE rchr_designation_id=emppp.rchr_designation_id ) AS designation,
+(emppp.basicamount) as BASICPERDAY,
+(emppp.servincentiveamount ) as SERVPERDAY,
+emppp.presentdays AS presents,emppp.weeklyoff AS weekoffdays,
+emppp.absents AS absents,
+(SELECT rchr_attd_process.monthname FROM rchr_attd_process WHERE rchr_attd_process.rchr_attd_process_id=pp.rchr_attd_process_id) AS PayrollProcessMonth,
+emppp.deductionsum*-1 AS totaldeduction, round(emppp.totalpay) AS netsal,
+
+(emppp.grandtotal +(SELECT RCPL_EmpDedIncentives.deductions FROM RCPL_EmpDedIncentives WHERE emppp.rcpl_emppayrollprocess_id=RCPL_EmpDedIncentives.rcpl_emppayrollprocess_id AND
+RCPL_EmpDedIncentives.rcpl_Incentives_id=(SELECT rcpl_incentives_id FROM
+rcpl_incentives WHERE rcpl_incentives.rcpl_variableset_id=(SELECT rcpl_variableset_id from rcpl_variableset where ismessdeduction='Y')))) as grandtotal,
+(select name from rchr_emp_dept where rchr_emp_dept_id=$P{Dept_ID}) as parm_dept,
+('- '||(select name from rchr_subdepartment where rchr_subdepartment_id=$P{SubDept_ID})) as parm_subdept
+
+FROM rcpl_payrollprocess pp
+left join rcpl_emppayrollprocess emppp
+ON emppp.rcpl_payrollprocess_id = pp.rcpl_payrollprocess_id
+left join rchr_employee emp on emp.rchr_employee_id=emppp.rchr_employee_id
+where pp.rchr_attd_process_id=$P{ProcessID} AND emp.employeetype=$P{EmpType}
+and pp.isactive='Y' and  emppp.totalpay <0
+and 1=1
+$P!{aux_emp}
+$P!{aux_dept}
+$P!{aux_subdept}
+$P!{aux_emp_pf}
+$P!{aux_emp_bank}
+ORDER BY emp.documentno]]>
+	</queryString>
+	<field name="employeeid" class="java.lang.String"/>
+	<field name="name" class="java.lang.String"/>
+	<field name="accntno" class="java.lang.String"/>
+	<field name="designation" class="java.lang.String"/>
+	<field name="basicperday" class="java.math.BigDecimal"/>
+	<field name="servperday" class="java.math.BigDecimal"/>
+	<field name="presents" class="java.math.BigDecimal"/>
+	<field name="weekoffdays" class="java.math.BigDecimal"/>
+	<field name="absents" class="java.math.BigDecimal"/>
+	<field name="payrollprocessmonth" class="java.lang.String"/>
+	<field name="totaldeduction" class="java.math.BigDecimal"/>
+	<field name="netsal" class="java.math.BigDecimal"/>
+	<field name="grandtotal" class="java.math.BigDecimal"/>
+	<field name="parm_dept" class="java.lang.String"/>
+	<field name="parm_subdept" class="java.lang.String"/>
+	<variable name="Sno" class="java.math.BigDecimal" calculation="Count">
+		<variableExpression><![CDATA[$F{employeeid}]]></variableExpression>
+	</variable>
+	<variable name="totalwage" class="java.math.BigDecimal">
+		<variableExpression><![CDATA[$F{basicperday}.add( $F{servperday} )]]></variableExpression>
+	</variable>
+	<variable name="pagetotal" class="java.math.BigDecimal" resetType="Column" calculation="Sum">
+		<variableExpression><![CDATA[$F{netsal}]]></variableExpression>
+		<initialValueExpression><![CDATA[]]></initialValueExpression>
+	</variable>
+	<variable name="Grandtotal" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{netsal}]]></variableExpression>
+		<initialValueExpression><![CDATA[$F{netsal}]]></initialValueExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="68" splitType="Stretch">
+			<line>
+				<reportElement x="554" y="0" width="1" height="68"/>
+			</line>
+			<line>
+				<reportElement x="0" y="0" width="1" height="68"/>
+			</line>
+			<line>
+				<reportElement x="1" y="0" width="554" height="1"/>
+			</line>
+			<staticText>
+				<reportElement key="staticText-2" x="195" y="2" width="239" height="22"/>
+				<textElement textAlignment="Center" verticalAlignment="Top" lineSpacing="Single">
+					<font fontName="Verdana" size="14" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[Kallam Spinning Mills ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-3" x="152" y="42" width="351" height="23"/>
+				<textElement textAlignment="Center" lineSpacing="Single">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Kunkupadu, Addanki - 523264 - Prakasam - Andhra Pradesh]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-2" x="191" y="20" width="239" height="21"/>
+				<textElement textAlignment="Center" verticalAlignment="Top" lineSpacing="Single">
+					<font fontName="Verdana" size="14" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[ (Weaving Division)]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="42" splitType="Stretch">
+			<line>
+				<reportElement x="0" y="0" width="1" height="42"/>
+			</line>
+			<line>
+				<reportElement x="554" y="0" width="1" height="42"/>
+			</line>
+			<line>
+				<reportElement x="0" y="0" width="555" height="1"/>
+			</line>
+			<staticText>
+				<reportElement key="staticText-9" x="103" y="4" width="234" height="16"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle" lineSpacing="Single">
+					<font fontName="Verdana" size="12" isBold="true" isItalic="true" isUnderline="false" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[Negative Operator Payroll  Report (Bank)]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="238" y="21" width="100" height="20"/>
+				<textElement verticalAlignment="Middle" lineSpacing="Single">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{parm_subdept}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="151" y="21" width="84" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle" lineSpacing="Single">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{parm_dept}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="337" y="4" width="62" height="17"/>
+				<textElement verticalAlignment="Middle" lineSpacing="Single">
+					<font size="11" isBold="true" isItalic="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{payrollprocessmonth}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="395" y="23" width="63" height="12"/>
+				<textElement textAlignment="Right" lineSpacing="Single">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Bank Status:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="403" y="7" width="55" height="12"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle" lineSpacing="Single">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[PF Status:]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="460" y="23" width="93" height="12"/>
+				<textElement verticalAlignment="Middle" lineSpacing="Single">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{Emp_Bank}.equals("") ? "BANK + ON-HAND" : ($P{Emp_Bank}.equals("Y") ? "BANK" : "ON-HAND")]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="460" y="7" width="92" height="12"/>
+				<textElement verticalAlignment="Middle" lineSpacing="Single">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{Emp_PF}.equals("") ? "PF + NON-PF" : ($P{Emp_PF}.equals("Y") ? "PF" : "NON-PF")]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="25" splitType="Stretch">
+			<line>
+				<reportElement x="0" y="0" width="1" height="24"/>
+			</line>
+			<line>
+				<reportElement x="43" y="0" width="1" height="23"/>
+			</line>
+			<line>
+				<reportElement x="212" y="0" width="1" height="25"/>
+			</line>
+			<line>
+				<reportElement x="554" y="0" width="1" height="24"/>
+			</line>
+			<line>
+				<reportElement x="1" y="-1" width="553" height="1"/>
+			</line>
+			<staticText>
+				<reportElement key="staticText-19" x="51" y="4" width="161" height="17"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" lineSpacing="Single">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Employee Name]]></text>
+			</staticText>
+			<line>
+				<reportElement x="360" y="0" width="1" height="24"/>
+			</line>
+			<staticText>
+				<reportElement x="2" y="2" width="41" height="19"/>
+				<textElement verticalAlignment="Middle" lineSpacing="Single">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[S.No]]></text>
+			</staticText>
+			<line>
+				<reportElement x="436" y="0" width="1" height="24"/>
+			</line>
+			<staticText>
+				<reportElement x="367" y="-1" width="56" height="26"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" lineSpacing="Single">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[  Net
+Wages]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="222" y="2" width="106" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" lineSpacing="Single">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Accountnt No.]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="21" splitType="Stretch">
+			<line>
+				<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="1" height="21"/>
+			</line>
+			<line>
+				<reportElement stretchType="RelativeToBandHeight" x="43" y="0" width="1" height="21"/>
+			</line>
+			<line>
+				<reportElement stretchType="RelativeToBandHeight" x="212" y="-1" width="1" height="22"/>
+			</line>
+			<line>
+				<reportElement stretchType="RelativeToBandHeight" x="554" y="-1" width="1" height="22"/>
+			</line>
+			<line>
+				<reportElement positionType="Float" x="1" y="20" width="553" height="1"/>
+			</line>
+			<line>
+				<reportElement stretchType="RelativeToBandHeight" x="360" y="0" width="1" height="21"/>
+			</line>
+			<line>
+				<reportElement positionType="Float" x="0" y="-1" width="554" height="1"/>
+			</line>
+			<line>
+				<reportElement stretchType="RelativeToBandHeight" x="436" y="0" width="1" height="21"/>
+			</line>
+			<textField>
+				<reportElement x="3" y="1" width="40" height="20"/>
+				<textElement verticalAlignment="Middle" lineSpacing="Single"/>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{Sno}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="51" y="1" width="161" height="19"/>
+				<textElement verticalAlignment="Middle" lineSpacing="Single"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{name}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0">
+				<reportElement x="363" y="1" width="68" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle" lineSpacing="Single"/>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{netsal}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="218" y="0" width="138" height="20"/>
+				<textElement verticalAlignment="Middle" lineSpacing="Single"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{accntno}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="15" splitType="Stretch">
+			<textField pattern="###0" isBlankWhenNull="true">
+				<reportElement x="365" y="1" width="67" height="13"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle" lineSpacing="Single">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{pagetotal}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="299" y="0" width="67" height="13"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle" lineSpacing="Single">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Page Total :]]></text>
+			</staticText>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="68" splitType="Stretch">
+			<staticText>
+				<reportElement key="staticText-29" x="231" y="39" width="100" height="12"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" lineSpacing="Single">
+					<font size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[H.O.D]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="34" y="39" width="100" height="12"/>
+				<textElement textAlignment="Center" lineSpacing="Single">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[TO Incharge]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="415" y="39" width="100" height="12"/>
+				<textElement textAlignment="Center" lineSpacing="Single">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Approved By]]></text>
+			</staticText>
+			<textField pattern="###0" isBlankWhenNull="true">
+				<reportElement x="365" y="1" width="67" height="14"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle" lineSpacing="Single">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{Grandtotal}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="302" y="1" width="64" height="14"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle" lineSpacing="Single">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Grand Total :]]></text>
+			</staticText>
+		</band>
+	</summary>
+</jasperReport>

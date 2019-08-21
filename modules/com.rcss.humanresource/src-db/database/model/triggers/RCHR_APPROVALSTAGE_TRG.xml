@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+  <database name="TRIGGER RCHR_APPROVALSTAGE_TRG">
+    <trigger name="RCHR_APPROVALSTAGE_TRG" table="RCHR_APPROVALSTAGE" fires="after" insert="false" update="true" delete="false" foreach="row">
+      <body><![CDATA[v_count NUMBER:=0;
+    BEGIN
+    
+    IF AD_isTriggerEnabled()='N' THEN RETURN;
+    END IF; 
+
+    SELECT COUNT(*) INTO v_count from rchr_approvalstageuser where rchr_approvalstage_id=:old.rchr_approvalstage_id and isactive='Y';
+
+    IF(UPDATING) THEN
+    if(:NEW.BESTOFF=0) THEN
+    RAISE EXCEPTION 'BESTOFF SHOULD NOT BE ZERO';
+    ELSE if(:new.bestoff>v_count) then
+    RAISE EXCEPTION 'BESTOFF SHOULD NOT EXCEED CURRENT ACTIVE USERS COUNT';
+    else RETURN NEW;
+    END IF;
+    end if;
+    end if;
+  END RCHR_APPROVALSTAGE_TRG
+]]></body>
+    </trigger>
+  </database>

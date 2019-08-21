@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+  <database name="TRIGGER RCGI_MATERIALINDENT_TRG">
+    <trigger name="RCGI_MATERIALINDENT_TRG" table="RCGI_MATERIALINDENT" fires="before" insert="false" update="false" delete="true" foreach="row">
+      <body><![CDATA[begin
+if(TG_OP='DELETE') THEN
+IF(:OLD.DOCSTATUS!='DR') THEN
+RAISE EXCEPTION 'DELETE NOT POSSIBLE AFTER INDENT COMPLETE/FINAL';
+else return old;
+END IF;
+END IF;
+end
+]]></body>
+    </trigger>
+  </database>

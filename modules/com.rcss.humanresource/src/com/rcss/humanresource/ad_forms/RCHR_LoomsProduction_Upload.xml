@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<REPORT>
+	<template file="RCHR_LoomsProduction_Upload.html"/>
+  <PARAMETER id="paramToolBar" name="toolbar" default=""/>
+  <PARAMETER id="paramParentTabContainer" name="parentTabContainer" default=" "/>
+  <PARAMETER id="paramMainTabContainer" name="mainTabContainer" default=" "/>
+  <PARAMETER id="paramChildTabContainer" name="childTabContainer" default=" "/>
+  <PARAMETER id="tdtopButtons" name="navigationBar" default=""/>
+  <PARAMETER id="tdleftTabs" name="leftTabs" default=""/>
+  <PARAMETER id="paramCSS" name="theme" attribute="href" replace="Default" default=""/>
+  <PARAMETER id="messageBoxID" name="messageType" attribute="class" replace="yy" default="HIDDEN"/>
+  <PARAMETER id="messageBoxIDTitle" name="messageTitle" default=""/>
+  <PARAMETER id="messageBoxIDMessage" name="messageMessage" default=""/>
+  <PARAMETER id="paramDirectory" name="directory" default=""/>
+  <PARAMETER id="paramLanguage" name="language" default=""/>
+
+  <PARAMETER id="paramCheck" name="check" default="Y"/>
+  <PARAMETER id="paramFirstLineHeader" name="firstLineHeader" boolean="checked" withId="paramCheck"/>
+  <PARAMETER id="paramFileId" name="fileName" default=""/>
+
+	<!--
+	<SUBREPORT id="reportImpFormat_M" name="reportImpFormat" report="org/openbravo/erpCommon/reference/List">
+		<ARGUMENT name="parameterListSelected"/>
+	</SUBREPORT>
+	-->
+</REPORT>

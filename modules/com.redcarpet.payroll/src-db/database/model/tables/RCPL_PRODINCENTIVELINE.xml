@@ -1,0 +1,128 @@
+<?xml version="1.0"?>
+  <database name="TABLE RCPL_PRODINCENTIVELINE">
+    <table name="RCPL_PRODINCENTIVELINE" primaryKey="RCPL_PRODINCENTIVELINE_KEY">
+      <column name="RCPL_PRODINCENTIVELINE_ID" primaryKey="true" required="true" type="VARCHAR" size="32" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="AD_CLIENT_ID" primaryKey="false" required="true" type="VARCHAR" size="32" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="AD_ORG_ID" primaryKey="false" required="true" type="VARCHAR" size="32" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="ISACTIVE" primaryKey="false" required="true" type="CHAR" size="1" autoIncrement="false">
+        <default><![CDATA[Y]]></default>
+        <onCreateDefault/>
+      </column>
+      <column name="CREATED" primaryKey="false" required="true" type="TIMESTAMP" size="7" autoIncrement="false">
+        <default><![CDATA[SYSDATE]]></default>
+        <onCreateDefault/>
+      </column>
+      <column name="CREATEDBY" primaryKey="false" required="true" type="VARCHAR" size="32" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="UPDATED" primaryKey="false" required="true" type="TIMESTAMP" size="7" autoIncrement="false">
+        <default><![CDATA[SYSDATE]]></default>
+        <onCreateDefault/>
+      </column>
+      <column name="UPDATEDBY" primaryKey="false" required="true" type="VARCHAR" size="32" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="RCPL_LOOM_ID" primaryKey="false" required="true" type="VARCHAR" size="32" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="RCPL_PRODINCENTIVE_ID" primaryKey="false" required="true" type="VARCHAR" size="32" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="DATE" primaryKey="false" required="true" type="TIMESTAMP" size="7" autoIncrement="false">
+        <default><![CDATA[SYSDATE]]></default>
+        <onCreateDefault/>
+      </column>
+      <column name="RCPR_SHIFT_ID" primaryKey="false" required="false" type="VARCHAR" size="32" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="EFFICIENCY" primaryKey="false" required="true" type="VARCHAR" size="40" autoIncrement="false">
+        <default><![CDATA[0]]></default>
+        <onCreateDefault/>
+      </column>
+      <column name="TIME1" primaryKey="false" required="false" type="TIMESTAMP" size="7" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="TIME2" primaryKey="false" required="false" type="TIMESTAMP" size="7" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="REMARKS" primaryKey="false" required="false" type="VARCHAR" size="1000" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="DETENTIONTWO" primaryKey="false" required="false" type="VARCHAR" size="32" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="DETENTIONFOUR" primaryKey="false" required="false" type="VARCHAR" size="32" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="DETENTIONTHREE" primaryKey="false" required="false" type="VARCHAR" size="32" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="TIME3" primaryKey="false" required="false" type="TIMESTAMP" size="7" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="TIME4" primaryKey="false" required="false" type="TIMESTAMP" size="7" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="RCHR_DETENTION_ID" primaryKey="false" required="false" type="VARCHAR" size="32" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="DYED" primaryKey="false" required="true" type="CHAR" size="1" autoIncrement="false">
+        <default><![CDATA[N]]></default>
+        <onCreateDefault/>
+      </column>
+      <column name="GREY" primaryKey="false" required="true" type="CHAR" size="1" autoIncrement="false">
+        <default><![CDATA[N]]></default>
+        <onCreateDefault/>
+      </column>
+      <foreign-key foreignTable="RCHR_DETENTION" name="RCPL_PRODINCENTIV_DET">
+        <reference local="RCHR_DETENTION_ID" foreign="RCHR_DETENTION_ID"/>
+      </foreign-key>
+      <foreign-key foreignTable="RCHR_DETENTION" name="RCPL_PRODINCENTIV_DETFOUR">
+        <reference local="DETENTIONFOUR" foreign="RCHR_DETENTION_ID"/>
+      </foreign-key>
+      <foreign-key foreignTable="RCHR_DETENTION" name="RCPL_PRODINCENTIV_DETTHREE">
+        <reference local="DETENTIONTHREE" foreign="RCHR_DETENTION_ID"/>
+      </foreign-key>
+      <foreign-key foreignTable="RCHR_DETENTION" name="RCPL_PRODINCENTIV_DETTWO">
+        <reference local="DETENTIONTWO" foreign="RCHR_DETENTION_ID"/>
+      </foreign-key>
+      <foreign-key foreignTable="RCPR_SHIFT" name="RCPL_PRODINCENTIVE_SHIFT">
+        <reference local="RCPR_SHIFT_ID" foreign="RCPR_SHIFT_ID"/>
+      </foreign-key>
+      <foreign-key foreignTable="AD_CLIENT" name="RCPL_PRODINCENTIVELINE_CLIENT">
+        <reference local="AD_CLIENT_ID" foreign="AD_CLIENT_ID"/>
+      </foreign-key>
+      <foreign-key foreignTable="RCPL_LOOM" name="RCPL_PRODINCENTIVELINE_LOOM">
+        <reference local="RCPL_LOOM_ID" foreign="RCPL_LOOM_ID"/>
+      </foreign-key>
+      <foreign-key foreignTable="AD_ORG" name="RCPL_PRODINCENTIVELINE_ORG">
+        <reference local="AD_ORG_ID" foreign="AD_ORG_ID"/>
+      </foreign-key>
+      <foreign-key foreignTable="RCPL_PRODINCENTIVE" name="RCPL_PRODINCENTIVELINE_PROD">
+        <reference local="RCPL_PRODINCENTIVE_ID" foreign="RCPL_PRODINCENTIVE_ID"/>
+      </foreign-key>
+    </table>
+  </database>

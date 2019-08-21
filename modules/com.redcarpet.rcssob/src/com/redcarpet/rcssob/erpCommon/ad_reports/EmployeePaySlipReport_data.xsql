@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<SqlClass name="EmployeePaySlipReportData" package="com.redcarpet.rcssob.erpCommon.ad_reports" accessModifier="public">
+
+     <SqlMethod name="select" type="preparedStatement" return="multiple">
+			
+	 <Sql>
+	 <![CDATA[                            
+        SELECT (SELECT rchr_attd_process.monthname FROM rchr_attd_process WHERE rchr_attd_process.rchr_attd_process_id=pp.rchr_attd_process_id) AS payrollmonth,
+  emp.punchno AS punchno,emp.employeename AS name,
+  (SELECT rchr_designation.name FROM rchr_designation WHERE rchr_designation_id=emp.rchr_designation_id ) AS designation,
+  (CASE WHEN 'Y'=(SELECT RCPL_EMPSALSETUP.isnotdesig from RCPL_EMPSALSETUP WHERE RCPL_EMPSALSETUP.RCHR_EMPLOYEE_ID=emp.rchr_employee_id)
+  THEN (select RCPL_EMPSALSETUP.PERDAYBASIC from RCPL_EMPSALSETUP where RCPL_EMPSALSETUP.RCHR_EMPLOYEE_ID=emp.rchr_employee_id)
+  ELSE(emppp.basicamount)END) as basic,
+  (CASE WHEN 'Y'=(SELECT RCPL_EMPSALSETUP.isnotdesig from RCPL_EMPSALSETUP WHERE RCPL_EMPSALSETUP.RCHR_EMPLOYEE_ID=emp.rchr_employee_id)
+  THEN (select RCPL_EMPSALSETUP.SERVICEINCE from RCPL_EMPSALSETUP where RCPL_EMPSALSETUP.RCHR_EMPLOYEE_ID=emp.rchr_employee_id)ELSE
+  (emppp.servincentiveamount ) END ) as serviceincv,
+  ((CASE WHEN 'Y'=(SELECT RCPL_EMPSALSETUP.isnotdesig from RCPL_EMPSALSETUP WHERE RCPL_EMPSALSETUP.RCHR_EMPLOYEE_ID=emp.rchr_employee_id)
+  THEN (select RCPL_EMPSALSETUP.PERDAYBASIC from RCPL_EMPSALSETUP where RCPL_EMPSALSETUP.RCHR_EMPLOYEE_ID=emp.rchr_employee_id)
+  ELSE
+ (emppp.basicamount)END)+(CASE WHEN 'Y'=(SELECT RCPL_EMPSALSETUP.isnotdesig from RCPL_EMPSALSETUP WHERE RCPL_EMPSALSETUP.RCHR_EMPLOYEE_ID=emp.rchr_employee_id)
+  THEN (select RCPL_EMPSALSETUP.SERVICEINCE from RCPL_EMPSALSETUP where RCPL_EMPSALSETUP.RCHR_EMPLOYEE_ID=emp.rchr_employee_id)ELSE
+ (emppp.servincentiveamount ) END )) as wageperday,
+ (SELECT RCHR_EMPLOYEE.PREATTDDAYS FROM RCHR_EMPLOYEE WHERE RCHR_EMPLOYEE_ID=emp.rchr_employee_id)- emppp.presentdays as incrdays,
+ (SELECT RCHR_EMPLOYEE.PREATTDDAYS FROM RCHR_EMPLOYEE WHERE RCHR_EMPLOYEE_ID=emp.rchr_employee_id) AS servicedays,
+ (SELECT RCPL_EmpPayHead.additions FROM RCPL_EmpPayHead WHERE emppp.rcpl_emppayrollprocess_id=RCPL_EmpPayHead.rcpl_emppayrollprocess_id AND
+ RCPL_EmpPayHead.rcpl_payadditionshead_id=(SELECT rcpl_payadditionshead_id FROM
+ rcpl_payadditionshead WHERE category='Basic')) AS basicamnt,
+ ((SELECT RCPL_EmpPayHead.additions FROM RCPL_EmpPayHead WHERE emppp.rcpl_emppayrollprocess_id=RCPL_EmpPayHead.rcpl_emppayrollprocess_id AND
+ RCPL_EmpPayHead.rcpl_payadditionshead_id=(SELECT rcpl_payadditionshead_id FROM
+ rcpl_payadditionshead WHERE category='Basic'))+(SELECT RCPL_EmpPayIncentives.additions FROM RCPL_EmpPayIncentives WHERE emppp.rcpl_emppayrollprocess_id=RCPL_EmpPayIncentives.rcpl_emppayrollprocess_id AND
+ RCPL_EmpPayIncentives.rcpl_Incentives_id=(SELECT rcpl_incentives_id FROM
+ rcpl_incentives WHERE rcpl_incentives.rcpl_variableset_id=(SELECT rcpl_variableset_id from rcpl_variableset where isservicedaysincentive='Y')))) AS grosswages,
+ emppp.presentdays AS presentdays,emppp.weeklyoff AS weekoffdays,
+ emppp.absents AS absents,
+ (SELECT RCPL_EmpPayIncentives.additions FROM RCPL_EmpPayIncentives WHERE emppp.rcpl_emppayrollprocess_id=RCPL_EmpPayIncentives.rcpl_emppayrollprocess_id AND
+ RCPL_EmpPayIncentives.rcpl_Incentives_id=(SELECT rcpl_incentives_id FROM
+ rcpl_incentives WHERE rcpl_incentives.rcpl_variableset_id=(SELECT rcpl_variableset_id from rcpl_variableset where isattendanceprize='Y'))) AS attndincv,
+ (SELECT RCPL_EmpPayIncentives.additions FROM RCPL_EmpPayIncentives WHERE emppp.rcpl_emppayrollprocess_id=RCPL_EmpPayIncentives.rcpl_emppayrollprocess_id AND
+ RCPL_EmpPayIncentives.rcpl_Incentives_id=(SELECT rcpl_incentives_id FROM
+ rcpl_incentives WHERE rcpl_incentives.rcpl_variableset_id=(SELECT rcpl_variableset_id from rcpl_variableset where isprodincentive='Y'))) AS prodincntv,
+ (SELECT RCPL_EmpDedIncentives.deductions FROM RCPL_EmpDedIncentives WHERE emppp.rcpl_emppayrollprocess_id=RCPL_EmpDedIncentives.rcpl_emppayrollprocess_id AND
+ RCPL_EmpDedIncentives.rcpl_Incentives_id=(SELECT rcpl_incentives_id FROM
+ rcpl_incentives WHERE rcpl_incentives.rcpl_variableset_id=(SELECT rcpl_variableset_id from rcpl_variableset where ismessdeduction='Y'))) AS messsubsidy,
+ (SELECT RCPL_EmpPayIncentives.additions FROM RCPL_EmpPayIncentives WHERE emppp.rcpl_emppayrollprocess_id=RCPL_EmpPayIncentives.rcpl_emppayrollprocess_id AND RCPL_EmpPayIncentives.rcpl_Incentives_id=(SELECT rcpl_incentives_id FROM
+ rcpl_incentives WHERE rcpl_incentives.rcpl_variableset_id=(SELECT RCPL_Variableset_id FROM RCPL_Variableset where iscshiftincen='Y'))) AS punchamount,
+ emppp.grandtotal as grandtotal,
+ (SELECT RCPL_EmpPaydead.deductions from RCPL_EmpPaydead WHERE emppp.rcpl_emppayrollprocess_id=RCPL_EmpPaydead.rcpl_emppayrollprocess_id AND RCPL_EmpPaydead.rcpl_paydeducitionshead_id=(SELECT rcpl_paydeducitionshead_id FROM
+ rcpl_paydeducitionshead WHERE category='PF')) AS pf,
+ (SELECT RCPL_EmpPaydead.deductions FROM RCPL_EmpPaydead WHERE emppp.rcpl_emppayrollprocess_id=RCPL_EmpPaydead.rcpl_emppayrollprocess_id AND
+ RCPL_EmpPaydead.rcpl_paydeducitionshead_id=(SELECT rcpl_paydeducitionshead_id FROM rcpl_paydeducitionshead WHERE category='Mess Bill')) AS mesbill,
+ (SELECT RCPL_EmpPaydead.deductions FROM RCPL_EmpPaydead WHERE emppp.rcpl_emppayrollprocess_id=RCPL_EmpPaydead.rcpl_emppayrollprocess_id  AND RCPL_EmpPaydead.rcpl_paydeducitionshead_id=(SELECT rcpl_paydeducitionshead_id FROM
+ rcpl_paydeducitionshead WHERE category='Electricity Bill')) AS electricitybill,
+
+ (SELECT RCPL_EmpPaydead.deductions from RCPL_EmpPaydead WHERE emppp.rcpl_emppayrollprocess_id=RCPL_EmpPaydead.rcpl_emppayrollprocess_id AND RCPL_EmpPaydead.rcpl_paydeducitionshead_id=(SELECT rcpl_paydeducitionshead_id FROM
+ rcpl_paydeducitionshead WHERE category='Rent Bill')) AS rentBill,
+
+ (SELECT RCPL_EmpPaydead.deductions from RCPL_EmpPaydead WHERE emppp.rcpl_emppayrollprocess_id=RCPL_EmpPaydead.rcpl_emppayrollprocess_id AND RCPL_EmpPaydead.rcpl_paydeducitionshead_id=(SELECT rcpl_paydeducitionshead_id FROM
+ rcpl_paydeducitionshead WHERE category='Gas')) AS gasrecovery,
+ (SELECT RCPL_EmpPaydead.deductions from RCPL_EmpPaydead WHERE emppp.rcpl_emppayrollprocess_id=RCPL_EmpPaydead.rcpl_emppayrollprocess_id AND RCPL_EmpPaydead.rcpl_paydeducitionshead_id=(SELECT rcpl_paydeducitionshead_id FROM
+ rcpl_paydeducitionshead WHERE category='Employee Fine')) AS fine,
+ (SELECT RCPL_EmpPaydead.deductions FROM RCPL_EmpPaydead WHERE emppp.rcpl_emppayrollprocess_id=RCPL_EmpPaydead.rcpl_emppayrollprocess_id AND RCPL_EmpPaydead.rcpl_paydeducitionshead_id=(SELECT rcpl_paydeducitionshead_id FROM
+ rcpl_paydeducitionshead WHERE category='Loans and Advances')) AS advances,
+ (SELECT RCPL_EmpPaydead.deductions FROM RCPL_EmpPaydead WHERE emppp.rcpl_emppayrollprocess_id=RCPL_EmpPaydead.rcpl_emppayrollprocess_id AND RCPL_EmpPaydead.rcpl_paydeducitionshead_id=(SELECT rcpl_paydeducitionshead_id FROM
+ rcpl_paydeducitionshead WHERE category='Store Recovery')) AS deptstore,
+ (SELECT RCPL_EmpPaydead.deductions FROM RCPL_EmpPaydead WHERE emppp.rcpl_emppayrollprocess_id=RCPL_EmpPaydead.rcpl_emppayrollprocess_id AND RCPL_EmpPaydead.rcpl_paydeducitionshead_id=(SELECT rcpl_paydeducitionshead_id FROM
+  rcpl_paydeducitionshead WHERE category='Security Deposit')) AS securitydeposite,
+  emppp.deductionsum AS totaldeduction,
+  emppp.totalpay AS netsalary 
+  FROM rcpl_payrollprocess pp
+  left join rcpl_emppayrollprocess emppp ON emppp.rcpl_payrollprocess_id = pp.rcpl_payrollprocess_id
+  left join rchr_employee emp on emp.rchr_employee_id=emppp.rchr_employee_id
+  where pp.rchr_attd_process_id=? AND emp.employeetype=?
+  ORDER BY emp.documentno
+            ]]>
+         </Sql>
+
+                 <Field name="rownum" value="count"/>
+                 
+                 <Parameter name="strPeriod"/>
+                 <Parameter name="strempType"/>
+                 
+                 </SqlMethod>
+               
+</SqlClass>

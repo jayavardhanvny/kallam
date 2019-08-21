@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+  <database name="FUNCTION RCPL_PAYROLLPROCESS_DELETE">
+    <function name="RCPL_PAYROLLPROCESS_DELETE" type="VARCHAR">
+      <body><![CDATA[declare 
+ Declare 
+     v_status VARCHAR(60);
+
+     
+begin
+
+
+if(TG_OP='DELETE')then 
+	select pp.status into v_status from rcpl_emppayrollprocess emppp, rcpl_payrollprocess pp 
+	where rcpl_payrollprocess_id=old.rcpl_payrollprocess_id and pp.rcpl_payrollprocess_id=emppp.rcpl_payrollprocess_id;
+	if(v_status=='CO') then 
+  	raise exception 'Delete not possible After Complete';  
+  	end if;
+ return old;
+ end if;
+ end
+]]></body>
+    </function>
+  </database>

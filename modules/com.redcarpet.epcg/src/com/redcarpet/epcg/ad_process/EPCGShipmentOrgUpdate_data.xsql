@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<SqlClass name="EPCGShipmentOrgUpdateData" package="com.redcarpet.epcg.ad_process" accessModifier="public">
+
+    <SqlMethod name="getOrgIds" type="preparedStatement" return="multiple">
+        <Sql>
+	<![CDATA[ 
+    
+         SELECT M_INOUTLINE_ID FROM M_INOUTLINE	ORDER BY CREATED DESC	
+                
+    ]]>
+        </Sql>
+    </SqlMethod>
+
+</SqlClass>

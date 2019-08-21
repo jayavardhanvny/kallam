@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+  <database name="TRIGGER RCHR_LEAVEREQUISITION_TRG">
+    <trigger name="RCHR_LEAVEREQUISITION_TRG" table="RCHR_LEAVEREQUISITION" fires="before" insert="true" update="true" delete="false" foreach="row">
+      <body><![CDATA[declare
+   v_fromdays NUMBER:=0;
+   v_todays NUMBER:=0;
+   BEGIN
+
+   if(TG_OP='INSERT') THEN 
+	select daysbefore into v_fromdays from rchr_leavedaysconfig where :new.fromdate between effectivefrom and effectiveto and ad_org_id=:new.ad_org_id and isactive='Y' order by created desc limit 1;
+	select daysafter into v_todays from rchr_leavedaysconfig where :new.fromdate between effectivefrom and effectiveto and ad_org_id=:new.ad_org_id and isactive='Y' order by created desc limit 1;
+	IF(:NEW.requisitiondate>NOW()) THEN
+	RAISE EXCEPTION 'Requisition date should not exceed current date';
+	else 
+		if(:new.todate<:new.fromdate) then
+		RAISE EXCEPTION 'ToDate should be greater than Fromdate';
+		else if(:NEW.todate<now()-v_fromdays and v_fromdays!=0) then 
+		RAISE EXCEPTION 'ToDate should be less than % days to current date',v_fromdays;
+		else if(:NEW.fromdate>now()+v_todays and v_todays!=0) then 
+		RAISE EXCEPTION 'FromDate should be less than % days to current date',v_todays;
+		else return new;
+		end if;
+		end if;
+		end if;
+
+	end if;
+   else 
+	if(TG_OP='UPDATE') THEN 
+	IF(:NEW.requisitiondate>NOW()) THEN
+	RAISE EXCEPTION 'Requisition date should not exceed current date';
+	else 
+		if(:NEW.todate<:new.fromdate) then
+		RAISE EXCEPTION 'ToDate should be greater than Fromdate';
+		--else if(:new.requisitiondate<now()-2 and :new.docstatus='DR') then 
+		--RAISE EXCEPTION 'RequistionDate should be less than two days to current date';
+		else
+		return new;
+		--end if;
+		end if;
+	end if;
+	END IF;
+   end if;
+   END RCHR_LEAVEREQUISITION_TRG
+]]></body>
+    </trigger>
+  </database>

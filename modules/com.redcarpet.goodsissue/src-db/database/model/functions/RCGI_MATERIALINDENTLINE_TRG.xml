@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+  <database name="FUNCTION RCGI_MATERIALINDENTLINE_TRG">
+    <function name="RCGI_MATERIALINDENTLINE_TRG" type="VARCHAR">
+      <body><![CDATA[begin
+if(TG_OP='INSERT' OR TG_OP='UPDATE') THEN
+IF(new.requiredqty>new.indentqty) then 
+raise exception '%','@RCGI_YarnIndentError@';
+--Requisiton Quantity Should Not Exceed Required Quantity';
+else return new;
+end if;
+end if;
+end
+]]></body>
+    </function>
+  </database>

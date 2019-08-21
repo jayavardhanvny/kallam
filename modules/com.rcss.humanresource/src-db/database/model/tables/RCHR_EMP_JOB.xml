@@ -1,0 +1,104 @@
+<?xml version="1.0"?>
+  <database name="TABLE RCHR_EMP_JOB">
+    <table name="RCHR_EMP_JOB" primaryKey="RCHR_EMP_JOB_KEY">
+      <column name="RCHR_EMP_JOB_ID" primaryKey="true" required="true" type="VARCHAR" size="32" autoIncrement="false">
+        <default><![CDATA[get_uuid()]]></default>
+        <onCreateDefault/>
+      </column>
+      <column name="AD_CLIENT_ID" primaryKey="false" required="true" type="VARCHAR" size="32" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="AD_ORG_ID" primaryKey="false" required="true" type="VARCHAR" size="32" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="ISACTIVE" primaryKey="false" required="true" type="CHAR" size="1" autoIncrement="false">
+        <default><![CDATA[Y]]></default>
+        <onCreateDefault/>
+      </column>
+      <column name="CREATED" primaryKey="false" required="true" type="TIMESTAMP" size="7" autoIncrement="false">
+        <default><![CDATA[SYSDATE]]></default>
+        <onCreateDefault/>
+      </column>
+      <column name="CREATEDBY" primaryKey="false" required="true" type="VARCHAR" size="32" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="UPDATED" primaryKey="false" required="true" type="TIMESTAMP" size="7" autoIncrement="false">
+        <default><![CDATA[SYSDATE]]></default>
+        <onCreateDefault/>
+      </column>
+      <column name="UPDATEDBY" primaryKey="false" required="true" type="VARCHAR" size="32" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="RCHR_EMPLOYEE_ID" primaryKey="false" required="true" type="VARCHAR" size="32" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="RCHR_EMP_DEPT_ID" primaryKey="false" required="false" type="VARCHAR" size="32" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="RCHR_DESIGNATION_ID" primaryKey="false" required="false" type="VARCHAR" size="32" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="JDATE" primaryKey="false" required="false" type="TIMESTAMP" size="7" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="JOBTYPE" primaryKey="false" required="false" type="VARCHAR" size="60" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="REMARKS" primaryKey="false" required="false" type="VARCHAR" size="200" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="RCHR_SKILL_ID" primaryKey="false" required="false" type="VARCHAR" size="32" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="RCHR_SKILLGRADE_ID" primaryKey="false" required="false" type="VARCHAR" size="32" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="RCHR_DIVISION_ID" primaryKey="false" required="false" type="VARCHAR" size="32" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="RCHR_SUBDEPARTMENT_ID" primaryKey="false" required="false" type="VARCHAR" size="32" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <foreign-key foreignTable="RCHR_EMP_DEPT" name="RCHR_EJ_DEPT">
+        <reference local="RCHR_EMP_DEPT_ID" foreign="RCHR_EMP_DEPT_ID"/>
+      </foreign-key>
+      <foreign-key foreignTable="RCHR_DESIGNATION" name="RCHR_EJ_DESIG">
+        <reference local="RCHR_DESIGNATION_ID" foreign="RCHR_DESIGNATION_ID"/>
+      </foreign-key>
+      <foreign-key foreignTable="AD_CLIENT" name="RCHR_EMP_JOB_CLIENT">
+        <reference local="AD_CLIENT_ID" foreign="AD_CLIENT_ID"/>
+      </foreign-key>
+      <foreign-key foreignTable="AD_ORG" name="RCHR_EMP_JOB_ORG">
+        <reference local="AD_ORG_ID" foreign="AD_ORG_ID"/>
+      </foreign-key>
+      <foreign-key foreignTable="RCHR_EMPLOYEE" name="RCHR_EMP_JOB_REF">
+        <reference local="RCHR_EMPLOYEE_ID" foreign="RCHR_EMPLOYEE_ID"/>
+      </foreign-key>
+      <foreign-key foreignTable="RCHR_SKILL" name="RCHR_EMP_SKILL">
+        <reference local="RCHR_SKILL_ID" foreign="RCHR_SKILL_ID"/>
+      </foreign-key>
+      <foreign-key foreignTable="RCHR_SKILLGRADE" name="RCHR_EMP_SKLLGRD">
+        <reference local="RCHR_SKILLGRADE_ID" foreign="RCHR_SKILLGRADE_ID"/>
+      </foreign-key>
+      <foreign-key foreignTable="RCHR_DIVISION" name="RCHR_EMPJOB_DIV">
+        <reference local="RCHR_DIVISION_ID" foreign="RCHR_DIVISION_ID"/>
+      </foreign-key>
+      <foreign-key foreignTable="RCHR_SUBDEPARTMENT" name="RCHR_EMPJOB_SD">
+        <reference local="RCHR_SUBDEPARTMENT_ID" foreign="RCHR_SUBDEPARTMENT_ID"/>
+      </foreign-key>
+    </table>
+  </database>

@@ -1,0 +1,835 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="invoice" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="30" rightMargin="30" topMargin="20" bottomMargin="20">
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<property name="ireport.scriptlethandling" value="0"/>
+	<property name="ireport.encoding" value="UTF-8"/>
+	<import value="net.sf.jasperreports.engine.*"/>
+	<import value="java.util.*"/>
+	<import value="net.sf.jasperreports.engine.data.*"/>
+	<parameter name="InvoiceId" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="C_INVOICE_ID" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[select c_invoice.documentno,dateinvoiced, c_bpartner.name as businesspartner,c_paymentterm.name as payment,c_bpartner_location.name as location,c_invoiceline.line,
+c_invoiceline.taxamt,c_invoiceline.qtyinvoiced,c_invoiceline.pricelist,c_invoiceline.description,c_invoice.grandtotal,c_invoice.c_order_id,
+c_invoiceline.chargeamt,m_product.name as product,c_uom.name as UOM,c_invoiceline.pricelist as pricelist,c_invoiceline.linenetamt as linenetamount,
+c_invoice.totallines as linetotal,(select sum(taxamt) from c_invoicetax where c_invoicetax.c_invoice_id=c_invoice.c_invoice_id) as taxamount,
+c_invoice.em_epcg_epcgone as epcgid,(select epcglicenseno from epcg_epcgnew where epcg_epcgnew.epcg_epcgnew_id=c_invoice.em_epcg_epcgone) as epcglno,
+(select name as agentname from c_bpartner where c_bpartner_id=c_invoice.em_epcg_agent limit 1)  as agentname,em_epcg_lcno,
+em_epcg_lcdate,em_epcg_waybillno,em_epcg_portload,em_epcg_portdischarge,em_epcg_finaldest,
+em_epcg_lrno,em_epcg_transname,em_epcg_areno,em_epcg_exciseno,em_epcg_remarks,em_epcg_edexempt,
+em_epcg_exporttype,em_epcg_domestictype,em_epcg_invoicetype,c_invoice.ad_org_id as orgid, (select ad_orginfo.c_location_id where c_invoice.ad_org_id=ad_orginfo.ad_org_id) as locid,
+(select c_location.address1 where ad_orginfo.c_location_id=c_location.c_location_id) as orgaddr1,
+(select c_location.address2 where ad_orginfo.c_location_id=c_location.c_location_id) as orgaddr2,
+(select c_location.city where ad_orginfo.c_location_id=c_location.c_location_id) as orgcity,
+(select c_location.postal where ad_orginfo.c_location_id=c_location.c_location_id) as orgpostal,
+(select ad_org.em_epcg_tin from ad_org where c_invoice.ad_org_id=ad_org.ad_org_id) as orgtin,
+(select ad_org.em_epcg_division from ad_org where c_invoice.ad_org_id=ad_org.ad_org_id) as orgdivision,
+(select ad_org.em_epcg_iec from ad_org where c_invoice.ad_org_id=ad_org.ad_org_id) as orgiec,
+(select ad_org.em_epcg_pan from ad_org where c_invoice.ad_org_id=ad_org.ad_org_id) as orgpan,
+(select ad_org.em_epcg_ecc from ad_org where c_invoice.ad_org_id=ad_org.ad_org_id) as orgecc,
+(select ad_org.em_epcg_excise from ad_org where c_invoice.ad_org_id=ad_org.ad_org_id) as orgexcise, c_invoiceline.em_epcg_noofpacks as noofpacks,c_invoiceline.description as description,
+c_invoiceline.priceactual as priceperunit,epcg_details.containerno,epcg_details.vehicleno,epcg_details.ots,c_invoice.c_order_id, c_order.documentno as orderno, c_invoice.POReference as orderreference,
+(select name from c_tax where c_tax.c_tax_id=c_invoiceline.c_tax_id) as taxname,(select taxamt from c_invoicelinetax where c_invoicelinetax.c_invoiceline_id=c_invoiceline.c_invoiceline_id) as taxamountnew,
+c_invoice.em_epcg_locdelivery
+
+from c_invoice
+              left join c_bpartner on c_invoice.c_bpartner_id = c_bpartner.c_bpartner_id
+              left join c_paymentterm on c_invoice.c_paymentterm_id = c_paymentterm.c_paymentterm_id
+              left join c_bpartner_location on c_invoice.c_bpartner_location_id = c_bpartner_location.c_bpartner_location_id
+              left join c_invoiceline on c_invoice.c_invoice_id = c_invoiceline.c_invoice_id
+              left join m_product on c_invoiceline.m_product_id = m_product.m_product_id
+              left join c_uom on c_invoiceline.c_uom_id = c_uom.c_uom_id
+              left join ad_orginfo on c_invoice.ad_org_id = ad_orginfo.ad_org_id
+              left join c_location on ad_orginfo.c_location_id = c_location.c_location_id
+              left join epcg_details on c_invoice.c_invoice_id = epcg_details.c_invoice_id
+              left join c_order on c_order.c_order_id = c_invoice.c_order_id
+
+              where c_invoice.issotrx='Y' and c_invoice.c_invoice_id =$P{C_INVOICE_ID}]]>
+	</queryString>
+	<field name="documentno" class="java.lang.String"/>
+	<field name="dateinvoiced" class="java.sql.Timestamp"/>
+	<field name="businesspartner" class="java.lang.String"/>
+	<field name="payment" class="java.lang.String"/>
+	<field name="location" class="java.lang.String"/>
+	<field name="line" class="java.math.BigDecimal"/>
+	<field name="taxamt" class="java.math.BigDecimal"/>
+	<field name="qtyinvoiced" class="java.math.BigDecimal"/>
+	<field name="pricelist" class="java.math.BigDecimal"/>
+	<field name="description" class="java.lang.String"/>
+	<field name="grandtotal" class="java.math.BigDecimal"/>
+	<field name="c_order_id" class="java.lang.String"/>
+	<field name="chargeamt" class="java.math.BigDecimal"/>
+	<field name="product" class="java.lang.String"/>
+	<field name="uom" class="java.lang.String"/>
+	<field name="linenetamount" class="java.math.BigDecimal"/>
+	<field name="linetotal" class="java.math.BigDecimal"/>
+	<field name="taxamount" class="java.math.BigDecimal"/>
+	<field name="epcgid" class="java.lang.String"/>
+	<field name="epcglno" class="java.lang.String"/>
+	<field name="agentname" class="java.lang.String"/>
+	<field name="em_epcg_lcno" class="java.lang.String"/>
+	<field name="em_epcg_lcdate" class="java.sql.Timestamp"/>
+	<field name="em_epcg_waybillno" class="java.lang.String"/>
+	<field name="em_epcg_portload" class="java.lang.String"/>
+	<field name="em_epcg_portdischarge" class="java.lang.String"/>
+	<field name="em_epcg_finaldest" class="java.lang.String"/>
+	<field name="em_epcg_lrno" class="java.lang.String"/>
+	<field name="em_epcg_transname" class="java.lang.String"/>
+	<field name="em_epcg_areno" class="java.lang.String"/>
+	<field name="em_epcg_exciseno" class="java.lang.String"/>
+	<field name="em_epcg_remarks" class="java.lang.String"/>
+	<field name="em_epcg_edexempt" class="java.lang.String"/>
+	<field name="em_epcg_exporttype" class="java.lang.String"/>
+	<field name="em_epcg_domestictype" class="java.lang.String"/>
+	<field name="em_epcg_invoicetype" class="java.lang.String"/>
+	<field name="orgid" class="java.lang.String"/>
+	<field name="locid" class="java.lang.String"/>
+	<field name="orgaddr1" class="java.lang.String"/>
+	<field name="orgaddr2" class="java.lang.String"/>
+	<field name="orgcity" class="java.lang.String"/>
+	<field name="orgpostal" class="java.lang.String"/>
+	<field name="orgtin" class="java.lang.String"/>
+	<field name="orgdivision" class="java.lang.String"/>
+	<field name="orgiec" class="java.lang.String"/>
+	<field name="orgpan" class="java.lang.String"/>
+	<field name="orgecc" class="java.lang.String"/>
+	<field name="orgexcise" class="java.lang.String"/>
+	<field name="noofpacks" class="java.math.BigDecimal"/>
+	<field name="priceperunit" class="java.math.BigDecimal"/>
+	<field name="containerno" class="java.lang.String"/>
+	<field name="vehicleno" class="java.lang.String"/>
+	<field name="ots" class="java.lang.String"/>
+	<field name="orderno" class="java.lang.String"/>
+	<field name="orderreference" class="java.lang.String"/>
+	<field name="taxname" class="java.lang.String"/>
+	<field name="taxamountnew" class="java.math.BigDecimal"/>
+	<field name="em_epcg_locdelivery" class="java.lang.String"/>
+	<sortField name="line"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="189" splitType="Stretch">
+			<staticText>
+				<reportElement key="staticText-1" x="127" y="22" width="398" height="21"/>
+				<textElement>
+					<font size="14" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[      IDUPULAPADU COTTON MILLS (P) LTD.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-2" x="156" y="3" width="243" height="17"/>
+				<textElement textAlignment="Center">
+					<font size="10" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[TAX INVOICE OUT OF STATE]]></text>
+			</staticText>
+			<line>
+				<reportElement key="line-8" x="1" y="-1" width="1" height="189"/>
+			</line>
+			<line>
+				<reportElement key="line-9" x="534" y="-1" width="1" height="189"/>
+			</line>
+			<line>
+				<reportElement key="line-10" x="2" y="-1" width="532" height="1"/>
+			</line>
+			<line>
+				<reportElement key="line-11" x="1" y="48" width="534" height="1"/>
+			</line>
+			<staticText>
+				<reportElement key="staticText-3" x="9" y="53" width="79" height="24"/>
+				<textElement/>
+				<text><![CDATA[Reg. Office]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-4" x="9" y="82" width="79" height="29"/>
+				<textElement/>
+				<text><![CDATA[C.E Range]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-5" x="99" y="52" width="435" height="25"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[# 206A,CINEMAHAL ROAD,GANAPPAVARAM-522619,Near Chilakukuripet,Guntur Dist(A.P),ph:08647-253444,253901 Fax:08647-253901,252847,Email:info@icmtex.com web:www.icmtex.com]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-6" x="99" y="82" width="374" height="29"/>
+				<textElement>
+					<font size="10"/>
+				</textElement>
+				<text><![CDATA[Range-II,Subbareddy complex,Bodipet,GUNTUR Division:Asst.Commissioner,C.E.,GUNTUR]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-7" x="9" y="111" width="79" height="18"/>
+				<textElement textAlignment="Left"/>
+				<text><![CDATA[Rule]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-8" x="99" y="111" width="183" height="18"/>
+				<textElement/>
+				<text><![CDATA[11 & 8 of C.Ex.(No.2) Rules-2002]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-55" x="290" y="111" width="62" height="18"/>
+				<textElement textAlignment="Left"/>
+				<text><![CDATA[Tariff No:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-56" x="352" y="111" width="103" height="18"/>
+				<textElement/>
+				<text><![CDATA[5205 11 & 5205 19]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-10" x="209" y="138" width="44" height="20"/>
+				<textElement>
+					<font isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[ECC NO:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-11" x="400" y="138" width="48" height="20"/>
+				<textElement>
+					<font isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[ I EC NO:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-12" x="1" y="161" width="72" height="20"/>
+				<textElement>
+					<font isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[Central Exise]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-13" x="209" y="160" width="44" height="20"/>
+				<textElement>
+					<font isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[Division:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-14" x="346" y="161" width="97" height="20"/>
+				<textElement>
+					<font isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[Commissionerate:]]></text>
+			</staticText>
+			<line>
+				<reportElement key="line-4" x="1" y="188" width="534" height="1"/>
+			</line>
+			<staticText>
+				<reportElement key="staticText-62" x="461" y="162" width="61" height="16"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[GUNTUR]]></text>
+			</staticText>
+			<line>
+				<reportElement key="line" x="2" y="136" width="532" height="1"/>
+			</line>
+			<line>
+				<reportElement key="line" x="1" y="159" width="533" height="1"/>
+			</line>
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField" x="77" y="138" width="114" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{orgtin}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField" x="77" y="161" width="114" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{orgexcise}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField" x="268" y="137" width="100" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{orgecc}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField" x="258" y="160" width="83" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{orgdivision}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField" x="449" y="138" width="85" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{orgiec}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement key="staticText" x="454" y="111" width="79" height="18"/>
+				<textElement>
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[OUT OF STATE]]></text>
+			</staticText>
+			<image>
+				<reportElement x="15" y="1" width="103" height="46"/>
+				<imageExpression class="java.lang.String"><![CDATA["D:\\production\\web\\images\\blankicm.gif"]]></imageExpression>
+			</image>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch">
+			<staticText>
+				<reportElement key="staticText-9" x="2" y="-51" width="71" height="20"/>
+				<textElement>
+					<font isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[TIN & CST :]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="213" splitType="Stretch">
+			<staticText>
+				<reportElement key="staticText-15" x="11" y="3" width="125" height="13"/>
+				<textElement/>
+				<text><![CDATA[To]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-16" x="229" y="3" width="61" height="18"/>
+				<textElement/>
+				<text><![CDATA[Invoice No:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-17" x="229" y="22" width="61" height="18"/>
+				<textElement/>
+				<text><![CDATA[Pur ord:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-18" x="400" y="0" width="45" height="18"/>
+				<textElement/>
+				<text><![CDATA[Date:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-19" x="400" y="20" width="73" height="18"/>
+				<textElement/>
+				<text><![CDATA[Sales Count No:]]></text>
+			</staticText>
+			<line>
+				<reportElement key="line-2" x="220" y="39" width="315" height="1"/>
+			</line>
+			<staticText>
+				<reportElement key="staticText-20" x="231" y="42" width="59" height="18"/>
+				<textElement/>
+				<text><![CDATA[Way Bill No:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-21" x="399" y="41" width="42" height="18"/>
+				<textElement/>
+				<text><![CDATA[L.R No:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-22" x="232" y="84" width="67" height="18"/>
+				<textElement/>
+				<text><![CDATA[Trans.Name:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-24" x="400" y="84" width="48" height="18"/>
+				<textElement/>
+				<text><![CDATA[A.R.E No:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-25" x="228" y="154" width="90" height="18"/>
+				<textElement/>
+				<text><![CDATA[Terms Of Payment:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-26" x="229" y="107" width="57" height="18"/>
+				<textElement/>
+				<text><![CDATA[Destination:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-28" x="232" y="64" width="57" height="18"/>
+				<textElement/>
+				<text><![CDATA[TIN No:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-29" x="400" y="63" width="41" height="18"/>
+				<textElement/>
+				<text><![CDATA[CST No:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-30" x="229" y="128" width="39" height="20"/>
+				<textElement/>
+				<text><![CDATA[Agent:]]></text>
+			</staticText>
+			<line>
+				<reportElement key="line-3" x="2" y="89" width="218" height="1"/>
+			</line>
+			<staticText>
+				<reportElement key="staticText-31" x="9" y="107" width="197" height="21"/>
+				<textElement/>
+				<text><![CDATA[Goods to be Delivered at:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-32" x="61" y="183" width="116" height="30"/>
+				<textElement textAlignment="Center">
+					<font isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[Description of goods 100% Cotton Yarn]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-33" x="2" y="183" width="53" height="30"/>
+				<textElement textAlignment="Center">
+					<font isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[SL No.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-34" x="180" y="181" width="52" height="30"/>
+				<textElement textAlignment="Center">
+					<font isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[No of Packages]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-35" x="233" y="183" width="49" height="28"/>
+				<textElement textAlignment="Center">
+					<font isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[Qty in Kgs]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-36" x="286" y="183" width="66" height="29"/>
+				<textElement textAlignment="Center">
+					<font isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[Rate per Kg Rupees]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-37" x="455" y="181" width="79" height="30"/>
+				<textElement textAlignment="Center">
+					<font isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[Total Value    (RS)]]></text>
+			</staticText>
+			<line>
+				<reportElement key="line-24" x="2" y="179" width="532" height="1"/>
+			</line>
+			<line>
+				<reportElement key="line-34" x="1" y="-1" width="1" height="214"/>
+			</line>
+			<line>
+				<reportElement key="line-35" x="534" y="-1" width="1" height="214"/>
+			</line>
+			<line>
+				<reportElement key="line-36" x="220" y="-1" width="1" height="180"/>
+			</line>
+			<line>
+				<reportElement key="line" x="2" y="212" width="532" height="1"/>
+			</line>
+			<line>
+				<reportElement key="line" x="56" y="180" width="1" height="32"/>
+			</line>
+			<line>
+				<reportElement key="line" x="232" y="180" width="1" height="32"/>
+			</line>
+			<line>
+				<reportElement key="line" x="285" y="180" width="1" height="32"/>
+			</line>
+			<line>
+				<reportElement key="line" x="453" y="180" width="1" height="32"/>
+			</line>
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField" x="24" y="33" width="100" height="20"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{businesspartner}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField" x="24" y="53" width="100" height="20"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{location}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField" x="290" y="3" width="84" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{documentno}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField" x="444" y="0" width="90" height="18"/>
+				<textElement/>
+				<textFieldExpression class="java.sql.Timestamp"><![CDATA[$F{dateinvoiced}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField" x="318" y="154" width="100" height="18"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{payment}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField" x="268" y="128" width="100" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{agentname}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField" x="290" y="43" width="97" height="18"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{em_epcg_waybillno}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField" x="441" y="41" width="82" height="18"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{em_epcg_lrno}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField" x="447" y="84" width="81" height="18"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{em_epcg_areno}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField" x="288" y="107" width="109" height="18"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{em_epcg_finaldest}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField" x="299" y="84" width="100" height="18"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{em_epcg_transname}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField" x="472" y="21" width="61" height="17"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{orderno}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField" x="290" y="23" width="84" height="15"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{orderreference}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement key="line" x="177" y="180" width="1" height="32"/>
+			</line>
+			<staticText>
+				<reportElement key="staticText-35" x="354" y="183" width="49" height="28"/>
+				<textElement textAlignment="Center">
+					<font isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[Tax]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-36" x="407" y="183" width="46" height="29"/>
+				<textElement textAlignment="Center">
+					<font isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[Tax Amount]]></text>
+			</staticText>
+			<line>
+				<reportElement key="line" x="354" y="180" width="1" height="32"/>
+			</line>
+			<line>
+				<reportElement key="line" x="406" y="180" width="1" height="32"/>
+			</line>
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField" x="10" y="128" width="126" height="20"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{em_epcg_locdelivery}]]></textFieldExpression>
+			</textField>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="23" splitType="Stretch">
+			<line>
+				<reportElement key="line" x="2" y="22" width="532" height="1"/>
+			</line>
+			<line>
+				<reportElement key="line" x="1" y="-1" width="1" height="23"/>
+			</line>
+			<line>
+				<reportElement key="line" x="534" y="-1" width="1" height="24"/>
+			</line>
+			<line>
+				<reportElement key="line" x="453" y="0" width="1" height="23"/>
+			</line>
+			<line>
+				<reportElement key="line" x="56" y="0" width="1" height="23"/>
+			</line>
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField" x="2" y="3" width="53" height="20"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{line}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField" x="453" y="2" width="81" height="20"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{linenetamount}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField" x="178" y="2" width="51" height="20"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{noofpacks}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField" x="288" y="0" width="64" height="20"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{priceperunit}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement key="line" x="177" y="0" width="1" height="23"/>
+			</line>
+			<line>
+				<reportElement key="line" x="232" y="0" width="1" height="23"/>
+			</line>
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField" x="233" y="0" width="49" height="20"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{qtyinvoiced}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement key="line" x="285" y="0" width="1" height="23"/>
+			</line>
+			<line>
+				<reportElement key="line" x="354" y="0" width="1" height="23"/>
+			</line>
+			<line>
+				<reportElement key="line" x="406" y="-1" width="1" height="23"/>
+			</line>
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField" x="357" y="2" width="49" height="20"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{taxname}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField" x="409" y="2" width="43" height="20"/>
+				<textElement textAlignment="Right">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{taxamountnew}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField" x="56" y="2" width="122" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{product}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="273" splitType="Stretch">
+			<staticText>
+				<reportElement key="staticText-50" x="9" y="245" width="79" height="20"/>
+				<textElement>
+					<font isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[Prepared By]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-51" x="191" y="250" width="79" height="20"/>
+				<textElement>
+					<font isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[Checked By]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-52" x="400" y="250" width="109" height="20"/>
+				<textElement>
+					<font isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[Authorized Signatory]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-53" x="341" y="225" width="27" height="20"/>
+				<textElement>
+					<font isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[For]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-54" x="368" y="225" width="167" height="20"/>
+				<textElement>
+					<font isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[Idupulapadu Cotton Mills (P) LTD]]></text>
+			</staticText>
+			<line>
+				<reportElement key="line-31" x="2" y="272" width="532" height="1"/>
+			</line>
+			<staticText>
+				<reportElement key="staticText-65" x="4" y="132" width="95" height="25"/>
+				<textElement/>
+				<text><![CDATA[Online bank A/C No:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-66" x="109" y="132" width="278" height="25"/>
+				<textElement>
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[TMB LTD 074150320885003 GUNTUR BRANCH IFS CODE:TMBL000074               Andhra Bank-01503046106041,GUNTUR MAIN BRANCH IFS CODE:ANDB0000150]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-67" x="5" y="168" width="116" height="16"/>
+				<textElement/>
+				<text><![CDATA[Terms and Conditions:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-68" x="5" y="184" width="369" height="42"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[1. All payment should be made by either A/C payee cheque or D.D only.                              2.Interest @ 24% will be charged on the overdue amount                                                                                                                   3.All Matters pertaining to the above are subjected to chilakaluripet Jurisdiction only.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-69" x="5" y="3" width="158" height="13"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Excise Duty Excemption as per:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-70" x="5" y="16" width="205" height="16"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[NOTIFICATION NO;30/2004 CENTRAL EXCISE]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-71" x="383" y="3" width="62" height="13"/>
+				<textElement>
+					<font isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[Lines Total]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-74" x="382" y="49" width="62" height="13"/>
+				<textElement>
+					<font isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[Others]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-76" x="220" y="63" width="126" height="16"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[O T S Under & Range]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-77" x="5" y="33" width="146" height="16"/>
+				<textElement>
+					<font size="10"/>
+				</textElement>
+				<text><![CDATA[Export under EPCG License No]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-78" x="4" y="100" width="51" height="23"/>
+				<textElement/>
+				<text><![CDATA[Rupees]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-79" x="61" y="100" width="318" height="24"/>
+				<textElement/>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<line>
+				<reportElement key="line-32" x="2" y="126" width="532" height="1"/>
+			</line>
+			<staticText>
+				<reportElement key="staticText-80" x="384" y="101" width="68" height="22"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Grand Total]]></text>
+			</staticText>
+			<line>
+				<reportElement key="line-33" x="1" y="99" width="534" height="1"/>
+			</line>
+			<staticText>
+				<reportElement key="staticText" x="92" y="63" width="99" height="16"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Vehicle No:]]></text>
+			</staticText>
+			<line>
+				<reportElement key="line" x="380" y="100" width="1" height="26"/>
+			</line>
+			<line>
+				<reportElement key="line" x="453" y="100" width="1" height="27"/>
+			</line>
+			<staticText>
+				<reportElement key="staticText" x="4" y="63" width="84" height="16"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Container No:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-69" x="5" y="49" width="376" height="13"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<line>
+				<reportElement key="line" x="453" y="0" width="1" height="99"/>
+			</line>
+			<line>
+				<reportElement key="line" x="1" y="0" width="1" height="273"/>
+			</line>
+			<line>
+				<reportElement key="line" x="534" y="0" width="1" height="273"/>
+			</line>
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField" x="455" y="2" width="79" height="14"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{linetotal}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField" x="457" y="103" width="77" height="20"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{grandtotal}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField" x="9" y="51" width="370" height="10"/>
+				<textElement>
+					<font size="7" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{description}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement key="staticText-73" x="358" y="19" width="91" height="13"/>
+				<textElement>
+					<font isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[Transport Charges]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-74" x="380" y="77" width="61" height="13"/>
+				<textElement>
+					<font size="10" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[Tax]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField" x="151" y="33" width="190" height="16"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{epcglno}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField" x="2" y="80" width="86" height="19"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{containerno}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField" x="91" y="80" width="100" height="17"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{vehicleno}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField" x="220" y="81" width="126" height="16"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{ots}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField" x="453" y="77" width="80" height="13"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{taxamount}]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
+</jasperReport>

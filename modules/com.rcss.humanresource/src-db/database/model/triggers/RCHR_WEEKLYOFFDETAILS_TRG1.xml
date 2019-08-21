@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+  <database name="TRIGGER RCHR_WEEKLYOFFDETAILS_TRG1">
+    <trigger name="RCHR_WEEKLYOFFDETAILS_TRG1" table="RCHR_WEEKLYOFFDETAILS" fires="before" insert="true" update="false" delete="false" foreach="row">
+      <body><![CDATA[
+    
+BEGIN
+    
+    IF AD_isTriggerEnabled()='N' THEN RETURN;
+    END IF;
+    
+if(INSERTING or UPDATING) THEN 
+	update rchr_weeklyoffdetails set effectivetodate=:new.effectivedate-1 where effectivetodate='12/31/9999' and rchr_employee_id=:new.rchr_employee_id;
+	update rchr_employee set weeklyoff=:new.weeklyoff,weekoffapplicable='Y' where rchr_employee_id=:new.rchr_employee_id;
+	RETURN NEW;
+END IF;
+
+END RCHR_WEEKLYOFFDETAILS_TRG1
+]]></body>
+    </trigger>
+  </database>

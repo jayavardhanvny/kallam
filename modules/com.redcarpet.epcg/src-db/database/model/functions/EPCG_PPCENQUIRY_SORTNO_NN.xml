@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+  <database name="FUNCTION EPCG_PPCENQUIRY_SORTNO_NN">
+    <function name="EPCG_PPCENQUIRY_SORTNO_NN" type="VARCHAR">
+      <body><![CDATA[v_rchr_qualitystandard_id VARCHAR(32);
+	--v_sortmaster_Id VARCHAR(32);
+	--V_ID VARCHAR(32);
+BEGIN
+	IF(TG_OP='UPDATE') THEN
+		--V_ID:=NEW.rchr_jobcard_id;
+		--v_sortmaster_Id:=NEW.rchr_qualitystandard_id;
+		SELECT rchr_qualitystandard_id into v_rchr_qualitystandard_id from epcg_ppcenquiry where epcg_ppcenquiry_id=NEW.epcg_ppcenquiry_id;
+	END IF;
+	IF(v_rchr_qualitystandard_id='' OR v_rchr_qualitystandard_id IS NULL) THEN
+		RAISE NO_DATA_FOUND ;
+		--UPDATE ad_sequence set currentNext=incrementno+currentNext where ad_sequence_id='ACEA24C3EBB14ED4B9E5EC70E1B452D0';
+	END IF;
+		
+	IF(TG_OP='DELETE') THEN RETURN OLD;
+	ELSE RETURN NEW;
+		
+	END IF;
+END EPCG_PPCENQUIRY_SORTNO_NN
+]]></body>
+    </function>
+  </database>

@@ -1,0 +1,2 @@
+# This file contains payroll constants which are used in payroll calculation process
+GrossLimit=10000

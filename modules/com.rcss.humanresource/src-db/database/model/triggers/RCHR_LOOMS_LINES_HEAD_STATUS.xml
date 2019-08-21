@@ -1,0 +1,50 @@
+<?xml version="1.0"?>
+  <database name="TRIGGER RCHR_LOOMS_LINES_HEAD_STATUS">
+    <trigger name="RCHR_LOOMS_LINES_HEAD_STATUS" table="RCHR_LOOMSDATA_LINES" fires="after" insert="true" update="true" delete="true" foreach="row">
+      <body><![CDATA[Declare 
+       v_count NUMBER;
+       v_last character(1):='N';
+       v_actualmts NUMBER;
+       v_rchr_loomsdata_id VARCHAR(32);
+   BEGIN
+
+        IF (INSERTING or TG_OP='UPDATE') THEN
+        v_rchr_loomsdata_id:=:NEW.rchr_loomsdata_id;
+        select count(*) into v_count from rchr_loomsdata_lines where rchr_loomsdata_id = :new.rchr_loomsdata_id;
+        SELECT sum(actualmts) into v_actualmts from rchr_loomsdata_lines where rchr_loomsdata_id=v_rchr_loomsdata_id;
+	select :new.islast into v_last from rchr_loomsdata_lines where rchr_loomsdata_id = :new.rchr_loomsdata_id;
+		IF(v_count=1) THEN
+			UPDATE rchr_loomsdata SET status='RUNNING' WHERE rchr_loomsdata_id=:new.rchr_loomsdata_id;
+			UPDATE rcpl_loom SET status='RUNNING' WHERE rcpl_loom_id=(select rcpl_loom_id from rchr_loomsdata where rchr_loomsdata_id=:new.rchr_loomsdata_id);
+			UPDATE rchr_beam_lines SET status='LOOMSPROCESS' WHERE rchr_beam_id=(select rchr_beam_id from rchr_loomsdata where rchr_loomsdata_id=:new.rchr_loomsdata_id) and status<>'CO';
+		END IF;
+		if(v_actualmts>0) then 
+		else 
+			v_actualmts:=0;
+		end if;
+		UPDATE rchr_loomsdata SET totalpiecelength=v_actualmts WHERE rchr_loomsdata_id=v_rchr_loomsdata_id;
+		
+		if(v_last='Y') then 
+			if(:new.loomsenddate is null OR :new.totime is null) then 
+				raise exception 'Looms Enddate and Time should be entered';
+			end if;
+		end if;
+        END IF;
+
+	IF (DELETING) THEN
+        select count(*) into v_count from rchr_loomsdata_lines where rchr_loomsdata_id = :old.rchr_loomsdata_id;
+        SELECT sum(actualmts) into v_actualmts from rchr_loomsdata_lines where rchr_loomsdata_id=v_rchr_loomsdata_id;
+	--select new.islast into v_last from rchr_loomsdata_lines where rchr_loomsdata_id = new.rchr_loomsdata_id;
+		IF(v_count=0) THEN
+			UPDATE rchr_loomsdata SET status='IDLE' WHERE rchr_loomsdata_id=:old.rchr_loomsdata_id;
+			UPDATE rcpl_loom SET status='IDLE' WHERE rcpl_loom_id=(select rcpl_loom_id from rchr_loomsdata where rchr_loomsdata_id=:old.rchr_loomsdata_id);
+			--UPDATE rchr_loomsdata_lines SET rchr_insprolltype_id='FP' WHERE rchr_loomsdata_id=new.rchr_loomsdata_id;
+		END IF;
+		UPDATE rchr_loomsdata SET totalpiecelength=v_actualmts WHERE rchr_loomsdata_id=v_rchr_loomsdata_id;
+        END IF;
+        --RETURN NULL;
+	IF (INSERTING OR UPDATING OR DELETING) THEN RETURN NEW; ELSE RETURN OLD; END IF; 
+        END RCHR_LOOMS_LINES_HEAD_STATUS
+]]></body>
+    </trigger>
+  </database>

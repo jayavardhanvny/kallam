@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ApplicationForSalaryAdvance" pageWidth="612" pageHeight="792" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<property name="ireport.zoom" value="1.3636363636363635"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="AdvanceId" class="java.lang.String"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["/home/rcss/production/modules/com.rcss.humanresource/src/com/rcss/humanresource/erpCommon/ad_reports/"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="BASE_DESIGN" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["modules/com.rcss.humanresource/src/"]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[select
+(select employeename from rchr_employee where rchr_employee_id =advance.rchr_employee_id) as empname,
+(select punchno from rchr_employee where rchr_employee_id =advance.rchr_employee_id) as empi,
+
+(select roomno from rchr_room where rchr_room_id = (select rchr_room_id from rchr_employee where rchr_employee_id =advance.rchr_employee_id)) as roomno,
+
+(select name from rchr_emp_dept where rchr_emp_dept_id =(select rchr_emp_dept_id from rchr_employee where rchr_employee_id =advance.rchr_employee_id)) as deptname,
+advance.date as date,
+advance.advanceamount as advanceamount,
+advance.noofpresents as presentdays
+from rchr_gas_advance advance
+where rchr_gas_advance_id =$P{AdvanceId}]]>
+	</queryString>
+	<field name="empname" class="java.lang.String"/>
+	<field name="empi" class="java.lang.String"/>
+	<field name="roomno" class="java.lang.String"/>
+	<field name="deptname" class="java.lang.String"/>
+	<field name="date" class="java.sql.Timestamp"/>
+	<field name="advanceamount" class="java.math.BigDecimal"/>
+	<field name="presentdays" class="java.math.BigDecimal"/>
+	<title>
+		<band height="663" splitType="Stretch">
+			<staticText>
+				<reportElement x="212" y="0" width="149" height="16"/>
+				<textElement textAlignment="Center" lineSpacing="Single">
+					<font size="10" isBold="true" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[Application for Gas advance]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="244" y="16" width="83" height="12"/>
+				<textElement textAlignment="Center" lineSpacing="Single">
+					<font size="9" isBold="false"/>
+				</textElement>
+				<text><![CDATA[(Operators / Staff)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="478" y="52" width="25" height="12"/>
+				<textElement textAlignment="Center" lineSpacing="Single">
+					<font size="9" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Date :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="13" y="52" width="45" height="12"/>
+				<textElement lineSpacing="Single">
+					<font size="9" isBold="false"/>
+				</textElement>
+				<text><![CDATA[1. Name :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="13" y="72" width="82" height="12"/>
+				<textElement lineSpacing="Single">
+					<font size="9" isBold="false"/>
+				</textElement>
+				<text><![CDATA[2. Employee Code:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="387" y="72" width="25" height="12"/>
+				<textElement textAlignment="Center" lineSpacing="Single">
+					<font size="9" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Dept.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="13" y="91" width="61" height="12"/>
+				<textElement lineSpacing="Single">
+					<font size="9" isBold="false"/>
+				</textElement>
+				<text><![CDATA[3. Quarter No:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="13" y="275" width="184" height="12"/>
+				<textElement lineSpacing="Single">
+					<font size="9" isBold="false"/>
+				</textElement>
+				<text><![CDATA[5. No.of physical days worked in this month:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="13" y="302" width="134" height="12"/>
+				<textElement lineSpacing="Single">
+					<font size="9" isBold="false"/>
+				</textElement>
+				<text><![CDATA[6. Amount of advance required.]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="104" y="52" width="100" height="12"/>
+				<textElement lineSpacing="Single">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{empname}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="104" y="72" width="100" height="12"/>
+				<textElement lineSpacing="Single">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{empi}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="104" y="91" width="100" height="12"/>
+				<textElement lineSpacing="Single">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{roomno}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="416" y="72" width="100" height="12"/>
+				<textElement lineSpacing="Single">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{deptname}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0" isBlankWhenNull="true">
+				<reportElement x="197" y="275" width="100" height="12"/>
+				<textElement lineSpacing="Single">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{presentdays}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="178" y="302" width="100" height="12"/>
+				<textElement lineSpacing="Single">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{advanceamount}]]></textFieldExpression>
+			</textField>
+			<textField pattern="MM/dd/yyyy" isBlankWhenNull="true">
+				<reportElement x="503" y="52" width="70" height="12"/>
+				<textElement lineSpacing="Single">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.sql.Timestamp"><![CDATA[$F{date}]]></textFieldExpression>
+			</textField>
+			<subreport>
+				<reportElement x="-8" y="90" width="200" height="100"/>
+				<subreportParameter name="SUBREPORT_DIR"/>
+				<subreportParameter name="AdvanceId">
+					<subreportParameterExpression><![CDATA[$P{AdvanceId}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR}+"/GasAdvanceSubReportHeader.jasper"]]></subreportExpression>
+			</subreport>
+			<subreport>
+				<reportElement x="-8" y="310" width="200" height="100"/>
+				<subreportParameter name="AdvanceId">
+					<subreportParameterExpression><![CDATA[$P{AdvanceId}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR}+"/GasAdvanceReportlinerecords.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</title>
+</jasperReport>

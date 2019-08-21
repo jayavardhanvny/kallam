@@ -1,0 +1,4 @@
+<?xml version="1.0"?>
+  <database name="VIEW RCHR_EMP_JOBINFO">
+    <view name="RCHR_EMP_JOBINFO"><![CDATA[SELECT j.rchr_jobdetails_id AS rchr_emp_jobinfo_id, j.ad_org_id, j.ad_client_id, j.isactive, j.created, j.createdby, j.updated, j.updatedby, j.rchr_employee_id, j.rchr_division_id, j.rchr_emp_dept_id, j.rchr_subdepartment_id, j.rchr_designation_id, j.effectivedate FROM rchr_jobdetails j]]></view>
+  </database>

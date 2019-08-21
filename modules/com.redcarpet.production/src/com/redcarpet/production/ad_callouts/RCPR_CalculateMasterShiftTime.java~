@@ -1,0 +1,71 @@
+package com.redcarpet.production.ad_callouts;
+
+import com.redcarpet.production.data.RCPRShift;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import javax.servlet.ServletException;
+import org.openbravo.erpCommon.ad_callouts.SimpleCallout;
+
+public class RCPR_CalculateMasterShiftTime extends SimpleCallout {
+
+  protected void execute(CalloutInfo info) throws ServletException {
+    
+    String strShiftId = info.getStringParameter("Rcpr_Shift_ID", null);
+    long shiftTimeInHrs = getShiftInHoursByInp(info);
+    info.addResult("inpshiftinhours", shiftTimeInHrs);
+    long shiftTimeInMins = getShiftInMinsByInp(info);
+    info.addResult("inpshiftinmins", shiftTimeInMins);
+    
+  }
+  
+  public long getShiftInHoursByInp(CalloutInfo info){
+    long retVal = 0;
+    try{
+      String strFromDate = info.getStringParameter("inpfromtime", null);
+      String strToDate = info.getStringParameter("inptotime", null);
+      SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss");
+      Date dateFrom = sdf.parse(strFromDate);
+      Date dateTo = sdf.parse(strToDate);
+      retVal = (dateTo.getTime() - dateFrom.getTime())/1000/60/60;
+    }catch(ParseException ex){
+      ex.printStackTrace();
+    }
+    return retVal;
+    
+  }
+  
+  public long getShiftInMinsByInp(CalloutInfo info) {
+    long retVal = 0;
+    try{
+      String strFromDate = info.getStringParameter("inpfromtime", null);
+      String strToDate = info.getStringParameter("inptotime", null);
+      SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss");
+      Date dateFrom = sdf.parse(strFromDate);
+      Date dateTo = sdf.parse(strToDate);
+      retVal = (dateTo.getTime() - dateFrom.getTime())/1000/60;
+    }catch(ParseException ex){
+      ex.printStackTrace();
+    }
+    return retVal;
+    
+  }
+  
+  public long getShiftInHours(RCPRShift shift){
+    System.out.println("inside getShiftInHours");
+    long fromDate_ = shift.getFromTime() ==null ? new Date().getTime() : shift.getFromTime().getTime();
+    long toDate_ = shift.getFromTime() ==null ? new Date().getTime() :shift.getToTime().getTime();
+    long retVal = (fromDate_-toDate_)/1000/60/60;
+    return retVal;
+  }
+  
+  public long getShiftInMins(RCPRShift shift){
+    
+    long fromDate_ = shift.getFromTime() ==null ? new Date().getTime() :shift.getFromTime().getTime();
+    long toDate_ = shift.getFromTime() ==null ? new Date().getTime() :shift.getToTime().getTime();
+    long retVal = (fromDate_-toDate_)/1000/60;
+    return retVal;
+  }
+  
+  
+}

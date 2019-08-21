@@ -1,0 +1,130 @@
+<?xml version="1.0"?>
+  <database name="TRIGGER RCGI_DEPARTMENTISSUE_TRG">
+    <trigger name="RCGI_DEPARTMENTISSUE_TRG" table="RCGI_DEPARTMENTISSUE" fires="after" insert="true" update="false" delete="false" foreach="row">
+      <body><![CDATA[Declare 
+  CUR_Employees RECORD;
+  v_NextNo VARCHAR(32);
+  v_designation VARCHAR(32);
+  v_presents NUMBER:=0;
+  v_storeamt NUMBER:=0;
+  v_eligibillity NUMBER:=0;
+  v_totaleligibillity NUMBER:=0;
+  v_previousamt NUMBER:=0;
+  v_eligibilitytype character(1);
+  v_client VARCHAR(32);
+  v_org VARCHAR(32);
+  v_fromdate timestamp without time zone;
+  v_tempfromdate timestamp without time zone;
+  v_lasttrancnt NUMBER:=0;
+  v_isempeligibility character(1);
+  v_lasteligibiltyamt NUMBER:=0;
+  BEGIN
+	if(TG_OP='INSERT') THEN
+	--if((select count(*)from rcgi_departmentissue where rchr_employee_id=new.rchr_employee_id and docstatus='DR')>0) then
+	--raise exception 'This employee previous issue status in Draft state,plz either delete or process';
+	--else
+	if(:new.addfamilymembers='Y') then
+	FOR CUR_Employees IN (
+		SELECT rchr_employee_id,ad_org_id,ad_client_id,ad_image_id
+	FROM rchr_employee where rchr_room_id in(select rchr_room_id from rchr_employee where rchr_employee_id=:new.rchr_employee_id)	
+	) LOOP
+		select fdate into v_tempfromdate from to_char(date_trunc('month', :new.movementdate),'yyyy-mm-dd') as fdate;
+		--raise exception '%',new.movementdate;
+		select count(di.rchr_employee_id) into v_lasttrancnt from rcgi_difamilylist di,rcgi_departmentissue i 
+		where i.rcgi_departmentissue_id=di.rcgi_departmentissue_id and i.docstatus='CO' and i.rchr_employee_id=CUR_Employees.rchr_employee_id 
+		and i.movementdate between v_tempfromdate and :new.movementdate;
+		if(v_lasttrancnt>0) then 
+			select i.movementdate,totaleligibityamount-payableamount into v_fromdate,v_lasteligibiltyamt from rcgi_difamilylist di,rcgi_departmentissue i 
+			where i.rcgi_departmentissue_id=di.rcgi_departmentissue_id and i.docstatus='CO' and i.rchr_employee_id=CUR_Employees.rchr_employee_id 
+			and i.movementdate between v_tempfromdate and :new.movementdate order by movementdate desc limit 1;
+		else v_fromdate=v_tempfromdate; 
+		end if;
+	select case when count(*)>0 then 'Y' else 'N' end into v_isempeligibility from rcgi_deptstoreeligibilty where rchr_employee_id=CUR_Employees.rchr_employee_id;
+	if(v_isempeligibility='Y') then	
+		select CASE WHEN amount>0 then 'Y' else 'N' end into v_eligibilitytype from rcgi_deptstoreeligibilty where rchr_employee_id=CUR_Employees.rchr_employee_id;
+	else 
+		select rchr_designation_id into v_designation from rchr_employee where rchr_employee_id=:new.rchr_employee_id;
+	if(v_designation is not null) then 
+		select CASE WHEN amount>0 then 'Y' else 'N' end into v_eligibilitytype from rcgi_deptstoreeligibilty where rchr_designation_id=v_designation;
+	else v_eligibilitytype='X'; 
+	end if;	
+	end if;
+	if(v_eligibilitytype='Y' and v_isempeligibility='Y') then 
+		select amount into v_eligibillity from rcgi_deptstoreeligibilty where rchr_employee_id=:new.rchr_employee_id;
+	else if(v_eligibilitytype='N' and v_isempeligibility='Y') then 
+		select perdayamount into v_eligibillity from rcgi_deptstoreeligibilty where rchr_employee_id=:new.rchr_employee_id;
+	else if(v_eligibilitytype='Y' and v_isempeligibility='N') then 
+		select amount into v_eligibillity from rcgi_deptstoreeligibilty where rchr_designation_id=v_designation;
+	else 
+		select perdayamount into v_eligibillity from rcgi_deptstoreeligibilty where rchr_designation_id=v_designation;
+	end if;
+	end if;
+	end if;
+	select count(*)
+ into v_presents from rchr_dailyattenddemo where attdate between v_fromdate and :new.movementdate and rchr_employee_id=CUR_Employees.rchr_employee_id
+	and present='Y' AND isweeklyoff='N' AND isovertime='N';	
+	--raise exception '%,%',v_fromdate,new.movementdate;
+	--raise exception '%',(select count(*)from rchr_dailyattenddemo where attdate between v_fromdate and new.movementdate and rchr_employee_id=CUR_Employees.rchr_employee_id
+	--and present='Y' AND isweeklyoff='N' AND isovertime='N');
+	Ad_Sequence_Next('AD_Sequence', CUR_Employees.ad_client_id, v_NextNo);
+	if(v_eligibilitytype is not null) then
+		INSERT INTO rcgi_difamilylist (rcgi_difamilylist_id, AD_Client_ID, AD_Org_ID, IsActive, Created, CreatedBy, Updated, UpdatedBy,
+		rcgi_departmentissue_id, rchr_employee_id, presents,eligibilty,storeamount,ad_image_id) 
+		VALUES (v_NextNo, CUR_Employees.ad_client_id,CUR_Employees.ad_org_id, 'Y',
+        now(),:new.createdby, now(), :new.updatedby, :new.rcgi_departmentissue_id,CUR_Employees.rchr_employee_id,v_presents,
+	v_lasteligibiltyamt+(case when (v_eligibilitytype='Y' and v_lasttrancnt>0) then  0 when (v_eligibilitytype='Y' and v_lasttrancnt=0) then v_eligibillity when v_eligibilitytype='N' then v_presents*v_eligibillity else 0 end),0,CUR_Employees.ad_image_id);	
+	v_totaleligibillity=v_totaleligibillity+v_lasteligibiltyamt+(case when (v_eligibilitytype='Y' and v_lasttrancnt>0) then  0 when (v_eligibilitytype='Y' and v_lasttrancnt=0) then v_eligibillity when v_eligibilitytype='N' then v_presents*v_eligibillity else 0 end);
+	end if;
+	END LOOP;
+	update rcgi_departmentissue set totaleligibityamount=v_totaleligibillity where rcgi_departmentissue_id=:new.rcgi_departmentissue_id;
+	return new;
+	else
+	select fdate into v_tempfromdate from to_char(date_trunc('month', :new.movementdate),'yyyy-mm-dd') as fdate;
+	--raise Exception '%',v_tempfromdate;
+	select count(di.rchr_employee_id) into v_lasttrancnt from rcgi_difamilylist di,rcgi_departmentissue i where i.rcgi_departmentissue_id=di.rcgi_departmentissue_id and i.docstatus='CO' and i.rchr_employee_id=:new.rchr_employee_id and i.movementdate between v_tempfromdate and :new.movementdate;
+	if(v_lasttrancnt>0) then 
+	select i.movementdate,totaleligibityamount-payableamount into v_fromdate,v_lasteligibiltyamt from rcgi_difamilylist di,rcgi_departmentissue i where i.rcgi_departmentissue_id=di.rcgi_departmentissue_id and i.docstatus='CO' and i.rchr_employee_id=:new.rchr_employee_id and i.movementdate between v_tempfromdate and :new.movementdate order by movementdate desc limit 1;
+	else v_fromdate=v_tempfromdate; 
+	end if;
+	select case when count(*)>0 then 'Y' else 'N' end into v_isempeligibility from rcgi_deptstoreeligibilty where rchr_employee_id=:new.rchr_employee_id;
+	if(v_isempeligibility='Y') then	
+	select CASE WHEN amount>0 then 'Y' else 'N' end into v_eligibilitytype from rcgi_deptstoreeligibilty where rchr_employee_id=:new.rchr_employee_id;
+	else 
+	select rchr_designation_id into v_designation from rchr_employee where rchr_employee_id=:new.rchr_employee_id;
+	if(v_designation is not null) then 
+	select CASE WHEN amount>0 then 'Y' else 'N' end into v_eligibilitytype from rcgi_deptstoreeligibilty where rchr_designation_id=v_designation;
+	else v_eligibilitytype='X'; end if;
+	end if;
+	select ad_org_id,ad_client_id into v_org,v_client from rchr_employee where rchr_employee_id=:new.rchr_employee_id;
+	if(v_eligibilitytype='Y' and v_isempeligibility='Y') then select amount into v_eligibillity from rcgi_deptstoreeligibilty where rchr_employee_id=:new.rchr_employee_id;
+	else if(v_eligibilitytype='N' and v_isempeligibility='Y') then select perdayamount into v_eligibillity from rcgi_deptstoreeligibilty where rchr_employee_id=:new.rchr_employee_id;
+	else if(v_eligibilitytype='Y' and v_isempeligibility='N') then select amount into v_eligibillity from rcgi_deptstoreeligibilty where rchr_designation_id=v_designation;
+	else select perdayamount into v_eligibillity from rcgi_deptstoreeligibilty where rchr_designation_id=v_designation;
+	end if;
+	end if;
+	end if;
+	--raise exception '%', v_tempfromdate;
+	select count(*) into v_presents from rchr_dailyattenddemo where attdate between v_fromdate and :new.movementdate and rchr_employee_id=:new.rchr_employee_id
+	and present='Y' AND isweeklyoff='N' AND isovertime='N';
+	Ad_Sequence_Next('AD_Sequence', v_client, v_NextNo) ; 
+	--raise exception '%',v_fromdate;
+	INSERT INTO rcgi_difamilylist (
+        rcgi_difamilylist_id, AD_Client_ID, AD_Org_ID, IsActive, 
+        Created, CreatedBy, Updated, UpdatedBy,
+        rcgi_departmentissue_id, rchr_employee_id, presents,eligibilty,storeamount,ad_image_id        
+	) VALUES (
+        v_NextNo, v_client,v_org, 'Y',
+        now(),'100', now(), '100',    
+	:new.rcgi_departmentissue_id,:new.rchr_employee_id,v_presents,v_lasteligibiltyamt+(case when (v_eligibilitytype='Y' and v_lasttrancnt>0) then  0 when (v_eligibilitytype='Y' and v_lasttrancnt=0) then v_eligibillity when v_eligibilitytype='N' then v_presents*v_eligibillity else 0 end),0,:new.ad_image_id
+	);
+	v_totaleligibillity=v_totaleligibillity+v_lasteligibiltyamt+(case when (v_eligibilitytype='Y' and v_lasttrancnt>0) then  0 when (v_eligibilitytype='Y' and v_lasttrancnt=0) then v_eligibillity when v_eligibilitytype='N' then v_presents*v_eligibillity else 0 end);
+	update rcgi_departmentissue set totaleligibityamount=v_totaleligibillity where rcgi_departmentissue_id=:new.rcgi_departmentissue_id;
+	return new;
+	end if;
+	--end if;
+	end if;
+       
+   END RCGI_DEPARTMENTISSUE_TRG
+]]></body>
+    </trigger>
+  </database>

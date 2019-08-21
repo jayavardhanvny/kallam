@@ -1,0 +1,732 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="invoice" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="30" rightMargin="30" topMargin="20" bottomMargin="20">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="486"/>
+	<property name="ireport.scriptlethandling" value="0"/>
+	<property name="ireport.encoding" value="UTF-8"/>
+	<import value="net.sf.jasperreports.engine.*"/>
+	<import value="java.util.*"/>
+	<import value="net.sf.jasperreports.engine.data.*"/>
+	<parameter name="InvoiceId" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="C_INVOICE_ID" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[select c_invoice.documentno,dateinvoiced, c_bpartner.name as businesspartner,c_paymentterm.name as payment,c_bpartner_location.name as location,c_invoiceline.line,
+c_invoiceline.taxamt,c_invoiceline.qtyinvoiced,c_invoiceline.pricelist,c_invoiceline.description,c_invoice.grandtotal,c_invoice.c_order_id,
+c_invoiceline.chargeamt,m_product.name as product,c_uom.name as UOM,c_invoiceline.pricelist as pricelist,c_invoiceline.linenetamt as linenetamount,
+c_invoice.totallines as linetotal,(select sum(taxamt) from c_invoicetax where c_invoicetax.c_invoice_id=c_invoice.c_invoice_id) as taxamount,
+c_invoice.em_epcg_epcgone as epcgid,(select epcglicenseno from epcg_epcgnew where epcg_epcgnew.epcg_epcgnew_id=c_invoice.em_epcg_epcgone) as epcglno,
+(select name as agentname from c_bpartner where c_bpartner_id=c_invoice.em_epcg_agent limit 1)  as agentname,em_epcg_lcno,
+em_epcg_lcdate,em_epcg_waybillno,em_epcg_portload,em_epcg_portdischarge,em_epcg_finaldest,
+em_epcg_lrno,em_epcg_transname,em_epcg_areno,em_epcg_exciseno,em_epcg_remarks,em_epcg_edexempt,
+em_epcg_exporttype,em_epcg_domestictype,em_epcg_invoicetype,c_invoice.ad_org_id as orgid, (select ad_orginfo.c_location_id where c_invoice.ad_org_id=ad_orginfo.ad_org_id) as locid,
+(select c_location.address1 where ad_orginfo.c_location_id=c_location.c_location_id) as orgaddr1,
+(select c_location.address2 where ad_orginfo.c_location_id=c_location.c_location_id) as orgaddr2,
+(select c_location.city where ad_orginfo.c_location_id=c_location.c_location_id) as orgcity,
+(select c_location.postal where ad_orginfo.c_location_id=c_location.c_location_id) as orgpostal,
+(select ad_org.em_epcg_tin from ad_org where c_invoice.ad_org_id=ad_org.ad_org_id) as orgtin,
+(select ad_org.em_epcg_division from ad_org where c_invoice.ad_org_id=ad_org.ad_org_id) as orgdivision,
+(select ad_org.em_epcg_iec from ad_org where c_invoice.ad_org_id=ad_org.ad_org_id) as orgiec,
+(select ad_org.em_epcg_pan from ad_org where c_invoice.ad_org_id=ad_org.ad_org_id) as orgpan,
+(select ad_org.em_epcg_ecc from ad_org where c_invoice.ad_org_id=ad_org.ad_org_id) as orgecc,
+(select ad_org.em_epcg_excise from ad_org where c_invoice.ad_org_id=ad_org.ad_org_id) as orgexcise, c_invoiceline.em_epcg_noofpacks as noofpacks,c_invoiceline.description as description,
+c_invoiceline.priceactual as priceperunit,em_epcg_locdelivery,em_epcg_inspector,em_epcg_superintendent
+from c_invoice
+              left join c_bpartner on c_invoice.c_bpartner_id = c_bpartner.c_bpartner_id
+              left join c_paymentterm on c_invoice.c_paymentterm_id = c_paymentterm.c_paymentterm_id
+              left join c_bpartner_location on c_invoice.c_bpartner_location_id = c_bpartner_location.c_bpartner_location_id
+              left join c_invoiceline on c_invoice.c_invoice_id = c_invoiceline.c_invoice_id
+              left join m_product on c_invoiceline.m_product_id = m_product.m_product_id
+              left join c_uom on c_invoiceline.c_uom_id = c_uom.c_uom_id
+              left join ad_orginfo on c_invoice.ad_org_id = ad_orginfo.ad_org_id
+              left join c_location on ad_orginfo.c_location_id = c_location.c_location_id
+
+
+              where issotrx='Y' and c_invoice.c_invoice_id =$P{C_INVOICE_ID}]]>
+	</queryString>
+	<field name="documentno" class="java.lang.String"/>
+	<field name="dateinvoiced" class="java.sql.Timestamp"/>
+	<field name="businesspartner" class="java.lang.String"/>
+	<field name="payment" class="java.lang.String"/>
+	<field name="location" class="java.lang.String"/>
+	<field name="line" class="java.math.BigDecimal"/>
+	<field name="taxamt" class="java.math.BigDecimal"/>
+	<field name="qtyinvoiced" class="java.math.BigDecimal"/>
+	<field name="pricelist" class="java.math.BigDecimal"/>
+	<field name="description" class="java.lang.String"/>
+	<field name="grandtotal" class="java.math.BigDecimal"/>
+	<field name="c_order_id" class="java.lang.String"/>
+	<field name="chargeamt" class="java.math.BigDecimal"/>
+	<field name="product" class="java.lang.String"/>
+	<field name="uom" class="java.lang.String"/>
+	<field name="linenetamount" class="java.math.BigDecimal"/>
+	<field name="linetotal" class="java.math.BigDecimal"/>
+	<field name="taxamount" class="java.math.BigDecimal"/>
+	<field name="epcgid" class="java.lang.String"/>
+	<field name="epcglno" class="java.lang.String"/>
+	<field name="agentname" class="java.lang.String"/>
+	<field name="em_epcg_lcno" class="java.lang.String"/>
+	<field name="em_epcg_lcdate" class="java.sql.Timestamp"/>
+	<field name="em_epcg_waybillno" class="java.lang.String"/>
+	<field name="em_epcg_portload" class="java.lang.String"/>
+	<field name="em_epcg_portdischarge" class="java.lang.String"/>
+	<field name="em_epcg_finaldest" class="java.lang.String"/>
+	<field name="em_epcg_lrno" class="java.lang.String"/>
+	<field name="em_epcg_transname" class="java.lang.String"/>
+	<field name="em_epcg_areno" class="java.lang.String"/>
+	<field name="em_epcg_exciseno" class="java.lang.String"/>
+	<field name="em_epcg_remarks" class="java.lang.String"/>
+	<field name="em_epcg_edexempt" class="java.lang.String"/>
+	<field name="em_epcg_exporttype" class="java.lang.String"/>
+	<field name="em_epcg_domestictype" class="java.lang.String"/>
+	<field name="em_epcg_invoicetype" class="java.lang.String"/>
+	<field name="orgid" class="java.lang.String"/>
+	<field name="locid" class="java.lang.String"/>
+	<field name="orgaddr1" class="java.lang.String"/>
+	<field name="orgaddr2" class="java.lang.String"/>
+	<field name="orgcity" class="java.lang.String"/>
+	<field name="orgpostal" class="java.lang.String"/>
+	<field name="orgtin" class="java.lang.String"/>
+	<field name="orgdivision" class="java.lang.String"/>
+	<field name="orgiec" class="java.lang.String"/>
+	<field name="orgpan" class="java.lang.String"/>
+	<field name="orgecc" class="java.lang.String"/>
+	<field name="orgexcise" class="java.lang.String"/>
+	<field name="noofpacks" class="java.math.BigDecimal"/>
+	<field name="priceperunit" class="java.math.BigDecimal"/>
+	<field name="em_epcg_locdelivery" class="java.lang.String"/>
+	<field name="em_epcg_inspector" class="java.lang.String"/>
+	<field name="em_epcg_superintendent" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="115" splitType="Stretch">
+			<staticText>
+				<reportElement key="staticText-2" x="156" y="3" width="243" height="17"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[ANNEXURE C-1]]></text>
+			</staticText>
+			<line>
+				<reportElement key="line-10" x="2" y="-1" width="532" height="1"/>
+			</line>
+			<line>
+				<reportElement key="line-11" x="1" y="73" width="534" height="1"/>
+			</line>
+			<line>
+				<reportElement key="line" x="1" y="-1" width="1" height="116"/>
+			</line>
+			<line>
+				<reportElement key="line" x="534" y="0" width="1" height="115"/>
+			</line>
+			<staticText>
+				<reportElement key="staticText-2" x="71" y="21" width="419" height="17"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[OFFICE OF THE SUPERINTENDENT OF CENTRAL EXCISE ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-2" x="156" y="38" width="243" height="17"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[RANGE-II,GUNTUR DIVISION,GUNTUR]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-2" x="156" y="55" width="243" height="17"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[COMMISSIONERATE,GUNTUR]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-15" x="2" y="74" width="51" height="16"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[OC NO:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-16" x="199" y="75" width="96" height="16"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[SHIPPING BILL NO:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-18" x="404" y="73" width="45" height="18"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[DT:]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField" x="449" y="75" width="84" height="15"/>
+				<textElement/>
+				<textFieldExpression class="java.sql.Timestamp"><![CDATA[$F{dateinvoiced}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement key="staticText-15" x="449" y="1" width="65" height="16"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Original]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="578" splitType="Stretch">
+			<line>
+				<reportElement key="line-2" x="1" y="18" width="533" height="1"/>
+			</line>
+			<staticText>
+				<reportElement key="staticText-22" x="35" y="20" width="146" height="19"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[NAME OF THE EXPORTER:]]></text>
+			</staticText>
+			<line>
+				<reportElement key="line-3" x="2" y="103" width="218" height="1"/>
+			</line>
+			<line>
+				<reportElement key="line-24" x="2" y="319" width="532" height="1"/>
+			</line>
+			<line>
+				<reportElement key="line-34" x="1" y="-2" width="1" height="580"/>
+			</line>
+			<line>
+				<reportElement key="line-35" x="534" y="-1" width="1" height="579"/>
+			</line>
+			<line>
+				<reportElement key="line" x="2" y="196" width="532" height="1"/>
+			</line>
+			<line>
+				<reportElement key="line-2" x="3" y="38" width="532" height="1"/>
+			</line>
+			<line>
+				<reportElement key="line-2" x="220" y="103" width="315" height="1"/>
+			</line>
+			<staticText>
+				<reportElement key="staticText-35" x="34" y="122" width="277" height="17"/>
+				<textElement textAlignment="Left">
+					<font isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[c)Bin (PAN Based Business Identification No. of Export)]]></text>
+			</staticText>
+			<line>
+				<reportElement key="line" x="2" y="213" width="532" height="1"/>
+			</line>
+			<line>
+				<reportElement key="line" x="2" y="261" width="532" height="1"/>
+			</line>
+			<line>
+				<reportElement key="line-36" x="34" y="18" width="1" height="560"/>
+			</line>
+			<line>
+				<reportElement key="line-36" x="332" y="20" width="1" height="558"/>
+			</line>
+			<line>
+				<reportElement key="line-32" x="2" y="336" width="532" height="1"/>
+			</line>
+			<line>
+				<reportElement key="line-3" x="2" y="-2" width="532" height="1"/>
+			</line>
+			<line>
+				<reportElement key="line-3" x="2" y="121" width="533" height="1"/>
+			</line>
+			<line>
+				<reportElement key="line-2" x="2" y="54" width="532" height="1"/>
+			</line>
+			<line>
+				<reportElement key="line-2" x="2" y="70" width="532" height="1"/>
+			</line>
+			<line>
+				<reportElement key="line-2" x="2" y="85" width="532" height="1"/>
+			</line>
+			<staticText>
+				<reportElement key="staticText-36" x="23" y="20" width="12" height="17"/>
+				<textElement textAlignment="Center">
+					<font isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[1]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-36" x="22" y="87" width="12" height="17"/>
+				<textElement textAlignment="Center">
+					<font isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[2]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-31" x="35" y="87" width="110" height="16"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[a) IEC NO:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-31" x="36" y="103" width="110" height="16"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[b) Branch Code:]]></text>
+			</staticText>
+			<line>
+				<reportElement key="line-3" x="1" y="140" width="533" height="1"/>
+			</line>
+			<line>
+				<reportElement key="line" x="3" y="158" width="532" height="1"/>
+			</line>
+			<staticText>
+				<reportElement key="staticText-22" x="34" y="141" width="165" height="17"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[NAME OF THE MANUFACTURER]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-36" x="22" y="141" width="12" height="17"/>
+				<textElement textAlignment="Center">
+					<font isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[3]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-22" x="34" y="161" width="165" height="17"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[FACTORY ADDRESS]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-36" x="22" y="161" width="12" height="17"/>
+				<textElement textAlignment="Center">
+					<font isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[4]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-36" x="21" y="197" width="12" height="17"/>
+				<textElement textAlignment="Center">
+					<font isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[5]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-31" x="34" y="197" width="110" height="16"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[IEC NO:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-31" x="34" y="214" width="133" height="16"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[DATE OF EXAMINATION:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-36" x="21" y="214" width="12" height="17"/>
+				<textElement textAlignment="Center">
+					<font isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[6]]></text>
+			</staticText>
+			<line>
+				<reportElement key="line" x="2" y="231" width="532" height="1"/>
+			</line>
+			<line>
+				<reportElement key="line" x="2" y="286" width="532" height="1"/>
+			</line>
+			<staticText>
+				<reportElement key="staticText-36" x="24" y="230" width="12" height="17"/>
+				<textElement textAlignment="Center">
+					<font isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[7]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-22" x="37" y="230" width="231" height="28"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[NAME & DESIGNATION OF THE EXAMINING OFFICER-INSPECTOR]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-36" x="21" y="262" width="12" height="17"/>
+				<textElement textAlignment="Center">
+					<font isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[8]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-22" x="35" y="262" width="234" height="28"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[NAME & DESIGNATION OF THE SUPERVISING OFFICER/SUPERINTENDENT]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-36" x="21" y="288" width="12" height="17"/>
+				<textElement textAlignment="Center">
+					<font isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[9]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-22" x="36" y="288" width="234" height="28"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[a)NAME OF THE COMMISSIONERATE/ DIVISION/RANGE]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-31" x="33" y="319" width="110" height="16"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[b) LOCATION CODE:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-31" x="35" y="369" width="164" height="16"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[b) TOTAL No. OF PACKAGES]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-35" x="35" y="388" width="237" height="31"/>
+				<textElement textAlignment="Left">
+					<font isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[c)NAME & ADDRESS OF THE CONSIGNEE ABROAD]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-36" x="21" y="337" width="12" height="17"/>
+				<textElement textAlignment="Center">
+					<font isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[10]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-31" x="35" y="353" width="133" height="16"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[a) EXPORT INVOICE NO:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-31" x="34" y="337" width="186" height="16"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[PERTICULARS OF EXPORT INVOICE]]></text>
+			</staticText>
+			<line>
+				<reportElement key="line-32" x="3" y="354" width="532" height="1"/>
+			</line>
+			<line>
+				<reportElement key="line-32" x="2" y="369" width="532" height="1"/>
+			</line>
+			<line>
+				<reportElement key="line-32" x="2" y="384" width="532" height="1"/>
+			</line>
+			<line>
+				<reportElement key="line-32" x="2" y="419" width="532" height="1"/>
+			</line>
+			<staticText>
+				<reportElement key="staticText-35" x="37" y="488" width="237" height="27"/>
+				<textElement textAlignment="Left">
+					<font isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[c)IF YES THE NUMBER OF THE SEAL OF THE PACKAGES CONTAINING SAMPLE]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-31" x="36" y="460" width="260" height="26"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[b) WHETHER SAMPLE IS DRAWN FOR BEING  FORWARDED TO PORT OF EXPORT]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-31" x="35" y="422" width="261" height="39"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[a) IS THE DESCRIPTION OF THE GOODS AND THE QUANTITY & THEIR VALUE AS PER PERTICULARS FURNISHED IN THE EXPORT INVOICE]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-36" x="21" y="420" width="12" height="17"/>
+				<textElement textAlignment="Center">
+					<font isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[11]]></text>
+			</staticText>
+			<line>
+				<reportElement key="line-32" x="3" y="460" width="532" height="1"/>
+			</line>
+			<line>
+				<reportElement key="line-32" x="2" y="486" width="532" height="1"/>
+			</line>
+			<line>
+				<reportElement key="line-32" x="1" y="516" width="534" height="1"/>
+			</line>
+			<staticText>
+				<reportElement key="staticText-22" x="4" y="0" width="530" height="17"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[EXAMINATION REPORT FOR FACTORY SEALED PACKAGES/CONTAINER]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField" x="333" y="87" width="201" height="16"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{orgiec}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField" x="335" y="39" width="198" height="15"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{orgaddr1}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField" x="335" y="54" width="199" height="16"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{orgaddr2}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField" x="335" y="71" width="100" height="15"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{orgcity}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField" x="435" y="70" width="98" height="14"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{orgpostal}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField" x="333" y="122" width="201" height="17"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{orgpan}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField" x="333" y="214" width="201" height="16"/>
+				<textElement/>
+				<textFieldExpression class="java.sql.Timestamp"><![CDATA[$F{dateinvoiced}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField" x="333" y="385" width="201" height="17"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{businesspartner}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField" x="333" y="402" width="200" height="17"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{location}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField" x="333" y="172" width="202" height="12"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{orgaddr2}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField" x="333" y="160" width="202" height="12"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{orgaddr1}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField" x="333" y="184" width="202" height="12"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{orgcity}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField" x="334" y="198" width="199" height="15"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{orgiec}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField" x="334" y="355" width="199" height="14"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{documentno}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement key="staticText" x="334" y="288" width="100" height="15"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[GUNTUR,]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText" x="334" y="304" width="139" height="15"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Div.GUNTUR ,RANGE-II GUNTUR]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField" x="332" y="370" width="201" height="14"/>
+				<textElement/>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{noofpacks}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement key="staticText" x="332" y="419" width="100" height="20"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[YES]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText" x="334" y="463" width="100" height="20"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[NO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText" x="334" y="502" width="88" height="15"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Container NOs]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText" x="435" y="501" width="100" height="15"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[OTS(SEAL) NOs]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-31" x="37" y="532" width="133" height="12"/>
+				<textElement>
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ONE TIME SEAL NO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-31" x="37" y="518" width="222" height="15"/>
+				<textElement>
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[CENTRAL EXCISE/CUSTOMS SEAL NOS]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-36" x="15" y="517" width="12" height="17"/>
+				<textElement textAlignment="Center">
+					<font isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[12]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField" x="335" y="232" width="198" height="26"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{em_epcg_inspector}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField" x="335" y="262" width="198" height="24"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{em_epcg_superintendent}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement key="staticText" x="335" y="320" width="100" height="17"/>
+				<textElement/>
+				<text><![CDATA[220109]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-31" x="35" y="545" width="295" height="14"/>
+				<textElement>
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[a) FOR NON CONTAINERIZED CARGO NOS OF PACKAGES]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-31" x="36" y="561" width="295" height="14"/>
+				<textElement>
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[b) FOR CONTAINERIZED CARGO CONTAINER NUMBER]]></text>
+			</staticText>
+			<line>
+				<reportElement key="line-2" x="2" y="560" width="532" height="1"/>
+			</line>
+			<line>
+				<reportElement key="line-32" x="1" y="544" width="534" height="1"/>
+			</line>
+			<staticText>
+				<reportElement key="staticText" x="335" y="140" width="198" height="18"/>
+				<textElement/>
+				<text><![CDATA[Idupulapadu Cotton Mills Pvt. Ltd]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText" x="335" y="20" width="200" height="17"/>
+				<textElement/>
+				<text><![CDATA[Idupulapadu Cotton Mills Pvt. Ltd.]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band splitType="Stretch"/>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="46" splitType="Stretch">
+			<staticText>
+				<reportElement key="staticText-73" x="3" y="19" width="136" height="26"/>
+				<textElement textAlignment="Center">
+					<font isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[SIGNATURE OF EXPORTER Director]]></text>
+			</staticText>
+			<line>
+				<reportElement key="line" x="534" y="-2" width="1" height="47"/>
+			</line>
+			<line>
+				<reportElement key="line" x="1" y="0" width="1" height="45"/>
+			</line>
+			<line>
+				<reportElement key="line-33" x="2" y="45" width="534" height="1"/>
+			</line>
+			<staticText>
+				<reportElement key="staticText-73" x="170" y="19" width="136" height="26"/>
+				<textElement textAlignment="Center">
+					<font isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[SIGNATURE OF INSPECTOR/EXAMINER]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-73" x="385" y="19" width="136" height="26"/>
+				<textElement textAlignment="Center">
+					<font isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[SIGNATURE OF SUPERINTENDENT]]></text>
+			</staticText>
+			<line>
+				<reportElement key="line-2" x="333" y="15" width="201" height="1"/>
+			</line>
+			<line>
+				<reportElement key="line" x="332" y="0" width="1" height="15"/>
+			</line>
+			<line>
+				<reportElement key="line-33" x="1" y="0" width="534" height="1"/>
+			</line>
+		</band>
+	</summary>
+</jasperReport>

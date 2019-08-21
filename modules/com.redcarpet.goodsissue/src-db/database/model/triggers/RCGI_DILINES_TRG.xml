@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+  <database name="TRIGGER RCGI_DILINES_TRG">
+    <trigger name="RCGI_DILINES_TRG" table="RCGI_DILINES" fires="after" insert="true" update="true" delete="false" foreach="row">
+      <body><![CDATA[Declare       
+  --v_conversion numeric:=0;
+   BEGIN
+	--select conversionrate from rcgi_productconversion where m_product_id=new.m_product_id;
+	if(TG_OP='INSERT') THEN
+	if(:new.orderedqty>:new.openqty) then raise exception 'Issuing QTY Should not exceed Avaliable QTY';
+	--else if(new.orderedqty>new.openinventoryqty AND NEW.frompacking='Y') then raise exception 'Issuing QTY Should not exceed Avaliable Inventory QTY when you select combo pack';
+	--else if(openinventoryqty>=new.orderedqty*conversionrate) then raise exception 'Exceeds Inventory QTY';
+	else return new;
+	end if;
+	end if;
+	IF(TG_OP='UPDATE') then
+	if(:new.orderedqty>:old.openqty AND :NEW.frompacking='N') then raise exception 'Issuing QTY Should not exceed Avaliable QTY';
+	--else if(new.orderedqty>old.openinventoryqty AND NEW.frompacking='Y') then raise exception 'Issuing QTY Should not exceed Avaliable Inventory QTY when you select combo pack';
+	--else if(openinventoryqty>=new.orderedqty*conversionrate) then raise exception 'Exceeds Inventory QTY';
+	else RETURN NEW;	
+	end if;
+	end if;    
+   END RCGI_DILINES_TRG
+]]></body>
+    </trigger>
+  </database>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<SqlClass name="RCPLServiceWeightageHelperData" package="com.redcarpet.payroll.ad_actionbutton" accessModifier="public">
+
+    <SqlMethod name="selectFreshers" type="preparedStatement" return="multiple">
+        <Sql>
+		<![CDATA[ 
+                    select e.rchr_employee_id from rchr_employee e 
+                        left join rchr_emp_job job on e.rchr_employee_id = job.rchr_employee_id 
+                        left join rchr_experiencedetail exp on e.rchr_employee_id = exp.rchr_employee_id
+                        where job.rchr_emp_dept_id=? and job.rchr_skill_id=? 
+                        and exp.isfresher='Y'
+                ]]>
+        </Sql>
+        <Parameter name="departmentId"/>
+        <Parameter name="skillId"/>
+    </SqlMethod>
+    
+    <SqlMethod name="selectOtherEmployees" type="preparedStatement" return="multiple">
+        <Sql>
+		<![CDATA[ 
+                    select e.rchr_employee_id from rchr_employee e 
+                        left join rchr_emp_job job on e.rchr_employee_id = job.rchr_employee_id 
+                        left join rchr_experiencedetail exp on e.rchr_employee_id = exp.rchr_employee_id
+                        where job.rchr_emp_dept_id=? and job.rchr_skill_id=? 
+                        and exp.isfresher='N'
+                ]]>
+        </Sql>
+        <Parameter name="departmentId"/>
+        <Parameter name="skillId"/>
+    </SqlMethod>
+
+     <SqlMethod name="getLineNo" type="preparedStatement" return="string">
+	<Sql>
+		<![CDATA[ 
+                    SELECT COALESCE(MAX(LINE),0)+10 AS DefaultValue FROM RCPL_PROCESSSWLINE WHERE Rcpl_Processsw_ID=?
+                 ]]>
+	</Sql>
+        <Parameter name="serviceWeightageId"/>
+     </SqlMethod>
+
+</SqlClass>

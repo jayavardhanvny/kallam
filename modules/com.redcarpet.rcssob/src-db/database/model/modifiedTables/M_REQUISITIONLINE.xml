@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+  <database name="MODIFIED TABLE M_REQUISITIONLINE">
+    <table name="M_REQUISITIONLINE" primaryKey="M_REQUISITIONLINE_KEY">
+      <column name="EM_RCOB_MOVEMENTQTY" primaryKey="false" required="false" type="DECIMAL" autoIncrement="false">
+        <default><![CDATA[0]]></default>
+        <onCreateDefault/>
+      </column>
+    </table>
+  </database>

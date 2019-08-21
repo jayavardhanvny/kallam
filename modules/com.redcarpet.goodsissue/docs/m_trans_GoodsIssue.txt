@@ -1,0 +1,177 @@
+﻿-- Table: m_transaction
+
+-- DROP TABLE m_transaction;
+
+CREATE TABLE m_transaction
+(
+  m_transaction_id character varying(32) NOT NULL,
+  ad_client_id character varying(32) NOT NULL,
+  ad_org_id character varying(32) NOT NULL,
+  isactive character(1) NOT NULL DEFAULT 'Y'::bpchar,
+  created timestamp without time zone NOT NULL DEFAULT now(),
+  createdby character varying(32) NOT NULL,
+  updated timestamp without time zone NOT NULL DEFAULT now(),
+  updatedby character varying(32) NOT NULL,
+  movementtype character varying(60) NOT NULL,
+  m_locator_id character varying(32) NOT NULL,
+  m_product_id character varying(32) NOT NULL,
+  movementdate timestamp without time zone NOT NULL,
+  movementqty numeric NOT NULL DEFAULT 0,
+  m_inventoryline_id character varying(32),
+  m_movementline_id character varying(32),
+  m_inoutline_id character varying(32),
+  m_productionline_id character varying(32),
+  c_projectissue_id character varying(32),
+  m_attributesetinstance_id character varying(32) NOT NULL DEFAULT '0'::character varying,
+  m_product_uom_id character varying(32),
+  quantityorder numeric,
+  c_uom_id character varying(32) NOT NULL,
+  m_internal_consumptionline_id character varying(32),
+  transactioncost numeric,
+  trxprocessdate timestamp without time zone NOT NULL DEFAULT now(), -- --OBTG:ONCREATEDEFAULT:CREATED--
+  m_costing_algorithm_id character varying(32),
+  iscostcalculated character(1) NOT NULL DEFAULT 'N'::bpchar, -- --OBTG:ONCREATEDEFAULT:'N'--
+  c_currency_id character varying(32),
+  costing_status character varying(60) NOT NULL DEFAULT 'NC'::character varying,
+  rcpr_productionrun_id character varying(32),
+  rcpr_prproduct_id character varying(32),
+  rcgi_goodsissue_id character varying(32),
+  rcgi_goodsissue_line_id character varying(32),
+  CONSTRAINT m_transaction_key PRIMARY KEY (m_transaction_id ),
+  CONSTRAINT m_intl_consump_mtransaction FOREIGN KEY (m_internal_consumptionline_id)
+      REFERENCES m_internal_consumptionline (m_internal_consumptionline_id) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION,
+  CONSTRAINT m_trans_currency FOREIGN KEY (c_currency_id)
+      REFERENCES c_currency (c_currency_id) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION,
+  CONSTRAINT m_transaction_ad_client FOREIGN KEY (ad_client_id)
+      REFERENCES ad_client (ad_client_id) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION,
+  CONSTRAINT m_transaction_ad_org FOREIGN KEY (ad_org_id)
+      REFERENCES ad_org (ad_org_id) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION,
+  CONSTRAINT m_transaction_c_projectissue FOREIGN KEY (c_projectissue_id)
+      REFERENCES c_projectissue (c_projectissue_id) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION,
+  CONSTRAINT m_transaction_c_uom FOREIGN KEY (c_uom_id)
+      REFERENCES c_uom (c_uom_id) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION,
+  CONSTRAINT m_transaction_costingalgorithm FOREIGN KEY (m_costing_algorithm_id)
+      REFERENCES m_costing_algorithm (m_costing_algorithm_id) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION,
+  CONSTRAINT m_transaction_m_attributesetin FOREIGN KEY (m_attributesetinstance_id)
+      REFERENCES m_attributesetinstance (m_attributesetinstance_id) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION,
+  CONSTRAINT m_transaction_m_inoutline FOREIGN KEY (m_inoutline_id)
+      REFERENCES m_inoutline (m_inoutline_id) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION,
+  CONSTRAINT m_transaction_m_inventoryline FOREIGN KEY (m_inventoryline_id)
+      REFERENCES m_inventoryline (m_inventoryline_id) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION,
+  CONSTRAINT m_transaction_m_locator FOREIGN KEY (m_locator_id)
+      REFERENCES m_locator (m_locator_id) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION,
+  CONSTRAINT m_transaction_m_movementline FOREIGN KEY (m_movementline_id)
+      REFERENCES m_movementline (m_movementline_id) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION,
+  CONSTRAINT m_transaction_m_product FOREIGN KEY (m_product_id)
+      REFERENCES m_product (m_product_id) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION,
+  CONSTRAINT m_transaction_m_product_uom FOREIGN KEY (m_product_uom_id)
+      REFERENCES m_product_uom (m_product_uom_id) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION,
+  CONSTRAINT m_transaction_m_productionline FOREIGN KEY (m_productionline_id)
+      REFERENCES m_productionline (m_productionline_id) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION,
+  CONSTRAINT m_transaction_rcpr FOREIGN KEY (rcpr_productionrun_id)
+      REFERENCES rcpr_productionrun (rcpr_productionrun_id) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION,
+  CONSTRAINT m_transaction_rcprl FOREIGN KEY (rcpr_prproduct_id)
+      REFERENCES rcpr_prproduct (rcpr_prproduct_id) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION,
+  CONSTRAINT m_trx_gi FOREIGN KEY (rcgi_goodsissue_id)
+      REFERENCES rcgi_goodsissue (rcgi_goodsissue_id) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION,
+  CONSTRAINT m_trx_gil FOREIGN KEY (rcgi_goodsissue_line_id)
+      REFERENCES rcgi_goodsissue_line (rcgi_goodsissue_line_id) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION,
+  CONSTRAINT m_transaction_check1 CHECK (quantityorder IS NULL AND m_product_uom_id IS NULL OR quantityorder IS NOT NULL AND m_product_uom_id IS NOT NULL),
+  CONSTRAINT m_transaction_currency CHECK (transactioncost IS NULL OR transactioncost IS NOT NULL AND c_currency_id IS NOT NULL),
+  CONSTRAINT m_transaction_isactive_check CHECK (isactive = ANY (ARRAY['Y'::bpchar, 'N'::bpchar])),
+  CONSTRAINT m_transaction_iscostcalc_trx CHECK (iscostcalculated = ANY (ARRAY['Y'::bpchar, 'N'::bpchar]))
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE m_transaction
+  OWNER TO tad;
+COMMENT ON COLUMN m_transaction.trxprocessdate IS '--OBTG:ONCREATEDEFAULT:CREATED--';
+COMMENT ON COLUMN m_transaction.iscostcalculated IS '--OBTG:ONCREATEDEFAULT:''N''--';
+
+
+-- Index: m_transaction_inoutline
+
+-- DROP INDEX m_transaction_inoutline;
+
+CREATE INDEX m_transaction_inoutline
+  ON m_transaction
+  USING btree
+  (m_inoutline_id );
+
+-- Index: m_transaction_inventoryline
+
+-- DROP INDEX m_transaction_inventoryline;
+
+CREATE INDEX m_transaction_inventoryline
+  ON m_transaction
+  USING btree
+  (m_inventoryline_id );
+
+-- Index: m_transaction_movementline
+
+-- DROP INDEX m_transaction_movementline;
+
+CREATE INDEX m_transaction_movementline
+  ON m_transaction
+  USING btree
+  (m_movementline_id );
+
+-- Index: m_transaction_productionline
+
+-- DROP INDEX m_transaction_productionline;
+
+CREATE INDEX m_transaction_productionline
+  ON m_transaction
+  USING btree
+  (m_productionline_id );
+
+-- Index: m_transsaction_product
+
+-- DROP INDEX m_transsaction_product;
+
+CREATE INDEX m_transsaction_product
+  ON m_transaction
+  USING btree
+  (m_product_id );
+
+
+-- Trigger: m_transaction_trg on m_transaction
+
+-- DROP TRIGGER m_transaction_trg ON m_transaction;
+
+CREATE TRIGGER m_transaction_trg
+  AFTER INSERT OR UPDATE OR DELETE
+  ON m_transaction
+  FOR EACH ROW
+  EXECUTE PROCEDURE m_transaction_trg();
+
+-- Trigger: m_transaction_trg2 on m_transaction
+
+-- DROP TRIGGER m_transaction_trg2 ON m_transaction;
+
+CREATE TRIGGER m_transaction_trg2
+  BEFORE INSERT
+  ON m_transaction
+  FOR EACH ROW
+  EXECUTE PROCEDURE m_transaction_trg2();
+

@@ -1,0 +1,93 @@
+<?xml version="1.0"?>
+  <database name="TRIGGER RCHR_TOTMTR_UPDATION">
+    <trigger name="RCHR_TOTMTR_UPDATION" table="RCHR_INSPCATEGORYLINE" fires="after" insert="true" update="true" delete="false" foreach="row">
+      <body><![CDATA[Declare 
+       v_Cutlook NUMBER:=0;
+       v_cutoldvalue NUMBER;
+       v_cutnewvalue NUMBER;
+       v_bvalue NUMBER;
+       v_slvalue NUMBER;
+       v_Message VARCHAR(2000):='';
+       v_Rchr_inspectionsheet_ID rchr_inspcategoryline.rchr_inspectionsheet_id%TYPE;
+       v_Rchr_inspectiontype_ID VARCHAR(32);
+       v_totalmtr NUMBER;
+
+   BEGIN
+
+      
+        IF (UPDATING) THEN
+        v_Rchr_inspectionsheet_ID := :NEW.rchr_inspectionsheet_id;
+        select cutlookingvalue into v_Cutlook from rchr_inspectionsheet where rchr_inspectionsheet_id=v_Rchr_inspectionsheet_ID;
+        select sum(:NEW.a+:NEW.aone+:NEW.b+:NEW.sl) into v_cutnewvalue from rchr_inspcategoryline where rchr_inspcategoryline_id = :NEW.rchr_inspcategoryline_id;
+        select sum(:OLD.a+:OLD.aone+:OLD.b+:OLD.sl) into v_cutoldvalue from rchr_inspcategoryline where rchr_inspcategoryline_id = :OLD.rchr_inspcategoryline_id;
+
+	select :new.sl into v_slvalue from rchr_inspcategoryline where rchr_inspcategoryline_id = :NEW.rchr_inspcategoryline_id;   
+	select :new.b into v_bvalue from rchr_inspcategoryline where rchr_inspcategoryline_id = :NEW.rchr_inspcategoryline_id;   
+        select :new.rchr_inspectiontype_id into v_Rchr_inspectiontype_ID from rchr_inspcategoryline where rchr_inspcategoryline_id = :NEW.rchr_inspcategoryline_id;
+        
+        if(v_cutnewvalue>v_cutoldvalue) THEN
+        v_Cutlook:= v_Cutlook+v_cutnewvalue-v_cutoldvalue;
+        else
+        v_Cutlook:= v_Cutlook-(v_cutoldvalue-v_cutnewvalue);
+        END IF;
+	
+        if(v_slvalue>30 OR v_slvalue<0)
+	THEN RAISE NO_DATA_FOUND;
+	END IF;	
+	
+        if(NOT(v_bvalue>29 OR v_bvalue=0))
+	THEN RAISE NO_DATA_FOUND;
+	END IF;
+
+        IF((v_slvalue>0 OR v_bvalue >0) AND (v_Rchr_inspectiontype_ID is null)) THEN
+        RAISE NO_DATA_FOUND;
+        END IF;
+         
+	
+        select totalmtr into v_totalmtr from rchr_inspectionsheet where rchr_inspectionsheet_id=v_Rchr_inspectionsheet_ID; 
+        if(v_Cutlook>v_totalmtr) THEN
+	RAISE NO_DATA_FOUND;
+        ELSE
+        update rchr_inspectionsheet set cutlookingvalue = v_Cutlook where rchr_inspectionsheet_id= :NEW.rchr_inspectionsheet_id;
+	END IF;	
+        
+        return new;
+ 
+        ELSIF (INSERTING) THEN
+        select sum(:new.a+:new.aone+:new.b+:new.sl) into v_cutnewvalue from rchr_inspcategoryline where rchr_inspcategoryline_id = :NEW.rchr_inspcategoryline_id; 
+         
+        select :new.sl into v_slvalue from rchr_inspcategoryline where rchr_inspcategoryline_id = :NEW.rchr_inspcategoryline_id;
+        select :new.b into v_bvalue from rchr_inspcategoryline where rchr_inspcategoryline_id = :NEW.rchr_inspcategoryline_id; 
+        select :new.rchr_inspectiontype_id into v_Rchr_inspectiontype_ID from rchr_inspcategoryline where rchr_inspcategoryline_id = :NEW.rchr_inspcategoryline_id;
+          
+        v_Rchr_inspectionsheet_ID := :NEW.rchr_inspectionsheet_id;
+        select cutlookingvalue into v_Cutlook from rchr_inspectionsheet where rchr_inspectionsheet_id=v_Rchr_inspectionsheet_ID;
+        if(v_Cutlook is null) THEN v_Cutlook:=0; END IF;
+        select totalmtr into v_totalmtr from rchr_inspectionsheet where rchr_inspectionsheet_id=v_Rchr_inspectionsheet_ID; 
+        
+        v_Cutlook:=v_Cutlook+v_cutnewvalue;
+       
+	if(v_slvalue>30 OR v_slvalue<0)
+	THEN RAISE NO_DATA_FOUND;
+	END IF;	
+	
+        if(NOT(v_bvalue>29 OR v_bvalue=0))
+	THEN RAISE NO_DATA_FOUND;
+	END IF;	
+
+        IF((v_slvalue>0 OR v_bvalue >0) AND (v_Rchr_inspectiontype_ID is null)) THEN
+        RAISE NO_DATA_FOUND;
+        END IF;
+        if(v_Cutlook > v_totalmtr) THEN
+	RAISE NO_DATA_FOUND;
+        ELSE
+        update rchr_inspectionsheet set cutlookingvalue = v_Cutlook where rchr_inspectionsheet_id= :NEW.rchr_inspectionsheet_id;
+	END IF;
+	
+        return new;
+        END IF;
+        RETURN NULL;
+        END RCHR_TOTMTR_UPDATION
+]]></body>
+    </trigger>
+  </database>

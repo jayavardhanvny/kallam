@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+  <database name="MODIFIED TABLE M_PRODUCTPRICE">
+    <table name="M_PRODUCTPRICE" primaryKey="M_PRODUCTPRICE_KEY">
+      <column name="EM_RCGI_EXTRAPERCENTAGE" primaryKey="false" required="true" type="DECIMAL" size="5,2" autoIncrement="false">
+        <default><![CDATA[0]]></default>
+        <onCreateDefault/>
+      </column>
+      <column name="EM_RCGI_DISCOUNT" primaryKey="false" required="true" type="DECIMAL" size="5,2" autoIncrement="false">
+        <default><![CDATA[0]]></default>
+        <onCreateDefault/>
+      </column>
+      <column name="EM_RCGI_EFFECTIVEFROM" primaryKey="false" required="true" type="TIMESTAMP" size="7" autoIncrement="false">
+        <default><![CDATA[SYSDATE]]></default>
+        <onCreateDefault/>
+      </column>
+    </table>
+  </database>

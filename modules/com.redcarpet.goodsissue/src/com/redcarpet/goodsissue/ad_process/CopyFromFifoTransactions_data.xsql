@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+ *************************************************************************
+ * The contents of this file are subject to the Openbravo  Public  License
+ * Version  1.1  (the  "License"),  being   the  Mozilla   Public  License
+ * Version 1.1  with a permitted attribution clause; you may not  use this
+ * file except in compliance with the License. You  may  obtain  a copy of
+ * the License at http://www.openbravo.com/legal/license.html 
+ * Software distributed under the License  is  distributed  on  an "AS IS"
+ * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+ * License for the specific  language  governing  rights  and  limitations
+ * under the License. 
+ * The Original Code is Openbravo ERP. 
+ * The Initial Developer of the Original Code is Openbravo SLU 
+ * All portions are Copyright (C) 2001-2012 Openbravo SLU 
+ * All Rights Reserved. 
+ * Contributor(s):  ______________________________________.
+ ************************************************************************
+-->
+
+
+<SqlClass name="CopyFromFifoTransactionsData" package="com.redcarpet.goodsissue.ad_process">
+
+<SqlMethod name="select" type="preparedStatement" return="multiple">
+    <SqlMethodComment></SqlMethodComment>
+    <Sql>
+      <![CDATA[
+      
+      	select m.name as productname,opencones as cones,openqty as openqty,bp.name as bpname,yarntype.name as yarntype,variant.name as variant,ct.name as conetype,
+        	         m.m_product_id as mid,yarntype.rchr_warpyarntype_id as yarnid,variant.epcg_variant_id as variantid,tr.rcgi_transactions_id as fifoid,tr.cost as unitprice,
+        	         (select coneweight from epcg_packaging where epcg_packaging_id=tr.epcg_packaging_id) as avgconeweight,0 as issuedcones,0 as issuedqty
+	from
+	rcgi_transactions tr,m_product m,rchr_jobcard jcard,rchr_qualitystandard qs,rchr_warpyarntype yarntype,epcg_variant variant,c_bpartner bp,epcg_conetype ct
+	where tr.m_product_id=tr.m_product_id
+	and qs.rchr_qualitystandard_id=jcard.rchr_qualitystandard_id
+	and tr.c_bpartner_id=bp.c_bpartner_id
+	and yarntype.rchr_warpyarntype_id=tr.rchr_warpyarntype_id
+	and variant.epcg_variant_id=tr.epcg_variant_id
+	and ct.epcg_conetype_id=tr.epcg_conetype_id
+	and jcard.rchr_jobcard_id=? and (ct.epcg_conetype_id=? or yarntype.rchr_warpyarntype_id=? or variant.epcg_variant_id=?)
+	and (m.name=to_char(qs.Warpcount) or m.name=to_char(qs.Weftcount))
+	and openqty>0
+     	       		               
+      ]]>
+    </Sql>
+    <Field name="rownum" value="count"/>
+     <Parameter name="strKey"/>
+       <Parameter name="strKey1"/>
+         <Parameter name="strKey2"/>
+           <Parameter name="strKey3x"/>
+  </SqlMethod>
+  
+</SqlClass>

@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+  <database name="TRIGGER RCHR_DAILYATTND_GREIVUP_TRG1">
+    <trigger name="RCHR_DAILYATTND_GREIVUP_TRG1" table="RCHR_DAILYATTEND" fires="before" insert="false" update="true" delete="false" foreach="row">
+      <body><![CDATA[declare 
+v_countvalue NUMBER;
+begin
+IF (UPDATING) THEN
+	--select new.validate into v_countvalue from rchr_dailyattend where  rchr_dailyattend_id = new.rchr_dailyattend_id;
+
+ IF((:old.validate='Y') and (:new.isgrievance='Y')) THEN
+	RAISE NO_DATA_FOUND;
+ END IF;
+	return new;
+ END if;
+ END RCHR_DAILYATTND_GREIVUP_TRG1
+]]></body>
+    </trigger>
+  </database>

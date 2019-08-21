@@ -1,0 +1,95 @@
+package com.redcarpet.goodsissue.ad_process;
+
+import com.redcarpet.goodsissue.data.RCGI_MaterialReceipt;
+import com.redcarpet.goodsissue.data.RCGI_MrLines;
+import java.math.BigDecimal;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import java.util.Date;
+import org.openbravo.base.provider.OBProvider;
+import org.openbravo.dal.service.OBDal;
+import org.openbravo.erpCommon.utility.OBError;
+import org.openbravo.model.materialmgmt.cost.CostingAlgorithm;
+import org.openbravo.model.materialmgmt.transaction.MaterialTransaction;
+import org.openbravo.scheduling.ProcessBundle;
+import org.openbravo.service.db.DalBaseProcess;
+import org.openbravo.model.procurement.RequisitionLine;
+import org.openbravo.base.exception.OBException;
+
+/**
+ *
+ * @author Suneetha
+ */
+
+public class RCGI_CompleteNew_MR extends DalBaseProcess {
+
+    @Override
+    protected void doExecute(ProcessBundle bundle) throws Exception {
+        String id = bundle.getParams().get("Rcgi_Materialreceipt_ID").toString();
+        OBError success = new OBError();
+        success.setType("Success");
+        success.setTitle("Success");
+        success.setMessage("Process completed successfully");
+        RCGI_MaterialReceipt gi = OBDal.getInstance().get(RCGI_MaterialReceipt.class, id);
+        
+        Connection conn = OBDal.getInstance().getConnection();
+        Statement stmt = conn.createStatement();
+        String s2 = "select count(*) as total from rcgi_mrlines where rcgi_materialreceipt_id='" + id + "'";
+              ResultSet rs = stmt.executeQuery(s2);
+              System.out.println("count value:" + rs);
+              while (rs.next()) {
+                  int r = rs.getInt("total");
+                  if (r == 0) {
+                      
+                          throw new OBException("This process cannot create without lines");
+
+                  }
+              }
+
+            gi.setProcess(Boolean.TRUE);
+            gi.setProcessed(Boolean.TRUE);
+            
+            for (RCGIMrlines line : gi.getRCGIMrlinesList()) {
+            	if (line.getStorageBin() == null) {
+                    throw new OBException("Please check all lines have storage bins");
+                }
+            	 BigDecimal movementcurrent=line.getOpenQuantity();
+                /* BigDecimal orderedqty=line.getOrderedQuantity();
+                 BigDecimal newmvntqty=movementcurrent.subtract(orderedqty);
+
+                 int res=orderedqty.compareTo(movementcurrent);
+                 if(res==1)
+                 {
+                 	throw new OBException("Order Quantity Exceeds Stock Quantity");
+
+                 } */
+                 MaterialTransaction trx = OBProvider.getInstance().get(MaterialTransaction.class);
+                 trx.setProduct(line.getProduct());
+                 trx.setUOM(line.getProduct().getUOM());
+                 trx.setOrganization(line.getOrganization());
+                 trx.setStorageBin(line.getStorageBin());
+                 trx.setMovementQuantity(line.getOrderedQuantity());
+                 trx.setMovementDate(new Date());
+                 trx.setTransactionProcessDate(new Date());
+                 trx.setMovementType("P+");
+                 trx.setCostCalculated(Boolean.TRUE);
+                 trx.setCostingStatus("CC");
+                 trx.setCurrency(trx.getOrganization().getCurrency());
+                 trx.setCostingAlgorithm(OBDal.getInstance().get(CostingAlgorithm.class, "B069080A0AE149A79CF1FA0E24F16AB6"));
+                 trx.setRcgiMaterialreceipt(line.getRcgiMaterialreceipt());
+                 trx.setRcgiMrlines(line);
+                
+                 trx.setTransactionCost(line.getLineNetAmount());
+                 OBDal.getInstance().save(trx);
+                 BigDecimal ord=line.getOrderedQuantity();
+                 BigDecimal stk=line.getOpenQuantity();
+                 BigDecimal newvar=ord.add(stk);
+                 line.setOpenQuantity(newvar);
+                 line.setProcessed(Boolean.TRUE);
+            }
+ 
+        bundle.setResult(success);
+    }
+
+}

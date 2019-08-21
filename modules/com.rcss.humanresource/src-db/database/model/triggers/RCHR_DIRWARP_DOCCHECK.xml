@@ -1,0 +1,50 @@
+<?xml version="1.0"?>
+  <database name="TRIGGER RCHR_DIRWARP_DOCCHECK">
+    <trigger name="RCHR_DIRWARP_DOCCHECK" table="RCHR_DIRECTWARP" fires="after" insert="true" update="true" delete="false" foreach="row">
+      <body><![CDATA[Declare 
+       v_noofcreels NUMBER:=0;
+       v_noofbeems NUMBER:=0;
+       v_Message VARCHAR2(2000):='';
+        v_creels_count NUMBER:=0;
+	v_beam_count NUMBER:=0;
+       v_Rchr_Dirwarp_Beam_ID VARCHAR(32);
+       v_Rchr_Dirwarp_Creel_ID VARCHAR(32);
+       v_C_Doctype_id VARCHAR(32);
+       v_Rchr_Directwarp_id VARCHAR(32);
+       v_DocumentNo VARCHAR(32);
+       
+   BEGIN
+
+        IF (INSERTING) THEN
+
+        select :new.c_doctype_id into v_C_Doctype_id from rchr_directwarp where rchr_directwarp_id = :NEW.rchr_directwarp_id; 
+        
+        select rchr_directwarp_id into v_Rchr_Directwarp_id from rchr_directwarp where c_doctype_id =v_C_Doctype_id and rchr_directwarp_id <>:NEW.rchr_directwarp_id order by created desc limit 1;
+        select noofcreels into v_noofcreels from rchr_directwarp where rchr_directwarp_id =v_Rchr_Directwarp_id;
+        select noofbeems into v_noofbeems from rchr_directwarp where rchr_directwarp_id =v_Rchr_Directwarp_id;
+        select documentno into v_DocumentNo from rchr_directwarp where rchr_directwarp_id =v_Rchr_Directwarp_id;
+           
+        
+        select count(*) into v_creels_count from rchr_dirwarp_creel where rchr_directwarp_id = v_Rchr_Directwarp_id;
+        select count(*) into v_beam_count from rchr_dirwarp_beam 
+        where rchr_dirwarp_creel_id IN (select rchr_dirwarp_creel_id from rchr_dirwarp_creel where rchr_directwarp_id = v_Rchr_Directwarp_id); 
+        /*if(v_creels_count is null) THEN v_creels_count:=0; END IF; 
+        if(v_noofcreels is null) THEN v_noofcreels:=0; END IF; 
+        if(v_beam_count is null) THEN v_beam_count:=0; END IF; 
+        if(v_noofbeems is null) THEN v_noofbeems:=0; END IF; */
+       
+        v_Message := '@This SetNO.@' || ' ' || v_DocumentNo || ' ' || '@  is not Completed Yet.! Please Check Beams and Creels@'|| '. '; 
+	if(v_creels_count <> v_noofcreels OR v_beam_count<>v_noofbeems*v_noofcreels)
+	THEN RAISE v_Message;
+	--THEN RAISE NO_DATA_FOUND; 
+	END IF;	
+	
+	-- v_Message := '@OrderDocumentno@' || ' ' || v_DocumentNo || ' ' || '@line@' || old.line || '. ';
+	-- RAISE v_Message;
+        return new;
+        END IF;
+        RETURN NULL;
+        END RCHR_DIRWARP_DOCCHECK
+]]></body>
+    </trigger>
+  </database>

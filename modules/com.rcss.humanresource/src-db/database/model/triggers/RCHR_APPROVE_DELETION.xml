@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+  <database name="TRIGGER RCHR_APPROVE_DELETION">
+    <trigger name="RCHR_APPROVE_DELETION" table="RCHR_LEAVEREQUISITION" fires="before" insert="false" update="false" delete="true" foreach="row">
+      <body><![CDATA[declare 
+v_countvalue NUMBER;
+begin
+IF (DELETING) THEN
+--select count(rchr_leaverequisition_id) into v_countvalue from rchr_leaverequisition where status!='DR' and rchr_leaverequisition_id = OLD.rchr_leaverequisition_id;
+
+ IF(:old.docstatus!='DR') THEN
+ RAISE NO_DATA_FOUND;
+ END IF;
+ return old;
+ END if;
+ END RCHR_APPROVE_DELETION
+]]></body>
+    </trigger>
+  </database>

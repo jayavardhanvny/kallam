@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<SqlClass name="SecondExperimentData" package="com.redcarpet.rcssob.erpCommon.ad_reports" accessModifier="public">
+
+     <SqlMethod name="select" type="preparedStatement" return="multiple">
+			
+	 <Sql>
+	 <![CDATA[                            
+
+              SELECT (SELECT Name FROM ad_org where ad_org_id  = A.ad_org_id ) As Org,(SELECT Name FROM C_Doctype where C_Doctype_id = A.C_Doctype_id ) as DocumentType,A.DocumentNo,A.em_epcg_type as FormType,Em_epcg_formtypeno As FormTypeNo,
+  to_char(A.Dateinvoiced,'Mon-dd-YYYY') As InvoiceDate,to_char(A.dateAcct,'Mon-dd-YYYY')  as AccoutingDate,
+  (SELECT Name FROm c_bpartner Where  c_bpartner_id = A.c_bpartner_id limit 1) As PartyName,(SELECT Name FROm c_bpartner Where  em_epcg_agent = A.c_bpartner_id limit 1) As AgentName,
+  (select name from C_PaymentTerm where C_PaymentTerm_ID=A.C_PaymentTerm_ID) as Paymentterm,
+  B.Line,(SELECT Name FROm m_product Where  m_product_id = B.m_product_id) As Product,
+  (SELECT Name FROm m_product_category Where m_product_category_id = (select m_product_category_id from m_product where m_product_id = B.m_product_id))As ProductCat,
+B.EM_Epcg_Prolistalias as ProductAlias,
+   B.qtyinvoiced,B.priceactual,A.em_rcfr_ratetype,B.em_rcfr_netunitrate,A.Description,
+  A.Poreference,A.Grandtotal,A.ispaid,A.Totalpaid,A.OutstandingAmt,A.Totallines,(A.Grandtotal-A.Totallines)as TaxAmount,A.em_rcfr_freighth As FreightAmount,
+  A.em_rcfr_freightpaid as FreightPaid,em_rcob_commission as Commission
+  ,(SELECT  C_Invoiceline.linenetamt FROM C_Invoiceline where C_Invoiceline.account_id = 'EFF09991F7BB4C9B92AC9F1B2A76851A' and C_Invoiceline.C_Invoice_id = A.C_Invoice_id)/(SELECT Count(*) FROM C_Invoiceline where C_Invoiceline.financial_invoice_line = 'N' and C_Invoiceline.C_Invoice_id = A.C_Invoice_id)  As FreightLine
+  ,em_rcfr_insuranceh As Insurance,(SELECT  C_Invoiceline.linenetamt FROM C_Invoiceline where C_Invoiceline.account_id = 'D0CBBC60923D4664936B6F8298F5F908' and C_Invoiceline.C_Invoice_id = A.C_Invoice_id)/(SELECT Count(*) FROM C_Invoiceline where C_Invoiceline.financial_invoice_line = 'N' and C_Invoiceline.C_Invoice_id = A.C_Invoice_id) As InsuranceAmount
+  ,A.Em_epcg_locdelivery  as DeliveryLocation 
+  FROM c_invoice  A, c_invoiceline B 
+  Where  A.c_invoice_id = B.c_invoice_id And A.issotrx = 'Y' And A.Docstatus = 'CO'  And B.m_product_id in (SELECT m_product_id FROm m_product)
+                       And A.dateinvoiced >=? and A.dateinvoiced <=?
+                        Order by A.Dateinvoiced,B.Line
+
+
+            ]]>
+         </Sql>
+
+                 <Field name="rownum" value="count"/>
+                 
+                 <Parameter name="strDateFrom"/>
+                 <Parameter name="strDateTo"/>
+                 
+                 </SqlMethod>
+               
+</SqlClass>

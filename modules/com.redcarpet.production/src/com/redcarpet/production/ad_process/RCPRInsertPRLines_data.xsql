@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<SqlClass name="RCPRInsertPRLinesData" package="com.redcarpet.production.ad_process" accessModifier="public">
+
+     <SqlMethod name="getProductPrice" type="preparedStatement" return="string">
+	<Sql>
+		<![CDATA[ 
+                    select cost from m_costing 
+                        where m_product_id = ? 
+                        and m_transaction_id is null and costtype='AVA'
+                        order by created desc 
+                 ]]>
+	</Sql>
+        <Parameter name="product"/>
+     </SqlMethod>
+
+   <SqlMethod name="insert" type="preparedStatement" return="rowCount">
+      <Sql>
+ 	<![CDATA[
+          INSERT INTO rcpr_prproduct(
+            rcpr_prproduct_id, ad_client_id, ad_org_id, createdby, updatedby, 
+            rcpr_productionrun_id, line, m_product_id, 
+            c_uom_id, m_locator_id, quantity, priceactual, linenetamt)
+            VALUES (get_uuid(), ?, ?, '100', '100', 
+            ?, to_number(?), ?, ?, ?, to_number(?), to_number(?), to_number(?));
+	 ]]>
+      </Sql>
+     <Parameter name="client"/>
+     <Parameter name="org"/>
+     <Parameter name="productionrunid"/>
+     <Parameter name="line"/>
+     <Parameter name="productid"/>
+     <Parameter name="uomid"/>
+     <Parameter name="locatorid"/>
+     <Parameter name="qty"/>
+     <Parameter name="priceactual"/>
+     <Parameter name="linenetamt"/>
+   </SqlMethod>
+
+</SqlClass>

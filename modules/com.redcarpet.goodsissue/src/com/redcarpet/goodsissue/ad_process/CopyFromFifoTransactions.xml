@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+ *************************************************************************
+ * The contents of this file are subject to the Openbravo  Public  License
+ * Version  1.1  (the  "License"),  being   the  Mozilla   Public  License
+ * Version 1.1  with a permitted attribution clause; you may not  use this
+ * file except in compliance with the License. You  may  obtain  a copy of
+ * the License at http://www.openbravo.com/legal/license.html 
+ * Software distributed under the License  is  distributed  on  an "AS IS"
+ * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+ * License for the specific  language  governing  rights  and  limitations
+ * under the License. 
+ * The Original Code is Openbravo ERP. 
+ * The Initial Developer of the Original Code is Openbravo SLU 
+ * All portions are Copyright (C) 2001-2012 Openbravo SLU 
+ * All Rights Reserved. 
+ * Contributor(s):  ______________________________________.
+ ************************************************************************
+-->
+
+
+<REPORT>
+	<template file="CopyFromFifoTransactions.html"/>
+
+	<PARAMETER id="paramDirectory" name="directory" default=""/>
+	<PARAMETER id="paramLanguage" name="language" default=""/>
+	<PARAMETER id="paramCSS" name="theme" attribute="href" replace="Default"/>
+	<PARAMETER id="paramKey" name="key" attribute="value"/>
+	<PARAMETER id="paramWindowId" name="windowId" attribute="value"/>
+	<PARAMETER id="paramTabId" name="tabId" attribute="value"/>
+	<PARAMETER id="paramisSOTrx" name="sotrx" attribute="value"/>
+
+	<PARAMETER id="messageBoxID" name="messageType" attribute="class" replace="yy" default="HIDDEN"/>
+	<PARAMETER id="messageBoxIDTitle" name="messageTitle" default=""/>
+	<PARAMETER id="messageBoxIDMessage" name="messageMessage" default=""/>
+
+	<PARAMETER id="param2" name="param2" default="2"/>
+
+	<structure name="structure1">
+		<FIELD id="fieldRownum1">rownum</FIELD>
+
+		<FUNCTION id="funcEvenOddRowxx" name="MODULE" arg1="fieldRownum1" arg2="param2" format="integerEdition" attribute="class" replace="yy"/>
+
+		<FIELD id="funcEvenOddRowxx" attribute="id" replace="xx">rownum</FIELD>
+
+		<FIELD id="CheckNumxx" attribute="id" replace="xx">rownum</FIELD>
+		<FIELD id="CheckNumxx" attribute="value">rownum</FIELD>
+
+
+		<FIELD id="fieldProductname" attribute="value">productname</FIELD>
+		<FIELD id="fieldProductname" attribute="name" replace="xx">rownum</FIELD>
+
+		<FIELD id="fieldOpenqty" attribute="value">openqty</FIELD>
+		<FIELD id="fieldOpenqty" attribute="name" replace="xx">rownum</FIELD>
+
+		<FIELD id="fieldBpname" attribute="value">bpname</FIELD>
+		<FIELD id="fieldBpname" attribute="name" replace="xx">rownum</FIELD>
+
+		<FIELD id="fieldYarntype" attribute="value">yarntype</FIELD>
+		<FIELD id="fieldYarntype" attribute="name" replace="xx">rownum</FIELD>
+
+		<FIELD id="fieldVariant" attribute="value">variant</FIELD>
+		<FIELD id="fieldVariant" attribute="name" replace="xx">rownum</FIELD>
+
+		<FIELD id="fieldCones" attribute="value">cones</FIELD>
+		<FIELD id="fieldCones" attribute="name" replace="xx">rownum</FIELD>
+
+		<FIELD id="fieldConetype" attribute="value">conetype</FIELD>
+		<FIELD id="fieldConetype" attribute="name" replace="xx">rownum</FIELD>
+
+		<FIELD id="fieldMid" attribute="value">mid</FIELD>
+		<FIELD id="fieldMid" attribute="name" replace="xx">rownum</FIELD>
+
+		<FIELD id="fieldYarnid" attribute="value">yarnid</FIELD>
+		<FIELD id="fieldYarnid" attribute="name" replace="xx">rownum</FIELD>
+
+		<FIELD id="fieldVariantid" attribute="value">variantid</FIELD>
+		<FIELD id="fieldVariantid" attribute="name" replace="xx">rownum</FIELD>
+
+		<FIELD id="fieldFifoid" attribute="value">fifoid</FIELD>
+		<FIELD id="fieldFifoid" attribute="name" replace="xx">rownum</FIELD>
+
+		<FIELD id="fieldAvgconeweight" attribute="value">avgconeweight</FIELD>
+		<FIELD id="fieldAvgconeweight" attribute="name" replace="xx">rownum</FIELD>
+
+		<FIELD id="fieldIssuedcones" attribute="value">issuedcones</FIELD>
+		<FIELD id="fieldIssuedcones" attribute="name" replace="xx">rownum</FIELD>
+
+		<FIELD id="fieldIssuedqty" attribute="value">issuedqty</FIELD>
+		<FIELD id="fieldIssuedqty" attribute="name" replace="xx">rownum</FIELD>
+
+		<SECTION id="sectionDetail"/>
+	</structure>
+</REPORT>

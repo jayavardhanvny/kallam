@@ -1,0 +1,477 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="EmployeeAttendanceReport" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="FromD" class="java.util.Date"/>
+	<parameter name="ToDate" class="java.util.Date"/>
+	<parameter name="Shift_ID" class="java.lang.String">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="EmpName" class="java.lang.String">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="aux_shift" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[$P{Shift_ID}.equals("") ? " " : " AND RCHR_ATTEND_TEMP.RCPR_SHIFT_ID = '" + $P{Shift_ID} + "'"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="aux_empname" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[$P{EmpName}.equals("") ? " " : " AND RCHR_ATTEND_TEMP.RCHR_EMPLOYEE_ID = '" + $P{EmpName} + "'"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="Orderby_Punch" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT
+     rchr_employee.documentno AS empno,
+     rchr_employee.employeename AS empname,
+     rchr_employee.punchno as punchno,
+     rchr_emp_dept."name" AS deptname,
+     rchr_designation."name" AS designation,
+     to_char(rchr_attend_temp.attdate,'DD-MM-YYYY') as attenddate,
+     to_char(rchr_attend_temp.punchin,'HH24:MI:SS') as punchin,
+     to_char(rchr_attend_temp.punchout,'HH24:MI:SS') as punchout,
+     rchr_attend_temp.duration as duration,
+     rcpr_shift."name" as shift,
+     rchr_attend_temp.errorlog as punchrecords,
+     (CASE WHEN rchr_attend_temp.isovertime='Y' THEN 'OT'
+     ELSE '' END) as ot,
+     (CASE WHEN rchr_attend_temp.present='Y' THEN 'P'
+     ELSE 'A' END) as present
+
+FROM
+     rchr_attend_temp
+     left join rcpr_shift on rcpr_shift.rcpr_shift_id=rchr_attend_temp.rcpr_shift_id
+     left join rchr_employee on rchr_employee.rchr_employee_id=rchr_attend_temp.rchr_employee_id
+     left join rchr_designation on rchr_designation.rchr_designation_id=rchr_employee.rchr_designation_id
+     left join rchr_emp_dept on rchr_emp_dept.rchr_emp_dept_id=rchr_employee.rchr_emp_dept_id
+where rchr_attend_temp.attdate between $P{FromD} AND $P{ToDate}
+and 1=1
+$P!{aux_empname}
+$P!{aux_shift}
+order by
+(CASE WHEN $P{Orderby_Punch}!='ConOne'
+ THEN rchr_attend_temp.attdate END) ASC,
+(CASE WHEN $P{Orderby_Punch}='ConOne'
+ THEN rchr_employee.punchno END) ASC,
+(CASE WHEN $P{Orderby_Punch}='ConOne'
+ THEN rchr_attend_temp.attdate END) ASC]]>
+	</queryString>
+	<field name="empno" class="java.lang.String"/>
+	<field name="empname" class="java.lang.String"/>
+	<field name="punchno" class="java.lang.String"/>
+	<field name="deptname" class="java.lang.String"/>
+	<field name="designation" class="java.lang.String"/>
+	<field name="attenddate" class="java.lang.String"/>
+	<field name="punchin" class="java.lang.String"/>
+	<field name="punchout" class="java.lang.String"/>
+	<field name="duration" class="java.lang.String"/>
+	<field name="shift" class="java.lang.String"/>
+	<field name="punchrecords" class="java.lang.String"/>
+	<field name="ot" class="java.lang.String"/>
+	<field name="present" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="68" splitType="Stretch">
+			<line>
+				<reportElement x="801" y="0" width="1" height="68"/>
+			</line>
+			<line>
+				<reportElement x="0" y="0" width="1" height="68"/>
+			</line>
+			<line>
+				<reportElement x="1" y="0" width="801" height="1"/>
+			</line>
+			<staticText>
+				<reportElement key="staticText-2" x="274" y="2" width="239" height="22"/>
+				<textElement textAlignment="Center" verticalAlignment="Top" lineSpacing="Single">
+					<font fontName="Verdana" size="14" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[Kallam Spinning Mills ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-3" x="228" y="42" width="356" height="24"/>
+				<textElement textAlignment="Center" lineSpacing="Single">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Kunkupadu, Addanki - 523264 - Prakasam - Andhra Pradesh]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-2" x="268" y="20" width="239" height="21"/>
+				<textElement textAlignment="Center" verticalAlignment="Top" lineSpacing="Single">
+					<font fontName="Verdana" size="14" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[ (Weaving Division)]]></text>
+			</staticText>
+			<image>
+				<reportElement x="34" y="3" width="124" height="62"/>
+				<imageExpression class="java.lang.String"><![CDATA["/home/administrator/production/web/blankicm.gif"]]></imageExpression>
+			</image>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="42" splitType="Stretch">
+			<line>
+				<reportElement x="0" y="0" width="1" height="42"/>
+			</line>
+			<staticText>
+				<reportElement x="633" y="5" width="60" height="14"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle" lineSpacing="Single">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[FROM DATE :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="648" y="23" width="44" height="14"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle" lineSpacing="Single">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[TO DATE :]]></text>
+			</staticText>
+			<line>
+				<reportElement x="801" y="0" width="1" height="42"/>
+			</line>
+			<textField pattern="dd-MMM-yy" isBlankWhenNull="true">
+				<reportElement x="699" y="6" width="56" height="14"/>
+				<textElement lineSpacing="Single">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{FromD}.toLocaleString()]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd-MMM-yy" isBlankWhenNull="true">
+				<reportElement x="699" y="24" width="56" height="14"/>
+				<textElement lineSpacing="Single">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{ToDate}.toLocaleString()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="8" y="23" width="77" height="15"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle" lineSpacing="Single">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Employee Name:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="8" y="5" width="77" height="15"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle" lineSpacing="Single">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Shift Name :]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="0" width="801" height="1"/>
+			</line>
+			<staticText>
+				<reportElement key="staticText-9" x="277" y="8" width="245" height="16"/>
+				<textElement textAlignment="Center" lineSpacing="Single">
+					<font size="12" isBold="true" isUnderline="false" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[Employee Automation Punching Report]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="101" y="6" width="112" height="14"/>
+				<textElement verticalAlignment="Middle" lineSpacing="Single">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{Shift_ID}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="101" y="22" width="112" height="15"/>
+				<textElement verticalAlignment="Middle" lineSpacing="Single">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{EmpName}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="25" splitType="Stretch">
+			<line>
+				<reportElement x="0" y="0" width="1" height="23"/>
+			</line>
+			<line>
+				<reportElement x="70" y="0" width="1" height="23"/>
+			</line>
+			<line>
+				<reportElement x="174" y="0" width="1" height="23"/>
+			</line>
+			<line>
+				<reportElement x="262" y="0" width="1" height="23"/>
+			</line>
+			<line>
+				<reportElement x="385" y="0" width="1" height="23"/>
+			</line>
+			<line>
+				<reportElement x="500" y="0" width="1" height="23"/>
+			</line>
+			<line>
+				<reportElement x="644" y="0" width="1" height="23"/>
+			</line>
+			<line>
+				<reportElement x="703" y="0" width="1" height="23"/>
+			</line>
+			<line>
+				<reportElement x="801" y="0" width="1" height="23"/>
+			</line>
+			<line>
+				<reportElement x="1" y="-1" width="801" height="1"/>
+			</line>
+			<staticText>
+				<reportElement x="709" y="2" width="90" height="19"/>
+				<textElement textAlignment="Center" verticalAlignment="Top" lineSpacing="Single">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Punch Records]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="3" y="-1" width="67" height="26"/>
+				<textElement textAlignment="Center" verticalAlignment="Top" lineSpacing="Single">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Punch No / Card No]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="182" y="4" width="70" height="18"/>
+				<textElement textAlignment="Center" verticalAlignment="Top" lineSpacing="Single">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Date]]></text>
+			</staticText>
+			<line>
+				<reportElement x="441" y="0" width="1" height="23"/>
+			</line>
+			<staticText>
+				<reportElement x="568" y="2" width="75" height="20"/>
+				<textElement textAlignment="Center" lineSpacing="Single">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Designation]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="646" y="3" width="57" height="19"/>
+				<textElement textAlignment="Center" verticalAlignment="Top" lineSpacing="Single">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Department]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-19" x="73" y="4" width="94" height="17"/>
+				<textElement textAlignment="Center" lineSpacing="Single">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Employee Name]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-19" x="325" y="5" width="58" height="15"/>
+				<textElement textAlignment="Center" lineSpacing="Single">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Punch In]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-19" x="388" y="5" width="53" height="15"/>
+				<textElement textAlignment="Center" lineSpacing="Single">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Punch Out]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="444" y="5" width="53" height="15"/>
+				<textElement textAlignment="Center" lineSpacing="Single">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Duration]]></text>
+			</staticText>
+			<line>
+				<reportElement x="323" y="0" width="1" height="23"/>
+			</line>
+			<staticText>
+				<reportElement x="266" y="5" width="53" height="15"/>
+				<textElement textAlignment="Center" lineSpacing="Single">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Shift]]></text>
+			</staticText>
+			<line>
+				<reportElement x="534" y="0" width="1" height="23"/>
+			</line>
+			<staticText>
+				<reportElement x="503" y="4" width="30" height="17"/>
+				<textElement textAlignment="Center" lineSpacing="Single">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[A / P]]></text>
+			</staticText>
+			<line>
+				<reportElement x="566" y="0" width="1" height="23"/>
+			</line>
+			<staticText>
+				<reportElement x="535" y="4" width="29" height="17"/>
+				<textElement textAlignment="Center" lineSpacing="Single">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[OT]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="21" splitType="Stretch">
+			<line>
+				<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="1" height="21"/>
+			</line>
+			<line>
+				<reportElement stretchType="RelativeToBandHeight" x="70" y="0" width="1" height="21"/>
+			</line>
+			<line>
+				<reportElement stretchType="RelativeToBandHeight" x="174" y="0" width="1" height="21"/>
+			</line>
+			<line>
+				<reportElement stretchType="RelativeToBandHeight" x="262" y="0" width="1" height="21"/>
+			</line>
+			<line>
+				<reportElement stretchType="RelativeToBandHeight" x="500" y="0" width="1" height="21"/>
+			</line>
+			<line>
+				<reportElement stretchType="RelativeToBandHeight" x="644" y="0" width="1" height="21"/>
+			</line>
+			<line>
+				<reportElement stretchType="RelativeToBandHeight" x="703" y="-1" width="1" height="22"/>
+			</line>
+			<line>
+				<reportElement stretchType="RelativeToBandHeight" x="801" y="0" width="1" height="21"/>
+			</line>
+			<line>
+				<reportElement positionType="Float" x="1" y="20" width="800" height="1"/>
+			</line>
+			<line>
+				<reportElement stretchType="RelativeToBandHeight" x="385" y="0" width="1" height="21"/>
+			</line>
+			<line>
+				<reportElement stretchType="RelativeToBandHeight" x="441" y="0" width="1" height="21"/>
+			</line>
+			<line>
+				<reportElement stretchType="RelativeToBandHeight" x="323" y="0" width="1" height="21"/>
+			</line>
+			<line>
+				<reportElement positionType="Float" x="1" y="-1" width="800" height="1"/>
+			</line>
+			<textField isBlankWhenNull="true">
+				<reportElement x="4" y="1" width="64" height="18"/>
+				<textElement verticalAlignment="Middle" lineSpacing="Single">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{empno}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="73" y="1" width="100" height="17"/>
+				<textElement verticalAlignment="Middle" lineSpacing="Single">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{empname}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd-MMM-yy" isBlankWhenNull="true">
+				<reportElement x="176" y="1" width="82" height="17"/>
+				<textElement verticalAlignment="Middle" lineSpacing="Single">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{attenddate}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="264" y="1" width="59" height="18"/>
+				<textElement verticalAlignment="Middle" lineSpacing="Single">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{shift}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="326" y="2" width="57" height="17"/>
+				<textElement verticalAlignment="Middle" lineSpacing="Single">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{punchin}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="388" y="1" width="53" height="18"/>
+				<textElement verticalAlignment="Middle" lineSpacing="Single">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{punchout}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="443" y="2" width="54" height="17"/>
+				<textElement verticalAlignment="Middle" lineSpacing="Single">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{duration}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="568" y="2" width="75" height="17"/>
+				<textElement verticalAlignment="Middle" lineSpacing="Single">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{designation}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="646" y="2" width="58" height="17"/>
+				<textElement verticalAlignment="Middle" lineSpacing="Single">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{deptname}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="705" y="1" width="95" height="18"/>
+				<textElement verticalAlignment="Middle" lineSpacing="Single">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{punchrecords}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement stretchType="RelativeToBandHeight" x="534" y="-1" width="1" height="22"/>
+			</line>
+			<textField isBlankWhenNull="true">
+				<reportElement x="502" y="2" width="31" height="17"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" lineSpacing="Single"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{present}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement stretchType="RelativeToBandHeight" x="566" y="-1" width="1" height="22"/>
+			</line>
+			<textField isBlankWhenNull="true">
+				<reportElement x="535" y="1" width="30" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" lineSpacing="Single"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{ot}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="56" splitType="Stretch">
+			<staticText>
+				<reportElement key="staticText-29" x="370" y="29" width="100" height="12"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" lineSpacing="Single">
+					<font size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[H.O.D]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="85" y="29" width="100" height="12"/>
+				<textElement textAlignment="Center" lineSpacing="Single">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[TO Incharge]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="633" y="29" width="100" height="12"/>
+				<textElement textAlignment="Center" lineSpacing="Single">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Approved By]]></text>
+			</staticText>
+		</band>
+	</summary>
+</jasperReport>

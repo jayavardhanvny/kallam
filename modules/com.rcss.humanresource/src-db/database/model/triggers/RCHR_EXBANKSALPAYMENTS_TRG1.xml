@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+  <database name="TRIGGER RCHR_EXBANKSALPAYMENTS_TRG1">
+    <trigger name="RCHR_EXBANKSALPAYMENTS_TRG1" table="RCHR_EXBANKSALPAYMENTS" fires="after" insert="true" update="false" delete="false" foreach="row">
+      <body><![CDATA[declare
+BEGIN
+	 if(TG_OP='INSERT') then
+	 update rchr_exbanksalpayments set totalamount=coalesce((select sum(ep.totalpay) from rcpl_emppayrollprocess ep,rcpl_payrollprocess p
+	 where ep.rcpl_payrollprocess_id=p.rcpl_payrollprocess_id ANd totalpay>0 and p.rchr_attd_process_id=:new.rchr_attd_process_id and ep.ispfapplicable='N'),0),
+	 salariesamount=
+	 coalesce((select sum(ep.totalpay) from rcpl_emppayrollprocess ep,rcpl_payrollprocess p
+	 where ep.rcpl_payrollprocess_id=p.rcpl_payrollprocess_id ANd totalpay>0 and p.rchr_attd_process_id=:new.rchr_attd_process_id and ep.ispfapplicable='N'),0)
+
+	 where rchr_exbanksalpayments_id=:new.rchr_exbanksalpayments_id;
+	 return new;
+	 end if;
+END RCHR_EXBANKSALPAYMENTS_TRG1
+]]></body>
+    </trigger>
+  </database>

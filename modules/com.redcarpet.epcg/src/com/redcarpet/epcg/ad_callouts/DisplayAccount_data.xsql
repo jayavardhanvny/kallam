@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<SqlClass name="DisplayAccountData" package="com.redcarpet.epcg.ad_callouts">
+
+  <SqlMethod name="accountLines" type="preparedStatement" return="multiple" default="">
+    <SqlMethodComment></SqlMethodComment>
+    <Sql>
+      <![CDATA[
+
+
+                            SELECT  AC.epcg_jaccount_id as ID, AC.name as ACCOUNT
+                            FROM epcg_jaccount  AC         
+                            WHERE AC.epcg_acctmaster_id=?
+       
+      ]]>
+    </Sql>
+    <Parameter name="epcgAcctmasterId"/>
+  </SqlMethod>
+</SqlClass>

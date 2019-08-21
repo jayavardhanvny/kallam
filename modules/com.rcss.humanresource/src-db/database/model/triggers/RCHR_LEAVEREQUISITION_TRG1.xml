@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+  <database name="TRIGGER RCHR_LEAVEREQUISITION_TRG1">
+    <trigger name="RCHR_LEAVEREQUISITION_TRG1" table="RCHR_LEAVEREQUISITION" fires="before" insert="true" update="false" delete="false" foreach="row">
+      <body><![CDATA[Declare 
+   v_count NUMBER;
+   BEGIN
+   if(TG_OP='INSERT') THEN 
+   select count(*) into v_count from rchr_leaverequisition where rchr_employee_id=:new.rchr_employee_id and (docstatus='DR' OR docstatus='PN' or docstatus='AP');
+   if(v_count>0) then
+   raise exception 'This employee previous leave requistion in draft/pending/draft approved state,those are need to approve/reject before process new leave requistion';
+   else
+   return new;
+   end if;
+   end if;
+   END RCHR_LEAVEREQUISITION_TRG1
+]]></body>
+    </trigger>
+  </database>

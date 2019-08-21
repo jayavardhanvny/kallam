@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+ *************************************************************************
+ * The contents of this file are subject to the Openbravo  Public  License
+ * Version  1.1  (the  "License"),  being   the  Mozilla   Public  License
+ * Version 1.1  with a permitted attribution clause; you may not  use this
+ * file except in compliance with the License. You  may  obtain  a copy of
+ * the License at http://www.openbravo.com/legal/license.html
+ * Software distributed under the License  is  distributed  on  an "AS IS"
+ * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+ * License for the specific  language  governing  rights  and  limitations
+ * under the License.
+ * The Original Code is Openbravo ERP.
+ * The Initial Developer of the Original Code is Openbravo SLU
+ * All portions are Copyright (C) 2001-2012 Openbravo SLU
+ * All Rights Reserved.
+ * Contributor(s):  ______________________________________.
+ ************************************************************************
+-->
+
+<SqlClass name="CopyFromFIFOData" package="com.redcarpet.goodsissue.ad_process">
+
+<SqlMethod name="select" type="preparedStatement" return="multiple">
+    <SqlMethodComment></SqlMethodComment>
+    <Sql>
+      <![CDATA[
+      	select
+                concat(m.name,' ',yarntype.name,' ',variant.name) as productname,opencones as cones,tr.openqty as openqty,bp.name as bpname,
+                ct.name as conetype,
+                m.m_product_id as mid,yarntype.rchr_warpyarntype_id as yarnid,variant.epcg_variant_id as variantid,
+                tr.rcgi_transactions_id as fifoid,tr.cost as unitprice,tr.avgconeweight as avgconeweight,0 as issuedcones,
+                0 as issuedqty,jcard.documentno as jobcardno,
+                qs.qualityno as sortno,qs.Warpcount as warpcount,qs.weftcount as weftcount,
+                round(midline.indentqty/tr.avgconeweight,0) as maximumcones,
+                mid.documentno as indentno,midline.indentqty as requiredqty,0 as selectedqty,ct.epcg_conetype_id as coneid
+                from
+                rcgi_transactions tr
+        	    left join m_product m ON m.m_product_id=tr.m_product_id
+        	    left join rchr_warpyarntype yarntype on yarntype.rchr_warpyarntype_id=tr.rchr_warpyarntype_id
+        	    left join epcg_variant variant on variant.epcg_variant_id=tr.epcg_variant_id
+                left join c_bpartner bp on bp.c_bpartner_id=tr.c_bpartner_id
+                left join epcg_conetype ct on ct.epcg_conetype_id=tr.epcg_conetype_id
+        	    left join rcgi_materialindentlines midline on midline.rcgi_materialindentlines_id=?
+                left join rcgi_materialindent mid on mid.rcgi_materialindent_id=midline.rcgi_materialindent_id
+                left join rchr_jobcard jcard on jcard.rchr_jobcard_id=midline.rchr_jobcard_id
+        	    left join rchr_qualitystandard qs on qs.rchr_qualitystandard_id=jcard.rchr_qualitystandard_id
+                where case when mid.indenttype='Warp Required' then m.name=to_char(qs.Warpcount) else m.name=to_char(qs.Weftcount) end
+                and tr.openqty>0
+                and 1=1
+                order by tr.movementdate asc
+
+      ]]>
+    </Sql>
+    <Field name="rownum" value="count"/>
+    <Parameter name="mid"/>
+    <Parameter name="yarntype" optional="true" after="and 1=1">and yarntype.rchr_warpyarntype_id= ?</Parameter>
+    <Parameter name="varianttype" optional="true" after="and 1=1">and variant.epcg_variant_id= ?</Parameter>
+    <Parameter name="conetype"  optional="true" after="and 1=1">and ct.epcg_conetype_id= ?</Parameter>
+  </SqlMethod>
+
+</SqlClass>

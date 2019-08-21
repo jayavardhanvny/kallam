@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+ *************************************************************************
+ * The contents of this file are subject to the Openbravo  Public  License
+ * Version  1.1  (the  "License"),  being   the  Mozilla   Public  License
+ * Version 1.1  with a permitted attribution clause; you may not  use this
+ * file except in compliance with the License. You  may  obtain  a copy of
+ * the License at http://www.openbravo.com/legal/license.html 
+ * Software distributed under the License  is  distributed  on  an "AS IS"
+ * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+ * License for the specific  language  governing  rights  and  limitations
+ * under the License. 
+ * The Original Code is Openbravo ERP. 
+ * The Initial Developer of the Original Code is Openbravo SLU 
+ * All portions are Copyright (C) 2001-2012 Openbravo SLU 
+ * All Rights Reserved. 
+ * Contributor(s):  ______________________________________.
+ ************************************************************************
+-->
+
+
+
+
+
+<SqlClass name="ProformaInvoiceCreationData" package="com.redcarpet.epcg.ad_forms">
+<SqlMethod name="select" type="preparedStatement" return="multiple">
+    <SqlMethodComment></SqlMethodComment>
+    <Sql>
+      <![CDATA[
+        
+	SELECT DISTINCT (coalesce(C_ORDERLINE.QTYORDERED,0)-coalesce(C_ORDERLINE.EM_Epcg_Proformqty,0)) AS QTY, C_ORDERLINE.LINE AS TRANSLINE, C_ORDERLINE.M_PRODUCT_ID, M_PRODUCT.NAME AS PRODUCTNAME , 
+        C_UOM.NAME AS UOMSYMBOL, C_ORDER.DOCUMENTNO ,C_ORDER.AD_ORG_ID, C_ORDER.C_BPARTNER_ID,  
+        C_ORDERLINE.PRICEACTUAL, C_ORDERLINE.C_ORDERLINE_ID, C_ORDERLINE.C_UOM_ID,to_char(now() ,'dd-MM-YYYY') as currentdate
+            FROM C_ORDER LEFT JOIN C_ORDERLINE
+			ON C_ORDER.C_ORDER_ID=C_ORDERLINE.C_ORDER_ID
+			LEFT JOIN M_PRODUCT ON
+			M_PRODUCT.M_PRODUCT_ID=C_ORDERLINE.M_PRODUCT_ID
+			LEFT JOIN C_UOM ON
+			C_UOM.C_UOM_ID=C_ORDERLINE.C_UOM_ID 
+			
+			WHERE
+			C_ORDER.C_ORDER_ID=?
+			AND (coalesce(C_ORDERLINE.QTYORDERED,0)-coalesce(C_ORDERLINE.EM_Epcg_Proformqty,0))>0
+                     
+      ]]>
+    </Sql>
+    <Field name="rownum" value="count"/>
+    <Parameter name="cOrderId"/>
+   
+   
+  </SqlMethod>
+  <SqlMethod name="set" type="constant" return="multiple">
+      <SqlMethodComment></SqlMethodComment>
+      <Sql></Sql>
+  </SqlMethod>
+  
+  
+  
+ 
+
+</SqlClass>

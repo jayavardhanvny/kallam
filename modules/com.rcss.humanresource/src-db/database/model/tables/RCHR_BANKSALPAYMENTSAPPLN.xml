@@ -1,0 +1,120 @@
+<?xml version="1.0"?>
+  <database name="TABLE RCHR_BANKSALPAYMENTSAPPLN">
+    <table name="RCHR_BANKSALPAYMENTSAPPLN" primaryKey="RCHR_BSPAYALN_KEY">
+      <column name="RCHR_BANKSALPAYMENTSAPPLN_ID" primaryKey="true" required="true" type="VARCHAR" size="32" autoIncrement="false">
+        <default><![CDATA[get_uuid()]]></default>
+        <onCreateDefault/>
+      </column>
+      <column name="AD_CLIENT_ID" primaryKey="false" required="true" type="VARCHAR" size="32" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="AD_ORG_ID" primaryKey="false" required="true" type="VARCHAR" size="32" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="ISACTIVE" primaryKey="false" required="true" type="CHAR" size="1" autoIncrement="false">
+        <default><![CDATA[Y]]></default>
+        <onCreateDefault/>
+      </column>
+      <column name="CREATED" primaryKey="false" required="true" type="TIMESTAMP" size="7" autoIncrement="false">
+        <default><![CDATA[SYSDATE]]></default>
+        <onCreateDefault/>
+      </column>
+      <column name="CREATEDBY" primaryKey="false" required="true" type="VARCHAR" size="32" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="UPDATED" primaryKey="false" required="true" type="TIMESTAMP" size="7" autoIncrement="false">
+        <default><![CDATA[SYSDATE]]></default>
+        <onCreateDefault/>
+      </column>
+      <column name="UPDATEDBY" primaryKey="false" required="true" type="VARCHAR" size="32" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="RCHR_BANKSALPAYMENTSAPP_ID" primaryKey="false" required="true" type="VARCHAR" size="32" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="RCHR_BANKSALPAYMENTSOL_ID" primaryKey="false" required="false" type="VARCHAR" size="32" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="RCHR_BANKSALPAYMENTSLN_ID" primaryKey="false" required="false" type="VARCHAR" size="32" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="RCHR_EXBANKSALPAYMENTSEMP_ID" primaryKey="false" required="false" type="VARCHAR" size="32" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="DOCUMENTNO" primaryKey="false" required="false" type="VARCHAR" size="30" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="STATUS" primaryKey="false" required="false" type="VARCHAR" size="60" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="SALALRY" primaryKey="false" required="false" type="DECIMAL" autoIncrement="false">
+        <default><![CDATA[0]]></default>
+        <onCreateDefault/>
+      </column>
+      <column name="RCPL_EMPPAYROLLPROCESS_ID" primaryKey="false" required="false" type="VARCHAR" size="32" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="RCHR_EMPLOYEE_ID" primaryKey="false" required="true" type="VARCHAR" size="32" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="PROCESS" primaryKey="false" required="true" type="CHAR" size="1" autoIncrement="false">
+        <default><![CDATA[N]]></default>
+        <onCreateDefault/>
+      </column>
+      <column name="ACCOUNTNO" primaryKey="false" required="false" type="VARCHAR" size="60" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="IFSCCODE" primaryKey="false" required="false" type="VARCHAR" size="60" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="RCHR_BANKMASTER_ID" primaryKey="false" required="false" type="VARCHAR" size="32" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="ACCOUNTNAME" primaryKey="false" required="false" type="VARCHAR" size="60" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <foreign-key foreignTable="RCHR_BANKSALPAYMENTSAPP" name="RCHR_BSPAYALN_APP">
+        <reference local="RCHR_BANKSALPAYMENTSAPP_ID" foreign="RCHR_BANKSALPAYMENTSAPP_ID"/>
+      </foreign-key>
+      <foreign-key foreignTable="RCHR_BANKMASTER" name="RCHR_BSPAYALN_BANK">
+        <reference local="RCHR_BANKMASTER_ID" foreign="RCHR_BANKMASTER_ID"/>
+      </foreign-key>
+      <foreign-key foreignTable="RCHR_EXBANKSALPAYMENTSEMP" name="RCHR_BSPAYALN_BANKPAYMTEXCLD">
+        <reference local="RCHR_EXBANKSALPAYMENTSEMP_ID" foreign="RCHR_EXBANKSALPAYMENTSEMP_ID"/>
+      </foreign-key>
+      <foreign-key foreignTable="RCHR_BANKSALPAYMENTSLN" name="RCHR_BSPAYALN_BANKPAYMTSCHEQUE">
+        <reference local="RCHR_BANKSALPAYMENTSLN_ID" foreign="RCHR_BANKSALPAYMENTSLN_ID"/>
+      </foreign-key>
+      <foreign-key foreignTable="RCHR_BANKSALPAYMENTSOL" name="RCHR_BSPAYALN_BANKPAYMTSOL">
+        <reference local="RCHR_BANKSALPAYMENTSOL_ID" foreign="RCHR_BANKSALPAYMENTSOL_ID"/>
+      </foreign-key>
+      <foreign-key foreignTable="AD_CLIENT" name="RCHR_BSPAYALN_CLIENT">
+        <reference local="AD_CLIENT_ID" foreign="AD_CLIENT_ID"/>
+      </foreign-key>
+      <foreign-key foreignTable="RCHR_EMPLOYEE" name="RCHR_BSPAYALN_EMP">
+        <reference local="RCHR_EMPLOYEE_ID" foreign="RCHR_EMPLOYEE_ID"/>
+      </foreign-key>
+      <foreign-key foreignTable="RCPL_EMPPAYROLLPROCESS" name="RCHR_BSPAYALN_EMPPAY">
+        <reference local="RCPL_EMPPAYROLLPROCESS_ID" foreign="RCPL_EMPPAYROLLPROCESS_ID"/>
+      </foreign-key>
+      <foreign-key foreignTable="AD_ORG" name="RCHR_BSPAYALN_ORG">
+        <reference local="AD_ORG_ID" foreign="AD_ORG_ID"/>
+      </foreign-key>
+    </table>
+  </database>

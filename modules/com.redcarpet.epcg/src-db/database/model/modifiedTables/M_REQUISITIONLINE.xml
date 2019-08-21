@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+  <database name="MODIFIED TABLE M_REQUISITIONLINE">
+    <table name="M_REQUISITIONLINE" primaryKey="M_REQUISITIONLINE_KEY">
+      <column name="EM_EPCG_OPENQTY" primaryKey="false" required="false" type="DECIMAL" autoIncrement="false">
+        <default><![CDATA[1]]></default>
+        <onCreateDefault/>
+      </column>
+      <column name="EM_EPCG_STATUS" primaryKey="false" required="false" type="VARCHAR" size="32" autoIncrement="false">
+        <default><![CDATA[Open]]></default>
+        <onCreateDefault/>
+      </column>
+    </table>
+  </database>

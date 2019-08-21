@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="DialyTaskReport" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<property name="ireport.zoom" value="2.0"/>
+	<property name="ireport.x" value="341"/>
+	<property name="ireport.y" value="65"/>
+	<parameter name="FromDate" class="java.util.Date"/>
+	<parameter name="strOrg" class="java.lang.String"/>
+	<parameter name="strMachine" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[select RCPR_Machine.name, ad_org.name as orgname, RCPR_Machine_MMaintenance.Rcpr_Maintenancetask_ID,RCPR_Machine_MMaintenance.Lastpmdone,
+Rcpr_Maintenancetask.name as taskname, Rcpr_Maintenancetask.iselectricalmaintenance as iselecrtical, Rcpr_Maintenancetask.iselectricalmaintenance,
+RCPR_Machine.Rcpr_unit_id as unitid, RCPR_Machine.Rcpr_Shed_id, RCPR_Machine.rcpr_machinecategory_id, Rcpr_Shed.name as shedname,
+rcpr_machinecategory.name as mcatname,RCPR_Machine_MMaintenance.line as lineno
+from RCPR_Machine
+left join RCPR_Machine_MMaintenance on RCPR_Machine_MMaintenance.RCPR_Machine_ID = RCPR_Machine.RCPR_Machine_ID
+left join Rcpr_Maintenancetask on Rcpr_Maintenancetask.Rcpr_Maintenancetask_id = RCPR_Machine_MMaintenance.Rcpr_Maintenancetask_id
+left join Rcpr_Shed on Rcpr_Shed.Rcpr_Shed_id = RCPR_Machine.Rcpr_Shed_id
+left join AD_Org on AD_Org.AD_Org_id = RCPR_Machine.AD_Org_id
+left join rcpr_machinecategory on rcpr_machinecategory.rcpr_machinecategory_id = RCPR_Machine.rcpr_machinecategory_id
+
+WHERE RCPR_Machine.RCPR_Machine_ID = ( $P{strMachine} ) and RCPR_Machine_MMaintenance.Lastpmdone <= ( $P{FromDate} ) and RCPR_Machine.AD_Org_ID=$P{strOrg}]]>
+	</queryString>
+	<field name="name" class="java.lang.String"/>
+	<field name="orgname" class="java.lang.String"/>
+	<field name="rcpr_maintenancetask_id" class="java.lang.String"/>
+	<field name="lastpmdone" class="java.sql.Timestamp"/>
+	<field name="taskname" class="java.lang.String"/>
+	<field name="iselecrtical" class="java.lang.String"/>
+	<field name="iselectricalmaintenance" class="java.lang.String"/>
+	<field name="unitid" class="java.lang.String"/>
+	<field name="rcpr_shed_id" class="java.lang.String"/>
+	<field name="rcpr_machinecategory_id" class="java.lang.String"/>
+	<field name="shedname" class="java.lang.String"/>
+	<field name="mcatname" class="java.lang.String"/>
+	<field name="lineno" class="java.math.BigDecimal"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="49" splitType="Stretch">
+			<image>
+				<reportElement x="29" y="3" width="97" height="45"/>
+				<imageExpression class="java.lang.String"><![CDATA["F:\\production\\web\\images\\blankicm.gif"]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement key="staticText-2" x="206" y="7" width="146" height="17"/>
+				<textElement>
+					<font size="12" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[DIALY TASK REPORT]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-1" x="126" y="24" width="294" height="21"/>
+				<textElement>
+					<font size="14" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[      IDUPULAPADU COTTON MILLS (P) LTD.]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="155" splitType="Stretch">
+			<staticText>
+				<reportElement x="10" y="23" width="116" height="20"/>
+				<textElement/>
+				<text><![CDATA[Date:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="10" y="43" width="116" height="20"/>
+				<textElement/>
+				<text><![CDATA[Department:]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="129" y="23" width="426" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.util.Date"><![CDATA[$P{FromDate}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="129" y="43" width="426" height="20"/>
+				<textElement/>
+				<text><![CDATA[Mechanical]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="153" y="135" width="213" height="20"/>
+				<textElement/>
+				<text><![CDATA[Task Name]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="368" y="135" width="187" height="20"/>
+				<textElement/>
+				<text><![CDATA[Last  PM Done Date]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="129" y="63" width="426" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{name}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="10" y="64" width="116" height="20"/>
+				<textElement/>
+				<text><![CDATA[Machine Name:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="10" y="84" width="116" height="20"/>
+				<textElement/>
+				<text><![CDATA[Shed Name:]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="129" y="83" width="426" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{shedname}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="10" y="104" width="116" height="20"/>
+				<textElement/>
+				<text><![CDATA[Machine Category:]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="129" y="103" width="426" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{mcatname}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="1" y="135" width="151" height="20"/>
+				<textElement/>
+				<text><![CDATA[Line ]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="135" width="555" height="1"/>
+			</line>
+			<line>
+				<reportElement x="555" y="136" width="1" height="19"/>
+			</line>
+			<line>
+				<reportElement x="366" y="136" width="1" height="19"/>
+			</line>
+			<line>
+				<reportElement x="152" y="136" width="1" height="19"/>
+			</line>
+			<textField>
+				<reportElement x="129" y="3" width="426" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{orgname}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="10" y="3" width="116" height="20"/>
+				<textElement/>
+				<text><![CDATA[Organization:]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="135" width="1" height="19"/>
+			</line>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="19" splitType="Stretch">
+			<textField isBlankWhenNull="true">
+				<reportElement x="154" y="0" width="212" height="19"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{taskname}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="368" y="0" width="187" height="18"/>
+				<textElement/>
+				<textFieldExpression class="java.sql.Timestamp"><![CDATA[$F{lastpmdone}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="1" y="0" width="151" height="18"/>
+				<textElement/>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{lineno}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="0" y="-1" width="555" height="1"/>
+			</line>
+			<line>
+				<reportElement x="366" y="0" width="1" height="19"/>
+			</line>
+			<line>
+				<reportElement x="152" y="0" width="1" height="19"/>
+			</line>
+			<line>
+				<reportElement x="0" y="0" width="1" height="19"/>
+			</line>
+			<line>
+				<reportElement x="555" y="0" width="1" height="19"/>
+			</line>
+			<line>
+				<reportElement x="0" y="18" width="555" height="1"/>
+			</line>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

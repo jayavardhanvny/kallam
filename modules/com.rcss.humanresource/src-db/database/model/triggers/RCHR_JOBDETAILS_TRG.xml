@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+  <database name="TRIGGER RCHR_JOBDETAILS_TRG">
+    <trigger name="RCHR_JOBDETAILS_TRG" table="RCHR_JOBDETAILS" fires="after" insert="true" update="false" delete="false" foreach="row">
+      <body><![CDATA[
+    BEGIN
+    
+    IF AD_isTriggerEnabled()='N' THEN RETURN;
+    END IF;
+
+
+   IF(INSERTING) THEN
+  
+   update rchr_employee e set 
+					   rchr_emp_dept_id=:new.rchr_emp_dept_id,
+					   rchr_subdepartment_id=:new.rchr_subdepartment_id,
+					   rchr_designation_id=:new.rchr_designation_id
+					   where e.rchr_employee_id=:new.rchr_employee_id;
+ return new;
+ else return old;
+  end if;
+
+  END RCHR_JOBDETAILS_TRG
+]]></body>
+    </trigger>
+  </database>

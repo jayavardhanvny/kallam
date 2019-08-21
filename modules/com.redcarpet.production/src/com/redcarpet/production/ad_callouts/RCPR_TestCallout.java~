@@ -1,0 +1,12 @@
+package com.redcarpet.production.ad_callouts;
+
+import org.openbravo.erpCommon.ad_callouts.SimpleCallout;
+import javax.servlet.ServletException;
+
+public class RCPR_TestCallout extends SimpleCallout {
+
+    protected void execute(CalloutInfo info) throws ServletException {
+//        System.out.println("info "+info.getStringParameter("_visibleProperties", null));
+//        System.out.println(info.getTabId() +" tabid ");
+    }
+}

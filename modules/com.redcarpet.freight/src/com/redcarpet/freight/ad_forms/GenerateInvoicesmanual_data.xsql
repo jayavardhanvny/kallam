@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<SqlClass name="GenerateInvoicesmanualData" package="com.redcarpet.freight.ad_forms">
+  <SqlClassComment></SqlClassComment>
+  <SqlMethod name="select" type="preparedStatement" return="multiple">
+    <SqlMethodComment></SqlMethodComment>
+    <Sql>
+    <![CDATA[
+      select  line.M_InOutLine_Id as C_Order_ID, org.Name as adorgname, dt.Name as cdoctypename, 
+	head.DocumentNo, bp.Name as cbpartnername, head.DateOrdered, (line.movementqty -  
+	(select coalesce(sum(c_invoiceline.qtyinvoiced), 0)  from c_invoiceline where c_invoiceline.m_inoutline_id = line.M_InOutLine_id limit 1 )) as movementqty, 
+	prd.name as productname, uom.name as cuomname, 
+	ad_column_identifier('M_Locator', loc.M_Locator_Id, 'en_US')  as locatorname,
+        ad_column_identifier('C_BPartner', line.C_BPartner_Id, 'en_US')  as Cbpartnername2    
+       from M_InOut head
+	left join M_InOutLine line on head.M_InOut_Id = line.M_InOut_Id 
+	left join M_Locator loc on line.M_Locator_Id = loc.M_Locator_Id 
+	left join C_Uom uom on line.C_Uom_Id = uom.C_Uom_Id 
+	left join C_BPartner bp on head.C_BPartner_Id = bp.C_BPartner_Id 
+	left join M_Product prd on line.M_Product_Id = prd.M_Product_Id 
+	left join AD_Org org on head.AD_Org_Id = org.AD_Org_Id 
+	left join C_DocType dt on head.C_DocType_Id = dt.C_DocType_Id 
+	WHERE head.C_Order_ID is not null and head.issotrx='Y' and head.docstatus='CO'   
+        AND bp.iscustomer='Y' AND bp.isemployee='Y'       
+        AND 0=0 
+	AND 1=1  
+        AND 2=2 AND head.ad_org_id in ('1')  
+        AND  (line.movementqty -  
+	    (select coalesce(sum(c_invoiceline.qtyinvoiced), 0)  from c_invoiceline where c_invoiceline.m_inoutline_id = line.M_InOutLine_id limit 1 )) >0
+        AND line.C_OrderLine_Id is not null 
+        ORDER BY line.line, org.Name, head.DocumentNo, bp.Name, DateOrdered 
+
+      ]]></Sql>
+    <Field name="rownum" value="count"/>
+    <Parameter name="parBPartner" optional="true" after="AND 1=1">AND head.C_BPartner_ID= ?</Parameter>
+    --<Parameter name="parDateFrom" optional="true" after="AND 1=1"><![CDATA[ AND head.DateOrdered >= TO_DATE(?)]]></Parameter>
+    <Parameter name="adOrgId" optional="true" type="replace" after="AND 2=2 AND head.ad_org_id in ('" text="1"/>
+  </SqlMethod>
+    
+  <SqlMethod name="set" type="constant" return="multiple">
+      <SqlMethodComment></SqlMethodComment>
+      <Sql></Sql>
+  </SqlMethod>
+  
+  <SqlMethod name="bPartnerDescription" type="preparedStatement" return="String" default="">
+    <SqlMethodComment></SqlMethodComment>
+    <Sql>
+    SELECT NAME FROM C_BPARTNER 
+    WHERE C_BPARTNER_ID = ?
+    </Sql>
+    <Parameter name="cBpartnerId"/>
+  </SqlMethod>
+  
+  <SqlMethod name="getAgentCount" type="preparedStatement" return="String">
+    <SqlMethodComment></SqlMethodComment>
+    <Sql>
+       select coalesce(count(*),0) from m_inoutline where 
+        m_inout_id = ?  
+        and c_bpartner_id = ? 
+    </Sql>
+    <Parameter name="mInOutId"/>
+    <Parameter name="cBpartnerId"/>
+  </SqlMethod>
+  
+  <SqlMethod name="getSumDeliveredQty" type="preparedStatement" return="String">
+    <SqlMethodComment></SqlMethodComment>
+    <Sql>
+        select coalesce(sum(qtyinvoiced),0) from c_invoiceline where 
+        m_inoutline_id = ?  
+    </Sql>
+    <Parameter name="mInOutLineId"/>
+  </SqlMethod>
+</SqlClass>

@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+  <database name="TRIGGER RCPL_EMPPP_DELETE_TR1">
+    <trigger name="RCPL_EMPPP_DELETE_TR1" table="RCPL_EMPPAYROLLPROCESS" fires="before" insert="false" update="false" delete="true" foreach="row">
+      <body><![CDATA[declare 
+ Declare 
+     v_status VARCHAR(60);
+
+     
+begin
+
+
+if(TG_OP='DELETE')then 
+	select pp.status into v_status from rcpl_emppayrollprocess emppp, rcpl_payrollprocess pp 
+	where emppp.rcpl_payrollprocess_id=:old.rcpl_payrollprocess_id and pp.rcpl_payrollprocess_id=emppp.rcpl_payrollprocess_id;
+	if(v_status='CO') then 
+  	raise exception 'This Process Cannot be Deleted After Complete';  
+  	end if;
+ return old;
+ end if;
+ end
+]]></body>
+    </trigger>
+  </database>

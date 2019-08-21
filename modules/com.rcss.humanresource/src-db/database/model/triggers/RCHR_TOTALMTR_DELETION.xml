@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+  <database name="TRIGGER RCHR_TOTALMTR_DELETION">
+    <trigger name="RCHR_TOTALMTR_DELETION" table="RCHR_INSPCATEGORYLINE" fires="before" insert="false" update="false" delete="true" foreach="row">
+      <body><![CDATA[declare 
+v_cutoldvalue NUMBER;
+begin
+IF (DELETING) THEN
+select sum(:old.a+:old.aone+:old.b+:old.sl) into v_cutoldvalue from rchr_inspcategoryline where rchr_inspcategoryline_id = :OLD.rchr_inspcategoryline_id;
+
+ update rchr_inspectionsheet set cutlookingvalue = cutlookingvalue-v_cutoldvalue where rchr_inspectionsheet_id= :OLD.rchr_inspectionsheet_id;
+ return old;
+ end if;
+ end
+]]></body>
+    </trigger>
+  </database>

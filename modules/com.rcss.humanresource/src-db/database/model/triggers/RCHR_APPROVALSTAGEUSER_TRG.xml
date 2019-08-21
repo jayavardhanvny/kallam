@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+  <database name="TRIGGER RCHR_APPROVALSTAGEUSER_TRG">
+    <trigger name="RCHR_APPROVALSTAGEUSER_TRG" table="RCHR_APPROVALSTAGEUSER" fires="after" insert="true" update="true" delete="true" foreach="row">
+      <body><![CDATA[v_count NUMBER:=0;
+    BEGIN
+    
+    IF AD_isTriggerEnabled()='N' THEN RETURN;
+    END IF;
+
+    IF(UPDATING) THEN
+	if(:new.isactive='N') then 
+	update rchr_approvalstage set bestoff=bestoff-1 where rchr_approvalstage_id=:old.rchr_approvalstage_id;
+	return new;
+	else update rchr_approvalstage set bestoff=bestoff+1 where rchr_approvalstage_id=:old.rchr_approvalstage_id;
+	return new;
+	end if;
+    else if(INSERTING) THEN
+	 update rchr_approvalstage set bestoff=bestoff+1 where rchr_approvalstage_id=:NEW.rchr_approvalstage_id;
+         RETURN NEW;
+    ELSE IF(DELETING) THEN 
+    update rchr_approvalstage set bestoff=bestoff-1 where rchr_approvalstage_id=:OLD.rchr_approvalstage_id;
+    RETURN NEW;
+    END IF;
+    end if;
+    END IF;
+  END RCHR_APPROVALSTAGEUSER_TRG
+]]></body>
+    </trigger>
+  </database>

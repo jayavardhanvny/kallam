@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<SqlClass name="RCPRProductionCostingLinesData" package="com.redcarpet.production.ad_process" accessModifier="public">
+
+     <SqlMethod name="getCostingLines" type="preparedStatement" return="multiple">
+	<Sql>
+		<![CDATA[ 
+                    select sum(mcost.qty) as TotalQty, sum(mcost.price) as TotalPrice, 
+			mcost.m_product_id, mcost.ad_org_id
+		    from m_costing mcost 
+		    where mcost.ad_client_id='3F9E302C1D2A4F8194B1BAA3813BF5F3' 
+			and mcost.costtype='AVA' and mcost.ismanual='Y' and mcost.ad_org_id !='0'
+			and mcost.m_product_id in (select distinct mcost.m_product_id
+			 from m_costing mcost)
+		    group by mcost.m_product_id, mcost.ad_org_id
+
+                 ]]>
+	</Sql>
+        <Parameter name="product"/>
+     </SqlMethod>
+
+</SqlClass>

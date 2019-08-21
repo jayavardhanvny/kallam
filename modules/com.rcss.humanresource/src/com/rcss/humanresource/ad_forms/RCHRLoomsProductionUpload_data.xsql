@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<SqlClass name="RCHRLoomsProductionUploadData" package="com.rcss.humanresource.ad_forms" accessModifier="public">
+
+     <SqlMethod name="selectTest" type="preparedStatement" connection="true" return="multiple">
+	<Sql>
+		<![CDATA[ SELECT '' as test from dual ]]>
+	</Sql>
+     </SqlMethod>
+
+   <SqlMethod name="insert" type="preparedStatement" return="rowCount">
+      <Sql>
+ 	<![CDATA[
+          INSERT INTO rcpl_loomsproductionimport(
+	            rcpl_loomsproductionimport_id, ad_client_id, ad_org_id,
+        	    loomdate, strshift, loomname,sortno,
+        	    ppi, picks, loommts, rpm, efficiency, warpbreaks, weftbreaks, otherbreaks, createdby, updatedby)
+	    VALUES 
+		   (get_uuid(), ?, ?, 
+	            to_date(?, 'DD-MM-YYYY'), ?, ?, ?, 
+	            to_number(?), to_number(?), to_number(?), to_number(?), to_number(?), to_number(?), to_number(?), to_number(?),?,?);
+	 ]]>
+      </Sql>
+     <Parameter name="client"/>
+     <Parameter name="org"/>
+     <Parameter name="loomdate"/>
+     <Parameter name="strshift"/>
+     <Parameter name="loomname"/>
+     <Parameter name="sortno"/>
+     
+     <Parameter name="ppi"/>
+     <Parameter name="picks"/>
+     <Parameter name="loommts"/>
+     <Parameter name="rpm"/>
+     <Parameter name="efficiency"/>
+     <Parameter name="warpbreaks"/>
+     <Parameter name="weftbreaks"/>
+     <Parameter name="otherbreaks"/>
+     
+     <Parameter name="user"/>
+     <Parameter name="user"/>
+     
+   </SqlMethod>
+
+</SqlClass>
+

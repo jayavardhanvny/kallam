@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+  <database name="TRIGGER RCGI_PURCHASEPRICE_TRG">
+    <trigger name="RCGI_PURCHASEPRICE_TRG" table="RCGI_PURCHASEPRICE" fires="after" insert="true" update="false" delete="false" foreach="row">
+      <body><![CDATA[Declare 
+       
+   BEGIN
+	if(TG_OP='INSERT') THEN
+	INSERT INTO m_productprice(
+            m_productprice_id, m_pricelist_version_id, m_product_id, ad_client_id, 
+            ad_org_id, isactive, created, createdby, updated, updatedby, 
+            pricelist, pricestd, pricelimit, cost, em_rcgi_extrapercentage, 
+            em_rcgi_discount, em_rcgi_effectivefrom)
+	VALUES (get_uuid(),'3D0D01A030A14A83B8223F85046C321B',:new.m_product_id,:new.ad_client_id, 
+            :new.ad_org_id, 'Y',:new.created,:new.createdby,:new.updated,:new.updatedby, 
+            :new.unitprice+(:new.unitprice*0.05),:new.unitprice,0,0,5, 
+            0,:new.effectivefrom);	
+	return new;
+	end if;       
+   END RCGI_PURCHASEPRICE_TRG
+]]></body>
+    </trigger>
+  </database>

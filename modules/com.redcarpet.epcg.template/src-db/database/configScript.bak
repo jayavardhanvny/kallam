@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+  <vector>
+    <versionInfo version="3.0.20857"/>
+    <columnDataChange tablename="AD_MODULE" columnname="VERSION_LABEL" pkRow="D5B4382D51A6416885D829D91281446E">
+      <oldValue><![CDATA[1.0.18]]></oldValue>
+      <newValue><![CDATA[1.0.17]]></newValue>
+    </columnDataChange>
+  </vector>

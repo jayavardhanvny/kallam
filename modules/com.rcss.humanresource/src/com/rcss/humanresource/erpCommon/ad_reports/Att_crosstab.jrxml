@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Att_crosstab" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<style name="Crosstab Data Text" hAlign="Center"/>
+	<parameter name="FromD" class="java.util.Date"/>
+	<parameter name="ToDate" class="java.util.Date"/>
+	<parameter name="Emp_Type" class="java.lang.String">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="aux_emptype" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[$P{Emp_Type}.equals("") ? " " : " AND RCHR_EMPLOYEE.EMPLOYEETYPE = '" + $P{Emp_Type} + "'"]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[select attdate,to_char(attdate, 'dd'),
+(stremployee||'-'||(select employeename from rchr_employee where rchr_employee.rchr_employee_id=rchr_attend_temp.rchr_employee_id)) as stremployee,
+(Case
+When  Present = 'Y'  and isovertime='N' and isweeklyoff = 'N' Then 'P'
+when  Present = 'N'  and isovertime='N' and isweeklyoff = 'N' Then 'A'
+when  Present = 'Y'  and isweeklyoff='Y' Then 'WP'
+When  Present = 'Y'  and isovertime='Y' and isweeklyoff = 'N' Then 'P&OT'
+when  Present = 'N'  and isweeklyoff = 'Y' Then 'W/F'
+End
+ )as present,
+(select count(present) from rchr_attend_temp where rchr_attend_temp.attdate between $P{FromD} AND $P{ToDate} and
+present='Y' and isovertime='N' and rchr_attend_temp.rchr_employee_id=rchr_employee.rchr_employee_id) as totpresent,
+ 1  as oneday
+
+ from rchr_attend_temp,rchr_employee
+ where rchr_attend_temp.rchr_employee_id=rchr_employee.rchr_employee_id
+ and rchr_employee.isactive='Y'
+and rchr_attend_temp.attdate between $P{FromD} AND $P{ToDate}
+ and
+ 1=1
+ $P!{aux_emptype}]]>
+	</queryString>
+	<field name="attdate" class="java.sql.Timestamp"/>
+	<field name="to_char" class="java.lang.String"/>
+	<field name="stremployee" class="java.lang.String"/>
+	<field name="present" class="java.lang.String"/>
+	<field name="totpresent" class="java.lang.Long"/>
+	<field name="oneday" class="java.lang.Integer"/>
+	<variable name="totaldays" class="java.lang.Integer">
+		<variableExpression><![CDATA[$P{ToDate}.getDate()-$P{FromD}.getDate()]]></variableExpression>
+		<initialValueExpression><![CDATA[$P{ToDate}.getDate()-$P{FromD}.getDate()]]></initialValueExpression>
+	</variable>
+	<variable name="variable1" class="java.lang.Integer">
+		<variableExpression><![CDATA[$F{oneday}+$V{totaldays}]]></variableExpression>
+		<initialValueExpression><![CDATA[$F{oneday}+$V{totaldays}]]></initialValueExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="88">
+			<staticText>
+				<reportElement key="staticText-9" x="282" y="68" width="186" height="16"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true" isUnderline="false" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[Monthly Attendance Report]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-3" x="231" y="43" width="356" height="24"/>
+				<textElement textAlignment="Center">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Kunkupadu, Addanki - 523264 - Prakasam - Andhra Pradesh]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-2" x="293" y="0" width="239" height="22"/>
+				<textElement textAlignment="Center" verticalAlignment="Top">
+					<font fontName="Verdana" size="14" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[Kallam Spinning Mills ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-2" x="293" y="22" width="239" height="21"/>
+				<textElement textAlignment="Center" verticalAlignment="Top">
+					<font fontName="Verdana" size="14" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[ (Weaving Division)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-9" x="454" y="68" width="39" height="16"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true" isUnderline="false" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[For ]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="493" y="67" width="100" height="16"/>
+				<textElement verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{Emp_Type}]]></textFieldExpression>
+			</textField>
+			<image>
+				<reportElement x="38" y="8" width="91" height="62"/>
+				<imageExpression class="java.lang.String"><![CDATA["D:\\production\\web\\images\\blankicm.gif"]]></imageExpression>
+			</image>
+		</band>
+	</title>
+	<summary>
+		<band height="100" splitType="Stretch">
+			<crosstab>
+				<reportElement x="0" y="0" width="802" height="100"/>
+				<rowGroup name="stremployee" width="70">
+					<bucket>
+						<bucketExpression class="java.lang.String"><![CDATA[$F{stremployee}]]></bucketExpression>
+					</bucket>
+					<crosstabRowHeader>
+						<cellContents backcolor="#F0F8FF" mode="Opaque">
+							<box>
+								<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+							</box>
+							<textField>
+								<reportElement style="Crosstab Data Text" x="0" y="0" width="70" height="25"/>
+								<textElement verticalAlignment="Middle"/>
+								<textFieldExpression class="java.lang.String"><![CDATA[$V{stremployee}]]></textFieldExpression>
+							</textField>
+						</cellContents>
+					</crosstabRowHeader>
+					<crosstabTotalRowHeader>
+						<cellContents/>
+					</crosstabTotalRowHeader>
+				</rowGroup>
+				<columnGroup name="to_char" height="30" totalPosition="End">
+					<bucket>
+						<bucketExpression class="java.lang.String"><![CDATA[$F{to_char}]]></bucketExpression>
+					</bucket>
+					<crosstabColumnHeader>
+						<cellContents backcolor="#F0F8FF" mode="Opaque">
+							<box>
+								<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+							</box>
+							<textField>
+								<reportElement style="Crosstab Data Text" x="0" y="0" width="21" height="30"/>
+								<textElement/>
+								<textFieldExpression class="java.lang.String"><![CDATA[$V{to_char}]]></textFieldExpression>
+							</textField>
+						</cellContents>
+					</crosstabColumnHeader>
+					<crosstabTotalColumnHeader>
+						<cellContents backcolor="#BFE1FF" mode="Opaque">
+							<box>
+								<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+							</box>
+							<staticText>
+								<reportElement x="0" y="0" width="30" height="30"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle"/>
+								<text><![CDATA[PresentDays]]></text>
+							</staticText>
+							<staticText>
+								<reportElement x="30" y="0" width="32" height="30"/>
+								<box leftPadding="0">
+									<pen lineWidth="0.25"/>
+									<topPen lineWidth="0.25"/>
+									<leftPen lineWidth="0.25"/>
+									<bottomPen lineWidth="0.25"/>
+									<rightPen lineWidth="0.25"/>
+								</box>
+								<textElement textAlignment="Center" verticalAlignment="Middle"/>
+								<text><![CDATA[Total Days]]></text>
+							</staticText>
+						</cellContents>
+					</crosstabTotalColumnHeader>
+				</columnGroup>
+				<measure name="presentMeasure" class="java.lang.String">
+					<measureExpression><![CDATA[$F{present}]]></measureExpression>
+				</measure>
+				<measure name="TotPresents" class="java.lang.Long">
+					<measureExpression><![CDATA[$F{totpresent}]]></measureExpression>
+				</measure>
+				<measure name="Totdays" class="java.lang.Integer">
+					<measureExpression><![CDATA[$V{variable1}]]></measureExpression>
+				</measure>
+				<crosstabCell width="21" height="25">
+					<cellContents>
+						<box>
+							<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						</box>
+						<textField isBlankWhenNull="true">
+							<reportElement style="Crosstab Data Text" x="0" y="0" width="21" height="25"/>
+							<textElement verticalAlignment="Middle">
+								<font size="8"/>
+							</textElement>
+							<textFieldExpression class="java.lang.String"><![CDATA[$V{presentMeasure}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell height="25" rowTotalGroup="stremployee">
+					<cellContents backcolor="#BFE1FF" mode="Opaque">
+						<box>
+							<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						</box>
+						<textField>
+							<reportElement style="Crosstab Data Text" x="0" y="0" width="50" height="25"/>
+							<textElement/>
+							<textFieldExpression class="java.lang.String"><![CDATA[$V{presentMeasure}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell width="62" columnTotalGroup="to_char">
+					<cellContents backcolor="#BFE1FF" mode="Opaque">
+						<box>
+							<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						</box>
+						<textField>
+							<reportElement style="Crosstab Data Text" x="0" y="0" width="30" height="25"/>
+							<textElement verticalAlignment="Middle">
+								<font size="9"/>
+							</textElement>
+							<textFieldExpression class="java.lang.Long"><![CDATA[$V{TotPresents}]]></textFieldExpression>
+						</textField>
+						<textField>
+							<reportElement style="Crosstab Data Text" x="30" y="1" width="32" height="24"/>
+							<box leftPadding="1">
+								<pen lineWidth="0.25"/>
+								<topPen lineWidth="0.25"/>
+								<leftPen lineWidth="0.25"/>
+								<bottomPen lineWidth="0.25"/>
+								<rightPen lineWidth="0.25"/>
+							</box>
+							<textElement verticalAlignment="Middle">
+								<font size="9"/>
+							</textElement>
+							<textFieldExpression class="java.lang.Integer"><![CDATA[$V{Totdays}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell rowTotalGroup="stremployee" columnTotalGroup="to_char">
+					<cellContents backcolor="#BFE1FF" mode="Opaque">
+						<box>
+							<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						</box>
+						<textField>
+							<reportElement style="Crosstab Data Text" x="0" y="0" width="50" height="25"/>
+							<textElement/>
+							<textFieldExpression class="java.lang.String"><![CDATA[$V{presentMeasure}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+			</crosstab>
+		</band>
+	</summary>
+</jasperReport>

@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="InspeMachineWise" pageWidth="350" pageHeight="842" columnWidth="310" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<style name="Crosstab Data Text" hAlign="Center"/>
+	<parameter name="FromD" class="java.util.Date"/>
+	<parameter name="BeforeDate1" class="java.util.Date"/>
+	<parameter name="BeforeDate2" class="java.util.Date"/>
+	<queryString>
+		<![CDATA[select machine.name ::numeric as machinename,sheet.totalmtr,
+  (select name from rcpr_shift where rcpr_shift_id=sheet.inspshift) as shift,
+(select array_to_string(array_agg(name),',') from (select "name" as name from rcpl_loom where rcpl_loom_id IN (select rcpl_loom_id from rchr_inspectionsheet where
+  doffdate=$P{FromD} and rchr_insprolltype_id = (select rchr_insprolltype_id from rchr_insprolltype where
+  code='FP')) order by name ::numeric) as firstpice) as firstpice,
+(select count(name) from rcpl_loom where rcpl_loom_id IN (select rcpl_loom_id from rchr_inspectionsheet where
+  doffdate=$P{FromD} and rchr_insprolltype_id = (select rchr_insprolltype_id from rchr_insprolltype where
+  code='FP')))  as fpcount,
+(select count(name) from rcpl_loom where rcpl_loom_id IN (select rcpl_loom_id from rchr_inspectionsheet where
+  doffdate=$P{FromD} and rchr_insprolltype_id = (select rchr_insprolltype_id from rchr_insprolltype where
+  code='LP'))) as lpcount,
+(select array_to_string(array_agg(name),',') from (select "name" as name from rcpl_loom where rcpl_loom_id IN (select rcpl_loom_id from rchr_inspectionsheet where
+  doffdate=$P{FromD} and rchr_insprolltype_id = (select rchr_insprolltype_id from rchr_insprolltype where
+  code='LP')) order by name ::numeric) as firstpice) as lastpiece,
+
+(select name from rchr_employee where rchr_employee_id=sheet.rchr_employee_id) as operator
+  from rchr_inspectionsheet sheet
+  left join rchr_qualitystandard sort on  sort.rchr_qualitystandard_id=sheet.rchr_qualitystandard_id
+  left join rcpr_machine machine on machine.rcpr_machine_id=sheet.rcpr_machine_id
+  where sheet.doffdate=$P{FromD}
+  order by machine.name :: numeric]]>
+	</queryString>
+	<field name="machinename" class="java.math.BigDecimal"/>
+	<field name="totalmtr" class="java.math.BigDecimal"/>
+	<field name="shift" class="java.lang.String"/>
+	<field name="firstpice" class="java.lang.String"/>
+	<field name="fpcount" class="java.lang.Long"/>
+	<field name="lpcount" class="java.lang.Long"/>
+	<field name="lastpiece" class="java.lang.String"/>
+	<field name="operator" class="java.lang.String"/>
+	<summary>
+		<band height="117" splitType="Stretch">
+			<crosstab>
+				<reportElement x="0" y="0" width="310" height="37"/>
+				<crosstabHeaderCell>
+					<cellContents>
+						<staticText>
+							<reportElement style="Crosstab Data Text" x="0" y="0" width="40" height="23"/>
+							<box topPadding="1" leftPadding="1" rightPadding="0">
+								<pen lineWidth="0.5"/>
+								<topPen lineWidth="0.5" lineStyle="Solid"/>
+								<leftPen lineWidth="0.5"/>
+								<bottomPen lineWidth="0.5" lineStyle="Solid"/>
+								<rightPen lineWidth="0.5"/>
+							</box>
+							<textElement verticalAlignment="Middle">
+								<font size="8" isBold="true"/>
+							</textElement>
+							<text><![CDATA[ Shift \  Mc No.]]></text>
+						</staticText>
+					</cellContents>
+				</crosstabHeaderCell>
+				<rowGroup name="machinename" width="40" totalPosition="End">
+					<bucket>
+						<bucketExpression class="java.math.BigDecimal"><![CDATA[$F{machinename}]]></bucketExpression>
+					</bucket>
+					<crosstabRowHeader>
+						<cellContents backcolor="#F0F8FF" mode="Opaque">
+							<box>
+								<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+							</box>
+							<textField isBlankWhenNull="true">
+								<reportElement style="Crosstab Data Text" x="0" y="0" width="40" height="12"/>
+								<textElement verticalAlignment="Middle">
+									<font size="8"/>
+								</textElement>
+								<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{machinename}]]></textFieldExpression>
+							</textField>
+						</cellContents>
+					</crosstabRowHeader>
+					<crosstabTotalRowHeader>
+						<cellContents backcolor="#BFE1FF" mode="Opaque">
+							<box>
+								<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+							</box>
+							<staticText>
+								<reportElement x="0" y="0" width="40" height="12"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font size="8" isBold="true"/>
+								</textElement>
+								<text><![CDATA[MC. Total]]></text>
+							</staticText>
+						</cellContents>
+					</crosstabTotalRowHeader>
+				</rowGroup>
+				<columnGroup name="shift" height="23" totalPosition="End">
+					<bucket>
+						<bucketExpression class="java.lang.String"><![CDATA[$F{shift}]]></bucketExpression>
+					</bucket>
+					<crosstabColumnHeader>
+						<cellContents backcolor="#F0F8FF" mode="Opaque">
+							<box>
+								<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+							</box>
+							<textField>
+								<reportElement style="Crosstab Data Text" x="0" y="0" width="40" height="23"/>
+								<textElement verticalAlignment="Middle">
+									<font size="8" isBold="true"/>
+								</textElement>
+								<textFieldExpression class="java.lang.String"><![CDATA[$V{shift}]]></textFieldExpression>
+							</textField>
+						</cellContents>
+					</crosstabColumnHeader>
+					<crosstabTotalColumnHeader>
+						<cellContents backcolor="#BFE1FF" mode="Opaque">
+							<box>
+								<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+							</box>
+							<staticText>
+								<reportElement x="0" y="0" width="40" height="23"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font size="8" isBold="true"/>
+								</textElement>
+								<text><![CDATA[Shift Total]]></text>
+							</staticText>
+						</cellContents>
+					</crosstabTotalColumnHeader>
+				</columnGroup>
+				<measure name="totalmtrMeasure" class="java.math.BigDecimal" calculation="Sum">
+					<measureExpression><![CDATA[$F{totalmtr}]]></measureExpression>
+				</measure>
+				<crosstabCell width="40" height="12">
+					<cellContents>
+						<box>
+							<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						</box>
+						<textField>
+							<reportElement style="Crosstab Data Text" x="0" y="0" width="38" height="12"/>
+							<textElement textAlignment="Right" verticalAlignment="Middle">
+								<font size="8"/>
+							</textElement>
+							<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{totalmtrMeasure}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell width="40" height="12" rowTotalGroup="machinename">
+					<cellContents backcolor="#BFE1FF" mode="Opaque">
+						<box>
+							<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						</box>
+						<textField>
+							<reportElement style="Crosstab Data Text" x="0" y="0" width="38" height="12"/>
+							<textElement textAlignment="Right" verticalAlignment="Middle">
+								<font size="8" isBold="true"/>
+							</textElement>
+							<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{totalmtrMeasure}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell width="40" height="12" columnTotalGroup="shift">
+					<cellContents backcolor="#BFE1FF" mode="Opaque">
+						<box>
+							<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						</box>
+						<textField>
+							<reportElement style="Crosstab Data Text" x="0" y="0" width="38" height="12"/>
+							<textElement textAlignment="Right" verticalAlignment="Middle">
+								<font size="8" isBold="true"/>
+							</textElement>
+							<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{totalmtrMeasure}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell width="40" height="12" rowTotalGroup="machinename" columnTotalGroup="shift">
+					<cellContents backcolor="#BFE1FF" mode="Opaque">
+						<box>
+							<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						</box>
+						<textField>
+							<reportElement style="Crosstab Data Text" x="0" y="0" width="38" height="12"/>
+							<textElement textAlignment="Right" verticalAlignment="Middle">
+								<font size="8" isBold="true"/>
+							</textElement>
+							<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{totalmtrMeasure}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+			</crosstab>
+			<staticText>
+				<reportElement positionType="Float" x="3" y="44" width="51" height="21"/>
+				<textElement verticalAlignment="Top">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[First Piece Looms:]]></text>
+			</staticText>
+			<textField>
+				<reportElement positionType="Float" x="57" y="44" width="245" height="33"/>
+				<textElement verticalAlignment="Top">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{firstpice}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement positionType="Float" x="4" y="80" width="51" height="21"/>
+				<textElement verticalAlignment="Top">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[last Piece Looms:]]></text>
+			</staticText>
+			<textField>
+				<reportElement positionType="Float" x="57" y="80" width="245" height="33"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{lastpiece}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" x="4" y="65" width="38" height="12"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Long"><![CDATA[$F{fpcount}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" x="4" y="101" width="38" height="12"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Long"><![CDATA[$F{lpcount}]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
+</jasperReport>

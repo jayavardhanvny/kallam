@@ -1,0 +1,16 @@
+#=============================
+#S.A. Mateen
+#=============================
+#Payroll Scenarios
+
+Case2: No work scenario: when employee is present if there is no work then Present will be checked and no work will be unchecked
+so Standard component salary = ((BASIC * 60%)/No of days in month) * (no of days presnet - no work)
+incentives = VariableSetLine * (no of days presnet + no work)
+
+Case3: Deducting LateAmount for employee based on Shift typ, its applicable for employees of type WOrkers
+
+for ex:
+
+1st Shift = 10 hrs, Salary = (PerDaySal/(60* Shift Time in Hours)) * Late Time in Mins
+2nd Shift = 8 hrs, Salary = (PerDaySal/(60* Shift Time in Hours)) * Late Time in Mins
+3rd Shift = 6 hrs, Salary = (PerDaySal/(60* Shift Time in Hours)) * Late Time in Mins

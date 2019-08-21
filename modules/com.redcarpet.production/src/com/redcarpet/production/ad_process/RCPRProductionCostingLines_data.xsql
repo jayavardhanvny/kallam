@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<SqlClass name="RCPRProductionCostingLinesData" package="com.redcarpet.production.ad_process" accessModifier="public">
+
+     <SqlMethod name="getCostingLines" type="preparedStatement" return="multiple">
+	<Sql>
+		<![CDATA[ 
+                    select coalesce(sum(mcost.qty), 0) as TotalQty, sum(mcost.price) as TotalPrice, 
+			mcost.m_product_id, mcost.ad_org_id
+		    from m_costing mcost 
+		    where mcost.ad_client_id = ? 
+			and mcost.costtype='AVA' and mcost.ismanual='Y' and mcost.ad_org_id !='0'
+			and mcost.m_product_id in (select distinct mcost.m_product_id
+			 from m_costing mcost)
+		    group by mcost.m_product_id, mcost.ad_org_id
+
+                 ]]>
+	</Sql>
+        <Parameter name="clientId"/>
+     </SqlMethod>
+
+     <SqlMethod name="getPriceListId" type="preparedStatement" return="string">
+	<Sql>
+		<![CDATA[ 
+                     select pp.m_productprice_id as m_productprice_id
+                         from m_product prod 
+                         inner join m_productprice pp on pp.m_product_id = prod.m_product_id 
+                         inner join m_pricelist_version plv on pp.m_pricelist_version_id = plv.m_pricelist_version_id
+                         inner join m_pricelist pl on plv.m_pricelist_id = pl.m_pricelist_id
+                     where prod.m_product_id = ?
+                     and pl.issopricelist = 'N'
+   
+                 ]]>
+	</Sql>
+        <Parameter name="productId"/>
+     </SqlMethod>
+
+     <SqlMethod name="getCumulativeQty" type="preparedStatement" return="string">
+	<Sql>
+		<![CDATA[ 
+                      select coalesce(sum(cumqty),0) as TotalQty from m_costing  where m_product_id = ? 
+   
+                 ]]>
+	</Sql>
+        <Parameter name="productId"/>
+     </SqlMethod>
+
+     <SqlMethod name="getLastUpdatedCost" type="preparedStatement" return="string">
+	<Sql>
+		<![CDATA[ 
+                     select coalesce(sum(cumqty), 0) as TotalQty from m_costing  where m_product_id = ? 
+                 ]]>
+	</Sql>
+        <Parameter name="productId"/>
+     </SqlMethod>
+
+</SqlClass>

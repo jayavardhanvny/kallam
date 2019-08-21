@@ -1,0 +1,328 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="RoomAllocationReport" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<property name="ireport.zoom" value="2.9230756500000052"/>
+	<property name="ireport.x" value="556"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="Room" class="java.lang.String">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="aux_room" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[$P{Room}.equals("") ? " " : " AND ROOM.RCHR_ROOM_ID = '" + $P{Room} + "'"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="Block" class="java.lang.String">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="aux_block" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[$P{Block}.equals("") ? " " : " AND BLOCK.RCHR_BLOCK_ID = '" + $P{Block} + "'"]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[select punchno,employeename,
+ (select name from rchr_emp_dept where rchr_emp_dept_id=emp.rchr_emp_dept_id) as department,
+ (select name from rchr_designation where rchr_designation_id=emp.rchr_designation_id) as designation,
+(select blockname from rchr_block where rchr_block_id=$P{Block}) as parm_block,
+  emp.weeklyoff,
+  room.roomno as roomno
+,(select allot.allotdate from RCHR_Allotment allot where allot.rchr_room_id = room.rchr_room_id and emp.rchr_employee_id=allot.rchr_employee_id order by allot.allotdate desc limit 1) as allotteddate
+  from rchr_employee emp
+  left join rchr_room room on room.rchr_room_id = emp.rchr_room_id
+  left join rchr_block block on block.rchr_block_id=room.rchr_block_id
+  where emp.isactive='Y' and emp.isallotment='Y'
+ and 1=1
+$P!{aux_room}
+$P!{aux_block}
+  order by roomno]]>
+	</queryString>
+	<field name="punchno" class="java.lang.String"/>
+	<field name="employeename" class="java.lang.String"/>
+	<field name="department" class="java.lang.String"/>
+	<field name="designation" class="java.lang.String"/>
+	<field name="parm_block" class="java.lang.String"/>
+	<field name="weeklyoff" class="java.lang.String"/>
+	<field name="roomno" class="java.lang.String"/>
+	<field name="allotteddate" class="java.sql.Timestamp"/>
+	<variable name="sno" class="java.math.BigDecimal" resetType="Group" resetGroup="Room" calculation="Count">
+		<variableExpression><![CDATA[$F{punchno}]]></variableExpression>
+	</variable>
+	<group name="Room">
+		<groupExpression><![CDATA[$F{roomno}]]></groupExpression>
+		<groupHeader>
+			<band height="12">
+				<staticText>
+					<reportElement x="229" y="-1" width="37" height="13"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="9" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Room]]></text>
+				</staticText>
+				<textField>
+					<reportElement x="266" y="0" width="74" height="12"/>
+					<textElement verticalAlignment="Middle">
+						<font size="9" isBold="true"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{roomno}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="56" splitType="Stretch">
+			<line>
+				<reportElement x="554" y="0" width="1" height="55"/>
+			</line>
+			<line>
+				<reportElement x="0" y="0" width="1" height="55"/>
+			</line>
+			<line>
+				<reportElement x="0" y="0" width="555" height="1"/>
+			</line>
+			<staticText>
+				<reportElement key="staticText-2" x="111" y="3" width="239" height="23"/>
+				<textElement textAlignment="Center" verticalAlignment="Top">
+					<font fontName="Verdana" size="12" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[Kallam Spinning Mills ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-3" x="115" y="18" width="356" height="13"/>
+				<textElement textAlignment="Center">
+					<font size="10"/>
+				</textElement>
+				<text><![CDATA[Kunkupadu, Addanki - 523264 - Prakasam - Andhra Pradesh]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-2" x="300" y="2" width="158" height="19"/>
+				<textElement verticalAlignment="Top">
+					<font fontName="Verdana" size="12" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[ (Weaving Division)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-9" x="157" y="31" width="245" height="15"/>
+				<textElement textAlignment="Center">
+					<font fontName="Verdana" size="12" isBold="true" isItalic="true" isUnderline="false" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[Room Allocation Report]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="3" y="35" width="56" height="18"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Quarters :]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="59" y="36" width="86" height="17"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{parm_block}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="26" splitType="Stretch">
+			<line>
+				<reportElement x="0" y="0" width="1" height="25"/>
+			</line>
+			<line>
+				<reportElement x="81" y="-1" width="1" height="26"/>
+			</line>
+			<line>
+				<reportElement x="262" y="0" width="1" height="25"/>
+			</line>
+			<line>
+				<reportElement x="554" y="0" width="1" height="25"/>
+			</line>
+			<line>
+				<reportElement x="0" y="-1" width="555" height="1"/>
+			</line>
+			<staticText>
+				<reportElement x="32" y="2" width="45" height="21"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Punch No.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="187" y="2" width="73" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Department]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-19" x="86" y="4" width="90" height="17"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ Employee Name]]></text>
+			</staticText>
+			<line>
+				<reportElement x="354" y="0" width="1" height="25"/>
+			</line>
+			<line>
+				<reportElement stretchType="RelativeToBandHeight" x="30" y="0" width="1" height="25"/>
+			</line>
+			<staticText>
+				<reportElement x="1" y="1" width="27" height="22"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[S.No.]]></text>
+			</staticText>
+			<line>
+				<reportElement x="421" y="0" width="1" height="25"/>
+			</line>
+			<line>
+				<reportElement x="184" y="0" width="1" height="25"/>
+			</line>
+			<staticText>
+				<reportElement x="265" y="2" width="90" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Designation]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="356" y="3" width="64" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Weekly OFf]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="423" y="3" width="72" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Room No]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="25" width="554" height="1"/>
+			</line>
+			<line>
+				<reportElement x="495" y="0" width="1" height="25"/>
+			</line>
+			<staticText>
+				<reportElement x="496" y="2" width="58" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Allotted Date]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="16" splitType="Stretch">
+			<line>
+				<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="1" height="15"/>
+			</line>
+			<line>
+				<reportElement stretchType="RelativeToBandHeight" x="81" y="0" width="1" height="15"/>
+			</line>
+			<line>
+				<reportElement stretchType="RelativeToBandHeight" x="262" y="0" width="1" height="15"/>
+			</line>
+			<line>
+				<reportElement stretchType="RelativeToBandHeight" x="554" y="0" width="1" height="15"/>
+			</line>
+			<line>
+				<reportElement positionType="Float" x="0" y="15" width="555" height="1"/>
+			</line>
+			<line>
+				<reportElement positionType="Float" x="0" y="-1" width="555" height="1"/>
+			</line>
+			<line>
+				<reportElement stretchType="RelativeToBandHeight" x="354" y="0" width="1" height="15"/>
+			</line>
+			<line>
+				<reportElement stretchType="RelativeToBandHeight" x="30" y="0" width="1" height="15"/>
+			</line>
+			<line>
+				<reportElement stretchType="RelativeToBandHeight" x="421" y="0" width="1" height="15"/>
+			</line>
+			<line>
+				<reportElement stretchType="RelativeToBandHeight" x="184" y="0" width="1" height="15"/>
+			</line>
+			<textField isBlankWhenNull="true">
+				<reportElement x="3" y="1" width="26" height="14"/>
+				<textElement verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{sno}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="85" y="0" width="99" height="15"/>
+				<textElement verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{employeename}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="33" y="1" width="48" height="14"/>
+				<textElement verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{punchno}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="187" y="0" width="73" height="14"/>
+				<textElement verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{department}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="265" y="0" width="90" height="14"/>
+				<textElement verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{designation}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="356" y="1" width="64" height="14"/>
+				<textElement verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{weeklyoff}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="427" y="1" width="67" height="13"/>
+				<textElement verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{roomno}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement stretchType="RelativeToBandHeight" x="494" y="0" width="1" height="15"/>
+			</line>
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement x="499" y="0" width="58" height="15"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.sql.Timestamp"><![CDATA[$F{allotteddate}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="74" splitType="Stretch">
+			<staticText>
+				<reportElement x="268" y="18" width="72" height="15"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Grand Totals :]]></text>
+			</staticText>
+		</band>
+	</summary>
+</jasperReport>

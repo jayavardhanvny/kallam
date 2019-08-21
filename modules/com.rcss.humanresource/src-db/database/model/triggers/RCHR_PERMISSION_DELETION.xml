@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+  <database name="TRIGGER RCHR_PERMISSION_DELETION">
+    <trigger name="RCHR_PERMISSION_DELETION" table="RCHR_PERMISSION" fires="before" insert="false" update="false" delete="true" foreach="row">
+      <body><![CDATA[declare 
+ Declare 
+     
+     
+begin
+
+
+if(TG_OP='DELETE')then 
+	if(:old.status='DR') then 
+		--return new;
+	else
+		raise exception 'Delete not possible';  
+	end if;
+ return old;
+ end if;
+ end
+]]></body>
+    </trigger>
+  </database>

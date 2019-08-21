@@ -1,0 +1,37 @@
+package com.redcarpet.production.ad_callouts;
+
+import java.math.BigDecimal;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import org.openbravo.erpCommon.ad_callouts.SimpleCallout;
+import javax.servlet.ServletException;
+
+public class RCPR_CalculateNextPMDate extends SimpleCallout {
+
+    protected void execute(CalloutInfo info) throws ServletException {
+        
+        try {
+            String strLastPMDone = info.getStringParameter("inplastpmdone", null);
+            String strFrequency = info.getStringParameter("inpfrequency", null);
+            SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+            Date dateLast = sdf.parse(strLastPMDone);
+            Calendar cal = Calendar.getInstance();
+            cal.setTimeInMillis(dateLast.getTime());
+            cal.add(Calendar.DATE, new BigDecimal(strFrequency.replace(",","")).intValue());
+            Date nextDate = new Date(cal.getTimeInMillis());
+            info.addResult("inpnextpmdone", sdf.format(nextDate));
+            String strPlannTimeHrs = (new BigDecimal(strFrequency).multiply(new BigDecimal(24))).toString();
+            info.addResult("inpplannedtime", strPlannTimeHrs);
+        } catch (ParseException ex) {
+           // Logger.getLogger(RCPR_CalculateNextPMDate.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception ex) {
+          //  Logger.getLogger(RCPR_CalculateNextPMDate.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+    }
+}
+
+
+    

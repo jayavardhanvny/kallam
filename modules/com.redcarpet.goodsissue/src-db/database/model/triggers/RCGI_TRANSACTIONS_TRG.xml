@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+  <database name="TRIGGER RCGI_TRANSACTIONS_TRG">
+    <trigger name="RCGI_TRANSACTIONS_TRG" table="RCGI_TRANSACTIONS" fires="before" insert="true" update="false" delete="false" foreach="row">
+      <body><![CDATA[Declare 
+  nooflines NUMBER:=0;
+  remainingqty NUMBER:=0;
+  newcost NUMBER:=0;
+  newquantity NUMBER:=0;
+  newopenqty NUMBER:=0;
+  avgcp NUMBER:=0;
+   BEGIN
+	if(TG_OP='INSERT') THEN
+	select count(rcgi_transactions_id) into nooflines from  rcgi_transactions where m_product_id=:new.m_product_id;
+	if (nooflines=0) then
+		--raise exception 'this is %',nooflines;
+		update m_product set em_rcgi_avgcp=:new.cost,em_rcgi_remqty=:new.Openqty where m_product_id=:new.m_product_id;
+	else 
+		
+-- 		select sum(Openqty)-:new.Quantityorder into remainingqty from rcgi_transactions where m_product_id=:new.m_product_id; // Describes After insert operation
+		select em_rcgi_remqty,em_rcgi_avgcp into remainingqty,avgcp from m_product where m_product_id=:new.m_product_id; -- Describes before insert operation
+		select ((avgcp*remainingqty)+(:new.cost*:new.Quantityorder))/(remainingqty+:new.Quantityorder) into newcost from m_product where m_product_id=:new.m_product_id;
+		--raise exception 'avgcp this is %',newcost;
+		select sum(openqty) into newopenqty from rcgi_transactions where m_product_id=:new.m_product_id;
+		select newopenqty+:new.Quantityorder into newquantity from rcgi_transactions where rcgi_transactions_id=:new.rcgi_transactions_id;-- After insert line
+		--raise exception 'newopenqty+new.Quantityorder this is %',newquantity;
+		update m_product set em_rcgi_avgcp=newcost,em_rcgi_remqty=newopenqty+:new.Quantityorder where m_product_id=:new.m_product_id;
+	
+	end if;
+	return new; 
+	end if;
+	      
+   END RCGI_TRANSACTIONS_TRG
+]]></body>
+    </trigger>
+  </database>

@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+ *************************************************************************
+ * The contents of this file are subject to the Openbravo  Public  License
+ * Version  1.1  (the  "License"),  being   the  Mozilla   Public  License
+ * Version 1.1  with a permitted attribution clause; you may not  use this
+ * file except in compliance with the License. You  may  obtain  a copy of
+ * the License at http://www.openbravo.com/legal/license.html 
+ * Software distributed under the License  is  distributed  on  an "AS IS"
+ * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+ * License for the specific  language  governing  rights  and  limitations
+ * under the License. 
+ * The Original Code is Openbravo ERP. 
+ * The Initial Developer of the Original Code is Openbravo SLU 
+ * All portions are Copyright (C) 2001-2012 Openbravo SLU 
+ * All Rights Reserved. 
+ * Contributor(s):  ______________________________________.
+ ************************************************************************
+-->
+
+<SqlClass name="CopyOnlineSalariesData" package="com.rcss.humanresource.ad_process">
+<SqlMethod name="select" type="preparedStatement" return="multiple">
+    <SqlMethodComment></SqlMethodComment>
+    <Sql>
+      <![CDATA[
+	        select ep.rcpl_emppayrollprocess_id as eid,e.documentno as empno,upper(e.employeename) as ename,e.rchr_employee_id as empid,
+            ep.pendingamt as pamt,ep.totalpay as totalpay,empbank.accountno as acno,empbank.ifsccode as ifsccode,master.name as bankname,master.rchr_bankmaster_id as mid
+            			from rcpl_emppayrollprocess ep,rcpl_payrollprocess p,rchr_employee e,rchr_emp_bank empbank,rchr_bankmaster master
+            			where p.rcpl_payrollprocess_id=ep.rcpl_payrollprocess_id
+            			and ep.rchr_employee_id=e.rchr_employee_id
+            			and e.rchr_employee_id=empbank.rchr_employee_id
+            			and empbank.rchr_bankmaster_id=master.rchr_bankmaster_id
+            			and p.rchr_attd_process_id=?
+            			and p.ad_org_id=?
+            			and ep.totalpay>0
+            			and ep.Ispfapplicable='Y'
+            			and ep.isbank='Y'
+            			and empbank.isactive='Y'
+            			and ep.pendingamt>0
+            			and ep.employeetype=?
+            			and ep.rcpl_emppayrollprocess_id not in (select bpln.rcpl_emppayrollprocess_id from
+            			rchr_banksalpaymentsln bpln where (bpln.status='Paid' or bpln.status='PRCS' or bpln.status='DR') union select bpol.rcpl_emppayrollprocess_id from
+            			rchr_banksalpaymentsol bpol where (bpol.status='Paid' or bpol.status='PRCS' or bpol.status='DR'))
+            			order by SUBSTRING(e.documentno FROM '([0-9]+)')::BIGINT ASC,e.documentno
+
+
+      ]]>
+    </Sql>
+    <Field name="rownum" value="count"/>
+     	 <Parameter name="processId"/>   
+     	 <Parameter name="orgId"/>
+     	 <Parameter name="etype"/>
+  </SqlMethod>
+  
+  
+  <SqlMethod name="selectnew" type="preparedStatement" return="multiple">
+    <SqlMethodComment></SqlMethodComment>
+    <Sql>
+      <![CDATA[
+
+        select ep.rcpl_emppayrollprocess_id as eid,e.documentno as empno,upper(e.employeename) as ename,e.rchr_employee_id as empid,ep.pendingamt as pamt,ep.totalpay as totalpay,empbank.accountno as acno,empbank.ifsccode as ifsccode,master.name as bankname,master.rchr_bankmaster_id as mid
+			from rcpl_emppayrollprocess ep,rcpl_payrollprocess p,rchr_employee e,rchr_emp_bank empbank,rchr_bankmaster master
+			where p.rcpl_payrollprocess_id=ep.rcpl_payrollprocess_id
+			and ep.rchr_employee_id=e.rchr_employee_id
+			and e.rchr_employee_id=empbank.rchr_employee_id
+			and empbank.rchr_bankmaster_id=master.rchr_bankmaster_id
+			and p.rchr_attd_process_id=?
+			and p.ad_org_id=?
+			and ep.totalpay>0
+			and ep.Ispfapplicable='Y'
+			and empbank.isactive='Y'
+			and ep.isbank='Y'
+			and ep.pendingamt>0
+			and ep.employeetype=?
+			and ep.rcpl_emppayrollprocess_id not in(select bpln.rcpl_emppayrollprocess_id from 
+			rchr_banksalpaymentsln bpln where (bpln.status='Paid' or bpln.status='PRCS' or bpln.status='DR') union select bpol.rcpl_emppayrollprocess_id from
+			rchr_banksalpaymentsol bpol where (bpol.status='Paid' or bpol.status='PRCS' or bpol.status='DR'))
+			order by SUBSTRING(e.documentno FROM '([0-9]+)')::BIGINT ASC,e.documentno
+			                       
+      ]]>
+    </Sql>
+    <Field name="rownum" value="count"/>
+     	 <Parameter name="processId"/>   
+     	 <Parameter name="orgId"/>
+     	 <Parameter name="etype"/> 	
+  </SqlMethod>
+  
+  
+  <SqlMethod name="set" type="constant" return="multiple">
+      <SqlMethodComment></SqlMethodComment>
+      <Sql></Sql>
+  </SqlMethod>
+
+</SqlClass>

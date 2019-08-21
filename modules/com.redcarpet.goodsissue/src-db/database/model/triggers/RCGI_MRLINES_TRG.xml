@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+  <database name="TRIGGER RCGI_MRLINES_TRG">
+    <trigger name="RCGI_MRLINES_TRG" table="RCGI_MRLINES" fires="before" insert="true" update="true" delete="false" foreach="row">
+      <body><![CDATA[Declare 
+       
+   BEGIN
+	if(TG_OP='INSERT' OR TG_OP='UPDATE') THEN
+	IF(:NEW.rchr_warpyarntype_id IS NULL AND :NEW.epcg_variant_id IS NULL)
+	THEN RAISE EXCEPTION 'Yarn Type or Variant should be mandatory';
+	else return new;
+	end if;
+	end if;
+       
+   END RCGI_MRLINES_TRG
+]]></body>
+    </trigger>
+  </database>

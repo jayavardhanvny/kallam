@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+  <database name="TRIGGER RCGI_DRLINES_TRG">
+    <trigger name="RCGI_DRLINES_TRG" table="RCGI_DRLINES" fires="after" insert="true" update="true" delete="true" foreach="row">
+      <body><![CDATA[Declare 
+       
+   BEGIN
+	if(TG_OP='INSERT') THEN
+	update rcgi_departmentreceipt set totallineamount=totallineamount+:new.linenetamt where rcgi_departmentreceipt_id=:new.rcgi_departmentreceipt_id;
+	return new;
+	else IF(TG_OP='UPDATE') then
+	update rcgi_departmentreceipt set totallineamount=:NEW.linenetamt+(totallineamount-:OLD.linenetamt) where rcgi_departmentreceipt_id=:new.rcgi_departmentreceipt_id;
+	RETURN NEW;
+	ELSE IF(TG_OP='DELETE') THEN
+	update rcgi_departmentreceipt set totallineamount=totallineamount-:OLD.linenetamt where rcgi_departmentreceipt_id=:OLD.rcgi_departmentreceipt_id;
+	RETURN OLD;
+	END IF;
+	END IF;
+	end if;
+       
+   END RCGI_DRLINES_TRG
+]]></body>
+    </trigger>
+  </database>

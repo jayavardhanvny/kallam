@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+  <database name="FUNCTION RCHR_ROOM_ALLOTMENT">
+    <function name="RCHR_ROOM_ALLOTMENT" type="NULL">
+      <parameter name="p_pinstance_id" type="VARCHAR" mode="in">
+        <default/>
+      </parameter>
+      <body><![CDATA[Cur_Parameter RECORD;
+  v_Message character varying(500):='';
+
+  v_rchr_allotment_id character varying(32);
+  v_AD_Org_Id character varying(32);
+  v_rchr_room_id character varying(32);
+  v_rchr_employee_id character varying(32);
+  
+  BEGIN 
+ --BODY
+ FOR Cur_Parameter IN
+      (SELECT i.Record_ID
+      FROM AD_PInstance i
+      LEFT JOIN AD_PInstance_Para p
+        ON i.AD_PInstance_ID=p.AD_PInstance_ID
+      WHERE i.AD_PInstance_ID=p_PInstance_ID
+      ORDER BY p.SeqNo)
+    LOOP
+  v_rchr_allotment_id:= Cur_Parameter.Record_ID;      
+  
+    END LOOP;
+ 
+
+
+  select rchr_employee_id into v_rchr_employee_id from rchr_allotment where rchr_allotment_id=v_rchr_allotment_id;
+  select rchr_room_id into v_rchr_room_id from rchr_allotment where rchr_allotment_id=v_rchr_allotment_id;
+  
+  update rchr_employee set rchr_room_id=v_rchr_room_id,isallotment='Y' where rchr_employee_id=v_rchr_employee_id;
+  update rchr_room set isvacant='N' where rchr_room_id=v_rchr_room_id;
+	
+    v_Message:='@Room Allotment Successfully@';
+    AD_UPDATE_PINSTANCE(p_PInstance_ID, NULL, 'N', 1, v_Message) ;
+    RETURN;
+END RCHR_ROOM_ALLOTMENT
+]]></body>
+    </function>
+  </database>

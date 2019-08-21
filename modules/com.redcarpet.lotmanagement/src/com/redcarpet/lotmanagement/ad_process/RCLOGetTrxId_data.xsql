@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<SqlClass name="RCLOGetTrxIdData" package="com.redcarpet.lotmanagement.ad_process" accessModifier="public">
+
+    <SqlMethod name="getTransactionIds" type="preparedStatement" return="multiple">
+        <Sql>
+	<![CDATA[ 
+    
+        SELECT M_TRANSACTION_ID, '' as ad_sequence_id, '' as documentno  FROM M_TRANSACTION 
+            WHERE M_TRANSACTION_ID IN (
+            (SELECT tx.m_transaction_id as m_transaction_id FROM m_transaction tx		
+                    left join m_inoutline iol on tx.m_inoutline_id = iol.m_inoutline_id			
+                    left join m_inout io on iol.m_inout_id = io.m_inout_id		
+                    left join m_product p1 on tx.m_product_id = p1.m_product_id
+                    where p1.em_rclo_islot = 'Y' and (tx.m_inoutline_id is not null or tx.rcpr_prproduct_id is not null)		
+                    and tx.m_inoutline_id not in 		
+                    (select l1.m_inoutline_id from rclo_lotreceipt l1 
+                            where l1.m_inoutline_id is not null) 
+            and io.issotrx='N' )
+            UNION	
+            (select tx.m_transaction_id as m_transaction_id from m_transaction tx
+                    inner join m_product p2 on tx.m_product_id = p2.m_product_id
+                    where p2.em_rclo_islot = 'Y' and tx.rcpr_prproduct_id  is not null		
+                    and tx.rcpr_prproduct_id not in
+                    (select re.rcpr_prproduct_id from rclo_lotreceipt re
+                            where re.rcpr_prproduct_id  is not null	) 
+
+            )
+        )
+    
+    ]]>
+        </Sql>
+    </SqlMethod>
+    
+    
+    <SqlMethod name="getDocumentNumber" type="preparedStatement" return="multiple">
+        <Sql>
+	<![CDATA[ 
+    
+        (select ad_sequence_id, (prefix||currentnext||suffix) as documentno from ad_sequence where ad_org_id = ? and prefix='LOT/U1/')
+        Union 
+        (select ad_sequence_id, (prefix||currentnext||suffix) as documentno  from ad_sequence where ad_org_id = ? and prefix='LOT/U2/')
+
+
+    ]]>
+        </Sql>
+        <Parameter name="org1"/>
+        <Parameter name="org2"/>
+    </SqlMethod>
+    
+    
+    
+</SqlClass>

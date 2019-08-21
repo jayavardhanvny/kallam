@@ -1,0 +1,50 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+package com.redcarpet.freight.ad_callouts;
+
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import javax.servlet.ServletException;
+import org.openbravo.erpCommon.ad_callouts.SimpleCallout;
+
+/**
+ *
+ * @author Administrator
+ */
+public class RCFR_Recalculate_Discount_Entered extends SimpleCallout{
+
+    @Override
+    protected void execute(CalloutInfo info) throws ServletException {
+        
+        BigDecimal rcfrPrice = info.getBigDecimalParameter("inpemRcfrPrice");
+        BigDecimal obDiscount =  info.getBigDecimalParameter("inpdiscount");
+        BigDecimal orderedQuantity =  info.getBigDecimalParameter("inpqtyordered");
+        BigDecimal freight =  info.getBigDecimalParameter("inpemRcfrFreight");
+        BigDecimal insurance =  info.getBigDecimalParameter("inpemRcfrInsurance");
+        BigDecimal packaging =  info.getBigDecimalParameter("inpemRcfrPnf");
+        
+        reCalculateCosts(info, rcfrPrice, obDiscount, orderedQuantity, freight, insurance, packaging);
+        
+    }
+    
+    /*
+    netunitprice = (unitprice - unit discount) + unit freight+ unit insurance+unit packaging
+    */
+    public void reCalculateCosts(CalloutInfo info, BigDecimal rcfrPrice, BigDecimal obDiscount, BigDecimal orderedQuantity, 
+            BigDecimal freight, BigDecimal insurance, BigDecimal packaging){
+        BigDecimal discount = rcfrPrice.multiply(obDiscount).multiply(new BigDecimal(0.01)).multiply(orderedQuantity);
+        BigDecimal temp1 = rcfrPrice.subtract((rcfrPrice.multiply(obDiscount).multiply(new BigDecimal(0.01))));
+        BigDecimal unitFreight = freight.divide(orderedQuantity, 4, RoundingMode.HALF_UP);
+        BigDecimal unitInsurance = insurance.divide(orderedQuantity, 4, RoundingMode.HALF_UP);
+        BigDecimal unitPackaging = packaging.divide(orderedQuantity, 4, RoundingMode.HALF_UP);
+        BigDecimal netUnitPrice = temp1.add(unitFreight).add(unitInsurance).add(unitPackaging);
+        info.addResult("inppriceactual", netUnitPrice);
+        info.addResult("inpemRcfrDisco", discount);
+        info.addResult("inplinenetamt", netUnitPrice.multiply(orderedQuantity));
+    }
+    
+}

@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+  <database name="TRIGGER EPCG_PPCENQUIRY_DELETION_CO">
+    <trigger name="EPCG_PPCENQUIRY_DELETION_CO" table="EPCG_PPCENQUIRY" fires="before" insert="false" update="false" delete="true" foreach="row">
+      <body><![CDATA[v_status character varying(4);
+
+BEGIN
+	IF (DELETING) THEN
+		SELECT status into v_status FROM epcg_ppcenquiry WHERE epcg_ppcenquiry_id = :OLD.epcg_ppcenquiry_id;
+		IF(v_status='CO') THEN
+			RAISE NO_DATA_FOUND;
+		END IF;
+		RETURN OLD;
+	END if;
+ END EPCG_PPCENQUIRY_DELETION_CO
+]]></body>
+    </trigger>
+  </database>

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+ *************************************************************************
+ * The contents of this file are subject to the Openbravo  Public  License
+ * Version  1.1  (the  "License"),  being   the  Mozilla   Public  License
+ * Version 1.1  with a permitted attribution clause; you may not  use this
+ * file except in compliance with the License. You  may  obtain  a copy of
+ * the License at http://www.openbravo.com/legal/license.html 
+ * Software distributed under the License  is  distributed  on  an "AS IS"
+ * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+ * License for the specific  language  governing  rights  and  limitations
+ * under the License. 
+ * The Original Code is Openbravo ERP. 
+ * The Initial Developer of the Original Code is Openbravo SLU 
+ * All portions are Copyright (C) 2001-2012 Openbravo SLU 
+ * All Rights Reserved. 
+ * Contributor(s):  ______________________________________.
+ ************************************************************************
+-->
+
+<SqlClass name="ExCopySalaryData" package="com.rcss.humanresource.ad_process">
+<SqlMethod name="select" type="preparedStatement" return="multiple">
+    <SqlMethodComment></SqlMethodComment>
+    <Sql>
+      <![CDATA[
+	        select ep.rcpl_emppayrollprocess_id as eid,e.documentno as empno,upper(e.employeename) as ename,e.rchr_employee_id as empid,ep.pendingamt as pamt,ep.totalpay as totalpay
+            			from rcpl_emppayrollprocess ep,rcpl_payrollprocess p,rchr_employee e
+            			where p.rcpl_payrollprocess_id=ep.rcpl_payrollprocess_id
+            			and ep.rchr_employee_id=e.rchr_employee_id
+            			and p.rchr_attd_process_id=?
+            			and p.ad_org_id=?
+            			and ep.totalpay>0
+            			and ep.ispfapplicable='N'
+            			and ep.pendingamt>0
+            			and ep.rchr_employee_id not in (select l.rchr_employee_id from rchr_exbanksalpaymentsempln l,rchr_exbanksalpaymentsemp el
+            			where l.rchr_exbanksalpaymentsemp_id=el.rchr_exbanksalpaymentsemp_id
+            			and el.rchr_exbanksalpayments_id=? and (l.status='Paid' or l.status='PRCS' or l.status='DR'))
+            			and ep.rchr_employee_id not in (select el.rchr_employee_id from rchr_exbanksalpaymentsemp el
+            			where el.rchr_exbanksalpayments_id=? and (el.status='Paid' or el.status='PRCS' or el.status='DR'))
+            			order by SUBSTRING(e.documentno FROM '([0-9]+)')::BIGINT ASC,e.documentno
+			                       
+      ]]>
+    </Sql>
+    <Field name="rownum" value="count"/>
+     	 <Parameter name="processId"/>   
+     	 <Parameter name="orgId"/>		
+		 <Parameter name="payId"/>
+		 <Parameter name="payId1"/>
+  </SqlMethod>
+  
+
+  <SqlMethod name="set" type="constant" return="multiple">
+      <SqlMethodComment></SqlMethodComment>
+      <Sql></Sql>
+  </SqlMethod>
+
+</SqlClass>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<SqlClass name="RCHRCalloutUtilsData" package="com.rcss.humanresource.ad_callouts" accessModifier="public">
+
+    <SqlMethod name="getLatestFinalMeterReading" type="preparedStatement" return="string">
+        <Sql>
+		<![CDATA[ 
+                    select coalesce(finalreading,0) from RCHR_ElectricReading 
+                        where Rcmr_Meter_id=?  
+                    order by created desc limit 1 
+                ]]>
+        </Sql>
+        <Parameter name="meterId"/>
+    </SqlMethod>
+
+</SqlClass>

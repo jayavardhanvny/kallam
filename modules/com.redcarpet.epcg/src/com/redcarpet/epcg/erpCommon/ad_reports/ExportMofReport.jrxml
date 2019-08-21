@@ -1,0 +1,538 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report1" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<property name="ireport.zoom" value="1.6105100000000099"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="Id" class="java.lang.String">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[select org.name as orgname,mof.documentno,mof.contractdate,bp.name,
+mof.oncontract,mof.qstandard,mof.oncontract,mof.qstandard,sort.qualityno,mof.deliverdate,mof.lcdate,mof.lcnumber,
+(select name from ad_user where ad_user_id=enq.userid) as marketingperson,
+(select name from c_bpartner where c_bpartner_id=mof.agent) as salesperson,
+(select description from epcg_packagingtemplate where epcg_packagingtemplate_id=mof.epcg_packagingtemplate_id) as firstpoint,
+mof.orderquantity,ppc.yarnavailibility,reedavailibility,camavailibility,minwarplength
+from epcg_mof mof
+left join ad_org org on org.ad_org_id=mof.ad_org_id
+left join c_bpartner bp on bp.c_bpartner_id=mof.c_bpartner_id
+left join epcg_costenquiry enq on enq.epcg_costenquiry_id=mof.epcg_costenquiry_id
+left join rchr_qualitystandard sort on sort.rchr_qualitystandard_id=mof.rchr_qualitystandard_id
+left join epcg_ppcenquiry ppc on ppc.epcg_costenquiry_id=enq.epcg_costenquiry_id
+where
+mof.epcg_mof_id=$P{Id}]]>
+	</queryString>
+	<field name="orgname" class="java.lang.String"/>
+	<field name="documentno" class="java.lang.String">
+		<fieldDescription><![CDATA[--OBTG:NVARCHAR--]]></fieldDescription>
+	</field>
+	<field name="contractdate" class="java.sql.Timestamp"/>
+	<field name="name" class="java.lang.String"/>
+	<field name="oncontract" class="java.lang.String"/>
+	<field name="qstandard" class="java.lang.String"/>
+	<field name="qualityno" class="java.lang.String"/>
+	<field name="deliverdate" class="java.sql.Timestamp"/>
+	<field name="lcdate" class="java.sql.Timestamp"/>
+	<field name="lcnumber" class="java.lang.String"/>
+	<field name="marketingperson" class="java.lang.String"/>
+	<field name="salesperson" class="java.lang.String"/>
+	<field name="firstpoint" class="java.lang.String"/>
+	<field name="orderquantity" class="java.math.BigDecimal"/>
+	<field name="yarnavailibility" class="java.lang.String"/>
+	<field name="reedavailibility" class="java.lang.String"/>
+	<field name="camavailibility" class="java.lang.String"/>
+	<field name="minwarplength" class="java.math.BigDecimal"/>
+	<variable name="varSalesPerson" class="java.lang.String">
+		<variableExpression><![CDATA[$F{salesperson}.equals("") ? "Open" : $F{salesperson}]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="29" splitType="Stretch">
+			<textField isBlankWhenNull="true">
+				<reportElement x="0" y="0" width="555" height="29"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" lineSpacing="Single">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{orgname}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="21" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="555" height="21"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" lineSpacing="Single">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Manufacturing Order Form]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<detail>
+		<band height="555" splitType="Stretch">
+			<textField isBlankWhenNull="true">
+				<reportElement x="233" y="1" width="111" height="19"/>
+				<textElement verticalAlignment="Middle" lineSpacing="Single"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{documentno}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd-MM-yyyy" isBlankWhenNull="true">
+				<reportElement x="436" y="1" width="100" height="19"/>
+				<textElement verticalAlignment="Middle" lineSpacing="Single"/>
+				<textFieldExpression class="java.sql.Timestamp"><![CDATA[$F{contractdate}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="3" y="0" width="220" height="20"/>
+				<textElement verticalAlignment="Middle" lineSpacing="Single">
+					<font isBold="false"/>
+				</textElement>
+				<text><![CDATA[KSML Contract & Date]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="224" y="0" width="9" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" lineSpacing="Single"/>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="3" y="20" width="220" height="20"/>
+				<textElement verticalAlignment="Middle" lineSpacing="Single">
+					<font isBold="false"/>
+				</textElement>
+				<text><![CDATA[Customer Name]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="224" y="20" width="9" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" lineSpacing="Single"/>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="233" y="21" width="322" height="18"/>
+				<textElement verticalAlignment="Middle" lineSpacing="Single"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{name}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="3" y="40" width="220" height="20"/>
+				<textElement verticalAlignment="Middle" lineSpacing="Single">
+					<font isBold="false"/>
+				</textElement>
+				<text><![CDATA[Sales Person]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="224" y="40" width="9" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" lineSpacing="Single"/>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="3" y="60" width="220" height="20"/>
+				<textElement verticalAlignment="Middle" lineSpacing="Single">
+					<font isBold="false"/>
+				</textElement>
+				<text><![CDATA[On Contract Quality]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="3" y="80" width="220" height="20"/>
+				<textElement verticalAlignment="Middle" lineSpacing="Single">
+					<font isBold="false"/>
+				</textElement>
+				<text><![CDATA[Actual Quality]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="3" y="100" width="220" height="20"/>
+				<textElement verticalAlignment="Middle" lineSpacing="Single">
+					<font isBold="false"/>
+				</textElement>
+				<text><![CDATA[Sort Number]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="3" y="121" width="220" height="19"/>
+				<textElement verticalAlignment="Middle" lineSpacing="Single">
+					<font isBold="false"/>
+				</textElement>
+				<text><![CDATA[Quantity In Mts.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="3" y="141" width="220" height="19"/>
+				<textElement verticalAlignment="Middle" lineSpacing="Single">
+					<font isBold="false"/>
+				</textElement>
+				<text><![CDATA[Delivery Date]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="3" y="160" width="220" height="20"/>
+				<textElement verticalAlignment="Middle" lineSpacing="Single">
+					<font isBold="false"/>
+				</textElement>
+				<text><![CDATA[LC NO. & DATE]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="224" y="60" width="9" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" lineSpacing="Single"/>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="224" y="80" width="9" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" lineSpacing="Single"/>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="224" y="100" width="9" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" lineSpacing="Single"/>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="224" y="120" width="9" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" lineSpacing="Single"/>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="224" y="140" width="9" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" lineSpacing="Single"/>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="224" y="160" width="9" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" lineSpacing="Single"/>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="197" width="110" height="20"/>
+				<textElement lineSpacing="Single">
+					<font isBold="false"/>
+				</textElement>
+				<text><![CDATA[Packing Instructions :]]></text>
+			</staticText>
+			<line>
+				<reportElement x="223" y="0" width="1" height="181"/>
+			</line>
+			<line>
+				<reportElement x="0" y="0" width="1" height="180"/>
+			</line>
+			<line>
+				<reportElement x="0" y="180" width="555" height="1"/>
+			</line>
+			<line>
+				<reportElement x="0" y="0" width="555" height="1"/>
+			</line>
+			<line>
+				<reportElement x="1" y="20" width="555" height="1"/>
+			</line>
+			<line>
+				<reportElement x="1" y="39" width="555" height="1"/>
+			</line>
+			<line>
+				<reportElement x="1" y="60" width="555" height="1"/>
+			</line>
+			<line>
+				<reportElement x="1" y="80" width="555" height="1"/>
+			</line>
+			<line>
+				<reportElement x="0" y="100" width="555" height="1"/>
+			</line>
+			<line>
+				<reportElement x="1" y="140" width="555" height="1"/>
+			</line>
+			<line>
+				<reportElement x="0" y="120" width="555" height="1"/>
+			</line>
+			<line>
+				<reportElement x="1" y="160" width="555" height="1"/>
+			</line>
+			<textField isBlankWhenNull="true">
+				<reportElement x="233" y="61" width="322" height="19"/>
+				<textElement verticalAlignment="Middle" lineSpacing="Single"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{oncontract}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="233" y="81" width="322" height="19"/>
+				<textElement verticalAlignment="Middle" lineSpacing="Single"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{qstandard}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="233" y="101" width="100" height="19"/>
+				<textElement verticalAlignment="Middle" lineSpacing="Single"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{qualityno}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd-MM-YYYY" isBlankWhenNull="true">
+				<reportElement x="233" y="141" width="100" height="20"/>
+				<textElement verticalAlignment="Middle" lineSpacing="Single"/>
+				<textFieldExpression class="java.sql.Timestamp"><![CDATA[$F{deliverdate}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="555" y="0" width="1" height="180"/>
+			</line>
+			<staticText>
+				<reportElement x="0" y="245" width="101" height="20"/>
+				<textElement lineSpacing="Single">
+					<font isBold="false"/>
+				</textElement>
+				<text><![CDATA[Special Instructions :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="-1" y="297" width="555" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" lineSpacing="Single">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[PPC  FEEDBACK REGARDING FESIBILITY]]></text>
+			</staticText>
+			<line>
+				<reportElement x="-1" y="317" width="555" height="1"/>
+			</line>
+			<line>
+				<reportElement x="-1" y="436" width="555" height="1"/>
+			</line>
+			<line>
+				<reportElement x="-1" y="318" width="1" height="119"/>
+			</line>
+			<line>
+				<reportElement x="0" y="341" width="554" height="1"/>
+			</line>
+			<line>
+				<reportElement x="0" y="364" width="554" height="1"/>
+			</line>
+			<line>
+				<reportElement x="0" y="388" width="554" height="1"/>
+			</line>
+			<line>
+				<reportElement x="-1" y="412" width="556" height="1"/>
+			</line>
+			<staticText>
+				<reportElement x="2" y="318" width="152" height="23"/>
+				<textElement verticalAlignment="Middle" lineSpacing="Single">
+					<font isBold="false"/>
+				</textElement>
+				<text><![CDATA[Yarn Availability]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="2" y="342" width="152" height="22"/>
+				<textElement verticalAlignment="Middle" lineSpacing="Single">
+					<font isBold="false"/>
+				</textElement>
+				<text><![CDATA[Reed Availability]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="2" y="365" width="152" height="23"/>
+				<textElement verticalAlignment="Middle" lineSpacing="Single">
+					<font isBold="false"/>
+				</textElement>
+				<text><![CDATA[Cam Availability]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="2" y="389" width="152" height="23"/>
+				<textElement verticalAlignment="Middle" lineSpacing="Single">
+					<font isBold="false"/>
+				</textElement>
+				<text><![CDATA[Minimum Warping Length]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="2" y="413" width="152" height="23"/>
+				<textElement verticalAlignment="Middle" lineSpacing="Single">
+					<font isBold="false"/>
+				</textElement>
+				<text><![CDATA[PPC Excpected Completion Date]]></text>
+			</staticText>
+			<line>
+				<reportElement x="553" y="318" width="1" height="119"/>
+			</line>
+			<line>
+				<reportElement x="154" y="318" width="1" height="119"/>
+			</line>
+			<textField isBlankWhenNull="true">
+				<reportElement x="158" y="365" width="395" height="20"/>
+				<textElement verticalAlignment="Middle" lineSpacing="Single"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{camavailibility}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="158" y="343" width="395" height="20"/>
+				<textElement verticalAlignment="Middle" lineSpacing="Single"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{reedavailibility}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="158" y="319" width="395" height="20"/>
+				<textElement verticalAlignment="Middle" lineSpacing="Single"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{yarnavailibility}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="158" y="389" width="395" height="20"/>
+				<textElement verticalAlignment="Middle" lineSpacing="Single"/>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{minwarplength}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="267" y="122" width="40" height="19"/>
+				<textElement verticalAlignment="Middle" lineSpacing="Single">
+					<font isBold="false"/>
+				</textElement>
+				<text><![CDATA[YARDS]]></text>
+			</staticText>
+			<line>
+				<reportElement x="-1" y="470" width="556" height="1"/>
+			</line>
+			<line>
+				<reportElement x="0" y="554" width="555" height="1"/>
+			</line>
+			<line>
+				<reportElement x="0" y="504" width="554" height="1"/>
+			</line>
+			<line>
+				<reportElement x="-1" y="529" width="555" height="1"/>
+			</line>
+			<line>
+				<reportElement x="554" y="470" width="1" height="84"/>
+			</line>
+			<line>
+				<reportElement x="-1" y="471" width="1" height="84"/>
+			</line>
+			<line>
+				<reportElement x="63" y="471" width="1" height="84"/>
+			</line>
+			<line>
+				<reportElement x="136" y="471" width="1" height="84"/>
+			</line>
+			<line>
+				<reportElement x="208" y="471" width="1" height="84"/>
+			</line>
+			<line>
+				<reportElement x="343" y="471" width="1" height="84"/>
+			</line>
+			<line>
+				<reportElement x="484" y="471" width="1" height="84"/>
+			</line>
+			<line>
+				<reportElement x="414" y="471" width="1" height="84"/>
+			</line>
+			<staticText>
+				<reportElement x="209" y="471" width="134" height="33"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" lineSpacing="Single">
+					<font isBold="false"/>
+				</textElement>
+				<text><![CDATA[TOTAL YARN REQUIREMENT IN Kgs]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="344" y="471" width="70" height="33"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" lineSpacing="Single">
+					<font isBold="false"/>
+				</textElement>
+				<text><![CDATA[SUPPLIER LOT NO.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="415" y="471" width="69" height="33"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" lineSpacing="Single">
+					<font isBold="false"/>
+				</textElement>
+				<text><![CDATA[CONE WEIGHT]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="485" y="471" width="69" height="33"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" lineSpacing="Single">
+					<font isBold="false"/>
+				</textElement>
+				<text><![CDATA[YARN AVAILABILITY]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="137" y="471" width="71" height="33"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" lineSpacing="Single">
+					<font isBold="false"/>
+				</textElement>
+				<text><![CDATA[VARIETY]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="64" y="471" width="72" height="33"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" lineSpacing="Single">
+					<font isBold="false"/>
+				</textElement>
+				<text><![CDATA[COUNT]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="505" width="63" height="24"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" lineSpacing="Single">
+					<font isBold="false"/>
+				</textElement>
+				<text><![CDATA[WARP]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1" y="530" width="62" height="24"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" lineSpacing="Single">
+					<font isBold="false"/>
+				</textElement>
+				<text><![CDATA[WEFT]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="233" y="121" width="100" height="20"/>
+				<textElement verticalAlignment="Middle" lineSpacing="Single"/>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{orderquantity}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="233" y="40" width="320" height="20"/>
+				<textElement verticalAlignment="Middle" lineSpacing="Single"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$V{varSalesPerson}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="431" y="1" width="1" height="19"/>
+			</line>
+			<textField pattern="dd-MM-yyyy" isBlankWhenNull="true">
+				<reportElement x="415" y="161" width="100" height="19"/>
+				<textElement verticalAlignment="Middle" lineSpacing="Single"/>
+				<textFieldExpression class="java.sql.Timestamp"><![CDATA[$F{lcdate}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="234" y="161" width="144" height="19"/>
+				<textElement verticalAlignment="Middle" lineSpacing="Single"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{lcnumber}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="110" y="229" width="445" height="16"/>
+				<textElement lineSpacing="Single"/>
+				<text><![CDATA[2. When making Bale, please just print "Made in India" on bale, not written by hand. ]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="110" y="214" width="445" height="15"/>
+				<textElement verticalAlignment="Middle" lineSpacing="Single">
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{firstpoint}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="20" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="1" width="101" height="19"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" lineSpacing="Single">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[PREPARED BY]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="110" y="0" width="101" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" lineSpacing="Single">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[HOD]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="218" y="-1" width="101" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" lineSpacing="Single">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[PPC]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="452" y="0" width="101" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" lineSpacing="Single">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[DIRECTOR]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="329" y="1" width="101" height="18"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" lineSpacing="Single">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[GM]]></text>
+			</staticText>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

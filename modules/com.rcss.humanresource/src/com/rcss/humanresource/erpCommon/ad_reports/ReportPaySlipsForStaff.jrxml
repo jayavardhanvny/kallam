@@ -1,0 +1,795 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="PaySlip" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" isIgnorePagination="true">
+	<property name="ireport.zoom" value="2.0"/>
+	<property name="ireport.x" value="304"/>
+	<property name="ireport.y" value="55"/>
+	<parameter name="Id" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT emp.documentno as empid,emp.employeename as name, emp.employeetype as emptype, emp.weeklyoff as weekoff,
+
+(select rchr_division.name from rchr_division, rchr_emp_job where rchr_division.rchr_division_id=rchr_emp_job.rchr_division_id
+and rchr_emp_job.rchr_employee_id=emp.rchr_employee_id) as division,
+(select rchr_emp_dept.name from rchr_emp_dept, rchr_emp_job where rchr_emp_job.rchr_emp_dept_id=rchr_emp_dept.rchr_emp_dept_id
+and rchr_emp_job.rchr_employee_id=emp.rchr_employee_id) as department,
+(select rchr_designation.name from rchr_designation, rchr_emp_job where rchr_emp_job.rchr_designation_id=rchr_designation.rchr_designation_id
+and rchr_emp_job.rchr_employee_id=emp.rchr_employee_id) as designation,
+pay.presentdays as present,
+pay.weeklyoff as offday,pay.absents,
+(select rcpl_emppaydead.deductions from rcpl_emppaydead,rcpl_paydeducitionshead
+where rcpl_emppaydead.rcpl_emppayrollprocess_id=pay.rcpl_emppayrollprocess_id and
+   rcpl_emppaydead.rcpl_paydeducitionshead_id=rcpl_paydeducitionshead.rcpl_paydeducitionshead_id and rcpl_paydeducitionshead.name='PF') as pfvalue,
+
+(select rcpl_emppaydead.deductions from rcpl_emppaydead,rcpl_paydeducitionshead
+where rcpl_emppaydead.rcpl_emppayrollprocess_id=pay.rcpl_emppayrollprocess_id and
+   rcpl_emppaydead.rcpl_paydeducitionshead_id=rcpl_paydeducitionshead.rcpl_paydeducitionshead_id and rcpl_paydeducitionshead.name='Electricity Bill') as Electricity,
+(select rcpl_emppaydead.deductions from rcpl_emppaydead,rcpl_paydeducitionshead
+where rcpl_emppaydead.rcpl_emppayrollprocess_id=pay.rcpl_emppayrollprocess_id and
+   rcpl_emppaydead.rcpl_paydeducitionshead_id=rcpl_paydeducitionshead.rcpl_paydeducitionshead_id and rcpl_paydeducitionshead.name='Rent Bill') as RentBill,
+(select rcpl_emppaydead.deductions from rcpl_emppaydead,rcpl_paydeducitionshead
+where rcpl_emppaydead.rcpl_emppayrollprocess_id=pay.rcpl_emppayrollprocess_id and
+   rcpl_emppaydead.rcpl_paydeducitionshead_id=rcpl_paydeducitionshead.rcpl_paydeducitionshead_id and rcpl_paydeducitionshead.name='Mess Bill') as MessBill,
+(select rcpl_emppaydead.deductions from rcpl_emppaydead,rcpl_paydeducitionshead
+where rcpl_emppaydead.rcpl_emppayrollprocess_id=pay.rcpl_emppayrollprocess_id and
+   rcpl_emppaydead.rcpl_paydeducitionshead_id=rcpl_paydeducitionshead.rcpl_paydeducitionshead_id and rcpl_paydeducitionshead.name='Loans and Advances') as Advances,
+(select rcpl_emppaydead.deductions from rcpl_emppaydead,rcpl_paydeducitionshead
+where rcpl_emppaydead.rcpl_emppayrollprocess_id=pay.rcpl_emppayrollprocess_id and
+   rcpl_emppaydead.rcpl_paydeducitionshead_id=rcpl_paydeducitionshead.rcpl_paydeducitionshead_id and rcpl_paydeducitionshead.name='Gas Recovery') as GasRecovery,
+(select rcpl_emppaydead.deductions from rcpl_emppaydead,rcpl_paydeducitionshead
+where rcpl_emppaydead.rcpl_emppayrollprocess_id=pay.rcpl_emppayrollprocess_id and
+   rcpl_emppaydead.rcpl_paydeducitionshead_id=rcpl_paydeducitionshead.rcpl_paydeducitionshead_id and rcpl_paydeducitionshead.name='Security Deposit') as SecurityDeposit,
+(select rcpl_emppaydead.deductions from rcpl_emppaydead,rcpl_paydeducitionshead
+where rcpl_emppaydead.rcpl_emppayrollprocess_id=pay.rcpl_emppayrollprocess_id and
+   rcpl_emppaydead.rcpl_paydeducitionshead_id=rcpl_paydeducitionshead.rcpl_paydeducitionshead_id and rcpl_paydeducitionshead.name='Fine') as finevalue,
+(select rcpl_emppaydead.deductions from rcpl_emppaydead,rcpl_paydeducitionshead
+where rcpl_emppaydead.rcpl_emppayrollprocess_id=pay.rcpl_emppayrollprocess_id and
+   rcpl_emppaydead.rcpl_paydeducitionshead_id=rcpl_paydeducitionshead.rcpl_paydeducitionshead_id and rcpl_paydeducitionshead.name='Departmental Store Recovey') as StoreRecovery,
+
+
+(select rcpl_emppayhead.additions from rcpl_emppayhead,rcpl_payadditionshead
+where rcpl_emppayhead.rcpl_emppayrollprocess_id=pay.rcpl_emppayrollprocess_id and
+   rcpl_emppayhead.rcpl_payadditionshead_id=rcpl_payadditionshead.rcpl_payadditionshead_id and rcpl_payadditionshead.name='Basic') as Basic,
+(select rcpl_emppayhead.additions from rcpl_emppayhead,rcpl_payadditionshead
+where rcpl_emppayhead.rcpl_emppayrollprocess_id=pay.rcpl_emppayrollprocess_id and
+   rcpl_emppayhead.rcpl_payadditionshead_id=rcpl_payadditionshead.rcpl_payadditionshead_id and rcpl_payadditionshead.name='Wash Allowance') as washallowance,
+(select rcpl_emppayhead.additions from rcpl_emppayhead,rcpl_payadditionshead
+where rcpl_emppayhead.rcpl_emppayrollprocess_id=pay.rcpl_emppayrollprocess_id and
+   rcpl_emppayhead.rcpl_payadditionshead_id=rcpl_payadditionshead.rcpl_payadditionshead_id and rcpl_payadditionshead.name='Shoe Allowance') as shoeallowance,
+(select rcpl_emppayhead.additions from rcpl_emppayhead,rcpl_payadditionshead
+where rcpl_emppayhead.rcpl_emppayrollprocess_id=pay.rcpl_emppayrollprocess_id and
+   rcpl_emppayhead.rcpl_payadditionshead_id=rcpl_payadditionshead.rcpl_payadditionshead_id and rcpl_payadditionshead.name='Con Allowance') as conallowance,
+(select rcpl_emppayhead.additions from rcpl_emppayhead,rcpl_payadditionshead
+where rcpl_emppayhead.rcpl_emppayrollprocess_id=pay.rcpl_emppayrollprocess_id and
+   rcpl_emppayhead.rcpl_payadditionshead_id=rcpl_payadditionshead.rcpl_payadditionshead_id and rcpl_payadditionshead.name='QAD Allowance') as qadallowance,
+(select rcpl_emppayhead.additions from rcpl_emppayhead,rcpl_payadditionshead
+where rcpl_emppayhead.rcpl_emppayrollprocess_id=pay.rcpl_emppayrollprocess_id and
+   rcpl_emppayhead.rcpl_payadditionshead_id=rcpl_payadditionshead.rcpl_payadditionshead_id and rcpl_payadditionshead.name='News Nutri') as qadallowance,
+(select rcpl_emppayhead.additions from rcpl_emppayhead,rcpl_payadditionshead
+where rcpl_emppayhead.rcpl_emppayrollprocess_id=pay.rcpl_emppayrollprocess_id and
+   rcpl_emppayhead.rcpl_payadditionshead_id=rcpl_payadditionshead.rcpl_payadditionshead_id and rcpl_payadditionshead.name='News Nutri') as qadallowance,
+(select rcpl_emppayhead.additions from rcpl_emppayhead,rcpl_payadditionshead
+where rcpl_emppayhead.rcpl_emppayrollprocess_id=pay.rcpl_emppayrollprocess_id and
+   rcpl_emppayhead.rcpl_payadditionshead_id=rcpl_payadditionshead.rcpl_payadditionshead_id and rcpl_payadditionshead.name='12 Hrs A-Shift Allowance') as GeneralAShiftIncentives,
+(select rcpl_emppayhead.additions from rcpl_emppayhead,rcpl_payadditionshead
+where rcpl_emppayhead.rcpl_emppayrollprocess_id=pay.rcpl_emppayrollprocess_id and
+   rcpl_emppayhead.rcpl_payadditionshead_id=rcpl_payadditionshead.rcpl_payadditionshead_id and rcpl_payadditionshead.name='12 Hrs B-Shift Allowance') as GeneralBShiftIncentives,
+
+(select rcpl_emppayincentives.additions from rcpl_emppayincentives,rcpl_incentives
+where rcpl_emppayincentives.rcpl_emppayrollprocess_id=pay.rcpl_emppayrollprocess_id and
+   rcpl_emppayincentives.rcpl_incentives_id=rcpl_incentives.rcpl_incentives_id and rcpl_incentives.name='Attendance Prize') as AttendancePrize,
+(select rcpl_emppayincentives.additions from rcpl_emppayincentives,rcpl_incentives
+where rcpl_emppayincentives.rcpl_emppayrollprocess_id=pay.rcpl_emppayrollprocess_id and
+   rcpl_emppayincentives.rcpl_incentives_id=rcpl_incentives.rcpl_incentives_id and rcpl_incentives.name='1040 Staff Attendance Incentive') as AttendancePrize1040,
+(select rcpl_emppayincentives.additions from rcpl_emppayincentives,rcpl_incentives
+where rcpl_emppayincentives.rcpl_emppayrollprocess_id=pay.rcpl_emppayrollprocess_id and
+   rcpl_emppayincentives.rcpl_incentives_id=rcpl_incentives.rcpl_incentives_id and rcpl_incentives.name='1300 Staff Attendance Incentive') as AttendancePrize1300,
+(select rcpl_emppayincentives.additions from rcpl_emppayincentives,rcpl_incentives
+where rcpl_emppayincentives.rcpl_emppayrollprocess_id=pay.rcpl_emppayrollprocess_id and
+   rcpl_emppayincentives.rcpl_incentives_id=rcpl_incentives.rcpl_incentives_id and rcpl_incentives.name='1350 Staff Attendance Incentive') as AttendancePrize1350,
+
+
+
+(select rcpl_empdedincentives.deductions from rcpl_empdedincentives,rcpl_incentives
+where rcpl_empdedincentives.rcpl_emppayrollprocess_id=pay.rcpl_emppayrollprocess_id
+ and rcpl_empdedincentives.rcpl_incentives_id=rcpl_incentives.rcpl_incentives_id and rcpl_incentives.name='Mess Deduction') as MessDeduction,
+(select rcpl_emppayincentives.additions from rcpl_emppayincentives,rcpl_incentives
+where rcpl_emppayincentives.rcpl_emppayrollprocess_id=pay.rcpl_emppayrollprocess_id and
+   rcpl_emppayincentives.rcpl_incentives_id=rcpl_incentives.rcpl_incentives_id and rcpl_incentives.name='Production Incnetive') as ProductionIncentives,
+(select rcpl_emppayincentives.additions from rcpl_emppayincentives,rcpl_incentives
+where rcpl_emppayincentives.rcpl_emppayrollprocess_id=pay.rcpl_emppayrollprocess_id and
+   rcpl_emppayincentives.rcpl_incentives_id=rcpl_incentives.rcpl_incentives_id and rcpl_incentives.name='Service Incentive') as ServiceIncentives,
+(select rcpl_emppayincentives.additions from rcpl_emppayincentives,rcpl_incentives
+where rcpl_emppayincentives.rcpl_emppayrollprocess_id=pay.rcpl_emppayrollprocess_id and
+   rcpl_emppayincentives.rcpl_incentives_id=rcpl_incentives.rcpl_incentives_id and rcpl_incentives.name='C-Shift Incentive') as CShiftIncentives,
+
+ --pay.additionsum + pay.incentiveaddsum
+  pay.grandtotal as earning, pay.deductionsum as deduction, pay.totalpay as totalpay,Rchr_Attd_Process.monthname as month,pay.processingdays as tday
+
+from rchr_employee emp,rcpl_emppayrollprocess pay,Rchr_Attd_Process, rcpl_empsalsetup setup
+where emp.rchr_employee_id=pay.rchr_employee_id
+and emp.rchr_employee_id=pay.rchr_employee_id and setup.rchr_employee_id=pay.rchr_employee_id
+and Rchr_Attd_Process.startdate=pay.startdate
+and pay.rcpl_emppayrollprocess_id=$P{Id}
+ group by emp.documentno ,emp.employeename,month, emp.employeetype , emp.weeklyoff,emp.rchr_employee_id,
+ pay.rcpl_emppayrollprocess_id,earning, deduction, totalpay,tday,pay.startdate,pay.enddate,pay.rchr_employee_id]]>
+	</queryString>
+	<field name="empid" class="java.lang.String"/>
+	<field name="name" class="java.lang.String"/>
+	<field name="emptype" class="java.lang.String"/>
+	<field name="weekoff" class="java.lang.String"/>
+	<field name="division" class="java.lang.String"/>
+	<field name="department" class="java.lang.String"/>
+	<field name="designation" class="java.lang.String"/>
+	<field name="present" class="java.lang.Long"/>
+	<field name="offday" class="java.math.BigDecimal"/>
+	<field name="absents" class="java.math.BigDecimal"/>
+	<field name="pfvalue" class="java.math.BigDecimal"/>
+	<field name="electricity" class="java.math.BigDecimal"/>
+	<field name="rentbill" class="java.math.BigDecimal"/>
+	<field name="messbill" class="java.math.BigDecimal"/>
+	<field name="advances" class="java.math.BigDecimal"/>
+	<field name="gasrecovery" class="java.math.BigDecimal"/>
+	<field name="securitydeposit" class="java.math.BigDecimal"/>
+	<field name="finevalue" class="java.math.BigDecimal"/>
+	<field name="storerecovery" class="java.math.BigDecimal"/>
+	<field name="basic" class="java.math.BigDecimal"/>
+	<field name="washallowance" class="java.math.BigDecimal"/>
+	<field name="shoeallowance" class="java.math.BigDecimal"/>
+	<field name="conallowance" class="java.math.BigDecimal"/>
+	<field name="qadallowance" class="java.math.BigDecimal"/>
+	<field name="generalashiftincentives" class="java.math.BigDecimal"/>
+	<field name="generalbshiftincentives" class="java.math.BigDecimal"/>
+	<field name="attendanceprize" class="java.math.BigDecimal"/>
+	<field name="attendanceprize1040" class="java.math.BigDecimal"/>
+	<field name="attendanceprize1300" class="java.math.BigDecimal"/>
+	<field name="attendanceprize1350" class="java.math.BigDecimal"/>
+	<field name="messdeduction" class="java.math.BigDecimal"/>
+	<field name="productionincentives" class="java.math.BigDecimal"/>
+	<field name="serviceincentives" class="java.math.BigDecimal"/>
+	<field name="cshiftincentives" class="java.math.BigDecimal"/>
+	<field name="earning" class="java.math.BigDecimal"/>
+	<field name="deduction" class="java.math.BigDecimal"/>
+	<field name="totalpay" class="java.math.BigDecimal"/>
+	<field name="month" class="java.lang.String"/>
+	<field name="tday" class="java.lang.Long"/>
+	<variable name="absent" class="java.lang.Long">
+		<variableExpression><![CDATA[$F{tday}.longValue() - $F{present}]]></variableExpression>
+	</variable>
+	<background>
+		<band/>
+	</background>
+	<title>
+		<band height="20">
+			<line>
+				<reportElement x="1" y="0" width="802" height="1"/>
+			</line>
+			<staticText>
+				<reportElement x="251" y="0" width="287" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" lineSpacing="Single">
+					<font size="12" isBold="true" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[EMPLOYEE PAY SLIP]]></text>
+			</staticText>
+			<line>
+				<reportElement x="801" y="-1" width="1" height="21"/>
+			</line>
+			<line>
+				<reportElement x="0" y="-1" width="1" height="21"/>
+			</line>
+		</band>
+	</title>
+	<pageHeader>
+		<band/>
+	</pageHeader>
+	<columnHeader>
+		<band/>
+	</columnHeader>
+	<detail>
+		<band height="266">
+			<staticText>
+				<reportElement x="3" y="8" width="76" height="13"/>
+				<textElement lineSpacing="Single">
+					<font isBold="true" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[Employee Info:-]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="7" y="24" width="77" height="13"/>
+				<textElement verticalAlignment="Middle" lineSpacing="Single">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Division         :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="8" y="37" width="77" height="13"/>
+				<textElement verticalAlignment="Middle" lineSpacing="Single">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Department  :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="8" y="51" width="77" height="13"/>
+				<textElement verticalAlignment="Middle" lineSpacing="Single">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Designation  :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="284" y="25" width="71" height="13"/>
+				<textElement verticalAlignment="Middle" lineSpacing="Single">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Month           :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="285" y="38" width="71" height="13"/>
+				<textElement verticalAlignment="Middle" lineSpacing="Single">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Week Off      :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="284" y="51" width="71" height="13"/>
+				<textElement verticalAlignment="Middle" lineSpacing="Single">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Work Group  :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="547" y="10" width="62" height="13"/>
+				<textElement verticalAlignment="Middle" lineSpacing="Single">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Emp No.     :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="547" y="24" width="63" height="13"/>
+				<textElement verticalAlignment="Middle" lineSpacing="Single">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Emp Name :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="547" y="37" width="60" height="12"/>
+				<textElement verticalAlignment="Middle" lineSpacing="Single">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Emp Type  :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="547" y="49" width="63" height="14"/>
+				<textElement verticalAlignment="Middle" lineSpacing="Single">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Salary        :]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="65" width="802" height="1"/>
+			</line>
+			<staticText>
+				<reportElement x="2" y="65" width="67" height="15"/>
+				<textElement verticalAlignment="Bottom" lineSpacing="Single">
+					<font isBold="true" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[Attendance :-]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="8" y="85" width="78" height="12"/>
+				<textElement verticalAlignment="Middle" lineSpacing="Single">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Working Days :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="8" y="97" width="78" height="13"/>
+				<textElement verticalAlignment="Middle" lineSpacing="Single">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Present Days  :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="200" y="85" width="84" height="12"/>
+				<textElement verticalAlignment="Middle" lineSpacing="Single">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Absent Days    :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="200" y="97" width="84" height="13"/>
+				<textElement verticalAlignment="Middle" lineSpacing="Single">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[No. of Off Days:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="413" y="98" width="95" height="12"/>
+				<textElement verticalAlignment="Middle" lineSpacing="Single">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[No Work Days    :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="628" y="97" width="94" height="12"/>
+				<textElement verticalAlignment="Middle" lineSpacing="Single">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Total Work Days:]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="112" width="802" height="1"/>
+			</line>
+			<staticText>
+				<reportElement x="1" y="114" width="78" height="15"/>
+				<textElement lineSpacing="Single">
+					<font isBold="true" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[Earnings (+) :-]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="7" y="133" width="102" height="12"/>
+				<textElement verticalAlignment="Middle" lineSpacing="Single">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Salary                  :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="424" y="121" width="147" height="12"/>
+				<textElement verticalAlignment="Middle" lineSpacing="Single">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Service Incentives              :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="419" y="157" width="149" height="12"/>
+				<textElement verticalAlignment="Middle" lineSpacing="Single">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Mess Deduction Incentives :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="423" y="145" width="147" height="12"/>
+				<textElement verticalAlignment="Middle" lineSpacing="Single">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Attandance Incentive         :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="179" y="157" width="134" height="12"/>
+				<textElement verticalAlignment="Middle" lineSpacing="Single">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[C Shift Incentive              :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="176" y="169" width="136" height="12"/>
+				<textElement verticalAlignment="Middle" lineSpacing="Single">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[12 Hrs A Shift Incentives :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="426" y="133" width="147" height="12"/>
+				<textElement verticalAlignment="Middle" lineSpacing="Single">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Prod Incentive                    :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="633" y="157" width="89" height="12"/>
+				<textElement verticalAlignment="Middle" lineSpacing="Single">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Gross Earnings:]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="188" width="802" height="1"/>
+			</line>
+			<staticText>
+				<reportElement x="2" y="190" width="78" height="15"/>
+				<textElement lineSpacing="Single">
+					<font isBold="true" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[Deductions (-) :-]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="7" y="210" width="62" height="12"/>
+				<textElement verticalAlignment="Middle" lineSpacing="Single">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[PF             :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="4" y="222" width="62" height="12"/>
+				<textElement verticalAlignment="Middle" lineSpacing="Single">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Electricity :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="5" y="234" width="62" height="12"/>
+				<textElement verticalAlignment="Middle" lineSpacing="Single">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Rent          :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="164" y="211" width="62" height="12"/>
+				<textElement verticalAlignment="Middle" lineSpacing="Single">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Mess       :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="162" y="223" width="63" height="12"/>
+				<textElement verticalAlignment="Middle" lineSpacing="Single">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Advance  :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="314" y="222" width="99" height="12"/>
+				<textElement verticalAlignment="Middle" lineSpacing="Single">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Gas Recovery      :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="314" y="234" width="98" height="12"/>
+				<textElement verticalAlignment="Middle" lineSpacing="Single">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Security Deposit :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="314" y="210" width="99" height="12"/>
+				<textElement verticalAlignment="Middle" lineSpacing="Single">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Store Recovery   :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="163" y="235" width="63" height="12"/>
+				<textElement verticalAlignment="Middle" lineSpacing="Single">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Fine         :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="610" y="224" width="100" height="15"/>
+				<textElement verticalAlignment="Middle" lineSpacing="Single">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Gross Deductions:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="610" y="239" width="100" height="15"/>
+				<textElement verticalAlignment="Middle" lineSpacing="Single">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Net Salary            :]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="265" width="802" height="1"/>
+			</line>
+			<line>
+				<reportElement x="0" y="-1" width="802" height="1"/>
+			</line>
+			<line>
+				<reportElement x="801" y="0" width="1" height="266"/>
+			</line>
+			<line>
+				<reportElement x="0" y="-1" width="1" height="266"/>
+			</line>
+			<textField isBlankWhenNull="true">
+				<reportElement x="609" y="11" width="100" height="13"/>
+				<textElement lineSpacing="Single">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{empid}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="609" y="24" width="169" height="13"/>
+				<textElement lineSpacing="Single">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{name}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="607" y="37" width="100" height="12"/>
+				<textElement lineSpacing="Single">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{emptype}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement x="608" y="49" width="100" height="13"/>
+				<textElement lineSpacing="Single">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{totalpay}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="355" y="38" width="100" height="13"/>
+				<textElement lineSpacing="Single">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{weekoff}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="84" y="24" width="152" height="13"/>
+				<textElement lineSpacing="Single">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{division}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="84" y="37" width="152" height="13"/>
+				<textElement lineSpacing="Single">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{department}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="84" y="51" width="152" height="13"/>
+				<textElement verticalAlignment="Top" lineSpacing="Single">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{designation}]]></textFieldExpression>
+			</textField>
+			<textField pattern="" isBlankWhenNull="true">
+				<reportElement x="86" y="85" width="66" height="12"/>
+				<textElement lineSpacing="Single">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Long"><![CDATA[$F{tday}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="86" y="97" width="66" height="13"/>
+				<textElement lineSpacing="Single">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Long"><![CDATA[$F{present}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="722" y="157" width="54" height="12"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle" lineSpacing="Single">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{earning}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="720" y="97" width="61" height="12"/>
+				<textElement lineSpacing="Single">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Long"><![CDATA[$F{present}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="69" y="210" width="65" height="12"/>
+				<textElement lineSpacing="Single">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{pfvalue}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="710" y="224" width="68" height="15"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle" lineSpacing="Single">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{deduction}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="710" y="239" width="68" height="15"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle" lineSpacing="Single">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{totalpay}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="226" y="235" width="65" height="12"/>
+				<textElement verticalAlignment="Middle" lineSpacing="Single">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{finevalue}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="284" y="97" width="71" height="14"/>
+				<textElement lineSpacing="Single"/>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{offday}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="284" y="85" width="71" height="12"/>
+				<textElement lineSpacing="Single"/>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{absents}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="226" y="223" width="65" height="12"/>
+				<textElement lineSpacing="Single">
+					<font size="9" isBold="false"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{advances}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="69" y="222" width="65" height="12"/>
+				<textElement lineSpacing="Single">
+					<font size="9" isBold="false"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{electricity}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="69" y="234" width="65" height="12"/>
+				<textElement lineSpacing="Single">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{rentbill}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="226" y="211" width="65" height="12"/>
+				<textElement lineSpacing="Single">
+					<font size="9" isBold="false"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{messbill}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="413" y="222" width="46" height="12"/>
+				<textElement lineSpacing="Single">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{gasrecovery}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="413" y="210" width="46" height="12"/>
+				<textElement lineSpacing="Single">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{storerecovery}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="571" y="145" width="49" height="12"/>
+				<textElement lineSpacing="Single">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{attendanceprize}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="571" y="133" width="49" height="12"/>
+				<textElement lineSpacing="Single">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{productionincentives}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="571" y="121" width="49" height="12"/>
+				<textElement lineSpacing="Single">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{serviceincentives}]]></textFieldExpression>
+			</textField>
+			<textField pattern="" isBlankWhenNull="true">
+				<reportElement x="571" y="157" width="49" height="12"/>
+				<textElement lineSpacing="Single">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{messdeduction}]]></textFieldExpression>
+			</textField>
+			<textField pattern="" isBlankWhenNull="true">
+				<reportElement x="572" y="169" width="48" height="12"/>
+				<textElement lineSpacing="Single">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{generalbshiftincentives}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="313" y="156" width="53" height="13"/>
+				<textElement lineSpacing="Single">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{cshiftincentives}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="106" y="133" width="49" height="12"/>
+				<textElement lineSpacing="Single">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{basic}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="179" y="145" width="136" height="12"/>
+				<textElement verticalAlignment="Middle" lineSpacing="Single">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[QAD Allowances               :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="3" y="157" width="102" height="12"/>
+				<textElement verticalAlignment="Middle" lineSpacing="Single">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Tech. Allowances :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="4" y="145" width="102" height="12"/>
+				<textElement verticalAlignment="Middle" lineSpacing="Single">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Con. Allowance    :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="4" y="169" width="102" height="12"/>
+				<textElement verticalAlignment="Middle" lineSpacing="Single">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Shoe Allowances  :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="179" y="133" width="134" height="12"/>
+				<textElement verticalAlignment="Middle" lineSpacing="Single">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Wash Allowances             :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="181" y="121" width="134" height="12"/>
+				<textElement verticalAlignment="Middle" lineSpacing="Single">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[News Nutri. Allowances  :]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="571" y="145" width="48" height="12"/>
+				<textElement lineSpacing="Single">
+					<font fontName="SansSerif" size="9"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{attendanceprize1040}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="571" y="145" width="47" height="12"/>
+				<textElement lineSpacing="Single">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{attendanceprize1300}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="571" y="145" width="49" height="12"/>
+				<textElement lineSpacing="Single">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{attendanceprize1350}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="413" y="234" width="46" height="12"/>
+				<textElement lineSpacing="Single">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{storerecovery}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="420" y="169" width="148" height="12"/>
+				<textElement verticalAlignment="Middle" lineSpacing="Single">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[12 Hrs A Shift Incentives    :]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="313" y="169" width="53" height="12"/>
+				<textElement lineSpacing="Single">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{generalashiftincentives}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="355" y="25" width="100" height="13"/>
+				<textElement lineSpacing="Single"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{month}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band/>
+	</columnFooter>
+	<pageFooter>
+		<band/>
+	</pageFooter>
+	<summary>
+		<band/>
+	</summary>
+</jasperReport>

@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+ *************************************************************************
+ * The contents of this file are subject to the Openbravo  Public  License
+ * Version  1.1  (the  "License"),  being   the  Mozilla   Public  License
+ * Version 1.1  with a permitted attribution clause; you may not  use this
+ * file except in compliance with the License. You  may  obtain  a copy of
+ * the License at http://www.openbravo.com/legal/license.html 
+ * Software distributed under the License  is  distributed  on  an "AS IS"
+ * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+ * License for the specific  language  governing  rights  and  limitations
+ * under the License. 
+ * The Original Code is Openbravo ERP. 
+ * The Initial Developer of the Original Code is Openbravo SLU 
+ * All portions are Copyright (C) 2001-2012 Openbravo SLU 
+ * All Rights Reserved. 
+ * Contributor(s):  ______________________________________.
+ ************************************************************************
+-->
+
+
+<SqlClass name="EpcgSalesOrderData" package="com.redcarpet.epcg.ad_actionbuttons">
+
+  <SqlMethod name="selectcostenquiry" type="preparedStatement" return="multiple">
+    <SqlMethodComment></SqlMethodComment>
+    <Sql>
+      <![CDATA[
+        SELECT enq.m_product_id,prod.name as productname,enq.epcg_costenquiry_id as epcgCostenquiryId, 
+        enq.documentno as documentno,
+	enq.enquirydate as enquirydate,enq.exmillpricerspermts as lastpriceso,enq.orderquantity as qty,
+	(select c_uom_id from m_product where m_product_id=prod.m_product_id) as cUomId,
+	(select uomsymbol from c_uom where c_uom_id=prod.c_uom_id) as uomsymbol,
+	(select name from c_tax where c_tax_id=enq.c_tax_id) as nametax,
+	enq.c_tax_id,
+	enq.Cashdiscount,enq.Netprice
+	FROM epcg_costenquiry as enq
+	left join m_product as prod on prod.m_product_id=enq.m_product_id
+	left join C_ORDER as corder on corder.epcg_costenquiry_id=enq.epcg_costenquiry_id
+	WHERE status='AP'
+	AND enq.c_bpartner_id=?
+	AND corder.epcg_costenquiry_id=?
+	
+	ORDER BY enquirydate DESC
+
+      ]]>
+    </Sql>
+    <Field name="rownum" value="count"/>
+    <Parameter name="strBpartner"/>
+    <Parameter name="strCostEnquiryId"/>
+  </SqlMethod>
+  
+  
+  <SqlMethod name="insertCOrderline" type="preparedStatement" connection="true" return="rowCount">
+    <SqlMethodComment></SqlMethodComment>
+    <Sql>
+      <![CDATA[
+        INSERT INTO C_ORDERLINE (C_ORDERLINE_ID, AD_CLIENT_ID, AD_ORG_ID, CREATED, CREATEDBY, UPDATED, UPDATEDBY,
+            C_ORDER_ID, LINE, C_BPARTNER_ID, C_BPARTNER_LOCATION_ID, 
+            DATEORDERED, DATEPROMISED, M_PRODUCT_ID, M_WAREHOUSE_ID, 
+            C_UOM_ID,QTYORDERED, C_CURRENCY_ID, PRICELIST, PRICEACTUAL, PRICELIMIT, PRICESTD, 
+            DISCOUNT, C_TAX_ID,
+            grosspricelist, gross_unit_price, line_gross_amount, grosspricestd,epcg_costenquiry_id,EM_Rcfr_Netunitrate
+        ) VALUES (?,?,?,NOW(),?,NOW(),?,
+                ?,(SELECT (coalesce(Max(Line),0))+10 FROM C_OrderLine WHERE C_Order_id = ?),?,?,
+                TO_DATE(?),TO_DATE(?),?,?,
+                ?,TO_NUMBER(?),?,TO_NUMBER(?),TO_NUMBER(?),TO_NUMBER(?),TO_NUMBER(?),
+                TO_NUMBER(?), ?,
+            TO_NUMBER(?), TO_NUMBER(?), TO_NUMBER(?), TO_NUMBER(?),?,
+           (select Netprice from epcg_costenquiry where epcg_costenquiry.epcg_costenquiry_id=?)
+            
+        )
+      ]]>
+    </Sql>
+    <Parameter name="cOrderlineId"/>
+    <Parameter name="adClientId"/>
+    <Parameter name="adOrgId"/>
+    <Parameter name="user"/>
+    <Parameter name="user"/>
+    <Parameter name="cOrderId"/>
+    <Parameter name="cOrderId"/>
+    <Parameter name="cBpartnerId"/>
+    <Parameter name="cBpartnerLocationId"/>
+    <Parameter name="dateordered"/>
+    <Parameter name="datepromised"/>
+    <Parameter name="mProductId"/>
+    <Parameter name="mWarehouseId"/>
+    <Parameter name="cUomId"/>
+    <Parameter name="qtyordered"/>
+    <Parameter name="cCurrencyId"/>
+    <Parameter name="pricelist"/>
+    <Parameter name="priceactual"/>
+    <Parameter name="pricelimit"/>
+    <Parameter name="pricestd"/>
+    <Parameter name="discount"/>
+    <Parameter name="cTaxId"/>
+    <Parameter name="priceListGross"/>
+    <Parameter name="priceGross"/>
+    <Parameter name="amtGross"/>
+    <Parameter name="pricestdgross"/>
+    <Parameter name="strcEpcgCostenquiryId"/>
+    <Parameter name="strcEpcgCostenquiryId"/>
+    
+    
+  </SqlMethod>
+  
+  
+  </SqlClass>

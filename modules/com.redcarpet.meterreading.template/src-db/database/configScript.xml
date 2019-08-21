@@ -1,0 +1,60 @@
+<?xml version="1.0"?>
+  <vector>
+    <versionInfo version="3.0.20698"/>
+    <columnDataChange tablename="AD_ELEMENT" columnname="NAME" pkRow="DDF7345181D54BF3A170DFC02CFC1D04">
+      <oldValue><![CDATA[Work Shift]]></oldValue>
+      <newValue><![CDATA[Work Shift]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_ELEMENT" columnname="NAME" pkRow="E5ED3307D2714113A60FC945CFC4F124">
+      <oldValue><![CDATA[Skill Grade Name]]></oldValue>
+      <newValue><![CDATA[Name]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_ELEMENT" columnname="PRINTNAME" pkRow="E5ED3307D2714113A60FC945CFC4F124">
+      <oldValue><![CDATA[Skill Grade Name]]></oldValue>
+      <newValue><![CDATA[Name]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_FIELD" columnname="SEQNO" pkRow="05037CA824FF49ADB38C72C5F95711BF">
+      <oldValue><![CDATA[50]]></oldValue>
+      <newValue><![CDATA[30]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_FIELD" columnname="SEQNO" pkRow="070F2859BCA64AEBA3A604D06EB7EAFB">
+      <oldValue><![CDATA[40]]></oldValue>
+      <newValue><![CDATA[25]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_FIELD" columnname="SEQNO" pkRow="1226EDE42B754347AC192E00669BEC8C">
+      <oldValue><![CDATA[40]]></oldValue>
+      <newValue><![CDATA[30]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_FIELD" columnname="SEQNO" pkRow="26634B5546BE43D7A056351409D1905B">
+      <oldValue><![CDATA[30]]></oldValue>
+      <newValue><![CDATA[40]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_FIELD" columnname="SEQNO" pkRow="449DB3F24E7F4DC3A4610CC6AD98E0C3">
+      <oldValue><![CDATA[30]]></oldValue>
+      <newValue><![CDATA[40]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_FIELD" columnname="SEQNO" pkRow="64EE52802F3E4155A18A234A395DD2BA">
+      <oldValue><![CDATA[30]]></oldValue>
+      <newValue><![CDATA[20]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_FIELD" columnname="SEQNO" pkRow="7D15F496502B4C9B9E0CE7965A690D20">
+      <oldValue><![CDATA[40]]></oldValue>
+      <newValue><![CDATA[30]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_FIELD" columnname="SEQNO" pkRow="8EF0E4E81FDB45EDA590414AF9F63202">
+      <oldValue><![CDATA[40]]></oldValue>
+      <newValue><![CDATA[30]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_FIELD" columnname="NAME" pkRow="9258BD915DE84069BC9A924AAE7C6029">
+      <oldValue><![CDATA[Work Shift]]></oldValue>
+      <newValue><![CDATA[Work Shift]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_FIELD" columnname="SEQNO" pkRow="F9AE1D25B3B94C3FA071F6F33EC9493E">
+      <oldValue><![CDATA[30]]></oldValue>
+      <newValue><![CDATA[40]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_MODULE_DEPENDENCY" columnname="STARTVERSION" pkRow="E2E7419A3C454180A95F93288743B1C6">
+      <oldValue><![CDATA[3.0.20857]]></oldValue>
+      <newValue><![CDATA[3.0.20698]]></newValue>
+    </columnDataChange>
+  </vector>

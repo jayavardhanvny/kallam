@@ -1,0 +1,138 @@
+package com.rcss.humanresource.ad_forms;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.sql.Connection;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.*;
+
+import javax.servlet.ServletConfig;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.openbravo.base.secureApp.HttpSecureAppServlet;
+import org.openbravo.base.secureApp.VariablesSecureApp;
+import org.openbravo.data.FieldProvider;
+import org.openbravo.erpCommon.businessUtility.WindowTabs;
+import org.openbravo.erpCommon.utility.ComboTableData;
+import org.openbravo.erpCommon.utility.LeftTabsBar;
+import org.openbravo.erpCommon.utility.NavigationBar;
+import org.openbravo.erpCommon.utility.OBError;
+import org.openbravo.erpCommon.utility.SequenceIdData;
+import org.openbravo.erpCommon.utility.ToolBar;
+import org.openbravo.erpCommon.utility.Utility;
+import org.openbravo.xmlEngine.XmlDocument;
+
+public class RCHR_Attendance_Upload extends HttpSecureAppServlet {
+
+  private static final long serialVersionUID = 2L;
+
+  public void doPost(HttpServletRequest request, HttpServletResponse response)
+      throws ServletException, IOException {
+
+    VariablesSecureApp vars = new VariablesSecureApp(request);
+
+    if (vars.commandIn("DEFAULT")) {
+    	String strFirstLineHeader = vars.getStringParameter("inpFirstLineHeader");
+    	org.apache.commons.fileupload.FileItem filePath = vars.getMultiFile("inpFile");
+    	System.out.println("strFile "+filePath);
+    	System.out.println("strFirstLineHeader "+strFirstLineHeader);
+    	printPage(response, vars, strFirstLineHeader, vars.getCommand(), strFile);
+      
+    }else if (vars.commandIn("FIND")) {
+    	String strFirstLineHeader = vars.getStringParameter("inpFirstLineHeader");
+    	org.apache.commons.fileupload.FileItem filePath = vars.getMultiFile("inpFile");
+    	System.out.println("strFile "+filePath);
+	System.out.println("strFirstLineHeader "+strFirstLineHeader);
+        printPage(response, vars, strFirstLineHeader, vars.getCommand(), "");
+        
+    } else if (vars.commandIn("SAVE")) {
+    	String strFirstLineHeader = vars.getStringParameter("inpFirstLineHeader");
+    	org.apache.commons.fileupload.FileItem filePath = vars.getMultiFile("inpFile");
+    	System.out.println("strFile "+filePath);
+	System.out.println("strFirstLineHeader "+strFirstLineHeader);	
+	printPage(response, vars, strFirstLineHeader, vars.getCommand(), "");
+                
+    }else {
+    	pageError(response);
+    }
+      
+  }
+
+
+  private void printPage(HttpServletResponse response, VariablesSecureApp vars,
+      String strFirstLineHeader, String strCommand, String strFile)
+      throws IOException, ServletException {
+
+    XmlDocument xmlDocument = null;
+    xmlDocument = xmlEngine.readXmlTemplate("com/rcss/humanresource/ad_forms/RCHR_Attendance_Upload")
+        .createXmlDocument();
+    ToolBar toolbar = new ToolBar(this, vars.getLanguage(), "Attendance Process", false, "", "", "", false,
+        "ad_forms", strReplaceWith, false, true);
+    toolbar.prepareSimpleToolBarTemplate();
+    xmlDocument.setParameter("toolbar", toolbar.toString());
+
+    try {
+      WindowTabs tabs = new WindowTabs(this, vars, "com.rcss.humanresource.ad_forms.RCHR_Attendance_Upload");
+      xmlDocument.setParameter("parentTabContainer", tabs.parentTabs());
+      xmlDocument.setParameter("mainTabContainer", tabs.mainTabs());
+      xmlDocument.setParameter("childTabContainer", tabs.childTabs());
+      NavigationBar nav = new NavigationBar(this, vars.getLanguage(), "RCHR_Attendance_Upload.html",
+          classInfo.id, classInfo.type, strReplaceWith, tabs.breadcrumb());
+      xmlDocument.setParameter("navigationBar", nav.toString());
+      LeftTabsBar lBar = new LeftTabsBar(this, vars.getLanguage(), "RCHR_Attendance_Upload.html",
+          strReplaceWith);
+      xmlDocument.setParameter("leftTabs", lBar.manualTemplate());
+    } catch (Exception ex) {
+      throw new ServletException(ex);
+    }
+
+    xmlDocument.setParameter("theme", vars.getTheme());
+    {
+      OBError myMessage = vars.getMessage("FileImport");
+      vars.removeMessage("FileImport");
+      if (myMessage != null) {
+        xmlDocument.setParameter("messageType", myMessage.getType());
+        xmlDocument.setParameter("messageTitle", myMessage.getTitle());
+        xmlDocument.setParameter("messageMessage", myMessage.getMessage());
+      }
+    }
+
+    xmlDocument.setParameter("directory", "var baseDirectory = \"" + strReplaceWith + "/\";\n");
+    xmlDocument.setParameter("language", "defaultLang=\"" + vars.getLanguage() + "\";");
+    xmlDocument.setParameter("firstLineHeader", strFirstLineHeader);
+    //xmlDocument.setParameter("fileName", "TestFile.xlsx");
+    /*
+    try {
+      ComboTableData comboTableData = new ComboTableData(vars, this, "TABLEDIR", "ISHR_ImpFormat_ID",
+          "", "", Utility.getContext(this, vars, "#AccessibleOrgTree", ""), Utility.getContext(
+              this, vars, "#User_Client", ""), 0);
+      Utility.fillSQLParameters(this, vars, null, comboTableData, "", "");
+      xmlDocument.setData("reportImpFormat", "liststructure", comboTableData.select(false));
+      comboTableData = null;
+    } catch (Exception ex) {
+      throw new ServletException(ex);
+    }
+    */
+    response.setContentType("text/html; charset=UTF-8");
+    PrintWriter out = response.getWriter();
+    out.println(xmlDocument.print());
+    out.close();
+  }
+
+  public String getServletInfo() {
+    return "Servlet that presents the files-importing process";
+  }
+  
+  public void printParams(HttpServletRequest request , String command){
+	  System.out.println(command +" is command");
+	  java.util.Enumeration<java.lang.String> en = request.getParameterNames();
+	  while(en.hasMoreElements()){
+	  	String key = en.nextElement();
+	  	System.out.println(key +" iskey "+request.getParameter(key)+" is value");
+  	 }
+  }
+  
+}

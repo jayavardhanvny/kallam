@@ -1,0 +1,62 @@
+<?xml version="1.0"?>
+  <database name="TRIGGER RCPL_PRODINCENTIVE_TRG1">
+    <trigger name="RCPL_PRODINCENTIVE_TRG1" table="RCPL_PRODINCENTIVE" fires="before" insert="true" update="true" delete="false" foreach="row">
+      <body><![CDATA[declare 
+ Declare 
+       v_nooflooms NUMBER:= 0;
+	v_max NUMBER;
+	v_min NUMBER;
+       v_remqty NUMBER;
+       v_a_a1new NUMBER;
+       v_a_a1old NUMBER;
+       v_Message VARCHAR(2000):='';
+     
+begin
+IF (INSERTING OR UPDATING) THEN
+	--raise exception '%',v_nooflooms;
+	select count(clothtype.minlooms) into v_remqty from rcpl_loomcategory head, rcpl_loomcategorylines line,rcpl_loomcatlinsclothtype clothtype
+where head.rcpl_loomcategory_id=line.rcpl_loomcategory_id and line.rcpl_loomcategorylines_id=clothtype.rcpl_loomcategorylines_id
+and head.rcpl_loomcategory_id=:new.rcpl_loomcategory_id 
+and line.rchr_designation_id=(select rchr_designation_id from rchr_employee where rchr_employee_id=:new.rchr_employee_id);
+
+	select clothtype.minlooms into v_nooflooms from rcpl_loomcategory head, rcpl_loomcategorylines line,rcpl_loomcatlinsclothtype clothtype
+where head.rcpl_loomcategory_id=line.rcpl_loomcategory_id and line.rcpl_loomcategorylines_id=clothtype.rcpl_loomcategorylines_id
+and clothtype.yarntype=:new.loomsyarntype and head.rcpl_loomcategory_id=:new.rcpl_loomcategory_id 
+and line.rchr_designation_id=(select rchr_designation_id from rchr_employee where rchr_employee_id=:new.rchr_employee_id);
+	if (:new.isreleiver='Y' and :new.nooflooms>0) then 
+		raise '%','NO OF LOOMS SHOULD BE 0 IF RELIEVER SELECTED';
+	end if;
+	if (:new.isreleiver='N') then 
+		if (v_remqty>0) then
+			if(:new.nooflooms>=v_nooflooms) then 
+-- 				raise exception '%',v_nooflooms;
+				return new;
+			else if(:new.nooflooms<v_nooflooms) then 
+				v_Message:= 'It Should not be less than '||v_nooflooms;
+				RAISE v_Message;
+			end if;
+			end if;
+		else if(v_remqty=0) then
+			select min(clothtype.minlooms) into v_min from rcpl_loomcategory head, rcpl_loomcategorylines line,rcpl_loomcatlinsclothtype clothtype
+		where head.rcpl_loomcategory_id=line.rcpl_loomcategory_id and line.rcpl_loomcategorylines_id=clothtype.rcpl_loomcategorylines_id
+		and head.rcpl_loomcategory_id=:new.rcpl_loomcategory_id;
+			select max(clothtype.minlooms) into v_max from rcpl_loomcategory head, rcpl_loomcategorylines line,rcpl_loomcatlinsclothtype clothtype
+		where head.rcpl_loomcategory_id=line.rcpl_loomcategory_id and line.rcpl_loomcategorylines_id=clothtype.rcpl_loomcategorylines_id
+		and head.rcpl_loomcategory_id=:new.rcpl_loomcategory_id;
+			v_Message:= 'Designation is not assigned in Loom Category, So you cannot assign Looms to this employee';
+			return new;
+			--RAISE v_Message;	
+		end if;
+		end if;
+		IF(:new.nooflooms>12) then 
+			RAISE NO_DATA_FOUND;
+		END IF;
+	end if;
+	
+ end if;
+ RETURN;
+ 
+ end
+]]></body>
+    </trigger>
+  </database>

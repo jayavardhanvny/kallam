@@ -1,0 +1,4 @@
+<?xml version="1.0"?>
+  <database name="VIEW RCHR_EMP_RELAYINFO">
+    <view name="RCHR_EMP_RELAYINFO"><![CDATA[SELECT j.rchr_relayshift_details_id AS rchr_emp_relayinfo_id, j.ad_org_id, j.ad_client_id, j.isactive, j.created, j.createdby, j.updated, j.updatedby, j.rchr_employee_id, j.rchr_mrelay_id, j.rchr_shiftgroup_id, j.effectivedate FROM rchr_relayshift_details j]]></view>
+  </database>

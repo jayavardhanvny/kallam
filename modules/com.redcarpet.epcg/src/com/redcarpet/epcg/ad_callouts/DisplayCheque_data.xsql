@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<SqlClass name="DisplayChequeData" package="com.redcarpet.epcg.ad_callouts">
+
+  <SqlMethod name="chequeLines" type="preparedStatement" return="multiple" default="">
+    <SqlMethodComment></SqlMethodComment>
+    <Sql>
+      <![CDATA[
+
+
+                            SELECT  BP.epcg_cblines_id as ID, BP.chequeno as CHEQUE
+                            FROM epcg_cblines  BP
+                            LEFT JOIN epcg_chequebook PR ON PR.epcg_chequebook_id = BP.epcg_chequebook_id
+                            
+                            WHERE BP.chequestatus='Check Not Issued' and PR.fin_paymentmethod_id=? and PR.fin_financial_account_id=?
+                            order by BP.chequeno
+       
+      ]]>
+    </Sql>
+    <Parameter name="finPaymentmethodId"/>
+    <Parameter name="finFinancialAccountId"/>
+  </SqlMethod>
+</SqlClass>

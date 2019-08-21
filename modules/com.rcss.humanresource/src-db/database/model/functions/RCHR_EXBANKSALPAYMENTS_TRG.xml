@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+  <database name="FUNCTION RCHR_EXBANKSALPAYMENTS_TRG">
+    <function name="RCHR_EXBANKSALPAYMENTS_TRG" type="VARCHAR">
+      <body><![CDATA[declare 
+BEGIN 	 
+	 if(TG_OP='INSERT') then
+	 IF((SELECT STATUS FROM RCPL_PAYROLLPROCESS P WHERE P.RCHR_ATTD_PROCESS_ID=NEW.RCHR_ATTD_PROCESS_ID ORDER BY UPDATED LIMIT 1)='DR') then
+	 raise exception 'Before Entering ExcludedPayments You Should Finalize Payroll';
+	 else return new;
+	 end if;
+	 end if;
+END RCHR_EXBANKSALPAYMENTS_TRG
+]]></body>
+    </function>
+  </database>

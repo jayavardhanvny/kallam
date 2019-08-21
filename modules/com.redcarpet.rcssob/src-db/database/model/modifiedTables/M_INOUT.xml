@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+  <database name="MODIFIED TABLE M_INOUT">
+    <table name="M_INOUT" primaryKey="M_INOUT_KEY">
+      <column name="EM_RCOB_COMMISSION" primaryKey="false" required="true" type="DECIMAL" autoIncrement="false">
+        <default><![CDATA[0]]></default>
+        <onCreateDefault/>
+      </column>
+    </table>
+  </database>

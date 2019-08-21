@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ExcludedSalariesDetails" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<property name="ireport.zoom" value="2.4157650000000013"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="bankid" class="java.lang.String">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="aux_bank" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[$P{bankid}.equals("") ? " " : " AND emp.BANKNAME='" +$P{bankid}+ "'"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="slotno" class="java.lang.String">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="aux_slotno" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[$P{slotno}.equals("") ? " " : " AND emp.slotno='" +$P{slotno}+ "'"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["/home/rcss/production/modules/com.redcarpet.payroll/src/com/redcarpet/payroll/erpCommon/ad_reports/"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="ProcessID" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[select
+upper(org.name) as org,upper(org.description) as desci,
+e1.documentno as tno,upper(e1.employeename) as tname,emp.rchr_exbanksalpaymentsemp_id,
+emp.paidamount as totalamount,bankname,emp.accountno,ifsccode,emp.accountname as aname,emp.processingsal as esal,emp.slotno
+from
+rchr_exbanksalpaymentsemp emp
+left join rchr_exbanksalpayments payment on payment.rchr_exbanksalpayments_id=emp.rchr_exbanksalpayments_id
+left join rchr_employee e1 on e1.rchr_employee_id=emp.rchr_employee_id
+left join ad_org org on org.ad_org_id=emp.ad_org_id
+left join rchr_attd_process attd on attd.rchr_attd_process_id=payment.rchr_attd_process_id
+where attd.rchr_attd_process_id=$P{ProcessID}
+$P!{aux_bank}
+$P!{aux_slotno}
+order by SUBSTRING(e1.documentno FROM '([0-9]+)')::BIGINT ASC,e1.documentno]]>
+	</queryString>
+	<field name="org" class="java.lang.String"/>
+	<field name="desci" class="java.lang.String"/>
+	<field name="tno" class="java.lang.String"/>
+	<field name="tname" class="java.lang.String"/>
+	<field name="rchr_exbanksalpaymentsemp_id" class="java.lang.String"/>
+	<field name="totalamount" class="java.math.BigDecimal"/>
+	<field name="bankname" class="java.lang.String"/>
+	<field name="accountno" class="java.lang.String"/>
+	<field name="ifsccode" class="java.lang.String"/>
+	<field name="aname" class="java.lang.String"/>
+	<field name="esal" class="java.math.BigDecimal"/>
+	<field name="slotno" class="java.math.BigDecimal"/>
+	<variable name="stotal" class="java.math.BigDecimal" incrementType="Group" incrementGroup="empl" calculation="Sum">
+		<variableExpression><![CDATA[$F{totalamount}]]></variableExpression>
+	</variable>
+	<group name="empl" keepTogether="true">
+		<groupExpression><![CDATA[$F{rchr_exbanksalpaymentsemp_id}]]></groupExpression>
+		<groupHeader>
+			<band height="18">
+				<textField>
+					<reportElement x="465" y="3" width="89" height="12"/>
+					<textElement lineSpacing="Single">
+						<font fontName="DejaVu Sans" size="8" isBold="true"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{accountno}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="387" y="3" width="78" height="12"/>
+					<textElement lineSpacing="Single">
+						<font fontName="DejaVu Sans" size="8" isBold="true"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{ifsccode}]]></textFieldExpression>
+				</textField>
+				<line>
+					<reportElement x="0" y="0" width="555" height="1"/>
+				</line>
+				<line>
+					<reportElement x="1" y="17" width="554" height="1"/>
+					<graphicElement>
+						<pen lineStyle="Dashed"/>
+					</graphicElement>
+				</line>
+				<textField pattern="###0">
+					<reportElement x="184" y="2" width="46" height="14"/>
+					<textElement lineSpacing="Single">
+						<font fontName="DejaVu Sans" size="8" isBold="true"/>
+					</textElement>
+					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{esal}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="8" y="2" width="50" height="14"/>
+					<textElement lineSpacing="Single">
+						<font fontName="DejaVu Sans" size="8" isBold="true"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{tno}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="69" y="2" width="114" height="14"/>
+					<textElement lineSpacing="Single">
+						<font fontName="DejaVu Sans" size="8" isBold="true"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{tname}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="234" y="2" width="54" height="13"/>
+					<textElement lineSpacing="Single">
+						<font fontName="DejaVu Sans" size="8" isBold="true"/>
+					</textElement>
+					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{totalamount}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="290" y="3" width="97" height="12"/>
+					<textElement lineSpacing="Single">
+						<font fontName="DejaVu Sans" size="8" isBold="true"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{aname}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="23" splitType="Prevent">
+				<subreport>
+					<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="4" y="11" width="259" height="12" isPrintWhenDetailOverflows="true"/>
+					<subreportParameter name="id">
+						<subreportParameterExpression><![CDATA[$F{rchr_exbanksalpaymentsemp_id}]]></subreportParameterExpression>
+					</subreportParameter>
+					<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					<subreportExpression class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "report3.jasper"]]></subreportExpression>
+				</subreport>
+				<staticText>
+					<reportElement x="69" y="2" width="100" height="8"/>
+					<textElement textAlignment="Center" lineSpacing="Single">
+						<font fontName="DejaVu Sans" size="6" isBold="true" isUnderline="true"/>
+					</textElement>
+					<text><![CDATA[Employee Salaries]]></text>
+				</staticText>
+			</band>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="29" splitType="Stretch">
+			<line>
+				<reportElement x="0" y="0" width="555" height="1"/>
+			</line>
+			<line>
+				<reportElement x="555" y="0" width="1" height="29"/>
+			</line>
+			<line>
+				<reportElement x="0" y="0" width="1" height="29"/>
+			</line>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="29" splitType="Stretch">
+			<line>
+				<reportElement x="0" y="0" width="555" height="1"/>
+			</line>
+			<staticText>
+				<reportElement x="150" y="3" width="284" height="12"/>
+				<textElement textAlignment="Center" lineSpacing="Single">
+					<font fontName="DejaVu Sans" size="8"/>
+				</textElement>
+				<text><![CDATA[Excluded Employee's Salararies Statement]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="416" y="16" width="54" height="12"/>
+				<textElement lineSpacing="Single">
+					<font fontName="DejaVu Sans" size="8"/>
+				</textElement>
+				<text><![CDATA[SLOT NO:]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="16" splitType="Stretch">
+			<staticText>
+				<reportElement x="9" y="2" width="49" height="12"/>
+				<textElement lineSpacing="Single">
+					<font fontName="DejaVu Sans" size="8" isBold="false"/>
+				</textElement>
+				<text><![CDATA[EMP NO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="69" y="2" width="115" height="12"/>
+				<textElement lineSpacing="Single">
+					<font fontName="DejaVu Sans" size="8" isBold="false"/>
+				</textElement>
+				<text><![CDATA[EMP NAME]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="186" y="2" width="44" height="12"/>
+				<textElement lineSpacing="Single">
+					<font fontName="DejaVu Sans" size="8" isBold="false"/>
+				</textElement>
+				<text><![CDATA[SALALRY]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="0" width="555" height="1"/>
+			</line>
+			<staticText>
+				<reportElement x="388" y="2" width="77" height="12"/>
+				<textElement lineSpacing="Single">
+					<font fontName="DejaVu Sans" size="8"/>
+				</textElement>
+				<text><![CDATA[IFSC CODE]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="466" y="2" width="88" height="12"/>
+				<textElement lineSpacing="Single">
+					<font fontName="DejaVu Sans" size="8"/>
+				</textElement>
+				<text><![CDATA[A/C No]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="233" y="2" width="56" height="12"/>
+				<textElement lineSpacing="Single">
+					<font fontName="DejaVu Sans" size="8"/>
+				</textElement>
+				<text><![CDATA[Total Amount]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="290" y="2" width="97" height="12"/>
+				<textElement lineSpacing="Single">
+					<font fontName="DejaVu Sans" size="8"/>
+				</textElement>
+				<text><![CDATA[Benf Name]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<pageFooter>
+		<band/>
+	</pageFooter>
+	<summary>
+		<band height="14">
+			<textField pattern="###0">
+				<reportElement x="204" y="2" width="71" height="12"/>
+				<textElement textAlignment="Right" lineSpacing="Single">
+					<font fontName="DejaVu Sans" size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{stotal}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="87" y="2" width="98" height="12"/>
+				<textElement textAlignment="Center" lineSpacing="Single">
+					<font fontName="DejaVu Sans" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Total]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="0" width="556" height="1"/>
+			</line>
+		</band>
+	</summary>
+</jasperReport>

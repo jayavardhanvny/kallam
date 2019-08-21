@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+  <database name="TRIGGER RCGI_DIFAMILYLIST_TRG">
+    <trigger name="RCGI_DIFAMILYLIST_TRG" table="RCGI_DIFAMILYLIST" fires="after" insert="false" update="false" delete="true" foreach="row">
+      <body><![CDATA[Declare 
+       
+   BEGIN
+	IF(TG_OP='DELETE') THEN
+	if((select docstatus from rcgi_departmentissue where rcgi_departmentissue_id=:OLD.rcgi_departmentissue_id)='CO') then
+		raise exception 'Delete not possible after complete';
+	ELSE
+		update rcgi_departmentissue set totaleligibityamount=totaleligibityamount-:OLD.eligibilty where rcgi_departmentissue_id=:OLD.rcgi_departmentissue_id;
+	RETURN OLD;
+	END IF;
+		RETURN OLD;
+	END IF;
+       
+   END RCGI_DIFAMILYLIST_TRG
+]]></body>
+    </trigger>
+  </database>

@@ -1,0 +1,49 @@
+<?xml version="1.0"?>
+  <database name="FUNCTION RCHR_UPDATE_REMQTY">
+    <function name="RCHR_UPDATE_REMQTY" type="NULL">
+      <parameter name="p_pinstance_id" type="VARCHAR" mode="in">
+        <default/>
+      </parameter>
+      <body><![CDATA[Cur_Parameter RECORD;
+  v_Message character varying(500):='';
+
+  v_RCHR_qualitystandard_Id character varying(32);
+  v_AD_Org_Id character varying(32);
+  v_ordrqty NUMBER;
+  v_remqty NUMBER;
+  v_a_a1new NUMBER;
+  v_a_a1old NUMBER;
+
+  BEGIN 
+ --BODY
+ FOR Cur_Parameter IN
+      (SELECT i.Record_ID
+      FROM AD_PInstance i
+      LEFT JOIN AD_PInstance_Para p
+        ON i.AD_PInstance_ID=p.AD_PInstance_ID
+      WHERE i.AD_PInstance_ID=p_PInstance_ID
+      ORDER BY p.SeqNo)
+    LOOP
+  v_RCHR_qualitystandard_Id:= Cur_Parameter.Record_ID;      
+  
+    END LOOP;
+ 
+
+
+  select COALESCE(orderquantity,0) into v_ordrqty from rchr_qualitystandard where rchr_qualitystandard_id=v_RCHR_qualitystandard_Id;
+  select COALESCE(remainingquantity,0) into v_remqty from rchr_qualitystandard where rchr_qualitystandard_id=v_RCHR_qualitystandard_Id;
+  select COALESCE(sum(atotal+aonetotal),0) into v_a_a1new from rchr_inspectionsheet where rchr_qualitystandard_id = v_RCHR_qualitystandard_Id;
+  
+  if(v_ordrqty=0) THEN 
+        update rchr_qualitystandard set remainingquantity=0 where rchr_qualitystandard_id=v_RCHR_qualitystandard_Id ;
+        ELSE
+        update rchr_qualitystandard set remainingquantity = (v_ordrqty-v_a_a1new) where rchr_qualitystandard_id=v_RCHR_qualitystandard_Id ;
+        END IF;
+	
+    v_Message:='@Processed Successfully@';
+    AD_UPDATE_PINSTANCE(p_PInstance_ID, NULL, 'N', 1, v_Message) ;
+    RETURN;
+END RCHR_UPDATE_REMQTY
+]]></body>
+    </function>
+  </database>

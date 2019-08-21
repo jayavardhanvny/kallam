@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<SqlClass name="RCPRPreventiveOrderMaintenanceData" package="com.redcarpet.production.ad_process" accessModifier="public">
+     
+    <SqlMethod name="getElectricalMaintenanceId" type="preparedStatement" return="string">
+        <Sql>
+		<![CDATA[ 
+                    select RCPR_Machine_EMaintenance_Id from RCPR_Machine_EMaintenance
+                         where rcpr_machine_id = ?  and rcpr_maintenancetask_id = ? 
+                    order by nextpmdone desc limit 1
+                 ]]>
+        </Sql>
+        <Parameter name="machineId"/>
+        <Parameter name="maintenanceTaskId"/>
+    </SqlMethod>
+     
+    <SqlMethod name="getMechanicalMaintenanceId" type="preparedStatement" return="string">
+        <Sql>
+		<![CDATA[ 
+                    select RCPR_Machine_MMaintenance_Id from RCPR_Machine_MMaintenance
+                         where rcpr_machine_id = ?  and rcpr_maintenancetask_id = ? 
+                    order by nextpmdone desc limit 1
+                 ]]>
+        </Sql>
+        <Parameter name="machineId"/>
+        <Parameter name="maintenanceTaskId"/>
+    </SqlMethod>
+     
+    <SqlMethod name="getElectricalLastDate" type="preparedStatement" return="string">
+        <Sql>
+		<![CDATA[ 
+                    select nextpmdone from RCPR_Machine_EMaintenance
+                         where rcpr_machine_id = ?  and rcpr_maintenancetask_id = ? 
+                    order by nextpmdone desc limit 1
+                 ]]>
+        </Sql>
+        <Parameter name="machineId"/>
+        <Parameter name="maintenanceTaskId"/>
+    </SqlMethod>
+     
+    <SqlMethod name="getMechanicalLastDate" type="preparedStatement" return="string">
+        <Sql>
+		<![CDATA[ 
+                    select nextpmdone from RCPR_Machine_MMaintenance
+                         where rcpr_machine_id = ?  and rcpr_maintenancetask_id = ? 
+                    order by nextpmdone desc limit 1
+                 ]]>
+        </Sql>
+        <Parameter name="machineId"/>
+        <Parameter name="maintenanceTaskId"/>
+    </SqlMethod>
+     
+    <SqlMethod name="updateElectrical" type="preparedStatement" return="rowCount">
+        <SqlMethodComment></SqlMethodComment>
+        <Sql><![CDATA[ 
+            UPDATE RCPR_Machine_EMaintenance set nextpmdone=to_date(?, 'yyyy-mm-dd') 
+                where rcpr_machine_id = ?  and rcpr_maintenancetask_id = ? 
+             ]]>
+        </Sql>
+        <Parameter name="nextpmdone"/>
+        <Parameter name="machineId"/>
+        <Parameter name="maintenanceTaskId"/>
+    </SqlMethod>
+     
+          
+    <SqlMethod name="updateMechanical" type="preparedStatement" return="rowCount">
+        <SqlMethodComment></SqlMethodComment>
+        <Sql><![CDATA[
+            UPDATE RCPR_Machine_MMaintenance set nextpmdone=to_date(?, 'yyyy-mm-dd') 
+                 where rcpr_machine_id = ?  and rcpr_maintenancetask_id = ? 
+            ]]>
+        </Sql>
+        <Parameter name="nextpmdone"/>
+        <Parameter name="machineId"/>
+        <Parameter name="maintenanceTaskId"/>
+    </SqlMethod>
+    
+        <SqlMethod name="updateElectrical2" type="preparedStatement" return="rowCount">
+        <SqlMethodComment></SqlMethodComment>
+        <Sql><![CDATA[ 
+            UPDATE RCPR_Machine_EMaintenance set lastpmdone=to_date(?, 'yyyy-mm-dd'), nextpmdone=to_date(?, 'yyyy-mm-dd') 
+                where rcpr_machine_id = ?  and rcpr_maintenancetask_id = ? 
+             ]]>
+        </Sql>
+        <Parameter name="from"/>
+        <Parameter name="to"/>
+        <Parameter name="machineId"/>
+        <Parameter name="maintenanceTaskId"/>
+    </SqlMethod>
+     
+          
+    <SqlMethod name="updateMechanical2" type="preparedStatement" return="rowCount">
+        <SqlMethodComment></SqlMethodComment>
+        <Sql><![CDATA[
+            UPDATE RCPR_Machine_MMaintenance set lastpmdone=to_date(?, 'yyyy-mm-dd'), nextpmdone=to_date(?, 'yyyy-mm-dd') 
+                 where rcpr_machine_id = ?  and rcpr_maintenancetask_id = ? 
+            ]]>
+        </Sql>
+        <Parameter name="from"/>
+        <Parameter name="to"/>
+        <Parameter name="machineId"/>
+        <Parameter name="maintenanceTaskId"/>
+    </SqlMethod>
+    
+</SqlClass>

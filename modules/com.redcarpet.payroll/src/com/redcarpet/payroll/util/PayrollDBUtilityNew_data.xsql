@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<SqlClass name="PayrollDBUtilityNewData" package="com.redcarpet.payroll.util" accessModifier="public">
+  
+    <SqlMethod name="getAttendanceLineIdOnDate" type="preparedStatement" return="multiple">
+       
+        <Sql>
+          <![CDATA[ 
+            select line.rchr_attend_line_id from rchr_attend_line line 
+            left join rchr_attendance att on att.rchr_attendance_id = line.rchr_attendance_id  
+            left join rcpr_shift sh on line.rcpr_shift_id = sh.rcpr_shift_id 
+            where line.rchr_employee_id =? 
+            and att.fromdate between 
+            to_date(?,'yyyy-mm-dd') and to_date(?,'yyyy-mm-dd') 
+            and line.present='Y'
+                ]]>
+         
+        </Sql>
+        <Parameter name="strEmployeeId"/>
+        <Parameter name="startDate"/>
+         <Parameter name="endDate"/>
+    </SqlMethod>
+
+      
+</SqlClass>

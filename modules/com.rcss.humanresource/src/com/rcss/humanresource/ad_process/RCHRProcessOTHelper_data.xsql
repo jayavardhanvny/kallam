@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<SqlClass name="RCHRProcessOTHelperData" package="com.rcss.humanresource.ad_process" accessModifier="public">
+
+    <SqlMethod name="getAttendanceHeader" type="preparedStatement" return="string">
+        <Sql>
+		<![CDATA[ 
+                    select rchr_attendance_id from rchr_attendance 
+                    where fromdate = to_date(?,'yyyy-mm-dd') 
+                    and isactive='Y' limit 1 
+                ]]>
+        </Sql>
+        <Parameter name="attendanceDate"/>
+    </SqlMethod>
+   
+     <SqlMethod name="getLineNo" type="preparedStatement" return="string">
+	<Sql>
+		<![CDATA[ 
+                    SELECT COALESCE(MAX(LINE),0)+10 AS DefaultValue FROM RCPL_PROCESSSWLINE WHERE Rcpl_Processsw_ID=?
+                 ]]>
+	</Sql>
+        <Parameter name="serviceWeightageId"/>
+     </SqlMethod>
+
+</SqlClass>

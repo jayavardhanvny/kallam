@@ -1,0 +1,91 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package com.redcarpet.production.ad_process;
+
+import com.redcarpet.production.data.RCPR_PrExpense;
+import com.redcarpet.production.data.RCPR_PrProduct;
+import com.redcarpet.production.data.RCPR_ProductionRun;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.util.Iterator;
+import java.util.List;
+import javax.servlet.ServletException;
+import org.openbravo.dal.service.OBDal;
+import org.openbravo.erpCommon.utility.OBError;
+import org.openbravo.model.materialmgmt.transaction.ProductionLine;
+import org.openbravo.model.materialmgmt.transaction.ProductionPlan;
+import org.openbravo.scheduling.ProcessBundle;
+import org.openbravo.service.db.DalBaseProcess;
+import org.openbravo.service.db.DalConnectionProvider;
+
+/**
+ *
+ * @author icm
+ */
+public class RCPR_ProductionRun_Create extends DalBaseProcess {
+
+    @Override
+    protected void doExecute(ProcessBundle bundle) throws Exception {
+        String id = bundle.getParams().get("Rcpr_Productionrun_ID").toString();
+        RCPR_ProductionRun prun = OBDal.getInstance().get(RCPR_ProductionRun.class, id);
+  /*      insertInProduct(prun);
+        insertLines(prun);
+        updateHeader(prun);
+        OBError err = new OBError();
+        err.setType("Success");
+        err.setTitle("Success");
+        err.setMessage("Process Completed Successfully");
+        bundle.setResult(err);
+*/
+    }
+
+/*    private void insertInProduct(RCPR_ProductionRun prun) throws ServletException {
+        ProductionPlan plan = prun.getBOMProduction().getMaterialMgmtProductionPlanList().get(0);
+        prun.setProduct(plan.getProduct());
+        prun.setUOM(plan.getProduct().getUOM());
+        prun.setStorageBin(plan.getStorageBin());
+        prun.setItemCost(getItemCostFromCosting(plan.getProduct().getId()));
+    }
+
+    private void insertLines(RCPR_ProductionRun prun) throws ServletException {
+        List<ProductionLine> prodList = prun.getBOMProduction().getMaterialMgmtProductionPlanList().get(0).getManufacturingProductionLineList();
+        int line = 10;
+        for (ProductionLine prd : prodList) {
+            String client = prun.getClient().getId();
+            String org = prun.getOrganization().getId();
+            String productId = prd.getProduct().getId();
+            String uomId = prd.getProduct().getUOM().getId();
+            String locatorId = prun.getBOMProduction().getMaterialMgmtProductionPlanList().get(0).getStorageBin().getId();
+            BigDecimal qty = (prd.getMovementQuantity().multiply(prun.getRequiredQuantity())).divide(prun.getBOMProduction().getMaterialMgmtProductionPlanList().get(0).getProductionQuantity(), 5, RoundingMode.HALF_UP);
+            BigDecimal lineNetAmt = getProductCost(prun.getExpenseCost(), prun.getRequiredQuantity(), prun.getItemCost());
+            BigDecimal unitPrice = lineNetAmt.divide(qty, 5, RoundingMode.HALF_UP);
+            
+            RCPRInsertPRLinesData.insert(new DalConnectionProvider(), client, org, prun.getId(), 
+                    new String(line+""), productId, uomId, locatorId, qty.toString(), unitPrice.toString(), lineNetAmt.toString());
+            line=line+10;
+        }
+    }
+
+    private BigDecimal getProductCost(BigDecimal expenseCost, BigDecimal outProdCost, BigDecimal outProdQty) {
+        return expenseCost.add(outProdCost.multiply(outProdQty));
+    }
+
+    private void updateHeader(RCPR_ProductionRun prun) {
+        double sumPrd = 0.0;
+                
+        for(RCPR_PrProduct prod : prun.getRCPRPrProductList()){
+            sumPrd+= prod.getLineNetAmount().doubleValue();
+        }
+        prun.setTotalItemCost(new BigDecimal(sumPrd));
+        prun.setGrossAmount(prun.getTotalItemCost().add(prun.getExpenseCost()));
+    }
+
+    private BigDecimal getItemCostFromCosting(String strProductId) throws ServletException {
+        
+        String str = RCPRInsertPRLinesData.getProductPrice(new DalConnectionProvider(), strProductId);
+        return new BigDecimal(str);
+    }
+*/
+}

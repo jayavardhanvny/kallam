@@ -1,0 +1,66 @@
+package com.redcarpet.production.ad_events;
+
+import com.redcarpet.production.data.RCPR_PrExpense;
+import com.redcarpet.production.data.RCPR_ProductionRun;
+import java.math.BigDecimal;
+import javax.enterprise.event.Observes;
+import org.openbravo.base.model.Entity;
+import org.openbravo.base.model.ModelProvider;
+import org.openbravo.client.kernel.event.EntityDeleteEvent;
+import org.openbravo.client.kernel.event.EntityNewEvent;
+import org.openbravo.client.kernel.event.EntityPersistenceEventObserver;
+import org.openbravo.client.kernel.event.EntityUpdateEvent;
+import org.openbravo.dal.core.OBContext;
+
+public class RCPR_Expense_Gross_Calc extends EntityPersistenceEventObserver {
+
+    private static Entity[] entities = {ModelProvider.getInstance().getEntity(RCPR_PrExpense.ENTITY_NAME)};
+
+    @Override
+    protected Entity[] getObservedEntities() {
+        return entities;
+    }
+
+    public void onUpdate(@Observes EntityUpdateEvent event) {
+//        if (!isValidEvent(event)) {
+//            return;
+//        }
+//        RCPR_PrExpense target = (RCPR_PrExpense) event.getTargetInstance();
+//        BigDecimal addition = getSumAdditions(target.getProductionRun());
+//        target.getProductionRun().setExpenseCost(addition);
+    }
+
+    public void onSave(@Observes EntityNewEvent event) {
+        if (!isValidEvent(event)) {
+            return;
+        }
+        
+        OBContext.setAdminMode();
+        RCPR_PrExpense target = (RCPR_PrExpense) event.getTargetInstance();
+        BigDecimal oldAmt = getSumAdditions(target.getProductionRun());
+        BigDecimal newAmt = target.getAmount();
+        target.getProductionRun().setExpenseCost(oldAmt.add(newAmt));
+        
+        OBContext.restorePreviousMode();
+        
+    }
+
+    public void onDelete(@Observes EntityDeleteEvent event) {
+        if (!isValidEvent(event)) {
+            return;
+        }
+        RCPR_PrExpense target = (RCPR_PrExpense) event.getTargetInstance();
+        BigDecimal oldAmt = getSumAdditions(target.getProductionRun());
+        BigDecimal newAmt = target.getAmount();
+        target.getProductionRun().setExpenseCost(oldAmt.subtract(newAmt));
+    }
+
+    private BigDecimal getSumAdditions(RCPR_ProductionRun run) {
+        double retVal = 0;
+
+        for (RCPR_PrExpense ex : run.getRCPRPrExpenseList()) {
+            retVal += ex.getAmount().doubleValue();
+        }
+        return new BigDecimal(retVal);
+    }
+}

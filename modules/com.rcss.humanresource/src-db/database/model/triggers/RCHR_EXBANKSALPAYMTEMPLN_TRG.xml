@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+  <database name="TRIGGER RCHR_EXBANKSALPAYMTEMPLN_TRG">
+    <trigger name="RCHR_EXBANKSALPAYMTEMPLN_TRG" table="RCHR_EXBANKSALPAYMENTSEMPLN" fires="after" insert="true" update="false" delete="false" foreach="row">
+      <body><![CDATA[declare
+totalamount NUMBER:=0;
+BEGIN
+	 if(TG_OP='INSERT') then
+
+
+	 update rchr_exbanksalpayments set totalamount=coalesce((select sum(exemp.paidamount) from rchr_exbanksalpaymentsemp exemp 
+		join rchr_exbanksalpayments head on exemp.rchr_exbanksalpayments_id=head.rchr_exbanksalpayments_id
+		where head.rchr_exbanksalpayments_id = (select rchr_exbanksalpayments_id from rchr_exbanksalpaymentsemp 
+		where rchr_exbanksalpaymentsemp_id=:new.rchr_exbanksalpaymentsemp_id limit 1)) + 
+		(select processingsal from rchr_exbanksalpaymentsemp where rchr_exbanksalpaymentsemp_id=:new.rchr_exbanksalpaymentsemp_id) + 
+		(select sum(paidamount) from rchr_exbanksalpaymentsempln where rchr_exbanksalpaymentsemp_id=:new.rchr_exbanksalpaymentsemp_id),0)
+	 where rchr_exbanksalpayments_id=(select rchr_exbanksalpayments_id from rchr_exbanksalpaymentsemp where rchr_exbanksalpaymentsemp_id=:new.rchr_exbanksalpaymentsemp_id limit 1);
+	return new;
+	 end if;
+END RCHR_EXBANKSALPAYMTEMPLN_TRG
+]]></body>
+    </trigger>
+  </database>

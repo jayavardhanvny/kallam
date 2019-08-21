@@ -1,0 +1,73 @@
+<?xml version="1.0"?>
+  <database name="TRIGGER RCHR_SORTMSTR_UPDATION">
+    <trigger name="RCHR_SORTMSTR_UPDATION" table="RCHR_INSPECTIONSHEET" fires="after" insert="true" update="true" delete="false" foreach="row">
+      <body><![CDATA[Declare 
+       v_ordrqty NUMBER;
+       v_remqty NUMBER;
+       v_a_a1new NUMBER;
+       v_a_a1old NUMBER;
+       --v_slvalue NUMERIC;
+       v_Message VARCHAR(2000):='';
+       --v_Rchr_inspectionsheet_ID rchr_inspcategoryline.rchr_inspectionsheet_id%TYPE;
+       --v_Rchr_inspectiontype_ID VARCHAR(32);
+       v_totalmtr NUMBER;
+
+   BEGIN
+
+      
+        IF (UPDATING) THEN
+       
+        select orderquantity into v_ordrqty from rchr_qualitystandard where rchr_qualitystandard_id=:NEW.rchr_qualitystandard_id;
+        select remainingquantity into v_remqty from rchr_qualitystandard where rchr_qualitystandard_id=:NEW.rchr_qualitystandard_id;
+        
+        select sum(:NEW.atotal+:NEW.aonetotal) into v_a_a1new from rchr_inspectionsheet where rchr_inspectionsheet_id = :NEW.rchr_inspectionsheet_id;
+        select sum(:OLD.atotal+:OLD.aonetotal) into v_a_a1old from rchr_inspectionsheet where rchr_inspectionsheet_id = :OLD.rchr_inspectionsheet_id;
+
+        if(v_ordrqty is null) THEN v_ordrqty:=0; END IF;
+        if(v_remqty is null) THEN v_remqty:=0; END IF;
+        if(v_a_a1new is null) THEN v_a_a1new:=0; END IF;
+        if(v_a_a1old is null) THEN v_a_a1old:=0; END IF;
+        
+        if(v_a_a1new>v_a_a1old) THEN
+        if(v_ordrqty=0) THEN 
+        update rchr_qualitystandard set remainingquantity=0 where rchr_qualitystandard_id=:NEW.rchr_qualitystandard_id ;
+        ELSE
+        update rchr_qualitystandard set remainingquantity=remainingquantity-(v_a_a1new-v_a_a1old) where rchr_qualitystandard_id=:NEW.rchr_qualitystandard_id ;
+        END IF;
+        ELSE
+        if(v_ordrqty=0) THEN 
+        update rchr_qualitystandard set remainingquantity=0 where rchr_qualitystandard_id=:NEW.rchr_qualitystandard_id ;
+        ELSE
+        update rchr_qualitystandard set remainingquantity=remainingquantity+(v_a_a1old-v_a_a1new) where rchr_qualitystandard_id=:NEW.rchr_qualitystandard_id ;
+         END IF;
+         END IF;
+        
+        return NEW;
+ 
+        ELSIF (INSERTING) THEN
+       select orderquantity into v_ordrqty from rchr_qualitystandard where rchr_qualitystandard_id=:NEW.rchr_qualitystandard_id;
+        select remainingquantity into v_remqty from rchr_qualitystandard where rchr_qualitystandard_id=:NEW.rchr_qualitystandard_id;
+        
+        select sum(:NEW.atotal+:NEW.aonetotal) into v_a_a1new from rchr_inspectionsheet where rchr_inspectionsheet_id = :NEW.rchr_inspectionsheet_id;
+        --select sum(OLD.atotal+OLD.aonetotal) into v_a_a1old from rchr_inspectionsheet where rchr_inspectionsheet_id = OLD.rchr_inspectionsheet_id;
+       -- v_Cutlook:=v_Cutlook+v_cutnewvalue;
+        if(v_ordrqty is null) THEN v_ordrqty:=0; END IF;
+        if(v_remqty is null) THEN v_remqty:=0; END IF;
+        if(v_a_a1new is null) THEN v_a_a1new:=0; END IF;
+        if(v_a_a1old is null) THEN v_a_a1old:=0; END IF;
+        
+       
+        if(v_ordrqty=0) THEN 
+        update rchr_qualitystandard set remainingquantity=0 where rchr_qualitystandard_id=:NEW.rchr_qualitystandard_id ;
+        ELSE
+        update rchr_qualitystandard set remainingquantity=remainingquantity-(v_a_a1new) where rchr_qualitystandard_id=:NEW.rchr_qualitystandard_id ;
+        END IF;
+       
+	
+        return new;
+        END IF;
+        RETURN NULL;
+        END RCHR_SORTMSTR_UPDATION
+]]></body>
+    </trigger>
+  </database>

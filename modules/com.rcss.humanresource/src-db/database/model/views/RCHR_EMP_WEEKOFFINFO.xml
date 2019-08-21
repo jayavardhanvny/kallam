@@ -1,0 +1,4 @@
+<?xml version="1.0"?>
+  <database name="VIEW RCHR_EMP_WEEKOFFINFO">
+    <view name="RCHR_EMP_WEEKOFFINFO"><![CDATA[SELECT j.rchr_weeklyoffdetails_id AS rchr_emp_weekoffinfo_id, j.ad_org_id, j.ad_client_id, j.isactive, j.created, j.createdby, j.updated, j.updatedby, j.rchr_employee_id, j.weeklyoff, j.effectivedate FROM rchr_weeklyoffdetails j]]></view>
+  </database>

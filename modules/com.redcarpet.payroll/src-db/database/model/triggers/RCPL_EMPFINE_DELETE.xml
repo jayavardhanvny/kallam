@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+  <database name="TRIGGER RCPL_EMPFINE_DELETE">
+    <trigger name="RCPL_EMPFINE_DELETE" table="RCPL_EMPFINE" fires="before" insert="false" update="false" delete="true" foreach="row">
+      <body><![CDATA[declare 
+ Declare 
+     
+     
+begin
+
+
+--select orderquantity into v_ordrqty from rchr_qualitystandard where rchr_qualitystandard_id=OLD.rchr_qualitystandard_id;
+--select remainingquantity into v_remqty from rchr_qualitystandard where rchr_qualitystandard_id=OLD.rchr_qualitystandard_id;
+if(TG_OP='DELETE')then 
+  	raise exception 'Delete not possible';  
+ return old;
+ end if;
+ end
+]]></body>
+    </trigger>
+  </database>

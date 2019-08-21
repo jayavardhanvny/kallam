@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+ *************************************************************************
+ * The contents of this file are subject to the Openbravo  Public  License
+ * Version  1.1  (the  "License"),  being   the  Mozilla   Public  License
+ * Version 1.1  with a permitted attribution clause; you may not  use this
+ * file except in compliance with the License. You  may  obtain  a copy of
+ * the License at http://www.openbravo.com/legal/license.html 
+ * Software distributed under the License  is  distributed  on  an "AS IS"
+ * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+ * License for the specific  language  governing  rights  and  limitations
+ * under the License. 
+ * The Original Code is Openbravo ERP. 
+ * The Initial Developer of the Original Code is Openbravo SLU 
+ * All portions are Copyright (C) 2001-2012 Openbravo SLU 
+ * All Rights Reserved. 
+ * Contributor(s):  ______________________________________.
+ ************************************************************************
+-->
+
+
+
+
+<SqlClass name="EpcgEnquiryFormPreviewData" package="com.redcarpet.epcg.ad_forms">
+<SqlMethod name="select" type="preparedStatement" return="multiple">
+    <SqlMethodComment></SqlMethodComment>
+    <Sql>
+      <![CDATA[
+        select enq.epcg_Costenquiry_Id,(select name from c_bpartner where c_bpartner_id=enq.c_bpartner_id) as partner,    			
+        (select name from c_bpartner where c_bpartner_id=enq.agent) as agent,
+	enq.qstandard as actquality,
+	enq.oncontract as oncontract,
+	(select Qualityno from rchr_qualitystandard where rchr_qualitystandard_id=enq.rchr_qualitystandard_id) as sortno,
+	enq.orderquantity as quantity,'' as stock,enq.Exmillpricerspermts as fp,
+	enq.noofloomsworked as runningloom,enq.warpratekgs as warprice,enq.weftratekgs as weftprice,
+	enq.sizingfrommaster as size,
+	enq.actualspeed as speed,enq.actualefficiency as eff,to_char(enq.deliverdate,'dd-mm-YYYY') as delivery,enq.Salescommission as commission,
+	enq.creditperiod as credit,enq.cashdiscount as cd,
+	enq.contributionrsploom as contribution
+	from epcg_costenquiry enq
+	where enq.epcg_costenquiry_id=?
+	]]>
+    </Sql>
+    <Field name="rownum" value="count"/>
+    <Parameter name="epcgCostenquiryId"/>
+    
+  </SqlMethod>
+  <SqlMethod name="set" type="constant" return="multiple">
+      <SqlMethodComment></SqlMethodComment>
+      <Sql></Sql>
+  </SqlMethod>
+  
+  
+
+</SqlClass>
+

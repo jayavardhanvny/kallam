@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<SqlClass name="RCLOGetTrxIdData" package="com.redcarpet.lotmanagement.ad_process" accessModifier="public">
+
+     <SqlMethod name="getTransactionIds" type="preparedStatement" return="multiple">
+	<Sql>
+		<![CDATA[ 
+                    
+		SELECT m_transaction_id FROM m_transaction 
+		where (m_inoutline_id is not null or rcpr_prproduct_id is not null)
+		and m_inoutline_id not in 
+		(
+			select m_inoutline_id from rclo_lotreceipt 
+		)
+		and rcpr_prproduct_id not in 
+		(
+			select rcpr_prproduct_id from rclo_lotreceipt 
+		)
+		and ad_org_id = ? 
+
+                 ]]>
+	</Sql>
+        <Parameter name="org"/>
+     </SqlMethod>
+</SqlClass>

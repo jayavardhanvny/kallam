@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<SqlClass name="RCFRAdditionalCostUtilData" package="com.redcarpet.freight.ad_process" accessModifier="public">
+
+    <SqlMethod name="selectInvoiceLineId" type="preparedStatement" return="multiple">
+        <Sql>
+            <![CDATA[ 
+                 select c_invoiceline_id from c_invoiceline 
+                     inner join c_invoice on c_invoiceline.c_invoice_id = c_invoice.c_invoice_id 
+                 where c_invoice.documentno = ?  
+                ]]>
+        </Sql>
+        <Parameter name="documentno"/>
+    </SqlMethod>
+    
+    <SqlMethod name="selectLineNo" type="preparedStatement" return="string">
+        <Sql>
+		<![CDATA[ 
+                        
+                    SELECT COALESCE(MAX(Line),0)+10 AS lineno FROM C_InvoiceLine 
+                            INNER JOIN C_Invoice on C_InvoiceLine.C_Invoice_ID = C_Invoice.C_Invoice_ID 
+                    WHERE C_Invoice.documentno = ?  
+                        
+                ]]>
+        </Sql>
+        <Parameter name="documentno"/>
+    </SqlMethod>
+
+    <SqlMethod name="deleteLine" type="preparedStatement" return="rowCount">
+        <Sql>
+ 	<![CDATA[
+          
+		DELETE FROM C_INVOICELINE WHERE  FINANCIAL_INVOICE_LINE='Y' AND 
+                C_INVOICE_ID IN (SELECT  C_INVOICE_ID from C_INVOICE where DOCUMENTNO = ? LIMIT 1)
+
+	 ]]>
+        </Sql>
+        <Parameter name="documentno"/>
+    </SqlMethod>
+
+    <SqlMethod name="selectTaxId" type="preparedStatement" return="string">
+        <Sql>
+            <![CDATA[ 
+                 select c_tax_id from c_invoiceline 
+                     inner join c_invoice on c_invoiceline.c_invoice_id = c_invoice.c_invoice_id 
+                 where c_invoice.documentno = ?  and line = 10
+                ]]>
+        </Sql>
+        <Parameter name="documentno"/>
+    </SqlMethod>
+    <SqlMethod name="getFreightAccount" type="preparedStatement" return="string">
+        <Sql>
+		<![CDATA[ 
+                    SELECT c_glitem_id from c_glitem where em_rcob_freight='Y'
+                ]]>
+        </Sql>
+    </SqlMethod>
+    <SqlMethod name="getInsuranceAccount" type="preparedStatement" return="string">
+        <Sql>
+		<![CDATA[ 
+                    SELECT c_glitem_id from c_glitem where em_rcob_insurance='Y'
+                ]]>
+        </Sql>
+    </SqlMethod>
+	
+    <SqlMethod name="getFreightPaidAmount" type="preparedStatement" return="string">
+        <Sql>
+		<![CDATA[ 
+                    select coalesce(em_rcfr_freightpaid, 0) from c_invoice where documentno = ? limit 1
+                ]]>
+        </Sql>
+        <Parameter name="documentno"/>
+    </SqlMethod>
+</SqlClass>

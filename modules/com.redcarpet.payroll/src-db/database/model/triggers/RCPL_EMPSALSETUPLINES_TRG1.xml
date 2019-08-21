@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+  <database name="TRIGGER RCPL_EMPSALSETUPLINES_TRG1">
+    <trigger name="RCPL_EMPSALSETUPLINES_TRG1" table="RCPL_EMPSALSETUPLINES" fires="before" insert="false" update="false" delete="true" foreach="row">
+      <body><![CDATA[declare 
+
+BEGIN    
+  if(TG_OP='DELETE')then 
+  raise exception 'Delete not possible ,you should increment/decrement to set actual wage/salary';  
+  end if;
+END RCPL_EMPSALSETUPLINES_TRG1
+]]></body>
+    </trigger>
+  </database>

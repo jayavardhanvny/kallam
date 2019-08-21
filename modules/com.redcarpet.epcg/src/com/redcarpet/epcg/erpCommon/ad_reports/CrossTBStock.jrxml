@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report1" pageWidth="842" pageHeight="1190" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<style name="Crosstab Data Text" hAlign="Center"/>
+	<parameter name="strProductCategory" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT M_PRODUCT_CATEGORY.NAME AS CATEGORYNAME, M_PRODUCT.VALUE||'-'||M_PRODUCT.NAME AS NAME, SUM(MOVEMENTQTY) AS MOVEMENTQTY, M_LOCATOR.X, M_LOCATOR.Y,
+      AD_COLUMN_IDENTIFIER('M_WAREHOUSE', to_char(M_LOCATOR.M_WAREHOUSE_ID), 'es_ES') AS WAREHOUSE,
+      M_LOCATOR.Z, C1.NAME AS UOMMOVEMENTQTY, M_ATTRIBUTESETINSTANCE.M_ATTRIBUTESETINSTANCE_ID, M_ATTRIBUTESETINSTANCE.DESCRIPTION,
+      (CASE WHEN M_TRANSACTION.M_PRODUCT_UOM_ID IS NULL THEN (CASE M_PRODUCT.WEIGHT*SUM(M_TRANSACTION.MOVEMENTQTY) WHEN 0 THEN NULL ELSE M_PRODUCT.WEIGHT*SUM(M_TRANSACTION.MOVEMENTQTY) END) ELSE SUM(M_TRANSACTION.QUANTITYORDER) END) AS WEIGHT,
+      (CASE WHEN M_TRANSACTION.M_PRODUCT_UOM_ID IS NULL THEN (CASE WHEN M_PRODUCT.WEIGHT = 0 THEN '' WHEN M_PRODUCT.WEIGHT IS NULL THEN '' ELSE 'Kgs' END) ELSE TO_CHAR(C2.NAME) END) AS UOMWEIGHT, '' as id
+      FROM M_PRODUCT left join M_PRODUCT_CATEGORY on M_PRODUCT.M_PRODUCT_CATEGORY_ID  = M_PRODUCT_CATEGORY.M_PRODUCT_CATEGORY_ID,
+           M_PRODUCT_UOM right join M_TRANSACTION on M_TRANSACTION.M_PRODUCT_UOM_ID = M_PRODUCT_UOM.M_PRODUCT_UOM_ID
+                         left join C_UOM C2 on M_PRODUCT_UOM.C_UOM_ID = C2.C_UOM_ID,
+        M_LOCATOR, C_UOM C1, M_ATTRIBUTESETINSTANCE
+      WHERE M_TRANSACTION.M_PRODUCT_ID = M_PRODUCT.M_PRODUCT_ID
+      AND M_TRANSACTION.M_ATTRIBUTESETINSTANCE_ID = M_ATTRIBUTESETINSTANCE.M_ATTRIBUTESETINSTANCE_ID
+      AND M_TRANSACTION.M_LOCATOR_ID = M_LOCATOR.M_LOCATOR_ID
+      AND M_TRANSACTION.C_UOM_ID = C1.C_UOM_ID
+      AND 1=1
+      AND M_PRODUCT_CATEGORY.M_PRODUCT_CATEGORY_ID=$P{strProductCategory}
+      GROUP BY M_PRODUCT_CATEGORY.NAME,M_PRODUCT.VALUE, M_PRODUCT.NAME, M_ATTRIBUTESETINSTANCE.M_ATTRIBUTESETINSTANCE_ID, M_ATTRIBUTESETINSTANCE.DESCRIPTION, M_LOCATOR.M_LOCATOR_ID, M_LOCATOR.X, M_LOCATOR.Y, M_LOCATOR.Z, C1.NAME, M_PRODUCT.WEIGHT, C1.C_UOM_ID, M_TRANSACTION.M_PRODUCT_UOM_ID, C2.NAME, M_LOCATOR.M_WAREHOUSE_ID
+      HAVING SUM(MOVEMENTQTY) > 0
+      ORDER BY  M_PRODUCT_CATEGORY.NAME,M_PRODUCT.VALUE, M_PRODUCT.NAME, M_ATTRIBUTESETINSTANCE.DESCRIPTION,M_LOCATOR.X, M_LOCATOR.Y, M_LOCATOR.Z
+LIMIT 100]]>
+	</queryString>
+	<field name="categoryname" class="java.lang.String"/>
+	<field name="name" class="java.lang.String"/>
+	<field name="movementqty" class="java.math.BigDecimal"/>
+	<field name="x" class="java.lang.String"/>
+	<field name="y" class="java.lang.String"/>
+	<field name="warehouse" class="java.lang.String"/>
+	<field name="z" class="java.lang.String"/>
+	<field name="uommovementqty" class="java.lang.String"/>
+	<field name="m_attributesetinstance_id" class="java.lang.String"/>
+	<field name="description" class="java.lang.String"/>
+	<field name="weight" class="java.math.BigDecimal"/>
+	<field name="uomweight" class="java.lang.String"/>
+	<field name="id" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band splitType="Stretch"/>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="166" splitType="Stretch">
+			<crosstab>
+				<reportElement x="0" y="0" width="1150" height="166"/>
+				<rowGroup name="categoryname" width="126" totalPosition="End">
+					<bucket>
+						<bucketExpression class="java.lang.String"><![CDATA[$F{categoryname}]]></bucketExpression>
+					</bucket>
+					<crosstabRowHeader>
+						<cellContents backcolor="#F0F8FF" mode="Opaque">
+							<box>
+								<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+							</box>
+							<textField isStretchWithOverflow="true">
+								<reportElement style="Crosstab Data Text" x="0" y="0" width="126" height="25"/>
+								<textElement/>
+								<textFieldExpression class="java.lang.String"><![CDATA[$V{categoryname}]]></textFieldExpression>
+							</textField>
+						</cellContents>
+					</crosstabRowHeader>
+					<crosstabTotalRowHeader>
+						<cellContents backcolor="#005FB3" mode="Opaque">
+							<box>
+								<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+							</box>
+						</cellContents>
+					</crosstabTotalRowHeader>
+				</rowGroup>
+				<rowGroup name="name" width="181" totalPosition="End">
+					<bucket>
+						<bucketExpression class="java.lang.String"><![CDATA[$F{name}]]></bucketExpression>
+					</bucket>
+					<crosstabRowHeader>
+						<cellContents backcolor="#F0F8FF" mode="Opaque">
+							<box>
+								<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+							</box>
+							<textField isStretchWithOverflow="true">
+								<reportElement style="Crosstab Data Text" x="0" y="0" width="181" height="25"/>
+								<textElement>
+									<font size="9"/>
+								</textElement>
+								<textFieldExpression class="java.lang.String"><![CDATA[$V{name}]]></textFieldExpression>
+							</textField>
+						</cellContents>
+					</crosstabRowHeader>
+					<crosstabTotalRowHeader>
+						<cellContents backcolor="#BFE1FF" mode="Opaque">
+							<box>
+								<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+							</box>
+							<staticText>
+								<reportElement x="0" y="0" width="181" height="25"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle"/>
+								<text><![CDATA[Total Warehouse Wise Stock]]></text>
+							</staticText>
+						</cellContents>
+					</crosstabTotalRowHeader>
+				</rowGroup>
+				<columnGroup name="warehouse" height="30" totalPosition="End">
+					<bucket>
+						<bucketExpression class="java.lang.String"><![CDATA[$F{warehouse}]]></bucketExpression>
+					</bucket>
+					<crosstabColumnHeader>
+						<cellContents backcolor="#F0F8FF" mode="Opaque">
+							<box>
+								<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+							</box>
+							<textField>
+								<reportElement style="Crosstab Data Text" x="0" y="0" width="79" height="30"/>
+								<textElement/>
+								<textFieldExpression class="java.lang.String"><![CDATA[$V{warehouse}]]></textFieldExpression>
+							</textField>
+						</cellContents>
+					</crosstabColumnHeader>
+					<crosstabTotalColumnHeader>
+						<cellContents backcolor="#BFE1FF" mode="Opaque">
+							<box>
+								<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+							</box>
+							<staticText>
+								<reportElement x="0" y="0" width="76" height="30"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle"/>
+								<text><![CDATA[Stock @ ICM]]></text>
+							</staticText>
+						</cellContents>
+					</crosstabTotalColumnHeader>
+				</columnGroup>
+				<measure name="movementqtyMeasure" class="java.math.BigDecimal" calculation="Sum">
+					<measureExpression><![CDATA[$F{movementqty}]]></measureExpression>
+				</measure>
+				<crosstabCell width="79" height="25">
+					<cellContents>
+						<box>
+							<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						</box>
+						<textField pattern="#,##0;(#,##0)">
+							<reportElement style="Crosstab Data Text" x="0" y="0" width="79" height="25"/>
+							<textElement/>
+							<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{movementqtyMeasure}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell width="79" height="4" rowTotalGroup="categoryname">
+					<cellContents backcolor="#005FB3" mode="Opaque">
+						<box>
+							<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						</box>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell width="76" columnTotalGroup="warehouse">
+					<cellContents backcolor="#BFE1FF" mode="Opaque">
+						<box>
+							<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						</box>
+						<textField pattern="#,##0;(#,##0)">
+							<reportElement style="Crosstab Data Text" x="0" y="0" width="76" height="25"/>
+							<textElement/>
+							<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{movementqtyMeasure}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell width="76" height="4" rowTotalGroup="categoryname" columnTotalGroup="warehouse">
+					<cellContents backcolor="#005FB3" mode="Opaque">
+						<box>
+							<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						</box>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell width="79" height="25" rowTotalGroup="name">
+					<cellContents backcolor="#BFE1FF" mode="Opaque">
+						<box>
+							<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						</box>
+						<textField pattern="#,##0;(#,##0)">
+							<reportElement style="Crosstab Data Text" x="0" y="0" width="79" height="25"/>
+							<textElement/>
+							<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{movementqtyMeasure}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell width="76" rowTotalGroup="name" columnTotalGroup="warehouse">
+					<cellContents backcolor="#BFE1FF" mode="Opaque">
+						<box>
+							<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						</box>
+						<textField pattern="#,##0;(#,##0)">
+							<reportElement style="Crosstab Data Text" x="0" y="0" width="76" height="25"/>
+							<textElement/>
+							<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{movementqtyMeasure}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+			</crosstab>
+		</band>
+	</summary>
+</jasperReport>

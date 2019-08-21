@@ -1,0 +1,273 @@
+<?xml version="1.0"?>
+  <database name="FUNCTION RCHR_CREATEPERIODS">
+    <function name="RCHR_CREATEPERIODS" type="NULL">
+      <parameter name="p_pinstance_id" type="VARCHAR" mode="in">
+        <default/>
+      </parameter>
+      <body><![CDATA[--variables that will contain the parameters deriving from the AD_PInstance table
+ -- Parameter
+ -- TYPE RECORD IS REF CURSOR;
+  Cur_Parameter RECORD;
+ 
+  v_Record_ID VARCHAR(32); -- ID of the record inside SHR_YEAR that we are processing
+  
+  -- operational variables
+  v_ResultStr VARCHAR(2000):=''; -- will contain text describing the stage the stored procedure is in
+  v_Message VARCHAR(2000):=''; -- will contain the final message to be logged
+  --Cur_Parameter RECORD; -- cursor variable to loop through all parameters
+
+  v_ProcessPeriods RECORD; -- Will contain Year and Period Information
+
+  -- Parameter Variables
+  v_NoOfLines NUMBER;
+  v_NextNo VARCHAR(32);
+  v_processingdays NUMBER;
+  
+  v_cnt NUMBER;
+  v_ad_client_id VARCHAR(32);
+  v_ad_org_id VARCHAR(32);
+  v_c_year_id VARCHAR(32);
+  v_type VARCHAR(60);
+  v_StartDate DATE;
+  v_EndDate DATE;
+  v_sw NUMBER; 
+  v_ew NUMBER;
+  v_start_week NUMBER;
+  v_end_week NUMBER;
+  v_Year_Str VARCHAR(4);
+
+  v_mPrevious NUMBER;
+  v_mCurrent NUMBER;
+  v_incentive CHARACTER(1);
+  v_previousRecordId VARCHAR(32);
+  BEGIN
+ 
+    --  Update AD_PInstance by setting IsProcessing='Y'
+       -- DBMS_OUTPUT.PUT_LINE('Updating PInstance - Processing ' || p_PInstance_ID) ;
+        --AD_UPDATE_PINSTANCE(p_PInstance_ID, NULL, 'Y', NULL, NULL) ;
+
+      AD_UPDATE_PINSTANCE(p_PInstance_ID, NULL, 'Y', NULL, NULL) ;
+ 
+    -- Get Parameters
+    v_ResultStr:='ReadingParameters';
+    FOR Cur_Parameter IN
+      (SELECT i.Record_ID
+      FROM AD_PInstance i
+      LEFT JOIN AD_PInstance_Para p
+        ON i.AD_PInstance_ID=p.AD_PInstance_ID
+      WHERE i.AD_PInstance_ID=p_PInstance_ID
+      ORDER BY p.SeqNo)
+    LOOP
+
+  
+      v_Record_ID:=Cur_Parameter.Record_ID; -- save the SHR_YEAR primary key
+   
+    END LOOP;
+   -- DBMS_OUTPUT.PUT_LINE( 'Record_ID = ' || v_Record_ID) ;
+    
+ 
+  BEGIN --BODY
+
+  raise exception '%', 'p_PInstance_ID '|| p_PInstance_ID;
+
+  SELECT ad_client_id, c_year_id, "type", ad_org_id INTO v_ad_client_id, v_c_year_id, v_type , v_ad_org_id
+	FROM rchr_year WHERE rchr_year_id = v_Record_ID;
+
+  
+  
+  SELECT year INTO v_Year_Str FROM c_year WHERE c_year_id = v_c_year_id;
+  SELECT count(*) INTO v_cnt FROM c_period WHERE c_year_id = v_c_year_id;
+
+  IF( v_cnt = 0 ) THEN
+
+	v_Message := 'Standard Periods are not defined in the Calendar' ;    
+   DBMS_OUTPUT.PUT_LINE( v_Message) ;
+	--RAISE v_Message ;
+    
+  END IF;
+DBMS_OUTPUT.PUT_LINE('Param exp') ;
+  SELECT count(*) INTO v_cnt FROM rchr_attd_process WHERE rchr_year_id = v_Record_ID;
+
+  IF( v_cnt > 0 ) THEN
+
+	v_Message := 'Periods exists' ;    
+   
+	DBMS_OUTPUT.PUT_LINE( v_Message) ;
+    
+  END IF;
+
+  IF ( v_type = 'Monthly' ) THEN
+
+   FOR v_ProcessPeriods IN 
+
+   (SELECT RCHR_YEAR.RCHR_YEAR_ID, RCHR_YEAR.ad_client_id, RCHR_YEAR.ad_org_id, 
+		RCHR_YEAR.isactive, RCHR_YEAR.CREATED, RCHR_YEAR.CREATEDBY, 
+		RCHR_YEAR.UPDATED , RCHR_YEAR.UPDATEDBY,C_PERIOD."name", 
+		C_PERIOD.startdate, C_PERIOD.enddate , C_PERIOD.PERIODNO
+		FROM RCHR_YEAR, C_PERIOD
+	WHERE RCHR_YEAR.RCHR_YEAR_ID=v_Record_ID 
+	AND   C_PERIOD.C_YEAR_ID = (SELECT RCHR_YEAR.C_YEAR_ID FROM RCHR_YEAR 
+					WHERE RCHR_YEAR.RCHR_YEAR_ID=v_Record_ID) 
+
+   )
+
+   LOOP
+
+    -- Get next no
+     AD_Sequence_Next('RCHR_ATTD_PROCESS', v_ProcessPeriods.ad_client_id, v_NextNo) ;
+     -- AD_Sequence_Next('RCHR_ATTD_PROCES', v_ProcessPeriods.ad_client_id, v_NextNo) ;
+
+     SELECT extract(day from (v_ProcessPeriods.ENDDATE - v_ProcessPeriods.STARTDATE) ) INTO v_processingdays;
+
+	-- Insert
+      INSERT
+      INTO RCHR_ATTD_PROCESS
+        (
+          RCHR_ATTD_PROCESS_ID, AD_CLIENT_ID, AD_ORG_ID, ISACTIVE,
+          CREATED, CREATEDBY, UPDATED, UPDATEDBY,
+          RCHR_YEAR_ID,monthname, STARTDATE, ENDDATE,PROCESSINGDAYS,PERIODNO, attendanceprocess,otprocess,payrollprocess,payrollpost,"type",
+          incentive
+        )
+        VALUES
+        (
+          v_NextNo, v_ProcessPeriods.AD_Client_ID, v_ProcessPeriods.AD_Org_ID, v_ProcessPeriods.IsActive,
+          now(), '0', now(), '0',
+          v_Record_ID, v_ProcessPeriods.NAME, v_ProcessPeriods.STARTDATE, v_ProcessPeriods.ENDDATE,v_processingdays+1,
+          v_ProcessPeriods.PERIODNO, 'Y','Y','Y','Y', v_type, 'Y'
+          
+        )
+        ;   
+       
+      -- update translation
+      --
+      v_NoOfLines:=v_NoOfLines + 1;
+
+      
+      
+   END LOOP;
+
+   END IF;
+
+
+     IF ( v_type = 'Weekly' ) THEN 
+     
+
+   SELECT TO_DATE(v_Year_Str||'-1-1', 'YYYY-MM-DD') INTO v_StartDate FROM DUAL;
+
+   SELECT TO_DATE(v_Year_Str||'-12-31', 'YYYY-MM-DD') INTO v_EndDate FROM DUAL;
+
+
+
+   SELECT EXTRACT(WEEK FROM  v_StartDate+7) INTO v_sw;
+
+   SELECT EXTRACT(WEEK FROM  v_EndDate-7) INTO v_ew;
+
+   
+
+   IF( v_sw > v_ew ) THEN
+
+	v_start_week := v_ew;
+
+	v_end_week := v_sw; 
+
+   ELSE 
+
+	v_start_week := v_sw;
+
+	v_end_week := v_ew;
+
+   END IF;
+
+     IF( v_start_week = 2 ) THEN
+   v_start_week := v_start_week-1;
+   ELSE 
+   v_start_week := v_start_week;
+    END IF;
+
+     IF( v_end_week  = 53 ) THEN
+   v_end_week  := v_end_week -1;
+   ELSE 
+   v_end_week  := v_end_week+1;
+    END IF;
+     
+   v_mPrevious := 0;
+   v_mCurrent := 1;
+   WHILE v_start_week-1 <= v_end_week-1 
+   LOOP
+     v_EndDate := v_StartDate + 6 ;
+   -- Get next no
+     AD_Sequence_Next('RCHR_ATTD_PROCESS', v_ad_client_id, v_NextNo) ;
+
+     SELECT extract(day from (v_EndDate - v_StartDate) ) INTO v_processingdays;
+
+     SELECT extract(MONTH from (v_StartDate) ) INTO v_mCurrent;
+
+     IF(v_start_week < 4) THEN
+	v_incentive :='N';
+     ELSE
+	IF(v_mPrevious != v_mCurrent) THEN
+	UPDATE RCHR_ATTD_PROCESS SET incentive='Y' WHERE RCHR_ATTD_PROCESS_ID = v_previousRecordId;
+	--v_incentive :='Y';
+	ELSE
+	-- select previous month
+	-- select enddate of previous month from server
+	-- select enddate of previous month from db
+	-- if both enddate matches update incentive='Y' 
+	v_incentive :='N';
+	END IF;
+     END IF;
+
+	-- Insert
+      INSERT
+      INTO RCHR_ATTD_PROCESS
+        (
+          RCHR_ATTD_PROCESS_ID, AD_CLIENT_ID, AD_ORG_ID, ISACTIVE,
+          CREATED, CREATEDBY, UPDATED, UPDATEDBY,
+          RCHR_YEAR_ID, monthname, STARTDATE, ENDDATE,
+          PROCESSINGDAYS,PERIODNO, attendanceprocess,
+          otprocess,payrollprocess,payrollpost, "type", incentive
+        )
+        VALUES
+        (
+          v_NextNo, v_ad_client_id, v_ad_org_id, 'Y',
+          now(), '0', now(), '0',
+          v_Record_ID, 'Week-'||v_start_week, v_StartDate, v_EndDate,7,
+          v_start_week,'Y','Y','Y','Y', v_type, v_incentive           
+        )
+        ;   
+      v_mPrevious := v_mCurrent; 
+      v_previousRecordId := v_NextNo;
+      v_start_week := v_start_week + 1;  
+      v_StartDate := v_EndDate + 1;
+
+   END LOOP;  
+   UPDATE RCHR_ATTD_PROCESS SET incentive='Y' WHERE RCHR_ATTD_PROCESS_ID = v_previousRecordId;
+
+   END IF;
+
+
+   UPDATE rchr_year SET processed='Y' WHERE rchr_year_id=v_Record_ID;
+   
+    v_Message:='@Processed@';
+
+    
+    -- Successfully finish the process by updating AD_PInstance, setting the 
+    -- IsProcessing, ErrorMsg and Result
+   -- DBMS_OUTPUT.PUT_LINE('Updating PInstance - Finished ' || v_Message) ;
+   AD_UPDATE_PINSTANCE(p_PInstance_ID, NULL, 'N', 1, v_Message) ;
+    RETURN;
+  END; -- BODY
+
+ 
+ EXCEPTION
+ WHEN OTHERS THEN
+   v_ResultStr:= '@ERROR=' || SQLERRM;
+  -- DBMS_OUTPUT.PUT_LINE(v_ResultStr) ;
+  
+   AD_UPDATE_PINSTANCE(p_PInstance_ID, NULL, 'N', 0, v_ResultStr) ;
+   RETURN;
+  -- END RCHR_CREATEPERIODS
+END RCHR_CREATEPERIODS
+]]></body>
+    </function>
+  </database>

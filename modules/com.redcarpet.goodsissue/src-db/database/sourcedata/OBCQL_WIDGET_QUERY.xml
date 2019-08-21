@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<data>
+<!--761A31B3F3A04F56920A9A0F984D3982--><OBCQL_WIDGET_QUERY>
+<!--761A31B3F3A04F56920A9A0F984D3982-->  <OBCQL_WIDGET_QUERY_ID><![CDATA[761A31B3F3A04F56920A9A0F984D3982]]></OBCQL_WIDGET_QUERY_ID>
+<!--761A31B3F3A04F56920A9A0F984D3982-->  <AD_CLIENT_ID><![CDATA[0]]></AD_CLIENT_ID>
+<!--761A31B3F3A04F56920A9A0F984D3982-->  <AD_ORG_ID><![CDATA[0]]></AD_ORG_ID>
+<!--761A31B3F3A04F56920A9A0F984D3982-->  <ISACTIVE><![CDATA[Y]]></ISACTIVE>
+<!--761A31B3F3A04F56920A9A0F984D3982-->  <OBKMO_WIDGET_CLASS_ID><![CDATA[3E25E082F8B0434FA69A39DE529989D4]]></OBKMO_WIDGET_CLASS_ID>
+<!--761A31B3F3A04F56920A9A0F984D3982-->  <HQL><![CDATA[select 
+concat(m.searchKey,'-',m.name) as product,
+sum(mt.movementQuantity) as received,sum(mt.consumedqty) as issued,sum(mt.openQuantity) as onhand,m.id as mid
+from
+RCGI_Transactions AS mt
+left outer join mt.product AS m
+where m.productCategory.id='923CA80B92144032BA08A531D0B4F069'
+group by m.id
+order by m.rcgiKsmlbarcode]]></HQL>
+<!--761A31B3F3A04F56920A9A0F984D3982-->  <TYPE><![CDATA[HQL]]></TYPE>
+<!--761A31B3F3A04F56920A9A0F984D3982--></OBCQL_WIDGET_QUERY>
+
+<!--9EBDD04679FB4028B76BC7A9470541ED--><OBCQL_WIDGET_QUERY>
+<!--9EBDD04679FB4028B76BC7A9470541ED-->  <OBCQL_WIDGET_QUERY_ID><![CDATA[9EBDD04679FB4028B76BC7A9470541ED]]></OBCQL_WIDGET_QUERY_ID>
+<!--9EBDD04679FB4028B76BC7A9470541ED-->  <AD_CLIENT_ID><![CDATA[0]]></AD_CLIENT_ID>
+<!--9EBDD04679FB4028B76BC7A9470541ED-->  <AD_ORG_ID><![CDATA[0]]></AD_ORG_ID>
+<!--9EBDD04679FB4028B76BC7A9470541ED-->  <ISACTIVE><![CDATA[Y]]></ISACTIVE>
+<!--9EBDD04679FB4028B76BC7A9470541ED-->  <OBKMO_WIDGET_CLASS_ID><![CDATA[891353A1C91E414A8D31759C74DBD682]]></OBKMO_WIDGET_CLASS_ID>
+<!--9EBDD04679FB4028B76BC7A9470541ED-->  <HQL><![CDATA[select 
+concat(m.name,'-',(case when yarn.name=null THEN '' else yarn.name end),'-',(case when variant.commercialName=null THEN '' else variant.commercialName end)) as product,
+sum(mt.movementQuantity) as received,sum(mt.consumedqty) as issued,sum(mt.openQuantity) as onhand,bp.name as bpname,sum(mt.weftissued) as weft,sum(mt.warpissued) as warp,
+coalesce((select sum(t.movementQuantity) from RCGI_Transactions AS t where t.product.id=m.id and t.rchrWarpyarntype.id=yarn.id
+and t.epcgVariant.id=variant.id and t.businessPartner.id=bp.id and t.movementDate>current_date-3),0) as todayrecevied,
+coalesce((select sum(t.weftissued) from RCGI_Transactions AS t where t.product.id=m.id and t.rchrWarpyarntype.id=yarn.id
+and t.epcgVariant.id=variant.id and t.businessPartner.id=bp.id and t.movementDate>current_date-3),0) as todayweft,
+coalesce((select sum(t.warpissued) from RCGI_Transactions AS t where t.product.id=m.id and t.rchrWarpyarntype.id=yarn.id
+and t.epcgVariant.id=variant.id and t.businessPartner.id=bp.id and t.movementDate>current_date-3),0) as todaywarp,
+coalesce((select sum(t.consumedqty) from RCGI_Transactions AS t where t.product.id=m.id and t.rchrWarpyarntype.id=yarn.id
+and t.epcgVariant.id=variant.id and t.businessPartner.id=bp.id and t.movementDate>current_date-3),0) as todayissued
+from
+RCGI_Transactions AS mt
+left outer join mt.product AS m
+left outer join mt.rchrWarpyarntype AS yarn
+left outer join mt.epcgVariant AS variant
+left outer join mt.businessPartner as bp
+group by m.id,yarn.id,variant.id,variant.commercialName,yarn.name,bp.id
+order by m.name,yarn.name,variant.commercialName]]></HQL>
+<!--9EBDD04679FB4028B76BC7A9470541ED-->  <TYPE><![CDATA[HQL]]></TYPE>
+<!--9EBDD04679FB4028B76BC7A9470541ED--></OBCQL_WIDGET_QUERY>
+
+</data>

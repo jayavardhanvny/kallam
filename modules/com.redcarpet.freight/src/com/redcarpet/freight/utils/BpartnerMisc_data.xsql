@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<SqlClass name="BpartnerMiscData" package="com.redcarpet.freight.utils" accessModifier="public">
+   <SqlClassComment></SqlClassComment>
+
+  <SqlMethod name="select" type="preparedStatement" return="multiple">
+    <SqlMethodComment></SqlMethodComment>
+    <Sql>
+      <![CDATA[
+      SELECT p.C_PaymentTerm_ID,
+      p.M_PriceList_ID,p.PaymentRule,p.POReference,
+      p.SO_Description,COALESCE(p.IsDiscountPrinted,'N') AS IsDiscountPrinted,
+      p.InvoiceRule,p.DeliveryRule,DeliveryViaRule,
+      COALESCE(p.SO_CreditLimit-p.SO_CreditUsed,-1) AS CreditAvailable,
+      p.PO_PriceList_ID, p.PaymentRulePO, p.PO_PaymentTerm_ID, p.salesrep_Id,
+      p.fin_paymentmethod_id, p.po_paymentmethod_id
+      FROM C_BPartner p
+      WHERE p.C_BPartner_ID=?
+      ]]>
+    </Sql>
+    <Parameter name="cBpartnerId"/>
+  </SqlMethod>
+  <SqlMethod name="selectPaymentTerm" type="preparedStatement" return="multiple">
+    <SqlMethodComment></SqlMethodComment>
+    <Sql>
+      <![CDATA[
+      SELECT pt.C_PaymentTerm_ID
+      FROM C_PaymentTerm pt
+      WHERE AD_ISORGINCLUDED(?, pt.ad_org_id, ?) <> -1
+      AND ad_client_id = ?
+      AND isdefault = 'Y'
+      ]]>
+    </Sql>
+    <Parameter name="adOrgId"/>
+    <Parameter name="adClientId"/>
+    <Parameter name="adClientId"/>
+  </SqlMethod>
+  <SqlMethod name="selectPaymentMethod" type="preparedStatement" return="string">
+    <SqlMethodComment></SqlMethodComment>
+    <Sql>
+      <![CDATA[
+      
+      SELECT pm.FIN_PaymentMethod_Id 
+      FROM FIN_PaymentMethod pm
+      WHERE AD_ISORGINCLUDED(?, pm.ad_org_id, ?) <> -1
+      AND ad_client_id = ?     
+      ]]>
+    </Sql>
+    <Parameter name="adOrgId"/>
+    <Parameter name="adClientId"/>
+    <Parameter name="adClientId"/>
+  </SqlMethod>
+</SqlClass>

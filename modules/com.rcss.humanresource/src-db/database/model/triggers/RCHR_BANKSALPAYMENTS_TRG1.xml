@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+  <database name="TRIGGER RCHR_BANKSALPAYMENTS_TRG1">
+    <trigger name="RCHR_BANKSALPAYMENTS_TRG1" table="RCHR_BANKSALPAYMENTS" fires="after" insert="true" update="false" delete="false" foreach="row">
+      <body><![CDATA[BEGIN    
+	 if (TG_OP='INSERT' ) THEN 
+	 UPDATE rchr_banksalpayments SET totalamount=
+		
+				(SELECT SUM(EP.TOTALPAY) FROM RCPL_EMPPAYROLLPROCESS EP,RCPL_PAYROLLPROCESS P WHERE P.RCPL_PAYROLLPROCESS_ID=EP.RCPL_PAYROLLPROCESS_ID 
+				AND P.RCHR_ATTD_PROCESS_id=:NEW.RCHR_ATTD_PROCESS_id
+				
+				AND ep.ispfapplicable='Y' AND ep.employeetype=:new.employeetype and EP.pendingamt>0 and ep.totalpay>0)
+		--end
+		where rchr_banksalpayments_ID=:NEW.rchr_banksalpayments_ID;
+		return new;	
+         end if;
+END RCHR_BANKSALPAYMENTS_TRG1
+]]></body>
+    </trigger>
+  </database>

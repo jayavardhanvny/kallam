@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+  <database name="FUNCTION RCHR_RELAYSHIFT_DETAILS_TRG">
+    <function name="RCHR_RELAYSHIFT_DETAILS_TRG" type="VARCHAR">
+      <body><![CDATA[BEGIN
+    
+    IF AD_isTriggerEnabled()='N' THEN IF TG_OP = 'DELETE' THEN RETURN OLD; ELSE RETURN NEW; END IF; 
+    END IF;
+
+
+   IF(TG_OP = 'INSERT') THEN
+  
+   update rchr_employee e set rchr_mrelay_id=new.rchr_mrelay_id,
+					   rchr_shiftgroup_id=new.rchr_shiftgroup_id				  
+					   where e.rchr_employee_id=new.rchr_employee_id;
+ return new;
+ else return old;
+  end if;
+END RCHR_RELAYSHIFT_DETAILS_TRG
+]]></body>
+    </function>
+  </database>

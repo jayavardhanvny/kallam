@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<SqlClass name="RCHRAttendanceUploadData" package="com.rcss.humanresource.ad_forms" accessModifier="public">
+
+     <SqlMethod name="selectTest" type="preparedStatement" return="multiple">
+	<Sql>
+		<![CDATA[ SELECT '' as test from dual ]]>
+	</Sql>
+     </SqlMethod>
+
+   <SqlMethod name="insert" type="preparedStatement" return="rowCount">
+      <Sql>
+ 	<![CDATA[
+          INSERT INTO rchr_attend_temp(
+	            rchr_attend_temp_id, ad_client_id, ad_org_id, createdby, updatedby, 
+        	    attdate, present, stremployee, islate, isweeklyoff, isshiftchangeabsent, 
+        	    isovertime, nowork, nightshift, strshift, latetime)
+	    VALUES 
+		   (get_uuid(), ?, ?, '100', '100', 
+	            to_date(?, 'MM/DD/YYYY'), ?, ?, ?, ?, ?, 
+	            ?, ?, ?, ?, to_number(?));
+	 ]]>
+      </Sql>
+     <Parameter name="client"/>
+     <Parameter name="org"/>
+     <Parameter name="attendanceDate"/>
+     <Parameter name="present"/>
+     <Parameter name="stremployee"/>
+     <Parameter name="islate"/>
+     <Parameter name="isweeklyoff"/>
+     <Parameter name="isshiftchangeabsent"/>
+     <Parameter name="isovertime"/>
+     <Parameter name="nowork"/>
+     <Parameter name="nightshift"/>
+     <Parameter name="strshift"/>
+     <Parameter name="latetime"/>
+   </SqlMethod>
+
+</SqlClass>

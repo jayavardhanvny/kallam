@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+  <database name="TRIGGER RCPL_EMPPPROCESSMANUAL_DEL_T1">
+    <trigger name="RCPL_EMPPPROCESSMANUAL_DEL_T1" table="RCPL_EMPPPROCESSMANUAL" fires="before" insert="false" update="false" delete="true" foreach="row">
+      <body><![CDATA[declare 
+ Declare 
+     
+     
+begin
+
+
+if(TG_OP='DELETE')then 
+
+  	raise exception 'Delete not possible';  
+ return old;
+ end if;
+ end
+]]></body>
+    </trigger>
+  </database>

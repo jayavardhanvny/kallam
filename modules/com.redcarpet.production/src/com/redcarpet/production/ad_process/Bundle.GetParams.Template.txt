@@ -1,0 +1,6 @@
+Iterator<String> it = bundle.getParams().keySet().iterator();
+        while(it.hasNext()){
+            String key = it.next();
+            System.out.println("key is "+key+" value is "+bundle.getParams().get(key));
+        }
+        

@@ -1,0 +1,1373 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="OperatorDisplayAccounts" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<property name="ireport.zoom" value="1.6934217901613318"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="ProcessID" class="java.lang.String"/>
+	<parameter name="Employee_ID" class="java.lang.String">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="aux_emp" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[$P{Employee_ID}.equals("") ? " " : " AND EMP.RCHR_EMPLOYEE_ID = '" + $P{Employee_ID} + "'"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="Dept_ID" class="java.lang.String">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="aux_dept" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[$P{Dept_ID}.equals("") ? " " : " AND EMPPP.RCHR_EMP_DEPT_ID = '" + $P{Dept_ID} + "'"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="EmpType" class="java.lang.String"/>
+	<parameter name="SubDept_ID" class="java.lang.String">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="aux_subdept" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[$P{SubDept_ID}.equals("") ? " " : " AND EMPPP.RCHR_SUBDEPARTMENT_ID = '" + $P{SubDept_ID} + "'"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="Emp_PF" class="java.lang.String">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="aux_emp_pf" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[$P{Emp_PF}.equals("") ? " " : " AND EMPPP.ISPFAPPLICABLE = '" + $P{Emp_PF} + "'"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="Emp_Bank" class="java.lang.String">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="aux_emp_bank" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[$P{Emp_Bank}.equals("") ? " " : " AND EMPPP.ISBANK = '" + $P{Emp_Bank} + "'"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="Dyieng" class="java.lang.String">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="aux_dyieng" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[$P{Dyieng}.equals("") ? " " : " AND DEPT.ISDYEING = '" + $P{Dyieng} + "'"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="type" class="java.lang.String">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="documentno" class="java.lang.String">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="aux_documentno" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[$P{documentno}.equals("") ? " " : " AND EMP.documentno "+ $P{type} +" ("+ $P{documentno} +") "]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+emp.documentno AS Employeeid,
+
+emp.employeename AS name,
+( CASE WHEN $P{Dyieng}='Y' THEN 'DYEING'
+ WHEN $P{Dyieng}='N' THEN 'WEAVING'
+  WHEN $P{Dyieng}='' THEN 'WEAVING + DYEING'
+ END) as branch,
+(SELECT rchr_designation.name FROM rchr_designation
+WHERE rchr_designation_id=emppp.rchr_designation_id ) AS designation,
+
+(SELECT RCPL_EmpPaydead.deductions from RCPL_EmpPaydead WHERE emppp.rcpl_emppayrollprocess_id=RCPL_EmpPaydead.rcpl_emppayrollprocess_id AND RCPL_EmpPaydead.rcpl_paydeducitionshead_id=(SELECT rcpl_paydeducitionshead_id FROM
+rcpl_paydeducitionshead WHERE category='PF')) AS PF,
+
+(SELECT RCPL_EmpPaydead.deductions from RCPL_EmpPaydead WHERE emppp.rcpl_emppayrollprocess_id=RCPL_EmpPaydead.rcpl_emppayrollprocess_id AND RCPL_EmpPaydead.rcpl_paydeducitionshead_id=(SELECT rcpl_paydeducitionshead_id FROM
+rcpl_paydeducitionshead WHERE category='ESI')) AS ESI,
+
+(SELECT RCPL_EmpPaydead.deductions FROM RCPL_EmpPaydead WHERE emppp.rcpl_emppayrollprocess_id=RCPL_EmpPaydead.rcpl_emppayrollprocess_id  AND RCPL_EmpPaydead.rcpl_paydeducitionshead_id=(SELECT rcpl_paydeducitionshead_id FROM
+rcpl_paydeducitionshead WHERE category='Electricity Bill')) AS ElectricityBill,
+
+
+(SELECT RCPL_EmpPaydead.deductions FROM RCPL_EmpPaydead WHERE emppp.rcpl_emppayrollprocess_id=RCPL_EmpPaydead.rcpl_emppayrollprocess_id  AND RCPL_EmpPaydead.rcpl_paydeducitionshead_id=(SELECT rcpl_paydeducitionshead_id FROM
+rcpl_paydeducitionshead WHERE category='Late Attendance Disincentive')) AS LateAttendanceDisincentive,
+
+
+COALESCE((select sum(sum) from RCPL_MessBill,rcpl_messtype where RCPL_MessBill.rchr_employee_id=emp.rchr_employee_id and
+fromdate between  pp.startdate and pp.enddate and
+todate between  pp.startdate and pp.enddate and RCPL_MessBill.rcpl_messtype_id=rcpl_messtype.rcpl_messtype_id and rcpl_messtype.name='Baba Mess' ),0) as babamess,
+
+COALESCE((select sum(sum) from RCPL_MessBill,rcpl_messtype where RCPL_MessBill.rchr_employee_id=emp.rchr_employee_id and
+fromdate between  pp.startdate and pp.enddate and
+todate between  pp.startdate and pp.enddate and RCPL_MessBill.rcpl_messtype_id=rcpl_messtype.rcpl_messtype_id and rcpl_messtype.name='BQ Mess' ),0) as bqmess,
+
+COALESCE((select sum(sum) from RCPL_MessBill,rcpl_messtype where RCPL_MessBill.rchr_employee_id=emp.rchr_employee_id and
+fromdate between  pp.startdate and pp.enddate and
+todate between  pp.startdate and pp.enddate and RCPL_MessBill.rcpl_messtype_id=rcpl_messtype.rcpl_messtype_id and rcpl_messtype.name='Ladies Hostel Mess' ),0) as ladiesmess,
+
+COALESCE((select sum(sum) from RCPL_MessBill,rcpl_messtype where RCPL_MessBill.rchr_employee_id=emp.rchr_employee_id and
+fromdate between  pp.startdate and pp.enddate and
+todate between  pp.startdate and pp.enddate and RCPL_MessBill.rcpl_messtype_id=rcpl_messtype.rcpl_messtype_id and rcpl_messtype.name='Managers Mess' ),0) as mgrmess,
+(select sum(sum) from RCPL_MessBill,rcpl_messtype where RCPL_MessBill.rchr_employee_id=emp.rchr_employee_id and
+fromdate between  pp.startdate and pp.enddate and
+todate between  pp.startdate and pp.enddate and RCPL_MessBill.rcpl_messtype_id=rcpl_messtype.rcpl_messtype_id and rcpl_messtype.name='Managers Mess' ) as mgrmess,
+
+
+(SELECT RCPL_EmpPaydead.deductions from RCPL_EmpPaydead WHERE emppp.rcpl_emppayrollprocess_id=RCPL_EmpPaydead.rcpl_emppayrollprocess_id AND RCPL_EmpPaydead.rcpl_paydeducitionshead_id=(SELECT rcpl_paydeducitionshead_id FROM
+rcpl_paydeducitionshead WHERE category='PT')) AS PT,
+
+(SELECT RCPL_EmpPaydead.deductions from RCPL_EmpPaydead WHERE emppp.rcpl_emppayrollprocess_id=RCPL_EmpPaydead.rcpl_emppayrollprocess_id AND RCPL_EmpPaydead.rcpl_paydeducitionshead_id=(SELECT rcpl_paydeducitionshead_id FROM
+rcpl_paydeducitionshead WHERE category='Other Deductions')) AS OtherDeductions,
+
+
+(SELECT RCPL_EmpPaydead.deductions from RCPL_EmpPaydead WHERE emppp.rcpl_emppayrollprocess_id=RCPL_EmpPaydead.rcpl_emppayrollprocess_id AND RCPL_EmpPaydead.rcpl_paydeducitionshead_id=(SELECT rcpl_paydeducitionshead_id FROM
+rcpl_paydeducitionshead WHERE category='Gas')) AS GasRecovery,
+
+
+(SELECT RCPL_EmpPaydead.deductions from RCPL_EmpPaydead WHERE emppp.rcpl_emppayrollprocess_id=RCPL_EmpPaydead.rcpl_emppayrollprocess_id AND RCPL_EmpPaydead.rcpl_paydeducitionshead_id=(SELECT rcpl_paydeducitionshead_id FROM
+rcpl_paydeducitionshead WHERE category='Employee Fine')) AS Fine,
+
+
+(SELECT RCPL_EmpPaydead.deductions FROM RCPL_EmpPaydead WHERE emppp.rcpl_emppayrollprocess_id=RCPL_EmpPaydead.rcpl_emppayrollprocess_id AND
+RCPL_EmpPaydead.rcpl_paydeducitionshead_id=(SELECT rcpl_paydeducitionshead_id FROM
+rcpl_paydeducitionshead WHERE category='Welfare Fund')) AS welfare,
+
+(SELECT RCPL_EmpPaydead.deductions FROM RCPL_EmpPaydead WHERE emppp.rcpl_emppayrollprocess_id=RCPL_EmpPaydead.rcpl_emppayrollprocess_id AND
+RCPL_EmpPaydead.rcpl_paydeducitionshead_id=(SELECT rcpl_paydeducitionshead_id FROM
+rcpl_paydeducitionshead WHERE category='Store Recovery')) AS Deptstore,
+
+
+(SELECT RCPL_EmpPaydead.deductions FROM RCPL_EmpPaydead WHERE emppp.rcpl_emppayrollprocess_id=RCPL_EmpPaydead.rcpl_emppayrollprocess_id AND
+RCPL_EmpPaydead.rcpl_paydeducitionshead_id=(SELECT rcpl_paydeducitionshead_id FROM
+rcpl_paydeducitionshead WHERE category='Security Deposit')) AS secdeposite,
+
+
+(SELECT RCPL_EmpPaydead.deductions from RCPL_EmpPaydead WHERE emppp.rcpl_emppayrollprocess_id=RCPL_EmpPaydead.rcpl_emppayrollprocess_id AND RCPL_EmpPaydead.rcpl_paydeducitionshead_id=(SELECT rcpl_paydeducitionshead_id FROM
+rcpl_paydeducitionshead WHERE category='Rent Bill')) AS RentBill,
+
+
+COALESCE((select sum(loanamount) from rchr_emp_loanlines loanlines left join rchr_emp_loan loans on loans.rchr_emp_loan_id=loanlines.rchr_emp_loan_id
+left join rchr_loan_type loantype on loantype.rchr_loan_type_id= loans.rchr_loan_type_id
+where loans.rchr_employee_id=emp.rchr_employee_id  and
+loantype.value='Advance' and loanlines.paid='Y' and
+loanlines.duedate between pp.startdate and pp.enddate
+),0) as advance,
+
+COALESCE( (select sum(loanamount) from rchr_emp_loanlines loanlines left join rchr_emp_loan loans on loans.rchr_emp_loan_id=loanlines.rchr_emp_loan_id
+left join rchr_loan_type loantype on loantype.rchr_loan_type_id= loans.rchr_loan_type_id
+where loans.rchr_employee_id=emp.rchr_employee_id  and
+loantype.value = 'Loan' and loanlines.paid='Y' and
+loanlines.duedate between pp.startdate and pp.enddate
+),0)  as loan,
+COALESCE( (select sum(loanamount) from rchr_emp_loanlines loanlines left join rchr_emp_loan loans on loans.rchr_emp_loan_id=loanlines.rchr_emp_loan_id
+left join rchr_loan_type loantype on loantype.rchr_loan_type_id= loans.rchr_loan_type_id
+where loans.rchr_employee_id=emp.rchr_employee_id  and
+loantype.value = 'Special' and loanlines.paid='Y' and
+loanlines.duedate between pp.startdate and pp.enddate
+),0)  as specialloan,
+
+
+(SELECT rchr_attd_process.monthname FROM rchr_attd_process WHERE rchr_attd_process.rchr_attd_process_id=pp.rchr_attd_process_id) AS PayrollProcessMonth,
+
+emppp.deductionsum*-1 AS totaldeduction,
+
+
+emppp.grandtotal as grandtotal,
+
+
+
+0 as zero,
+
+round(emppp.totalpay) AS netsal,
+
+(select name from rchr_emp_dept where rchr_emp_dept_id=$P{Dept_ID}) as parm_dept,
+
+('- '||(select name from rchr_subdepartment where rchr_subdepartment_id=$P{SubDept_ID})) as parm_subdept
+,pp.status
+FROM rcpl_payrollprocess pp
+left join rcpl_emppayrollprocess emppp
+ON emppp.rcpl_payrollprocess_id = pp.rcpl_payrollprocess_id
+left join rchr_employee emp on emp.rchr_employee_id=emppp.rchr_employee_id
+left join rchr_emp_dept dept on dept.rchr_emp_dept_id=emp.rchr_emp_dept_id
+where pp.rchr_attd_process_id=$P{ProcessID} AND emp.employeetype=$P{EmpType}
+and pp.isactive='Y' and emppp.totalpay >0
+and 1=1
+$P!{aux_emp}
+$P!{aux_dept}
+$P!{aux_subdept}
+$P!{aux_emp_pf}
+$P!{aux_emp_bank}
+$P!{aux_dyieng}
+$P!{aux_documentno}
+ORDER BY emp.documentno]]>
+	</queryString>
+	<field name="employeeid" class="java.lang.String"/>
+	<field name="name" class="java.lang.String"/>
+	<field name="branch" class="java.lang.String"/>
+	<field name="designation" class="java.lang.String"/>
+	<field name="pf" class="java.math.BigDecimal"/>
+	<field name="esi" class="java.math.BigDecimal"/>
+	<field name="electricitybill" class="java.math.BigDecimal"/>
+	<field name="lateattendancedisincentive" class="java.math.BigDecimal"/>
+	<field name="babamess" class="java.math.BigDecimal"/>
+	<field name="bqmess" class="java.math.BigDecimal"/>
+	<field name="ladiesmess" class="java.math.BigDecimal"/>
+	<field name="mgrmess" class="java.math.BigDecimal"/>
+	<field name="pt" class="java.math.BigDecimal"/>
+	<field name="otherdeductions" class="java.math.BigDecimal"/>
+	<field name="gasrecovery" class="java.math.BigDecimal"/>
+	<field name="fine" class="java.math.BigDecimal"/>
+	<field name="welfare" class="java.math.BigDecimal"/>
+	<field name="deptstore" class="java.math.BigDecimal"/>
+	<field name="secdeposite" class="java.math.BigDecimal"/>
+	<field name="rentbill" class="java.math.BigDecimal"/>
+	<field name="advance" class="java.math.BigDecimal"/>
+	<field name="loan" class="java.math.BigDecimal"/>
+	<field name="specialloan" class="java.math.BigDecimal"/>
+	<field name="payrollprocessmonth" class="java.lang.String"/>
+	<field name="totaldeduction" class="java.math.BigDecimal"/>
+	<field name="grandtotal" class="java.math.BigDecimal"/>
+	<field name="zero" class="java.lang.Integer"/>
+	<field name="netsal" class="java.math.BigDecimal"/>
+	<field name="parm_dept" class="java.lang.String"/>
+	<field name="parm_subdept" class="java.lang.String"/>
+	<field name="status" class="java.lang.String"/>
+	<variable name="Sno" class="java.math.BigDecimal" calculation="Count">
+		<variableExpression><![CDATA[$F{employeeid}]]></variableExpression>
+	</variable>
+	<variable name="pagetot_deducti" class="java.math.BigDecimal" resetType="Column" calculation="Sum">
+		<variableExpression><![CDATA[$F{totaldeduction}]]></variableExpression>
+		<initialValueExpression><![CDATA[]]></initialValueExpression>
+	</variable>
+	<variable name="Grandtot_deductns" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{totaldeduction}]]></variableExpression>
+		<initialValueExpression><![CDATA[$F{totaldeduction}]]></initialValueExpression>
+	</variable>
+	<variable name="pagetot_gross" class="java.math.BigDecimal" resetType="Column" calculation="Sum">
+		<variableExpression><![CDATA[$F{grandtotal}]]></variableExpression>
+		<initialValueExpression><![CDATA[]]></initialValueExpression>
+	</variable>
+	<variable name="Grandtot_gross" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{grandtotal}]]></variableExpression>
+		<initialValueExpression><![CDATA[$F{grandtotal}]]></initialValueExpression>
+	</variable>
+	<variable name="pagetot_pf" class="java.math.BigDecimal" resetType="Column" calculation="Sum">
+		<variableExpression><![CDATA[$F{pf}]]></variableExpression>
+		<initialValueExpression><![CDATA[]]></initialValueExpression>
+	</variable>
+	<variable name="Grandtot_pf" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{pf}]]></variableExpression>
+		<initialValueExpression><![CDATA[$F{pf}]]></initialValueExpression>
+	</variable>
+	<variable name="pagetot_esi" class="java.math.BigDecimal" resetType="Column" calculation="Sum">
+		<variableExpression><![CDATA[$F{esi}]]></variableExpression>
+		<initialValueExpression><![CDATA[]]></initialValueExpression>
+	</variable>
+	<variable name="Grandtot_esi" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{esi}]]></variableExpression>
+		<initialValueExpression><![CDATA[$F{esi}]]></initialValueExpression>
+	</variable>
+	<variable name="pagetot_bqess" class="java.math.BigDecimal" resetType="Column" calculation="Sum">
+		<variableExpression><![CDATA[$F{bqmess}]]></variableExpression>
+		<initialValueExpression><![CDATA[]]></initialValueExpression>
+	</variable>
+	<variable name="Grandtot_bqmess" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{bqmess}]]></variableExpression>
+		<initialValueExpression><![CDATA[$F{bqmess}]]></initialValueExpression>
+	</variable>
+	<variable name="pagetot_babames" class="java.math.BigDecimal" resetType="Column" calculation="Sum">
+		<variableExpression><![CDATA[$F{babamess}]]></variableExpression>
+		<initialValueExpression><![CDATA[]]></initialValueExpression>
+	</variable>
+	<variable name="Grandtot_babames" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{babamess}]]></variableExpression>
+		<initialValueExpression><![CDATA[$F{babamess}]]></initialValueExpression>
+	</variable>
+	<variable name="pagetot_LH" class="java.math.BigDecimal" resetType="Column" calculation="Sum">
+		<variableExpression><![CDATA[$F{ladiesmess}]]></variableExpression>
+		<initialValueExpression><![CDATA[]]></initialValueExpression>
+	</variable>
+	<variable name="Grandtot_LH" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{ladiesmess}]]></variableExpression>
+		<initialValueExpression><![CDATA[$F{ladiesmess}]]></initialValueExpression>
+	</variable>
+	<variable name="pagetot_Adv" class="java.math.BigDecimal" resetType="Column" calculation="Sum">
+		<variableExpression><![CDATA[$F{advance}]]></variableExpression>
+		<initialValueExpression><![CDATA[]]></initialValueExpression>
+	</variable>
+	<variable name="Grandtot_Adv" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{advance}]]></variableExpression>
+		<initialValueExpression><![CDATA[$F{advance}]]></initialValueExpression>
+	</variable>
+	<variable name="pagetot_Loan" class="java.math.BigDecimal" resetType="Column" calculation="Sum">
+		<variableExpression><![CDATA[$F{loan}]]></variableExpression>
+		<initialValueExpression><![CDATA[]]></initialValueExpression>
+	</variable>
+	<variable name="Grandtot_Loan" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$V{Loan}]]></variableExpression>
+		<initialValueExpression><![CDATA[$V{Loan}]]></initialValueExpression>
+	</variable>
+	<variable name="pagetot_Rent" class="java.math.BigDecimal" resetType="Column" calculation="Sum">
+		<variableExpression><![CDATA[$F{rentbill}]]></variableExpression>
+		<initialValueExpression><![CDATA[]]></initialValueExpression>
+	</variable>
+	<variable name="Grandtot_Rent" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{rentbill}]]></variableExpression>
+		<initialValueExpression><![CDATA[$F{rentbill}]]></initialValueExpression>
+	</variable>
+	<variable name="pagetot_Fine" class="java.math.BigDecimal" resetType="Column" calculation="Sum">
+		<variableExpression><![CDATA[$F{fine}]]></variableExpression>
+		<initialValueExpression><![CDATA[]]></initialValueExpression>
+	</variable>
+	<variable name="Grandtot_Fine" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{fine}]]></variableExpression>
+		<initialValueExpression><![CDATA[$F{fine}]]></initialValueExpression>
+	</variable>
+	<variable name="pagetot_Gas" class="java.math.BigDecimal" resetType="Column" calculation="Sum">
+		<variableExpression><![CDATA[$F{gasrecovery}]]></variableExpression>
+		<initialValueExpression><![CDATA[]]></initialValueExpression>
+	</variable>
+	<variable name="Grandtot_Gas" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{gasrecovery}]]></variableExpression>
+		<initialValueExpression><![CDATA[$F{gasrecovery}]]></initialValueExpression>
+	</variable>
+	<variable name="pagetot_SecDpst" class="java.math.BigDecimal" resetType="Column" calculation="Sum">
+		<variableExpression><![CDATA[$F{secdeposite}]]></variableExpression>
+		<initialValueExpression><![CDATA[]]></initialValueExpression>
+	</variable>
+	<variable name="Grandtot_SecDepst" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{secdeposite}]]></variableExpression>
+		<initialValueExpression><![CDATA[$F{secdeposite}]]></initialValueExpression>
+	</variable>
+	<variable name="pagetot_DeptStr" class="java.math.BigDecimal" resetType="Column" calculation="Sum">
+		<variableExpression><![CDATA[$F{deptstore}]]></variableExpression>
+		<initialValueExpression><![CDATA[]]></initialValueExpression>
+	</variable>
+	<variable name="Grandtot_DeptStore" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{deptstore}]]></variableExpression>
+		<initialValueExpression><![CDATA[$F{deptstore}]]></initialValueExpression>
+	</variable>
+	<variable name="pagetot_ElcBil" class="java.math.BigDecimal" resetType="Column" calculation="Sum">
+		<variableExpression><![CDATA[$F{electricitybill}]]></variableExpression>
+		<initialValueExpression><![CDATA[]]></initialValueExpression>
+	</variable>
+	<variable name="Grandtot_ElcBill" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{electricitybill}]]></variableExpression>
+		<initialValueExpression><![CDATA[$F{electricitybill}]]></initialValueExpression>
+	</variable>
+	<variable name="pagetotal" class="java.math.BigDecimal" resetType="Column" calculation="Sum">
+		<variableExpression><![CDATA[$F{netsal}]]></variableExpression>
+		<initialValueExpression><![CDATA[]]></initialValueExpression>
+	</variable>
+	<variable name="Grandtotal" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{netsal}]]></variableExpression>
+		<initialValueExpression><![CDATA[$F{netsal}]]></initialValueExpression>
+	</variable>
+	<variable name="pagetot_pt" class="java.math.BigDecimal" resetType="Column" calculation="Sum">
+		<variableExpression><![CDATA[$F{pt}]]></variableExpression>
+		<initialValueExpression><![CDATA[]]></initialValueExpression>
+	</variable>
+	<variable name="Grandtot_pt" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{pt}]]></variableExpression>
+		<initialValueExpression><![CDATA[$F{pt}]]></initialValueExpression>
+	</variable>
+	<variable name="Grandtot_od" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{otherdeductions}]]></variableExpression>
+		<initialValueExpression><![CDATA[$F{pt}]]></initialValueExpression>
+	</variable>
+	<variable name="pagetot_od" class="java.math.BigDecimal" resetType="Column" calculation="Sum">
+		<variableExpression><![CDATA[$F{otherdeductions}]]></variableExpression>
+		<initialValueExpression><![CDATA[]]></initialValueExpression>
+	</variable>
+	<variable name="Grandtot_managermess" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{mgrmess}]]></variableExpression>
+		<initialValueExpression><![CDATA[$F{mgrmess}]]></initialValueExpression>
+	</variable>
+	<variable name="pagetot_managermess" class="java.math.BigDecimal" resetType="Column" calculation="Sum">
+		<variableExpression><![CDATA[$F{mgrmess}]]></variableExpression>
+		<initialValueExpression><![CDATA[]]></initialValueExpression>
+	</variable>
+	<variable name="pagetot_Latecomingfine" class="java.math.BigDecimal" resetType="Column" calculation="Sum">
+		<variableExpression><![CDATA[$F{lateattendancedisincentive}]]></variableExpression>
+		<initialValueExpression><![CDATA[]]></initialValueExpression>
+	</variable>
+	<variable name="Grandtot_Latecomingfine" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{lateattendancedisincentive}]]></variableExpression>
+		<initialValueExpression><![CDATA[$F{lateattendancedisincentive}]]></initialValueExpression>
+	</variable>
+	<variable name="Status" class="java.lang.String">
+		<variableExpression><![CDATA[$F{status}.equals("DR") ? "Draft Copy" : $F{status}.equals("CO") ? " Completed Copy " : " No Document status"]]></variableExpression>
+		<initialValueExpression><![CDATA[$F{status}.equals("DR") ? "Draft Copy" : $F{status}.equals("CO") ? " Completed Copy " : " No Document status"]]></initialValueExpression>
+	</variable>
+	<variable name="Loan" class="java.math.BigDecimal" resetType="None">
+		<variableExpression><![CDATA[$F{specialloan}.add($F{loan})]]></variableExpression>
+		<initialValueExpression><![CDATA[]]></initialValueExpression>
+	</variable>
+	<variable name="pagetot_welf" class="java.math.BigDecimal" resetType="Page" calculation="Sum">
+		<variableExpression><![CDATA[$F{welfare}]]></variableExpression>
+	</variable>
+	<variable name="Grandtot_welf" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{welfare}]]></variableExpression>
+	</variable>
+	<background>
+		<band height="50">
+			<textField isBlankWhenNull="true">
+				<reportElement mode="Transparent" x="670" y="0" width="130" height="48" forecolor="#CCCCCC" backcolor="#FF3399"/>
+				<textElement textAlignment="Center" verticalAlignment="Top" rotation="None" lineSpacing="1_1_2" markup="none">
+					<font size="20" isBold="true" isItalic="true" isUnderline="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$V{Status}]]></textFieldExpression>
+			</textField>
+		</band>
+	</background>
+	<title>
+		<band height="54" splitType="Stretch">
+			<line>
+				<reportElement x="802" y="0" width="1" height="54"/>
+			</line>
+			<line>
+				<reportElement x="0" y="0" width="1" height="54"/>
+			</line>
+			<line>
+				<reportElement x="1" y="0" width="801" height="1"/>
+			</line>
+			<staticText>
+				<reportElement key="staticText-2" x="263" y="2" width="239" height="22"/>
+				<textElement textAlignment="Center" verticalAlignment="Top" lineSpacing="Single">
+					<font fontName="Verdana" size="14" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[Kallam Spinning Mills ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-3" x="220" y="35" width="351" height="19"/>
+				<textElement textAlignment="Center" lineSpacing="Single">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Kunkupadu, Addanki - 523264 - Prakasam - Andhra Pradesh]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-2" x="259" y="20" width="239" height="21"/>
+				<textElement textAlignment="Center" verticalAlignment="Top" lineSpacing="Single">
+					<font fontName="Verdana" size="14" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[ (Weaving Division)]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="42" splitType="Stretch">
+			<line>
+				<reportElement x="0" y="0" width="1" height="42"/>
+			</line>
+			<line>
+				<reportElement x="802" y="0" width="1" height="42"/>
+			</line>
+			<line>
+				<reportElement x="0" y="0" width="802" height="1"/>
+			</line>
+			<staticText>
+				<reportElement key="staticText-9" x="306" y="4" width="167" height="16"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle" lineSpacing="Single">
+					<font fontName="Verdana" size="12" isBold="true" isItalic="true" isUnderline="false" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[Payroll  Recovery Report]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="379" y="21" width="100" height="20"/>
+				<textElement verticalAlignment="Middle" lineSpacing="Single">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{parm_subdept}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="292" y="21" width="84" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle" lineSpacing="Single">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{parm_dept}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="481" y="4" width="62" height="17"/>
+				<textElement verticalAlignment="Middle" lineSpacing="Single">
+					<font size="11" isBold="true" isItalic="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{payrollprocessmonth}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="632" y="24" width="63" height="12"/>
+				<textElement textAlignment="Center" lineSpacing="Single">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Bank Status:]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="698" y="25" width="104" height="12"/>
+				<textElement verticalAlignment="Middle" lineSpacing="Single">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{Emp_Bank}.equals("") ? "BANK + ON-HAND" : ($P{Emp_Bank}.equals("Y") ? "BANK" : "ON-HAND")]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="697" y="9" width="103" height="12"/>
+				<textElement verticalAlignment="Middle" lineSpacing="Single">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{Emp_PF}.equals("") ? "" : ($P{Emp_PF}.equals("Y") ? "PF" : "")]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="238" y="4" width="84" height="16"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle" lineSpacing="Single">
+					<font size="12" isBold="true" isItalic="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{EmpType}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="11" y="9" width="139" height="13"/>
+				<textElement verticalAlignment="Middle" lineSpacing="Single">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{branch}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="25" splitType="Stretch">
+			<line>
+				<reportElement x="0" y="0" width="1" height="24"/>
+			</line>
+			<line>
+				<reportElement x="58" y="0" width="1" height="23"/>
+			</line>
+			<line>
+				<reportElement x="151" y="0" width="1" height="23"/>
+			</line>
+			<line>
+				<reportElement x="185" y="0" width="1" height="24"/>
+			</line>
+			<line>
+				<reportElement x="553" y="0" width="1" height="23"/>
+			</line>
+			<line>
+				<reportElement x="802" y="0" width="1" height="24"/>
+			</line>
+			<line>
+				<reportElement x="1" y="-1" width="801" height="1"/>
+			</line>
+			<staticText>
+				<reportElement x="28" y="-2" width="30" height="26"/>
+				<textElement textAlignment="Center" verticalAlignment="Top" lineSpacing="Single">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[punch no]]></text>
+			</staticText>
+			<line>
+				<reportElement x="26" y="0" width="1" height="23"/>
+			</line>
+			<staticText>
+				<reportElement key="staticText-19" x="60" y="4" width="89" height="17"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" lineSpacing="Single">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Employee Name]]></text>
+			</staticText>
+			<line>
+				<reportElement x="405" y="0" width="1" height="23"/>
+			</line>
+			<staticText>
+				<reportElement x="1" y="2" width="23" height="19"/>
+				<textElement verticalAlignment="Middle" lineSpacing="Single">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[S.No]]></text>
+			</staticText>
+			<line>
+				<reportElement x="607" y="1" width="1" height="23"/>
+			</line>
+			<line>
+				<reportElement x="237" y="1" width="1" height="23"/>
+			</line>
+			<line>
+				<reportElement x="211" y="0" width="1" height="24"/>
+			</line>
+			<staticText>
+				<reportElement x="186" y="1" width="25" height="23"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" lineSpacing="Single">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[PF]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="213" y="1" width="24" height="23"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" lineSpacing="Single">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ESI]]></text>
+			</staticText>
+			<line>
+				<reportElement x="300" y="0" width="1" height="24"/>
+			</line>
+			<line>
+				<reportElement x="331" y="0" width="1" height="25"/>
+			</line>
+			<staticText>
+				<reportElement x="238" y="-2" width="26" height="26"/>
+				<textElement textAlignment="Center" verticalAlignment="Top" lineSpacing="Single">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[B.Q.
+Mess]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="300" y="-2" width="31" height="27"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" lineSpacing="Single">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Baba
+Mess]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="333" y="1" width="31" height="23"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" lineSpacing="Single">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[L.H]]></text>
+			</staticText>
+			<line>
+				<reportElement x="364" y="-1" width="1" height="25"/>
+			</line>
+			<staticText>
+				<reportElement x="432" y="2" width="30" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" lineSpacing="Single">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Adv.]]></text>
+			</staticText>
+			<line>
+				<reportElement x="497" y="0" width="1" height="23"/>
+			</line>
+			<staticText>
+				<reportElement x="155" y="-1" width="30" height="26"/>
+				<textElement textAlignment="Center" verticalAlignment="Top" lineSpacing="Single">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Total
+Gross]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="530" y="2" width="23" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" lineSpacing="Single">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Rent]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="554" y="2" width="24" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" lineSpacing="Single">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Fines]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="635" y="2" width="24" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" lineSpacing="Single">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Gas]]></text>
+			</staticText>
+			<line>
+				<reportElement x="659" y="0" width="1" height="23"/>
+			</line>
+			<staticText>
+				<reportElement x="660" y="-2" width="28" height="26"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" lineSpacing="Single">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Dept.
+ Stores]]></text>
+			</staticText>
+			<line>
+				<reportElement x="688" y="0" width="1" height="23"/>
+			</line>
+			<staticText>
+				<reportElement x="690" y="-2" width="30" height="27"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" lineSpacing="Single">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Secure
+Deposit]]></text>
+			</staticText>
+			<line>
+				<reportElement x="720" y="0" width="1" height="23"/>
+			</line>
+			<staticText>
+				<reportElement x="722" y="-1" width="33" height="26"/>
+				<textElement textAlignment="Center" verticalAlignment="Top" lineSpacing="Single">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Total Deductions]]></text>
+			</staticText>
+			<line>
+				<reportElement x="578" y="0" width="1" height="24"/>
+			</line>
+			<staticText>
+				<reportElement x="579" y="2" width="28" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Top" lineSpacing="Single">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Elc.
+Bill]]></text>
+			</staticText>
+			<line>
+				<reportElement x="756" y="0" width="1" height="24"/>
+			</line>
+			<staticText>
+				<reportElement x="758" y="2" width="43" height="23"/>
+				<textElement textAlignment="Center" verticalAlignment="Top" lineSpacing="Single">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[  Net
+Wages]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="365" y="-1" width="42" height="26"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" lineSpacing="Single">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Manager Mess]]></text>
+			</staticText>
+			<line>
+				<reportElement stretchType="RelativeToBandHeight" x="429" y="0" width="1" height="24"/>
+			</line>
+			<staticText>
+				<reportElement x="408" y="2" width="21" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" lineSpacing="Single">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[PT]]></text>
+			</staticText>
+			<line>
+				<reportElement x="265" y="0" width="1" height="24"/>
+			</line>
+			<staticText>
+				<reportElement x="266" y="-2" width="34" height="27"/>
+				<textElement textAlignment="Center" lineSpacing="Single">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Other deductions]]></text>
+			</staticText>
+			<line>
+				<reportElement x="462" y="1" width="1" height="23"/>
+			</line>
+			<staticText>
+				<reportElement x="463" y="2" width="34" height="19"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" lineSpacing="Single">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Loan]]></text>
+			</staticText>
+			<line>
+				<reportElement x="528" y="1" width="1" height="23"/>
+			</line>
+			<staticText>
+				<reportElement x="498" y="2" width="30" height="19"/>
+				<textElement textAlignment="Center" lineSpacing="Single">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Late coming Fine]]></text>
+			</staticText>
+			<line>
+				<reportElement x="634" y="0" width="1" height="24"/>
+			</line>
+			<staticText>
+				<reportElement x="609" y="2" width="25" height="19"/>
+				<textElement lineSpacing="Single">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Welfare fund]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="21" splitType="Stretch">
+			<line>
+				<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="1" height="21"/>
+			</line>
+			<line>
+				<reportElement stretchType="RelativeToBandHeight" x="58" y="0" width="1" height="21"/>
+			</line>
+			<line>
+				<reportElement stretchType="RelativeToBandHeight" x="151" y="0" width="1" height="21"/>
+			</line>
+			<line>
+				<reportElement stretchType="RelativeToBandHeight" x="185" y="0" width="1" height="21"/>
+			</line>
+			<line>
+				<reportElement stretchType="RelativeToBandHeight" x="802" y="-1" width="1" height="22"/>
+			</line>
+			<line>
+				<reportElement positionType="Float" x="1" y="20" width="801" height="1"/>
+			</line>
+			<line>
+				<reportElement stretchType="RelativeToBandHeight" x="553" y="0" width="1" height="21"/>
+			</line>
+			<line>
+				<reportElement stretchType="RelativeToBandHeight" x="26" y="0" width="1" height="21"/>
+			</line>
+			<line>
+				<reportElement stretchType="RelativeToBandHeight" x="405" y="0" width="1" height="21"/>
+			</line>
+			<line>
+				<reportElement positionType="Float" x="0" y="-1" width="802" height="1"/>
+			</line>
+			<line>
+				<reportElement stretchType="RelativeToBandHeight" x="607" y="0" width="1" height="21"/>
+			</line>
+			<line>
+				<reportElement stretchType="RelativeToBandHeight" x="237" y="0" width="1" height="21"/>
+			</line>
+			<textField isBlankWhenNull="true">
+				<reportElement x="3" y="1" width="21" height="20"/>
+				<textElement verticalAlignment="Middle" lineSpacing="Single">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{Sno}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="28" y="1" width="30" height="19"/>
+				<textElement verticalAlignment="Middle" lineSpacing="Single">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{employeeid}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="60" y="1" width="90" height="19"/>
+				<textElement verticalAlignment="Middle" lineSpacing="Single">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{name}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement stretchType="RelativeToBandHeight" x="211" y="0" width="1" height="21"/>
+			</line>
+			<line>
+				<reportElement stretchType="RelativeToBandHeight" x="300" y="0" width="1" height="20"/>
+			</line>
+			<line>
+				<reportElement stretchType="RelativeToBandHeight" x="331" y="0" width="1" height="20"/>
+			</line>
+			<line>
+				<reportElement stretchType="RelativeToBandHeight" x="364" y="-2" width="1" height="22"/>
+			</line>
+			<line>
+				<reportElement stretchType="RelativeToBandHeight" x="497" y="0" width="1" height="20"/>
+			</line>
+			<line>
+				<reportElement stretchType="RelativeToBandHeight" x="659" y="0" width="1" height="21"/>
+			</line>
+			<line>
+				<reportElement stretchType="RelativeToBandHeight" x="688" y="0" width="1" height="20"/>
+			</line>
+			<line>
+				<reportElement stretchType="RelativeToBandHeight" x="720" y="0" width="1" height="20"/>
+			</line>
+			<textField pattern="###0" isBlankWhenNull="true">
+				<reportElement x="187" y="1" width="24" height="18"/>
+				<textElement verticalAlignment="Middle" lineSpacing="Single">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{pf}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0" isBlankWhenNull="true">
+				<reportElement x="214" y="0" width="23" height="20"/>
+				<textElement verticalAlignment="Middle" lineSpacing="Single">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{esi}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0" isBlankWhenNull="true">
+				<reportElement x="530" y="1" width="23" height="18"/>
+				<textElement verticalAlignment="Middle" lineSpacing="Single">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{rentbill}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0" isBlankWhenNull="true">
+				<reportElement x="554" y="2" width="24" height="17"/>
+				<textElement verticalAlignment="Middle" lineSpacing="Single">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{fine}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0" isBlankWhenNull="true">
+				<reportElement x="635" y="0" width="24" height="19"/>
+				<textElement verticalAlignment="Middle" lineSpacing="Single">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{gasrecovery}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0" isBlankWhenNull="true">
+				<reportElement x="661" y="2" width="27" height="17"/>
+				<textElement verticalAlignment="Middle" lineSpacing="Single">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{deptstore}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0" isBlankWhenNull="true">
+				<reportElement x="692" y="2" width="28" height="17"/>
+				<textElement verticalAlignment="Middle" lineSpacing="Single">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{secdeposite}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0" isBlankWhenNull="true">
+				<reportElement x="723" y="1" width="33" height="18"/>
+				<textElement verticalAlignment="Middle" lineSpacing="Single">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{totaldeduction}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0" isBlankWhenNull="true">
+				<reportElement x="239" y="2" width="26" height="17"/>
+				<textElement verticalAlignment="Middle" lineSpacing="Single">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{bqmess}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0" isBlankWhenNull="true">
+				<reportElement x="302" y="1" width="29" height="19"/>
+				<textElement verticalAlignment="Middle" lineSpacing="Single">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{babamess}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0" isBlankWhenNull="true">
+				<reportElement x="333" y="2" width="29" height="17"/>
+				<textElement verticalAlignment="Middle" lineSpacing="Single">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{ladiesmess}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0" isBlankWhenNull="true">
+				<reportElement x="432" y="1" width="30" height="18"/>
+				<textElement verticalAlignment="Middle" lineSpacing="Single">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{advance}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement stretchType="RelativeToBandHeight" x="578" y="-2" width="1" height="22"/>
+			</line>
+			<textField pattern="###0" isBlankWhenNull="true">
+				<reportElement x="581" y="1" width="26" height="18"/>
+				<textElement verticalAlignment="Middle" lineSpacing="Single">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{electricitybill}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement stretchType="RelativeToBandHeight" x="756" y="-2" width="1" height="23"/>
+			</line>
+			<textField pattern="###0" isBlankWhenNull="true">
+				<reportElement x="758" y="3" width="43" height="16"/>
+				<textElement verticalAlignment="Middle" lineSpacing="Single">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{netsal}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0" isBlankWhenNull="true">
+				<reportElement x="153" y="1" width="32" height="18"/>
+				<textElement verticalAlignment="Middle" lineSpacing="Single">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{grandtotal}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0" isBlankWhenNull="true">
+				<reportElement x="367" y="2" width="34" height="17"/>
+				<textElement verticalAlignment="Middle" lineSpacing="Single">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{mgrmess}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement stretchType="RelativeToBandHeight" x="429" y="0" width="1" height="20"/>
+			</line>
+			<textField pattern="###0" isBlankWhenNull="true">
+				<reportElement x="408" y="1" width="21" height="20"/>
+				<textElement verticalAlignment="Middle" lineSpacing="Single">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{pt}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement stretchType="RelativeToBandHeight" x="265" y="0" width="1" height="21"/>
+			</line>
+			<textField pattern="###0" isBlankWhenNull="true">
+				<reportElement x="268" y="1" width="32" height="20"/>
+				<textElement verticalAlignment="Middle" lineSpacing="Single">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{otherdeductions}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement stretchType="RelativeToBandHeight" x="462" y="0" width="1" height="20"/>
+			</line>
+			<line>
+				<reportElement stretchType="RelativeToBandHeight" x="528" y="0" width="1" height="20"/>
+			</line>
+			<textField pattern="###0" isBlankWhenNull="true">
+				<reportElement x="498" y="1" width="30" height="20"/>
+				<textElement verticalAlignment="Middle" lineSpacing="Single">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{lateattendancedisincentive}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="463" y="0" width="34" height="20"/>
+				<textElement verticalAlignment="Middle" lineSpacing="Single">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{Loan}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="634" y="-2" width="1" height="22"/>
+			</line>
+			<textField>
+				<reportElement x="609" y="1" width="25" height="20"/>
+				<textElement lineSpacing="Single">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{welfare}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="14" splitType="Stretch">
+			<staticText>
+				<reportElement x="80" y="0" width="67" height="13"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle" lineSpacing="Single">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Page Total :]]></text>
+			</staticText>
+			<textField pattern="###0" isBlankWhenNull="true">
+				<reportElement x="721" y="0" width="36" height="14"/>
+				<textElement verticalAlignment="Middle" lineSpacing="Single">
+					<font size="6" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{pagetot_deducti}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0" isBlankWhenNull="true">
+				<reportElement x="186" y="0" width="25" height="13"/>
+				<textElement verticalAlignment="Middle" lineSpacing="Single">
+					<font size="6" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{pagetot_pf}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0" isBlankWhenNull="true">
+				<reportElement x="213" y="-1" width="24" height="15"/>
+				<textElement verticalAlignment="Middle" lineSpacing="Single">
+					<font size="6" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{pagetot_esi}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0" isBlankWhenNull="true">
+				<reportElement x="239" y="-1" width="27" height="15"/>
+				<textElement verticalAlignment="Middle" lineSpacing="Single">
+					<font size="6" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{pagetot_bqess}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0" isBlankWhenNull="true">
+				<reportElement x="302" y="0" width="29" height="13"/>
+				<textElement verticalAlignment="Middle" lineSpacing="Single">
+					<font size="6" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{pagetot_babames}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0" isBlankWhenNull="true">
+				<reportElement x="333" y="0" width="31" height="14"/>
+				<textElement verticalAlignment="Middle" lineSpacing="Single">
+					<font size="6" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{pagetot_LH}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0" isBlankWhenNull="true">
+				<reportElement x="432" y="0" width="30" height="13"/>
+				<textElement verticalAlignment="Middle" lineSpacing="Single">
+					<font size="6" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{pagetot_Adv}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0" isBlankWhenNull="true">
+				<reportElement x="530" y="0" width="23" height="13"/>
+				<textElement verticalAlignment="Middle" lineSpacing="Single">
+					<font size="6" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{pagetot_Rent}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0" isBlankWhenNull="true">
+				<reportElement x="554" y="0" width="25" height="13"/>
+				<textElement verticalAlignment="Middle" lineSpacing="Single">
+					<font size="6" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{pagetot_Fine}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0" isBlankWhenNull="true">
+				<reportElement x="634" y="0" width="26" height="13"/>
+				<textElement verticalAlignment="Middle" lineSpacing="Single">
+					<font size="6" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{pagetot_Gas}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0" isBlankWhenNull="true">
+				<reportElement x="690" y="0" width="30" height="14"/>
+				<textElement verticalAlignment="Middle" lineSpacing="Single">
+					<font size="6" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{pagetot_SecDpst}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0" isBlankWhenNull="true">
+				<reportElement x="662" y="0" width="27" height="13"/>
+				<textElement verticalAlignment="Middle" lineSpacing="Single">
+					<font size="6" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{pagetot_DeptStr}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0" isBlankWhenNull="true">
+				<reportElement x="580" y="0" width="28" height="13"/>
+				<textElement lineSpacing="Single">
+					<font size="6" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{pagetot_ElcBil}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="758" y="1" width="44" height="13"/>
+				<textElement verticalAlignment="Middle" lineSpacing="Single">
+					<font size="6" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{pagetotal}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0" isBlankWhenNull="true">
+				<reportElement x="150" y="0" width="34" height="13"/>
+				<textElement verticalAlignment="Middle" lineSpacing="Single">
+					<font size="6" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{pagetot_gross}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0" isBlankWhenNull="true">
+				<reportElement x="407" y="0" width="22" height="13"/>
+				<textElement verticalAlignment="Middle" lineSpacing="Single">
+					<font size="6" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{pagetot_pt}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0" isBlankWhenNull="true">
+				<reportElement x="268" y="0" width="32" height="13"/>
+				<textElement verticalAlignment="Middle" lineSpacing="Single">
+					<font size="6" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{pagetot_od}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0" isBlankWhenNull="true">
+				<reportElement x="367" y="0" width="38" height="13"/>
+				<textElement verticalAlignment="Middle" lineSpacing="Single">
+					<font size="6" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{pagetot_managermess}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0" isBlankWhenNull="true">
+				<reportElement x="464" y="0" width="33" height="13"/>
+				<textElement verticalAlignment="Middle" lineSpacing="Single">
+					<font size="6" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{pagetot_Loan}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0" isBlankWhenNull="true">
+				<reportElement x="498" y="0" width="30" height="13"/>
+				<textElement verticalAlignment="Middle" lineSpacing="Single">
+					<font size="6" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{pagetot_Latecomingfine}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="608" y="0" width="26" height="13"/>
+				<textElement lineSpacing="Single">
+					<font size="6" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{pagetot_welf}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="68" splitType="Stretch">
+			<staticText>
+				<reportElement key="staticText-29" x="440" y="39" width="100" height="12"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" lineSpacing="Single">
+					<font size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[Accounts]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="248" y="39" width="100" height="12"/>
+				<textElement textAlignment="Center" lineSpacing="Single">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[TO Incharge]]></text>
+			</staticText>
+			<textField pattern="###0" isBlankWhenNull="true">
+				<reportElement x="186" y="0" width="25" height="14"/>
+				<textElement verticalAlignment="Middle" lineSpacing="Single">
+					<font size="6" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{Grandtot_pf}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0" isBlankWhenNull="true">
+				<reportElement x="213" y="0" width="24" height="13"/>
+				<textElement verticalAlignment="Middle" lineSpacing="Single">
+					<font size="6" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{Grandtot_esi}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0" isBlankWhenNull="true">
+				<reportElement x="239" y="0" width="27" height="13"/>
+				<textElement verticalAlignment="Middle" lineSpacing="Single">
+					<font size="6" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{Grandtot_bqmess}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0" isBlankWhenNull="true">
+				<reportElement x="301" y="0" width="30" height="13"/>
+				<textElement verticalAlignment="Middle" lineSpacing="Single">
+					<font size="6" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{Grandtot_babames}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0" isBlankWhenNull="true">
+				<reportElement x="431" y="0" width="31" height="13"/>
+				<textElement verticalAlignment="Middle" lineSpacing="Single">
+					<font size="6" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{Grandtot_Adv}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0" isBlankWhenNull="true">
+				<reportElement x="530" y="0" width="23" height="13"/>
+				<textElement verticalAlignment="Middle" lineSpacing="Single">
+					<font size="6" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{Grandtot_Rent}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0" isBlankWhenNull="true">
+				<reportElement x="554" y="0" width="25" height="13"/>
+				<textElement verticalAlignment="Middle" lineSpacing="Single">
+					<font size="6" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{Grandtot_Fine}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0" isBlankWhenNull="true">
+				<reportElement x="634" y="0" width="26" height="13"/>
+				<textElement verticalAlignment="Middle" lineSpacing="Single">
+					<font size="6" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{Grandtot_Gas}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0" isBlankWhenNull="true">
+				<reportElement x="690" y="0" width="30" height="13"/>
+				<textElement verticalAlignment="Middle" lineSpacing="Single">
+					<font size="6" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{Grandtot_SecDepst}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0" isBlankWhenNull="true">
+				<reportElement x="662" y="0" width="27" height="13"/>
+				<textElement verticalAlignment="Middle" lineSpacing="Single">
+					<font size="6" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{Grandtot_DeptStore}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="42" y="39" width="100" height="12"/>
+				<textElement textAlignment="Center" lineSpacing="Single">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Prepared  By]]></text>
+			</staticText>
+			<textField pattern="###0" isBlankWhenNull="true">
+				<reportElement x="580" y="0" width="28" height="13"/>
+				<textElement lineSpacing="Single">
+					<font size="6" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{Grandtot_ElcBill}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="758" y="0" width="44" height="14"/>
+				<textElement verticalAlignment="Middle" lineSpacing="Single">
+					<font size="6" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{Grandtotal}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0" isBlankWhenNull="true">
+				<reportElement x="150" y="0" width="34" height="14"/>
+				<textElement verticalAlignment="Middle" lineSpacing="Single">
+					<font size="6" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{Grandtot_gross}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0" isBlankWhenNull="true">
+				<reportElement x="407" y="0" width="22" height="12"/>
+				<textElement verticalAlignment="Middle" lineSpacing="Single">
+					<font size="6" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{Grandtot_pt}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0" isBlankWhenNull="true">
+				<reportElement x="333" y="0" width="31" height="13"/>
+				<textElement verticalAlignment="Middle" lineSpacing="Single">
+					<font size="6" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{Grandtot_LH}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0" isBlankWhenNull="true">
+				<reportElement x="267" y="0" width="33" height="13"/>
+				<textElement verticalAlignment="Middle" lineSpacing="Single">
+					<font size="6" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{Grandtot_od}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0" isBlankWhenNull="true">
+				<reportElement x="367" y="0" width="38" height="12"/>
+				<textElement verticalAlignment="Middle" lineSpacing="Single">
+					<font size="6" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{Grandtot_managermess}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="640" y="39" width="100" height="12"/>
+				<textElement textAlignment="Center" lineSpacing="Single">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Approved By]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="80" y="0" width="67" height="14"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle" lineSpacing="Single">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Grand Total :]]></text>
+			</staticText>
+			<textField pattern="###0" isBlankWhenNull="true">
+				<reportElement x="720" y="0" width="38" height="14"/>
+				<textElement verticalAlignment="Middle" lineSpacing="Single">
+					<font size="6" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{Grandtot_deductns}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0" isBlankWhenNull="true">
+				<reportElement x="464" y="0" width="33" height="13"/>
+				<textElement verticalAlignment="Middle" lineSpacing="Single">
+					<font size="6" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{Grandtot_Loan}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0" isBlankWhenNull="true">
+				<reportElement x="498" y="0" width="30" height="13"/>
+				<textElement verticalAlignment="Middle" lineSpacing="Single">
+					<font size="6" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{Grandtot_Latecomingfine}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="609" y="0" width="25" height="12"/>
+				<textElement lineSpacing="Single">
+					<font size="6" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{Grandtot_welf}]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
+</jasperReport>

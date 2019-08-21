@@ -1,0 +1,60 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package com.redcarpet.production.ad_process;
+
+import com.redcarpet.production.data.RCPR_ProductionCost;
+import java.util.Iterator;
+import org.openbravo.base.provider.OBProvider;
+import org.openbravo.dal.service.OBDal;
+import org.openbravo.erpCommon.utility.OBError;
+import org.openbravo.model.materialmgmt.cost.Costing;
+import org.openbravo.model.materialmgmt.transaction.MaterialTransaction;
+import org.openbravo.scheduling.ProcessBundle;
+import org.openbravo.service.db.DalBaseProcess;
+
+/**
+ *
+ * @author mateen
+ */
+public class RCPR_ProductionCost_Posting extends DalBaseProcess {
+
+    @Override
+    protected void doExecute(ProcessBundle bundle) throws Exception {
+        
+        String id = bundle.getParams().get("Rcpr_Productionrun_ID").toString();
+        System.out.println("id is "+id);
+//        RCPR_ProductionCost prCost = OBDal.getInstance().get(RCPR_ProductionCost.class, id);
+//        OBError error = new OBError();
+//        error.setType("Success");
+//        error.setTitle("Success");
+//        error.setMessage("Process Completed Successfully");
+//        try {
+//            Costing cost = OBProvider.getInstance().get(Costing.class);
+//            cost.setProduct(prCost.getProduct());
+//            cost.setOrganization(prCost.getOrganization());
+//            cost.setInventoryTransaction(prCost.getRCPRPrCostLineList().get(0).getInventoryTransaction());
+//            cost.setCostType("AVA");
+//            cost.setCost(prCost.getUnitCost());
+//            cost.setStartingDate(prCost.getCostingDate());
+//            cost.setEndingDate(prCost.getCostingDate());
+//            cost.setQuantity(prCost.getProductionRun().getRequiredQuantity());
+//            cost.setPrice(prCost.getUnitCost());
+//            cost.setTotalMovementQuantity(prCost.getProductionRun().getRequiredQuantity());
+//            cost.setManual(Boolean.TRUE);
+//            cost.setWarehouse(prCost.getProductionRun().getStorageBin().getWarehouse());
+//            cost.setCurrency(prCost.getOrganization().getCurrency());
+//            OBDal.getInstance().save(cost);
+//            
+//            
+//        } catch (Exception ex) {
+//            error.setTitle("Error");
+//            error.setType("Error");
+//            error.setMessage(ex.getMessage());
+//        }
+//
+//        bundle.setResult(error);
+
+    }
+}

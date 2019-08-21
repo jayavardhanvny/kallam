@@ -1,0 +1,63 @@
+package com.rcss.humanresource.ad_process;
+
+import org.openbravo.base.provider.OBProvider;
+import org.openbravo.dal.core.OBContext;
+import org.openbravo.dal.service.OBCriteria;
+import org.openbravo.dal.service.OBDal;
+import org.openbravo.model.financialmgmt.calendar.NonBusinessDay;
+import org.openbravo.service.db.DalBaseProcess;
+import org.openbravo.scheduling.ProcessBundle;
+import org.openbravo.erpCommon.utility.OBError;
+
+import com.rcss.humanresource.data.RchrAllotment;
+import com.rcss.humanresource.data.RchrAttendLine;
+import com.rcss.humanresource.data.RchrEmpJob;
+import com.rcss.humanresource.data.RchrRelay;
+import com.rcss.humanresource.data.RchrMRelay;
+import com.rcss.humanresource.data.RchrAttendance;
+import com.rcss.humanresource.data.RchrEmployee;
+import com.rcss.humanresource.data.RchrRoom;
+import com.rcss.humanresource.data.RchrWorkShift;
+
+import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
+import java.util.*;
+
+public class AllotmentProcess extends DalBaseProcess{
+
+	@Override
+	protected void doExecute(ProcessBundle bundle) throws Exception {
+		
+		
+		System.out.println("isnide do execute");
+	
+	
+		String id = (String) bundle.getParams().get("Rchr_Allotment_ID");
+
+		System.out.println(id + "is id");
+		RchrAllotment allot = OBDal.getInstance().get(RchrAllotment.class, id);
+		
+		String empid=allot.getRchrEmployee().getId();
+		String roomid=allot.getRchrRoom().getId();
+
+		RchrEmployee emp = OBDal.getInstance().get(RchrEmployee.class,empid);
+		
+		emp.setAllotment(true);
+		emp.setRoomno(allot.getRchrRoom().getRoomno());
+		
+		RchrRoom room = OBDal.getInstance().get(RchrRoom.class,roomid);
+		room.setVacant(true);
+	        final OBError msg = new OBError();
+	        msg.setType("Success");
+	        msg.setTitle("Done");
+	        msg.setMessage("Process completed successfully");
+	        bundle.setResult(msg);
+
+			
+			OBDal.getInstance().save(allot);
+			
+		System.out.println("done --- exiting");
+		
+		
+	}
+}

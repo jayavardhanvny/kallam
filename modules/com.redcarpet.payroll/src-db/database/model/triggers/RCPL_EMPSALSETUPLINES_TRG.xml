@@ -1,0 +1,73 @@
+<?xml version="1.0"?>
+  <database name="TRIGGER RCPL_EMPSALSETUPLINES_TRG">
+    <trigger name="RCPL_EMPSALSETUPLINES_TRG" table="RCPL_EMPSALSETUPLINES" fires="after" insert="true" update="false" delete="false" foreach="row">
+      <body><![CDATA[declare 
+	salary NUMBER:=0;
+	v_grandtotal NUMBER:=0;
+	serinc NUMBER:=0;
+	v_isoperator character varying(1):='N';
+	v_isnotdesig character varying(1):='N';
+BEGIN   
+	IF TG_OP='INSERT' THEN
+		IF(:new.isserviceincr='Y' and :new.isperformanceincr='Y') THEN 
+			RAISE EXCEPTION 'You Should Check Only One checkbox either Serive or Performance Increment';	
+		ELSE IF(:new.isserviceincr='N' and :new.isperformanceincr='N') THEN
+			RAISE EXCEPTION 'You Should Check either Serive or Performance Increment';
+		ELSE
+			v_isoperator:=(select sal.isoperator from rcpl_empsalsetup sal where rcpl_empsalsetup_id=:new.rcpl_empsalsetup_id);
+			v_isnotdesig:=(select sal.isnotdesig from rcpl_empsalsetup sal where rcpl_empsalsetup_id=:new.rcpl_empsalsetup_id);
+			
+			
+				v_grandtotal:=(select Grandtotal from rcpl_empsalsetup where rcpl_empsalsetup_id=:new.rcpl_empsalsetup_id);
+				serinc:=(select Serviceince from rcpl_empsalsetup where rcpl_empsalsetup_id=:new.rcpl_empsalsetup_id);
+				salary:=(select grossamtperyear from rcpl_empsalsetup where rcpl_empsalsetup_id=:new.rcpl_empsalsetup_id);
+				
+				IF(:new.inctype='I') THEN
+					IF(v_isoperator='Y') THEN
+						salary:=(select Serviceince from rcpl_empsalsetup where rcpl_empsalsetup_id=:new.rcpl_empsalsetup_id);
+						update rcpl_empsalsetup set serviceince=salary+:new.newsalary where rcpl_empsalsetup_id=:new.rcpl_empsalsetup_id;					
+					ELSE IF(v_isnotdesig='N' and v_isoperator='N') THEN
+						salary:=(select grossamtperyear from rcpl_empsalsetup where rcpl_empsalsetup_id=:new.rcpl_empsalsetup_id);
+						update rcpl_empsalsetup set grossamtperyear=salary+:new.newsalary,Grandtotal=v_grandtotal+:new.newsalary 
+						where rcpl_empsalsetup_id=:new.rcpl_empsalsetup_id;
+					ELSE  
+						RETURN OLD;
+						END IF;
+				
+					END IF;
+				ELSE IF(:new.inctype='D') THEN
+					IF(v_isoperator='Y') THEN
+						salary:=(select Serviceince from rcpl_empsalsetup where rcpl_empsalsetup_id=:new.rcpl_empsalsetup_id);
+							
+						update rcpl_empsalsetuplines set newsalary=:new.newsalary*(-1) where rcpl_empsalsetuplines_id= :new.rcpl_empsalsetuplines_id;	
+						update rcpl_empsalsetup set serviceince=salary-:new.newsalary where rcpl_empsalsetup_id=:new.rcpl_empsalsetup_id;	
+					ELSE IF(v_isnotdesig='N' and v_isoperator='N') THEN
+						salary:=(select grossamtperyear from rcpl_empsalsetup where rcpl_empsalsetup_id=:new.rcpl_empsalsetup_id);
+						update rcpl_empsalsetup set grossamtperyear=salary-:new.newsalary,Grandtotal=v_grandtotal-:new.newsalary 
+						where rcpl_empsalsetup_id=:new.rcpl_empsalsetup_id;
+						update rcpl_empsalsetuplines set newsalary=:new.newsalary*(-1) where rcpl_empsalsetuplines_id= :new.rcpl_empsalsetuplines_id;
+					ELSE  
+						RETURN OLD;
+						END IF;
+					END IF;
+				ELSE
+					RETURN OLD;
+				END IF;
+				END IF;
+				
+			END IF;
+		END IF;
+-- 	END IF;	
+		
+	return new;
+	else 
+	
+	if(TG_OP='DELETE')then 
+		raise exception 'Delete not possible ,you should increment/decrement to set actual wage/salary';  
+	end if;
+	
+	end if;
+END RCPL_EMPSALSETUPLINES_TRG
+]]></body>
+    </trigger>
+  </database>

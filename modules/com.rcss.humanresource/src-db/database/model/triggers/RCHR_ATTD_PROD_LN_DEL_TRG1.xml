@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+  <database name="TRIGGER RCHR_ATTD_PROD_LN_DEL_TRG1">
+    <trigger name="RCHR_ATTD_PROD_LN_DEL_TRG1" table="RCHR_ATTENDANCE_PROOD" fires="before" insert="false" update="false" delete="true" foreach="row">
+      <body><![CDATA[declare 
+ Declare 
+     
+     
+begin
+
+
+if(TG_OP='DELETE')then 
+  	raise exception 'Delete not possible';  
+ return old;
+ end if;
+ end
+]]></body>
+    </trigger>
+  </database>

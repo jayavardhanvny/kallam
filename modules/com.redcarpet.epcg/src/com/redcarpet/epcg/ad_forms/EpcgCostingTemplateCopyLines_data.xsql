@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+ *************************************************************************
+ * The contents of this file are subject to the Openbravo  Public  License
+ * Version  1.1  (the  "License"),  being   the  Mozilla   Public  License
+ * Version 1.1  with a permitted attribution clause; you may not  use this
+ * file except in compliance with the License. You  may  obtain  a copy of
+ * the License at http://www.openbravo.com/legal/license.html 
+ * Software distributed under the License  is  distributed  on  an "AS IS"
+ * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+ * License for the specific  language  governing  rights  and  limitations
+ * under the License. 
+ * The Original Code is Openbravo ERP. 
+ * The Initial Developer of the Original Code is Openbravo SLU 
+ * All portions are Copyright (C) 2001-2012 Openbravo SLU 
+ * All Rights Reserved. 
+ * Contributor(s):  ______________________________________.
+ ************************************************************************
+-->
+
+
+
+
+
+<SqlClass name="EpcgCostingTemplateCopyLinesData" package="com.redcarpet.epcg.ad_forms">
+<SqlMethod name="select" type="preparedStatement" return="multiple">
+    <SqlMethodComment></SqlMethodComment>
+    <Sql>
+      <![CDATA[
+        SELECT head.epcg_yarncosttemplate_id as headid, to_char(head.costingfromdate,'DD-MM-YYYY') as fromdate,
+	to_char(head.costingtodate,'DD-MM-YYYY') as todate,
+	(SELECT m_product.value from m_product WHERE m_product.m_product_id=lines.m_product_id) as product,
+	(SELECT rchr_warpyarntype.name from rchr_warpyarntype WHERE rchr_warpyarntype_id=lines.rchr_warpyarntype_id) as yarntype,
+	(SELECT epcg_variant.name from epcg_variant WHERE epcg_variant_id=lines.epcg_variant_id) as variant,
+	lines.sizing as sizing,lines.efficiency as efficiency, lines.speed as speed ,lines.rate as rate
+	,lines.m_product_id as productid,lines.rchr_warpyarntype_id as warpyarntypeid,lines.epcg_variant_id as variantid
+ 	FROM epcg_yarncosttemplatelines lines,epcg_yarncosttemplate head
+	WHERE lines.epcg_yarncosttemplate_id=head.epcg_yarncosttemplate_id
+	and head.status='OP'
+            
+      ]]>
+    </Sql>
+    <Field name="rownum" value="count"/>
+    
+    
+  </SqlMethod>
+  <SqlMethod name="set" type="constant" return="multiple">
+      <SqlMethodComment></SqlMethodComment>
+      <Sql></Sql>
+  </SqlMethod>
+  
+  
+
+</SqlClass>

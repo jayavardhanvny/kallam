@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+  <database name="FUNCTION RCGI_DEPARTMENTRECEIPT_TRG">
+    <function name="RCGI_DEPARTMENTRECEIPT_TRG" type="VARCHAR">
+      <body><![CDATA[Declare 
+       
+   BEGIN
+	if(TG_OP='INSERT') THEN
+	update rcgi_departmentreceipt set totalcost=totalcost+new.freightcost where rcgi_departmentreceipt_id=new.rcgi_departmentreceipt_id;
+	return new;
+	else IF(TG_OP='UPDATE') then
+	update rcgi_departmentreceipt set totalcost=totallineamount+NEW.freightcost where rcgi_departmentreceipt_id=new.rcgi_departmentreceipt_id;
+	RETURN NEW;	
+	END IF;
+	end if;
+END RCGI_DEPARTMENTRECEIPT_TRG
+]]></body>
+    </function>
+  </database>

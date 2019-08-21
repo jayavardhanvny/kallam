@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<SqlClass name="RCPRSelectAcctData" package="com.redcarpet.production.ad_process" accessModifier="public">
+
+     <SqlMethod name="getRMAssetAccountData1" type="preparedStatement" return="multiple">
+	<Sql>
+	<![CDATA[ 
+        select 
+            (select c_acctschema_id From c_acctschema 
+            where ad_client_id = ? and ad_org_id = '256551BD83DF49DB80BCE5691149CA0B' limit 1) as c_acctschema_id,
+            (select c_period_id from c_period 
+            where ad_client_id = ? and ad_org_id = ? 
+            and name = (select to_char(current_timestamp, 'Mon-YY')) limit 1) as c_period_id,
+            'F8DB9103AC6E47C59952451BABA70028' as as_table_id, 
+            run.ad_client_id, run.ad_org_id, trx.c_currency_id, trx.m_product_id, run.issuequantity as qty, 
+            run.itemcost as price, el.c_elementvalue_id, pact.p_expense_acct, pact.p_asset_acct, el.value, 
+            (run.issuequantity * run.itemcost) as LineNetAmt
+     from m_transaction trx 
+            left join rcpr_productionrun run on trx.rcpr_productionrun_id = run.rcpr_productionrun_id
+            inner join m_product p on run.m_product_id = p.m_product_id
+            inner join m_product_acct pact on p.m_product_id = pact.m_product_id
+            inner join c_validcombination vc on pact.p_asset_acct = vc.c_validcombination_id
+            inner join c_elementvalue el on vc.account_id = el.c_elementvalue_id
+            where trx.m_product_id = ? 
+            and run.rcpr_productionrun_id = ? 
+        ]]>
+	</Sql>
+        <Parameter name="client1"/>
+        <Parameter name="client2"/>
+        <Parameter name="org1"/>
+        <Parameter name="productId"/>
+        <Parameter name="run"/>
+     </SqlMethod>
+
+
+     <SqlMethod name="getRMProductionTypeData2" type="preparedStatement" return="multiple">
+	<Sql>
+	<![CDATA[ 
+        select 
+        	(select c_acctschema_id From c_acctschema 
+                where ad_client_id = ? and ad_org_id = '256551BD83DF49DB80BCE5691149CA0B' limit 1) as c_acctschema_id,
+                (select c_period_id from c_period 
+                where ad_client_id = ? and ad_org_id = ? 
+                and name = (select to_char(current_timestamp, 'Mon-YY')) limit 1) as c_period_id,
+                'F8DB9103AC6E47C59952451BABA70028' as as_table_id, 
+                run.ad_client_id, run.ad_org_id, trx.c_currency_id, trx.m_product_id, run.issuequantity as qty, 
+                run.itemcost as price, el.c_elementvalue_id, '' as p_expense_acct, pl.p_asset_acct, el.value, 
+                (run.issuequantity * run.itemcost) as LineNetAmt
+            from m_transaction trx 
+           left join rcpr_productionrun run on trx.rcpr_productionrun_id = run.rcpr_productionrun_id
+           inner join rcpr_prbom bom on run.rcpr_prbom_id = bom.rcpr_prbom_id
+           inner join rcpr_prprocesslevel pl on bom.rcpr_prprocesslevel_id = pl.rcpr_prprocesslevel_id
+           inner join c_validcombination vc on pl.p_asset_acct = vc.c_validcombination_id
+           inner join c_elementvalue el on vc.account_id = el.c_elementvalue_id
+               where trx.m_product_id = ?
+               and run.rcpr_productionrun_id = ? 
+
+        ]]>
+	</Sql>
+        <Parameter name="client1"/>
+        <Parameter name="client2"/>
+        <Parameter name="org1"/>
+        <Parameter name="productId"/>
+        <Parameter name="run"/>
+     </SqlMethod>
+
+     <SqlMethod name="getFGProductAcctData3" type="preparedStatement" return="multiple">
+	<Sql>
+	<![CDATA[ 
+         select 
+            (select c_acctschema_id From c_acctschema 
+                where ad_client_id = ?  
+                and ad_org_id ='256551BD83DF49DB80BCE5691149CA0B' limit 1) as c_acctschema_id,
+                (select c_period_id from c_period 
+                 where ad_client_id = ? and ad_org_id = ? 
+                 and name = (select to_char(current_timestamp, 'Mon-YY')) limit 1) as c_period_id,
+                 'F8DB9103AC6E47C59952451BABA70028' as as_table_id, 
+               cost.ad_client_id, cost.ad_org_id, cost.c_currency_id, trx.m_product_id, cost.qty, cost.price
+                , el.c_elementvalue_id, pact.p_asset_acct, el.value, prd.linenetamt as LineNetAmt 
+                from m_costing cost
+                   inner join m_transaction trx on cost.m_transaction_id = trx.m_transaction_id
+                   inner join rcpr_productionrun run on trx.rcpr_productionrun_id = run.rcpr_productionrun_id 
+                   inner join rcpr_prproduct prd on trx.rcpr_prproduct_id = prd.rcpr_prproduct_id
+                   inner join m_product p on prd.m_product_id = p.m_product_id
+                   inner join m_product_acct pact on prd.m_product_id = pact.m_product_id 
+                   inner join c_validcombination vc on pact.p_asset_acct = vc.c_validcombination_id
+                   inner join c_elementvalue el on vc.account_id = el.c_elementvalue_id
+               where trx.rcpr_productionrun_id is not null and trx.rcpr_prproduct_id is not null
+               and run.rcpr_productionrun_id = ?  
+
+        ]]>
+	</Sql>
+        <Parameter name="client1"/>
+        <Parameter name="client2"/>
+        <Parameter name="org1"/>
+        <Parameter name="run"/>
+     </SqlMethod>
+
+    <SqlMethod name="getExpenseTypeAcctData4" type="preparedStatement" return="multiple">
+	<Sql>
+	<![CDATA[ 
+        select 
+        (select c_acctschema_id From c_acctschema 
+                where ad_client_id = ? and 
+                ad_org_id ='256551BD83DF49DB80BCE5691149CA0B' limit 1) as c_acctschema_id,
+                (select c_period_id from c_period where ad_client_id = ? and ad_org_id = ? 
+                 and name = (select to_char(current_timestamp, 'Mon-YY')) limit 1) as c_period_id,
+                 'F8DB9103AC6E47C59952451BABA70028' as as_table_id, 
+                 ex.ad_client_id, ex.ad_org_id, 
+                 (select c_currency_id from ad_org 
+                 where ad_client_id = ? and ad_org_id = ? limit 1 ) as c_currency_id ,
+                 ex.rcpr_prexpense_id as m_product_id, 0 as qty, 0 as price, el.c_elementvalue_id, ext.p_asset_acct, el.value,          ex.amount as LineNetAmt
+           from rcpr_prexpense ex
+	    left join rcpr_prexpensetype ext on ex.rcpr_prexpensetype_id = ext.rcpr_prexpensetype_id
+            inner join c_validcombination vc on ext.p_asset_acct = vc.c_validcombination_id
+            inner join c_elementvalue el on vc.account_id = el.c_elementvalue_id
+            where rcpr_productionrun_id = ? 
+
+        ]]>
+	</Sql>
+        <Parameter name="client1"/>
+        <Parameter name="client2"/>
+        <Parameter name="org1"/>
+        <Parameter name="client3"/>
+        <Parameter name="org2"/>
+        <Parameter name="runid"/>
+     </SqlMethod>
+
+<SqlMethod name="getWIPWarehouseAcct5" type="preparedStatement" return="multiple">
+	<Sql>
+	<![CDATA[ 
+        select 
+                (select c_acctschema_id From c_acctschema 
+                where ad_client_id = ? and ad_org_id = '256551BD83DF49DB80BCE5691149CA0B' limit 1) as c_acctschema_id,
+                (select c_period_id from c_period 
+                where ad_client_id = ? and ad_org_id = ?
+                and name = (select to_char(current_timestamp, 'Mon-YY')) limit 1) as c_period_id,
+                'F8DB9103AC6E47C59952451BABA70028' as as_table_id, 
+                run.ad_client_id, run.ad_org_id, org.c_currency_id, run.m_product_id, run.issuequantity as qty, 
+                run.itemcost as price, el.c_elementvalue_id, '' as p_expense_acct, pl.p_asset_acct, el.value, 
+                (totalitemcost-expensecost) as LineNetAmt
+         from rcpr_productionrun run 
+            inner join rcpr_prbom bom on run.rcpr_prbom_id = bom.rcpr_prbom_id
+            inner join rcpr_prprocesslevel pl on bom.rcpr_prprocesslevel_id = pl.rcpr_prprocesslevel_id
+            inner join c_validcombination vc on pl.p_asset_acct = vc.c_validcombination_id
+            inner join c_elementvalue el on vc.account_id = el.c_elementvalue_id
+            inner join ad_org org on run.ad_org_id = org.ad_org_id
+            where run.rcpr_productionrun_id = ? 
+        ]]>
+	</Sql>
+        <Parameter name="client1"/>
+        <Parameter name="client2"/>
+        <Parameter name="org1"/>
+        <Parameter name="runid"/>
+     </SqlMethod>
+
+
+
+</SqlClass>

@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<REPORT>
+  <template file="SecondExperiment.html"/>
+  
+	<PARAMETER id="paramLanguage" name="language" default=""/>
+	<PARAMETER id="paramDirectory" name="directory" default=""/>
+
+  <PARAMETER id="paramDateFrom" name="dateFrom" attribute="value" default=""/>
+  <PARAMETER id="paramDateTo" name="dateTo" attribute="value" default=""/>
+  <PARAMETER id="paramHelp" name="help" default=""/>
+  
+	<PARAMETER id="paramToolBar" name="toolbar" default=""/>
+	<PARAMETER id="fieldCalendar" name="calendar" attribute="src" replace="es" default="en"/>
+	<PARAMETER id="paramCSS" name="theme" attribute="href" replace="Default"/>
+        <PARAMETER id="tdleftTabs" name="leftTabs" default=""/>
+	<PARAMETER id="paramParentTabContainer" name="parentTabContainer" default=" "/>
+        <PARAMETER id="paramMainTabContainer" name="mainTabContainer" default=" "/>
+        <PARAMETER id="paramChildTabContainer" name="childTabContainer" default=" "/>
+	<PARAMETER id="tdtopButtons" name="navigationBar" default=""/>
+	<PARAMETER id="secTable" name="secTable" default=""/>
+        <PARAMETER id="param2" name="param2" default="2"/>
+
+        <PARAMETER id="paramDateFrom" name="dateFromdisplayFormat" attribute="displayformat" replace="xx"/>
+	<PARAMETER id="paramDateFrom" name="dateFromsaveFormat" attribute="saveformat" replace="yy"/>
+
+	<PARAMETER id="paramDateTo" name="dateTodisplayFormat" attribute="displayformat" replace="xx"/>
+	<PARAMETER id="paramDateTo" name="dateTosaveFormat" attribute="saveformat" replace="yy"/>
+
+	<structure name="structure1">
+		<FIELD id="fieldRownum1">rownum</FIELD>
+		<FUNCTION id="funcEvenOddRow1xx" name="MODULE" arg1="fieldRownum1" arg2="param2" format="integerEdition" attribute="class" replace="yy"/>
+		<FIELD id="fieldSchemaName">schemaName</FIELD> 
+		 
+		<FIELD id="fieldIdentifier" attribute="onclick" replace="xx">identifier</FIELD>
+		<FIELD id="fieldIdentifier" attribute="onclick" replace="yy">org</FIELD>
+		<FIELD id="fieldOrg">Org</FIELD>
+   <FIELD id="fieldDocumentType">documentType</FIELD>
+    <FIELD id="fieldDocumentno">Documentno</FIELD>
+    <FIELD id="fieldFormType">FormType</FIELD>
+    
+    <FIELD id="fieldFormTypeNo">FormTypeNo</FIELD>
+    <FIELD id="fieldInvoiceDate">InvoiceDate</FIELD>
+    <FIELD id="fieldAccoutingDate">AccoutingDate</FIELD>
+    
+    <FIELD id="fieldPartyName">PartyName</FIELD>
+    <FIELD id="fieldAgentName">AgentName</FIELD>
+     <FIELD id="fieldPaymentterm">Paymentterm</FIELD>
+     <FIELD id="fieldLine">Line</FIELD>
+    <FIELD id="fieldProduct">Product</FIELD>
+    <FIELD id="fieldProductCat">ProductCat</FIELD>
+    <FIELD id="fieldProductAlias">ProductAlias</FIELD>
+    
+    <FIELD id="fieldqtyinvoiced">Qtyinvoiced</FIELD>
+    <FIELD id="fieldpriceactual">Priceactual</FIELD>
+    <FIELD id="fieldemRcfrRatetype">emRcfrRatetype</FIELD>
+    <FIELD id="fieldemRcfrNetunitrate">emRcfrNetunitrate</FIELD>
+      
+    <FIELD id="fieldDescription">Description</FIELD>
+    <FIELD id="fieldPoreference">Poreference</FIELD>
+    <FIELD id="fieldGrandtotal">Grandtotal</FIELD>
+    
+    <FIELD id="fieldispaid">Ispaid</FIELD>
+    <FIELD id="fieldtotalpaid">Totalpaid</FIELD>
+    <FIELD id="fieldOutstandingAmt">OutstandingAmt</FIELD>
+    <FIELD id="fieldtotallines">Totallines</FIELD>
+    
+    <FIELD id="fieldTaxAmount">TaxAmount</FIELD>
+    <FIELD id="fieldFreightAmount">FreightAmount</FIELD>
+    <FIELD id="fieldFreightPaid">FreightPaid</FIELD>
+    
+     <FIELD id="fieldCommission">Commission</FIELD>
+    <FIELD id="fieldFreightLine">FreightLine</FIELD>
+    <FIELD id="fieldInsurance">Insurance</FIELD>
+    
+    <FIELD id="fieldInsuranceAmount">InsuranceAmount</FIELD>
+    <FIELD id="fieldDeliveryLocation">DeliveryLocation</FIELD>
+
+
+    <SECTION id="sectionDetail"/>
+
+
+	</structure>
+  <DISCARD id="discard"/>
+	
+</REPORT>

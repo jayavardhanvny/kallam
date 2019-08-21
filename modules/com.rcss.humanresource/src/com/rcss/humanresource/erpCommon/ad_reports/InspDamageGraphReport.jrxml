@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="InspDamageGraphReport" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<style name="Crosstab Data Text" hAlign="Center"/>
+	<parameter name="BeforeDate1" class="java.util.Date"/>
+	<parameter name="BeforeDate2" class="java.util.Date"/>
+	<parameter name="Remark_ID" class="java.lang.String">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="aux_remark" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[$P{Remark_ID}.equals("") ? " " : " AND TYPE.RCHR_INSPECTIONTYPE_ID = '" + $P{Remark_ID} + "'"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="LoomCatgr_ID" class="java.lang.String">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="aux_loomcatgr" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[$P{LoomCatgr_ID}.equals("") ? " " : " AND LOOM.RCPL_INSPLOOMCTGRY_ID = '" + $P{LoomCatgr_ID} + "'"]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[select
+
+ (isnplm.name ) as loom,
+ sum(line.b+line.sl) as totalmtr,
+ (type.code) as remark,
+ (type.name) as remarks
+
+ from rchr_inspcategoryline line
+ left join rchr_inspectionsheet sheet on sheet.rchr_inspectionsheet_id=line.rchr_inspectionsheet_id
+ left join rchr_inspectiontype type on type.rchr_inspectiontype_id=line.rchr_inspectiontype_id
+ left join rcpl_loom loom on loom.rcpl_loom_id=sheet.rcpl_loom_id
+left join rcpl_insploomctgry isnplm on isnplm.rcpl_insploomctgry_id=loom.rcpl_insploomctgry_id
+
+ where sheet.inspdate between $P{BeforeDate1}  and $P{BeforeDate2} and line.b+line.sl >0 and isnplm.rcpl_insploomctgry_id= $P{LoomCatgr_ID}
+ group by isnplm.name,type.code,type.name
+ order by type.code]]>
+	</queryString>
+	<field name="loom" class="java.lang.String"/>
+	<field name="totalmtr" class="java.math.BigDecimal"/>
+	<field name="remark" class="java.lang.String"/>
+	<field name="remarks" class="java.lang.String"/>
+	<summary>
+		<band height="555">
+			<stackedBarChart>
+				<chart>
+					<reportElement x="0" y="16" width="555" height="539"/>
+					<chartTitle>
+						<font size="8"/>
+					</chartTitle>
+					<chartSubtitle>
+						<font size="8"/>
+					</chartSubtitle>
+					<chartLegend>
+						<font size="8"/>
+					</chartLegend>
+				</chart>
+				<categoryDataset>
+					<categorySeries>
+						<seriesExpression><![CDATA[$F{totalmtr}]]></seriesExpression>
+						<categoryExpression><![CDATA[$F{remarks}]]></categoryExpression>
+						<valueExpression><![CDATA[$F{totalmtr}]]></valueExpression>
+						<labelExpression><![CDATA[$F{totalmtr}.toString()]]></labelExpression>
+					</categorySeries>
+				</categoryDataset>
+				<barPlot isShowLabels="true" isShowTickLabels="true" isShowTickMarks="true">
+					<plot labelRotation="60.0"/>
+					<itemLabel color="#000000" backgroundColor="#FFFFFF">
+						<font size="8"/>
+					</itemLabel>
+					<categoryAxisFormat labelRotation="60.0">
+						<axisFormat verticalTickLabels="true">
+							<labelFont>
+								<font size="6" isPdfEmbedded="true"/>
+							</labelFont>
+							<tickLabelFont>
+								<font size="8"/>
+							</tickLabelFont>
+						</axisFormat>
+					</categoryAxisFormat>
+					<valueAxisFormat>
+						<axisFormat verticalTickLabels="false">
+							<labelFont>
+								<font size="8" isPdfEmbedded="true"/>
+							</labelFont>
+							<tickLabelFont>
+								<font size="10"/>
+							</tickLabelFont>
+						</axisFormat>
+					</valueAxisFormat>
+				</barPlot>
+			</stackedBarChart>
+			<textField>
+				<reportElement x="222" y="0" width="100" height="16"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{loom}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd-MMM-yy" isBlankWhenNull="true">
+				<reportElement x="147" y="3" width="73" height="12"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.util.Date"><![CDATA[$P{BeforeDate1}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd-MMM-yy" isBlankWhenNull="true">
+				<reportElement x="393" y="3" width="73" height="11"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.util.Date"><![CDATA[$P{BeforeDate2}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="332" y="1" width="60" height="14"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[To Date :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="87" y="2" width="60" height="14"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[From Date :]]></text>
+			</staticText>
+		</band>
+	</summary>
+</jasperReport>

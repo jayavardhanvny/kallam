@@ -1,0 +1,111 @@
+package com.redcarpet.production.ad_callouts;
+
+import java.math.RoundingMode;
+import com.redcarpet.production.data.RCPRCount;
+import com.redcarpet.production.data.RCPRShift;
+import java.math.BigDecimal;
+import java.text.DecimalFormat;
+import javax.servlet.ServletException;
+import org.apache.commons.lang.StringUtils;
+import org.openbravo.dal.service.OBDal;
+import org.openbravo.erpCommon.ad_callouts.SimpleCallout;
+
+public class RCPR_CardingCalculation extends SimpleCallout {
+
+    @Override
+    protected void execute(CalloutInfo info) throws ServletException {
+
+        String strInitialHank = info.getStringParameter("inpinitialhank", null);
+        String strFinalHank = info.getStringParameter("inpfinalhank", null);
+        BigDecimal retVal = new BigDecimal(BigDecimalUtil.getPlainStrNumber(strFinalHank).doubleValue()
+                - BigDecimalUtil.getPlainStrNumber(strInitialHank).doubleValue());
+        DecimalFormat fr = new DecimalFormat("##.##");
+        info.addResult("inpproducedhanks", fr.format(retVal));
+
+        String strShiftId = info.getStringParameter("inprcprShiftId", null);
+        RCPRShift shift = OBDal.getInstance().get(RCPRShift.class, strShiftId);
+        info.addResult("inpshifttimeinmins", shift.getShiftInMins());
+
+        String strCountId = info.getStringParameter("inprcprCountId", null);
+        RCPRCount count = OBDal.getInstance().get(RCPRCount.class, strCountId);
+        info.addResult("inphank", count.getHanksStandardPerHour().toString());
+        info.addResult("inpdeliveryspeedmpm", count.getSpeedStandard().toString());
+
+        String strShfitTimeMins = info.getStringParameter("inpshifttimeinmins", null);
+        String strMachineWorkingHrs = info.getStringParameter("inpmachineworkinghours", null);
+        BigDecimal value = calculateMachineStoppageTime(strShfitTimeMins, strMachineWorkingHrs);
+        fr = new DecimalFormat("##.##");
+        info.addResult("inpmacstopagetime", fr.format(value));
+
+        String deliverySpeedMpm = info.getStringParameter("inpdeliveryspeedmpm", null);
+        String strHanks = info.getStringParameter("inphank", null);
+        String strShiftTimeMins = info.getStringParameter("inpshifttimeinmins", null);
+        value = calculatePercentageProduction(strHanks, deliverySpeedMpm, strShiftTimeMins);
+        fr = new DecimalFormat("##.##");
+        info.addResult("inpproductionorshift", fr.format(value));
+
+        String strProducedHanks = info.getStringParameter("inpproducedhanks", null);
+	System.out.println("strProducedHanks "+strProducedHanks);
+        String strProductionShift = info.getStringParameter("inpproductionorshift", null);
+	System.out.println("strProductionShift "+strProductionShift);
+        value = effeciency(strProducedHanks, strProductionShift);
+        fr = new DecimalFormat("##.##");
+	System.out.println("fr.format(value) "+fr.format(value));
+        info.addResult("inpefficiency", fr.format(value));
+
+
+    }
+
+    public BigDecimal calculatePercentageProduction(String strHanks, String deliverySpeedMpm, String strShiftTimeInMins) {
+        BigDecimal retVal = BigDecimal.ZERO;
+        BigDecimal deHanksPerHour = BigDecimalUtil.getPlainStrNumber(strHanks);
+        BigDecimal deDelSpeedMPM = BigDecimalUtil.getPlainStrNumber(deliverySpeedMpm);
+        BigDecimal deShiftTimeInMins = BigDecimalUtil.getPlainStrNumber(strShiftTimeInMins);
+	//((0.59/ hank) *speed)*(Shift Time mins /1000)
+        try {
+            retVal = new BigDecimal(0.59).divide(deHanksPerHour, 5, RoundingMode.HALF_UP);
+            retVal = retVal.multiply(deDelSpeedMPM);
+            retVal = retVal.multiply(deShiftTimeInMins.divide(new BigDecimal(1000)));
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
+        return retVal;
+    }
+
+    public BigDecimal effeciency(String strProducedHanks, String strProductionShift) {
+        BigDecimal deProducedHanks = BigDecimalUtil.getPlainStrNumber(strProducedHanks);
+        BigDecimal deProductionShift = BigDecimalUtil.getPlainStrNumber(strProductionShift);
+        BigDecimal retVal = BigDecimal.ZERO;
+        try {
+	    System.out.println("deProducedHanks "+deProducedHanks);
+	    System.out.println("deProductionShift "+deProductionShift);
+            retVal = deProducedHanks.divide(deProductionShift, RoundingMode.HALF_UP);
+            retVal = (retVal).multiply(new BigDecimal(100));
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return retVal;
+    }
+
+    public BigDecimal calculateMachineStoppageTime(String strShiftTimeMins, String strMachineWorkingHrs) {
+
+        strShiftTimeMins = getPlainStrNumber(strShiftTimeMins);
+        strMachineWorkingHrs = getPlainStrNumber(strMachineWorkingHrs);
+        BigDecimal retVal = BigDecimal.ZERO;
+        try {
+            
+            double shiftTme = new BigDecimal(strShiftTimeMins).doubleValue();
+            double machWorkHrs = new BigDecimal(strMachineWorkingHrs).doubleValue();
+            double machWorkMins = machWorkHrs*60;
+            retVal = new BigDecimal((shiftTme - machWorkMins));///60
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return retVal;
+    }
+
+    public String getPlainStrNumber(String value) {
+        return StringUtils.equalsIgnoreCase(value, "") ? "0" : value.replace(",", "");
+    }
+}

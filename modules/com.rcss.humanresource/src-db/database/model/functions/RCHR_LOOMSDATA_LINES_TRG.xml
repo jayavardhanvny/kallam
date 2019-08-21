@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+  <database name="FUNCTION RCHR_LOOMSDATA_LINES_TRG">
+    <function name="RCHR_LOOMSDATA_LINES_TRG" type="VARCHAR">
+      <body><![CDATA[Declare 
+	v_rchr_loomsdata_id VARCHAR(32);
+	v_old_rchr_inspectionsheet_id VARCHAR(32);
+	
+	v_actualmts NUMBER:=0;
+	
+  BEGIN
+	IF (TG_OP = 'INSERT' OR TG_OP = 'UPDATE') THEN
+	v_rchr_loomsdata_id:=NEW.rchr_loomsdata_id;
+	END IF;
+	IF (TG_OP = 'DELETE') THEN 
+	v_rchr_loomsdata_id:=OLD.rchr_loomsdata_id;
+	END IF;
+	SELECT sum(actualmts) into v_actualmts from rchr_loomsdata_lines where rchr_loomsdata_id=v_rchr_loomsdata_id;
+	if(v_actualmts>0) then 
+	else 
+		v_actualmts:=0;
+	end if;
+	UPDATE rchr_loomsdata SET totalpiecelength=v_actualmts WHERE rchr_loomsdata_id=v_rchr_loomsdata_id;
+	IF (TG_OP = 'INSERT' OR TG_OP = 'UPDATE' OR TG_OP = 'DELETE') THEN RETURN NEW; ELSE RETURN OLD; END IF;
+END RCHR_LOOMSDATA_LINES_TRG
+]]></body>
+    </function>
+  </database>

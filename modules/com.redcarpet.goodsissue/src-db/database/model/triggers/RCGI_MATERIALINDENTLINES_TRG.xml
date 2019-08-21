@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+  <database name="TRIGGER RCGI_MATERIALINDENTLINES_TRG">
+    <trigger name="RCGI_MATERIALINDENTLINES_TRG" table="RCGI_MATERIALINDENTLINES" fires="before" insert="true" update="true" delete="true" foreach="row">
+      <body><![CDATA[begin
+if(TG_OP='INSERT' OR TG_OP='UPDATE') THEN
+IF(:new.indentqty>:new.requiredqty) then 
+raise exception '%','@RCGI_YarnIndentError@';
+else if(:new.indentqty<=0) then 
+raise exception 'Indent Quantity Should be greater zero';
+else return new;
+end if;
+end if;
+ELSE IF(TG_OP='DELETE') THEN 
+IF((SELECT DOCSTATUS FROM RCGI_MATERIALINDENT WHERE RCGI_MATERIALINDENT_ID=:OLD.RCGI_MATERIALINDENT_ID)!='DR') THEN
+RAISE EXCEPTION 'DELETE NOT POSSIBLE AFTER INDENT COMPLETE/FINAL';
+else return old;
+END IF;
+end if;
+END IF;
+end
+]]></body>
+    </trigger>
+  </database>

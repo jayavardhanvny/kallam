@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<SqlClass name="RCGISelectAcctNewOneData" package="com.redcarpet.goodsissue.ad_process" accessModifier="public">
+
+     <SqlMethod name="getProductCreditAccountData" type="preparedStatement" return="multiple">
+	<Sql>
+	<![CDATA[         
+            select vc.c_validcombination_id, 
+                (select c_acctschema_id From c_acctschema where ad_client_id = ?  
+                and ad_org_id = '256551BD83DF49DB80BCE5691149CA0B' limit 1) as c_acctschema_id,
+                (select c_period_id from c_period 
+                where ad_client_id = ? and ad_org_id = ? 
+                and name = (select to_char(current_timestamp, 'Mon-YY')) limit 1) as c_period_id,
+                '25777105D5BB48C58D36FAA9EAE4C046' as as_table_id, 
+                gi.ad_client_id, gi.ad_org_id, org.c_currency_id as c_currency_id, gil.m_product_id, gil.orderedqty as qty, gil.m_locator_id as locatorid, gil.unitprice as unitprice,
+                'run.itemcost' as price, el.c_elementvalue_id, '' as p_cogs_acct, pact.p_asset_acct, el.value, 
+                    (gil.orderedqty * unitprice) as LineNetAmt
+            from rcgi_materialissue gi
+                left join rcgi_milines gil on gi.rcgi_materialissue_id = gil.rcgi_materialissue_id
+                inner join m_product p on gil.m_product_id = p.m_product_id
+                left join m_product_acct pact on p.m_product_id = pact.m_product_id
+                left join c_validcombination vc on pact.prasset = vc.c_validcombination_id
+                right join c_elementvalue el on vc.account_id = el.c_elementvalue_id
+                inner join ad_org org on gi.ad_org_id = org.ad_org_id
+            where gi.rcgi_materialissue_id = ?  
+        
+        ]]>
+	</Sql>
+        <Parameter name="client1"/>
+        <Parameter name="client2"/>
+        <Parameter name="org2"/>
+        <Parameter name="gi"/>
+     </SqlMethod>
+
+     <SqlMethod name="getProductDebitAccountData" type="preparedStatement" return="multiple">
+	<Sql>
+	<![CDATA[         
+            select vc.c_validcombination_id, 
+                (select c_acctschema_id From c_acctschema where ad_client_id = ?  
+                and ad_org_id = '256551BD83DF49DB80BCE5691149CA0B' limit 1) as c_acctschema_id,
+                (select c_period_id from c_period 
+                where ad_client_id = ? and ad_org_id = ?  
+                and name = (select to_char(current_timestamp, 'Mon-YY')) limit 1) as c_period_id,
+                '25777105D5BB48C58D36FAA9EAE4C046' as as_table_id, 
+                gi.ad_client_id, gi.ad_org_id, org.c_currency_id as c_currency_id, gil.m_product_id, gil.orderedqty as qty, gil.m_locator_id as locatorid,gil.unitprice as unitprice, 
+                'run.itemcost' as price, el.c_elementvalue_id, pact.p_cogs_acct, '' as p_asset_acct, el.value, 
+                    (gil.orderedqty * unitprice) as LineNetAmt
+            from rcgi_materialissue gi
+                left join rcgi_milines gil on gi.rcgi_materialissue_id = gil.rcgi_materialissue_id
+                inner join m_product p on gil.m_product_id = p.m_product_id
+                left join m_product_acct pact on p.m_product_id = pact.m_product_id
+                left join c_validcombination vc on pact.prwip = vc.c_validcombination_id
+                right join c_elementvalue el on vc.account_id = el.c_elementvalue_id
+                inner join ad_org org on gi.ad_org_id = org.ad_org_id
+            where gi.rcgi_materialissue_id = ? 
+        
+        ]]>
+	</Sql>
+        <Parameter name="client1"/>
+        <Parameter name="client2"/>
+        <Parameter name="org2"/>
+        <Parameter name="gi"/>
+     </SqlMethod>
+</SqlClass>

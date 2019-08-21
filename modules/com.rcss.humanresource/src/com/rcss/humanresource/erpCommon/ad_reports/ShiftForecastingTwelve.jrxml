@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ShiftForecastingTwelve" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<style name="Crosstab Data Text" hAlign="Center"/>
+	<style name="style1" mode="Opaque" backcolor="#FF9999" fill="Solid">
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$V{nameMeasure}.equals("W/F")]]></conditionExpression>
+			<style mode="Opaque" forecolor="#FF0000" backcolor="#9999FF" fill="Solid" markup="styled" isStrikeThrough="false">
+				<pen lineColor="#000000"/>
+			</style>
+		</conditionalStyle>
+	</style>
+	<parameter name="FromD" class="java.util.Date">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="toDate" class="java.util.Date">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="Shift_ID" class="java.lang.String">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="aux_shift" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[$P{Shift_ID}.equals("") ? " " : " AND t1.rcpr_shift_id = '" + $P{Shift_ID} + "'"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="Dept_ID" class="java.lang.String">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="aux_dept" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[$P{Dept_ID}.equals("") ? " " : " AND emp.RCHR_EMP_DEPT_ID = '" + $P{Dept_ID} + "'"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="SubDept_ID" class="java.lang.String">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="aux_subdept" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[$P{SubDept_ID}.equals("") ? " " : " AND emp.RCHR_SUBDEPARTMENT_ID = '" + $P{SubDept_ID} + "'"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="Designation_ID" class="java.lang.String">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="aux_designation" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[$P{Designation_ID}.equals("") ? " " : " AND emp.RCHR_DESIGNATION_ID = '" +$P{Designation_ID} + "'"]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[select
+d.date as day,
+
+
+(select documentno||'-'||employeename from rchr_employee where rchr_employee_id=t1.rchr_employee_id) as documentno,
+
+(CASE
+WHEN  d.date=t1.weekoffdate
+ THEN 'W/F'
+
+ELSE
+(select name from rcpr_shift where rcpr_shift_id=t1.rcpr_shift_id)
+ END) as name
+
+ from generate_series($P{FromD}, $P{toDate} ,'1 day'::interval) d
+ left join rchr_shifttwelve t1 on d between t1.fromdate and t1.todate
+ left join rchr_employee emp on emp.rchr_employee_id=t1.rchr_employee_id
+where
+1=1
+$P!{aux_dept}
+$P!{aux_designation}
+$P!{aux_shift}
+$P!{aux_subdept}
+
+order by d.date]]>
+	</queryString>
+	<field name="day" class="java.sql.Date"/>
+	<field name="documentno" class="java.lang.String"/>
+	<field name="name" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<summary>
+		<band height="322" splitType="Stretch">
+			<crosstab>
+				<reportElement x="0" y="0" width="802" height="322"/>
+				<rowGroup name="documentno" width="57">
+					<bucket>
+						<bucketExpression class="java.lang.String"><![CDATA[$F{documentno}]]></bucketExpression>
+					</bucket>
+					<crosstabRowHeader>
+						<cellContents backcolor="#F0F8FF" mode="Opaque">
+							<textField>
+								<reportElement style="Crosstab Data Text" mode="Opaque" x="0" y="0" width="57" height="25" backcolor="#CCCCFF"/>
+								<box>
+									<pen lineWidth="0.25"/>
+									<topPen lineWidth="0.25"/>
+									<leftPen lineWidth="0.25"/>
+									<bottomPen lineWidth="0.25"/>
+									<rightPen lineWidth="0.25"/>
+								</box>
+								<textElement verticalAlignment="Middle">
+									<font size="6"/>
+								</textElement>
+								<textFieldExpression class="java.lang.String"><![CDATA[$V{documentno}]]></textFieldExpression>
+							</textField>
+						</cellContents>
+					</crosstabRowHeader>
+					<crosstabTotalRowHeader>
+						<cellContents/>
+					</crosstabTotalRowHeader>
+				</rowGroup>
+				<columnGroup name="day" height="30">
+					<bucket>
+						<bucketExpression class="java.sql.Date"><![CDATA[$F{day}]]></bucketExpression>
+					</bucket>
+					<crosstabColumnHeader>
+						<cellContents backcolor="#F0F8FF" mode="Opaque">
+							<textField pattern="dd-MMM" isBlankWhenNull="true">
+								<reportElement style="Crosstab Data Text" mode="Opaque" x="0" y="0" width="22" height="30" backcolor="#99FFFF"/>
+								<box>
+									<pen lineWidth="0.25"/>
+									<topPen lineWidth="0.25"/>
+									<leftPen lineWidth="0.25"/>
+									<bottomPen lineWidth="0.25"/>
+									<rightPen lineWidth="0.25"/>
+								</box>
+								<textElement verticalAlignment="Middle">
+									<font size="6"/>
+								</textElement>
+								<textFieldExpression class="java.util.Date"><![CDATA[$V{day}]]></textFieldExpression>
+							</textField>
+						</cellContents>
+					</crosstabColumnHeader>
+					<crosstabTotalColumnHeader>
+						<cellContents/>
+					</crosstabTotalColumnHeader>
+				</columnGroup>
+				<measure name="nameMeasure" class="java.lang.String">
+					<measureExpression><![CDATA[$F{name}]]></measureExpression>
+				</measure>
+				<crosstabCell width="22" height="25">
+					<cellContents>
+						<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true">
+							<reportElement style="style1" mode="Opaque" x="0" y="0" width="22" height="25" backcolor="#F0F0F0"/>
+							<box>
+								<pen lineWidth="0.5" lineStyle="Solid"/>
+								<topPen lineWidth="0.5" lineStyle="Solid"/>
+								<leftPen lineWidth="0.5" lineStyle="Solid"/>
+								<bottomPen lineWidth="0.5" lineStyle="Solid"/>
+								<rightPen lineWidth="0.5" lineStyle="Solid"/>
+							</box>
+							<textElement textAlignment="Center" verticalAlignment="Middle">
+								<font size="6"/>
+							</textElement>
+							<textFieldExpression class="java.lang.String"><![CDATA[$V{nameMeasure}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell height="25" rowTotalGroup="documentno">
+					<cellContents backcolor="#BFE1FF" mode="Opaque">
+						<textField>
+							<reportElement style="Crosstab Data Text" x="0" y="0" width="50" height="25"/>
+							<textElement/>
+							<textFieldExpression class="java.lang.String"><![CDATA[$V{nameMeasure}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell width="50" columnTotalGroup="day">
+					<cellContents backcolor="#BFE1FF" mode="Opaque">
+						<textField>
+							<reportElement style="Crosstab Data Text" x="0" y="0" width="50" height="25"/>
+							<textElement/>
+							<textFieldExpression class="java.lang.String"><![CDATA[$V{nameMeasure}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell rowTotalGroup="documentno" columnTotalGroup="day">
+					<cellContents backcolor="#BFE1FF" mode="Opaque">
+						<textField>
+							<reportElement style="Crosstab Data Text" x="0" y="0" width="50" height="25"/>
+							<textElement/>
+							<textFieldExpression class="java.lang.String"><![CDATA[$V{nameMeasure}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+			</crosstab>
+		</band>
+	</summary>
+</jasperReport>

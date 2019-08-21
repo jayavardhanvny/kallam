@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+  <database name="TRIGGER RCHR_ATTENDANCE_DELETION">
+    <trigger name="RCHR_ATTENDANCE_DELETION" table="RCHR_ATTEND_TEMP" fires="before" insert="false" update="false" delete="true" foreach="row">
+      <body><![CDATA[declare 
+v_countvalue NUMBER;
+begin
+IF (DELETING) THEN
+select count(rchr_attend_temp_id) into v_countvalue from rchr_attend_temp where ispayroll='Y' and rchr_attend_temp_id = :OLD.rchr_attend_temp_id;
+
+ IF(v_countvalue>0) THEN
+ RAISE NO_DATA_FOUND;
+ END IF;
+ return old;
+ END if;
+ END RCHR_ATTENDANCE_DELETION
+]]></body>
+    </trigger>
+  </database>

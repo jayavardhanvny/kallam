@@ -1,0 +1,105 @@
+package com.redcarpet.production.ad_callouts;
+
+import java.math.RoundingMode;
+import com.redcarpet.production.data.RCPRShift;
+import java.math.BigDecimal;
+import java.text.DecimalFormat;
+import javax.servlet.ServletException;
+import org.apache.commons.lang.StringUtils;
+import org.openbravo.dal.service.OBDal;
+import org.openbravo.erpCommon.ad_callouts.SimpleCallout;
+
+public class RCPR_SpinningCalculation extends SimpleCallout {
+
+    @Override
+    protected void execute(CalloutInfo info) throws ServletException {
+
+        String strShiftId = info.getStringParameter("inprcprShiftId", null);
+        System.out.println("strShiftId " + strShiftId);
+        RCPRShift shift = OBDal.getInstance().get(RCPRShift.class, strShiftId);
+        System.out.println("shift.getShiftInMins " + shift.getShiftInMins());
+        info.addResult("inpshifttimeinmins", shift.getShiftInMins());
+
+        String strShfitTimeMins = info.getStringParameter("inpshifttimeinmins", null);
+        String strMachineWorkingHrs = info.getStringParameter("inpmachineworkinghours", null);
+        BigDecimal value = calculateMachineStoppageTime(strShfitTimeMins, strMachineWorkingHrs);
+        DecimalFormat fr = new DecimalFormat("##.##");
+        info.addResult("inpmachinestoppagemins", fr.format(value));
+
+        BigDecimal deNoOfSpindles = BigDecimalUtil.getPlainStrNumber(info.getStringParameter("inpnofspindle", null));
+        BigDecimal deWorkedSpindles = BigDecimalUtil.getPlainStrNumber(info.getStringParameter("inpworkedspindles", null));
+        String strResult = calculateStoppageSpindles(deNoOfSpindles, deWorkedSpindles);
+        info.addResult("inpstoppagespindles", strResult);
+
+        BigDecimal deShiftTime = BigDecimalUtil.getPlainStrNumber(info.getStringParameter("inpshifttimeinmins", null));
+        BigDecimal deMachineWrkHrs = BigDecimalUtil.getPlainStrNumber(info.getStringParameter("inpmachineworkinghours", null));
+        strResult = calculateWorkedSpindles(deNoOfSpindles, deShiftTime, deMachineWrkHrs);
+        info.addResult("inpworkedspindles", strResult);
+
+        BigDecimal dePrdHanks = BigDecimalUtil.getPlainStrNumber(info.getStringParameter("inpproducedhanks", null));
+        BigDecimal dePrdConst = BigDecimalUtil.getPlainStrNumber(info.getStringParameter("inpproductionconstant", null));
+        strResult = calculateProducedKgs(dePrdHanks, dePrdConst);
+        info.addResult("inpproducedkgs", strResult);
+
+        BigDecimal dePrdKgs = BigDecimalUtil.getPlainStrNumber(info.getStringParameter("inpproducedkgs", null));
+        BigDecimal deWrkSpindles = BigDecimalUtil.getPlainStrNumber(info.getStringParameter("inpworkedspindles", null));
+        strResult = calculateProducedGrams(dePrdKgs, deWrkSpindles);
+        info.addResult("inpproducedgrams", strResult);
+
+        strResult = calculateMachineWiseUtilization(deWrkSpindles, deNoOfSpindles);
+        
+    }
+
+    private String calculateStoppageSpindles(BigDecimal deNoOfSpindles, BigDecimal deWorkedSpindles) {
+        BigDecimal res = deNoOfSpindles.subtract(deWorkedSpindles);
+        String strResult = BigDecimalUtil.getDecimalPrecisionValue(res.doubleValue());
+        return strResult;
+    }
+
+    private String calculateWorkedSpindles(BigDecimal deNoOfSpindles, BigDecimal deShiftTime, BigDecimal deMachineWrkHrs) {
+        BigDecimal temp = deNoOfSpindles.divide(deShiftTime);
+        temp = temp.multiply(deMachineWrkHrs);
+        String strResult = BigDecimalUtil.getDecimalPrecisionValue(temp.doubleValue());
+        return strResult;
+    }
+
+    private String calculateProducedKgs(BigDecimal dePrdHanks, BigDecimal dePrdConst) {
+        BigDecimal temp = dePrdHanks.multiply(dePrdConst);
+        String strResult = BigDecimalUtil.getDecimalPrecisionValue(temp.doubleValue());
+        return strResult;
+    }
+
+    private String calculateProducedGrams(BigDecimal dePrdKgs, BigDecimal deWrkSpindles) {
+        BigDecimal temp = dePrdKgs.multiply(new BigDecimal(1000));
+        temp = temp.divide(deWrkSpindles, 5, RoundingMode.HALF_UP);
+        String strResult = BigDecimalUtil.getDecimalPrecisionValue(temp.doubleValue());
+        return strResult;
+    }
+
+    public BigDecimal calculateMachineStoppageTime(String strShiftTimeMins, String strMachineWorkingHrs) {
+
+        strShiftTimeMins = getPlainStrNumber(strShiftTimeMins);
+        strMachineWorkingHrs = getPlainStrNumber(strMachineWorkingHrs);
+        BigDecimal retVal = BigDecimal.ZERO;
+        try {
+            double shiftTme = new BigDecimal(strShiftTimeMins).doubleValue();
+            double machWorkHrs = new BigDecimal(strMachineWorkingHrs).doubleValue();
+            double machWorkMins = machWorkHrs*60;
+            retVal = new BigDecimal((shiftTme - machWorkMins));///60
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return retVal;
+    }
+
+    public String getPlainStrNumber(String value) {
+        return StringUtils.equalsIgnoreCase(value, "") ? "0" : value.replace(",", "");
+    }
+
+    private String calculateMachineWiseUtilization(BigDecimal deWrkSpindles, BigDecimal deNoOfSpindles) {
+        BigDecimal temp = deWrkSpindles.divide(deNoOfSpindles, RoundingMode.HALF_UP);
+        temp = temp.divide(new BigDecimal(100), RoundingMode.HALF_UP);
+        String strResult = BigDecimalUtil.getDecimalPrecisionValue(temp.doubleValue());
+        return strResult;
+    }
+}

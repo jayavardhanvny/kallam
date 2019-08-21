@@ -1,0 +1,6 @@
+package com.redcarpet.payroll.ad_events;
+
+public class RCPL_LateAmountCalc {
+
+    
+}

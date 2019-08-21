@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+  <database name="FUNCTION RCPL_PPMANUAL_SAME">
+    <function name="RCPL_PPMANUAL_SAME" type="VARCHAR">
+      <body><![CDATA[declare 
+ Declare 
+       v_count NUMBER;
+       v_counttwo NUMBER;
+       v_a_a1new NUMBER;
+       v_a_a1old NUMBER;
+       v_Message VARCHAR(2000):='';
+     
+begin
+IF (TG_OP = 'INSERT' OR TG_OP = 'UPDATE') THEN
+
+--select orderquantity into v_ordrqty from rchr_qualitystandard where rchr_qualitystandard_id=OLD.rchr_qualitystandard_id;
+--select remainingquantity into v_remqty from rchr_qualitystandard where rchr_qualitystandard_id=OLD.rchr_qualitystandard_id;
+
+	select count(*) into v_count from rchr_attend_temp where present='Y' and isovertime='N' AND rchr_employee_id=new.rchr_employee_id and attdate = new.attddate;
+	select count(*) into v_counttwo from rcpl_emppprocessmanual where rchr_employee_id=new.rchr_employee_id and attddate = new.attddate;
+	IF(v_count>0) then 
+		--RAISE NO_DATA_FOUND;
+        END IF;
+	IF(v_counttwo>0) then 
+		--RAISE NO_DATA_FOUND;
+        END IF;
+ end if;
+ IF TG_OP = 'DELETE' THEN RETURN OLD; ELSE RETURN NEW; END IF; 
+ 
+ end
+]]></body>
+    </function>
+  </database>

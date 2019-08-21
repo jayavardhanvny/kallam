@@ -1,0 +1,13 @@
+﻿ALTER TABLE m_transaction ADD COLUMN rcpr_productionrun_id character varying(32);
+ALTER TABLE m_transaction ADD COLUMN rcpr_prproduct_id character varying(32);
+
+ALTER TABLE m_transaction
+  ADD CONSTRAINT m_transaction_rcprl FOREIGN KEY (rcpr_prproduct_id)
+      REFERENCES rcpr_prproduct (rcpr_prproduct_id) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION;
+
+ALTER TABLE m_transaction
+  ADD CONSTRAINT m_transaction_rcpr FOREIGN KEY (rcpr_productionrun_id)
+      REFERENCES rcpr_productionrun (rcpr_productionrun_id) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION;
+

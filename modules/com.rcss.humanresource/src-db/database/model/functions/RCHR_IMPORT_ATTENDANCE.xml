@@ -1,0 +1,97 @@
+<?xml version="1.0"?>
+  <database name="FUNCTION RCHR_IMPORT_ATTENDANCE">
+    <function name="RCHR_IMPORT_ATTENDANCE" type="NULL">
+      <parameter name="p_pinstance_id" type="VARCHAR" mode="in">
+        <default/>
+      </parameter>
+      <body><![CDATA[Cur_Parameter RECORD;
+  v_RCHR_Attend_Temp_Id character varying(32);
+  v_attendance_date DATE;
+  v_RCHR_Attendance_Id character varying(32);
+  v_ispresent character(1);
+  v_RCHR_Employee_Id character varying(32);
+  v_islate character(1);
+  v_iswo character(1);
+  v_issca character(1);
+  v_isovertime character(1);
+  v_isnowork character(1);
+  v_isnightshift character(1);
+  v_RCPR_Shift_Id character varying(32);
+  v_latetime NUMBER;
+
+  v_punchin DATE;
+  v_punchout DATE;
+  v_duration NUMBER:=0;
+  v_ad_client_id character varying(32);
+  v_ad_org_id character varying(32);
+  v_adcount NUMBER:=0;
+  v_Message character varying(500):='';
+
+  BEGIN --BODY
+
+    FOR Cur_Parameter IN
+      ( SELECT rchr_attend_temp_id, ad_client_id, ad_org_id, attdate, present, stremployee, islate, 
+        isweeklyoff, isshiftchangeabsent, 
+        isovertime, nowork, nightshift, strshift, latetime, punchin, punchout, duration
+	FROM rchr_attend_temp WHERE isvalidated='Y' AND isimported='N' 
+      )
+    LOOP
+      v_RCHR_Attend_Temp_Id:=Cur_Parameter.rchr_attend_temp_id;
+      v_attendance_date:= Cur_Parameter.attdate;
+      v_ispresent:=Cur_Parameter.present;
+      v_RCHR_Employee_Id:=Cur_Parameter.stremployee;
+      v_islate:=Cur_Parameter.islate;
+      v_iswo:=Cur_Parameter.isweeklyoff;
+      v_issca:=Cur_Parameter.isshiftchangeabsent;
+      v_isovertime:=Cur_Parameter.isovertime;
+      v_isnowork:=Cur_Parameter.nowork;
+      v_isnightshift:=Cur_Parameter.nightshift;
+      v_RCPR_Shift_Id:=Cur_Parameter.strshift;
+      v_latetime:=Cur_Parameter.latetime;
+      v_punchin:=Cur_Parameter.punchin;
+      v_punchout:=Cur_Parameter.punchout;
+      v_duration:=Cur_Parameter.duration;
+      v_ad_client_id:=Cur_Parameter.ad_client_id;
+      v_ad_org_id:=Cur_Parameter.ad_org_id;
+
+      --select rchr_attendance_id into v_RCHR_Attendance_Id from rchr_attendance where fromdate = v_attendance_date limit 1;
+      select count(*) into v_adcount from rchr_attendance where fromdate = v_attendance_date;
+      IF (v_adcount =0 ) THEN
+        select get_uuid() into v_RCHR_Attendance_Id;
+
+	INSERT INTO rchr_attendance(
+            rchr_attendance_id, ad_client_id, ad_org_id, createdby, updatedby, fromdate)
+        VALUES (v_RCHR_Attendance_Id, v_ad_client_id, v_ad_org_id, '100', '100', v_attendance_date);
+
+	INSERT INTO rchr_attend_line(
+		rchr_attend_line_id, ad_client_id, ad_org_id, createdby, updatedby, rchr_attendance_id, 
+		punchin, punchout, duration, present, rchr_employee_id, islate, isweeklyoff, 
+		isshiftchangeabsent, isovertime, nowork, nightshift, rcpr_shift_id, latetime)
+	    VALUES (
+		get_uuid(), v_ad_client_id, v_ad_org_id, '100', '100', v_RCHR_Attendance_Id,
+		v_punchin, v_punchout, v_duration, v_ispresent, v_RCHR_Employee_Id, v_islate, v_iswo,
+		v_issca, v_isovertime, v_isnowork, v_isnightshift, v_RCPR_Shift_Id, v_latetime);
+	UPDATE rchr_attend_temp SET isimported='Y' WHERE rchr_attend_temp_id =v_RCHR_Attend_Temp_Id;
+	UPDATE rchr_attendance SET process='Y' WHERE rchr_attendance_id = v_RCHR_Attendance_Id;
+      ELSE 
+       -- INSERT LINES USING ID	
+        INSERT INTO rchr_attend_line(
+		rchr_attend_line_id, ad_client_id, ad_org_id, createdby, updatedby, rchr_attendance_id, 
+		punchin, punchout, duration, present, rchr_employee_id, islate, isweeklyoff, 
+		isshiftchangeabsent, isovertime, nowork, nightshift, rcpr_shift_id, latetime)
+	    VALUES (
+		get_uuid(), v_ad_client_id, v_ad_org_id, '100', '100', v_RCHR_Attendance_Id,
+		v_punchin, v_punchout, v_duration, v_ispresent, v_RCHR_Employee_Id, v_islate, v_iswo,
+		v_issca, v_isovertime, v_isnowork, v_isnightshift, v_RCPR_Shift_Id, v_latetime);
+	UPDATE rchr_attend_temp SET isimported='Y' WHERE rchr_attend_temp_id =v_RCHR_Attend_Temp_Id;
+      END IF;
+      DELETE FROM rchr_attend_temp WHERE isimported='Y';
+    END LOOP;
+    v_Message:='@Processed@';
+    AD_UPDATE_PINSTANCE(p_PInstance_ID, NULL, 'N', 1, v_Message) ;
+
+    RETURN;
+END RCHR_IMPORT_ATTENDANCE
+]]></body>
+    </function>
+  </database>
