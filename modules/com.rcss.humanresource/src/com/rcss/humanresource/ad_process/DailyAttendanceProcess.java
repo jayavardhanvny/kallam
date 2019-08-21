@@ -142,7 +142,7 @@ public class DailyAttendanceProcess {
                     e.printStackTrace();
                     logger.error("Error in Assigning the Shift");
                 }
-                RCPRShift shift = OBDal.getInstance().get(RCPRShift.class, shiftId);
+                //RCPRShift shift = OBDal.getInstance().get(RCPRShift.class, shiftId);
 		logger.info("Employee Id "+emp.getDocumentNo());
                 RCPRShift shift = OBDal.getInstance().get(RCPRShift.class, shiftId);
                 logger.info("Shift : "+ shift);
