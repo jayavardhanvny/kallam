@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SqlClass id="class" name="Employees12715E0251074E48AFF2332DC7EA2119Data" package="org.openbravo.erpWindows.com.rcss.humanresource.SalariesApproval">
+  <SqlClassComment>WAD Generated class</SqlClassComment>
+
+  <SqlMethod name="selectEdit" type="preparedStatement" return="multiple">
+    <SqlMethodComment>Select for edit</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT to_char(Rchr_Banksalpaymentsappln.Created, ?) as created, 
+        (SELECT NAME FROM AD_USER u WHERE AD_USER_ID = Rchr_Banksalpaymentsappln.CreatedBy) as CreatedByR, 
+        to_char(Rchr_Banksalpaymentsappln.Updated, ?) as updated, 
+        to_char(Rchr_Banksalpaymentsappln.Updated, 'YYYYMMDDHH24MISS') as Updated_Time_Stamp,  
+        Rchr_Banksalpaymentsappln.UpdatedBy, 
+        (SELECT NAME FROM AD_USER u WHERE AD_USER_ID = Rchr_Banksalpaymentsappln.UpdatedBy) as UpdatedByR,
+        Rchr_Banksalpaymentsappln.AD_Org_ID, 
+(CASE WHEN Rchr_Banksalpaymentsappln.AD_Org_ID IS NULL THEN '' ELSE  (COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table1.Name), ''))),'') ) END) AS AD_Org_IDR, 
+COALESCE(Rchr_Banksalpaymentsappln.Isactive, 'N') AS Isactive, 
+Rchr_Banksalpaymentsappln.Rchr_Banksalpaymentsapp_ID, 
+Rchr_Banksalpaymentsappln.Rchr_Banksalpaymentsol_ID, 
+Rchr_Banksalpaymentsappln.Rchr_Banksalpaymentsln_ID, 
+Rchr_Banksalpaymentsappln.Rchr_Exbanksalpaymentsemp_ID, 
+Rchr_Banksalpaymentsappln.Documentno, 
+Rchr_Banksalpaymentsappln.Status, 
+(CASE WHEN Rchr_Banksalpaymentsappln.Status IS NULL THEN '' ELSE  ( COALESCE(TO_CHAR(list1.name),'') ) END) AS StatusR, 
+Rchr_Banksalpaymentsappln.Salalry, 
+Rchr_Banksalpaymentsappln.Rcpl_Emppayrollprocess_ID, 
+(CASE WHEN Rchr_Banksalpaymentsappln.Rcpl_Emppayrollprocess_ID IS NULL THEN '' ELSE  (COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table3.Punchno), ''))),'')  || ' - ' || COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table3.Employeename), ''))),'')  || ' - ' || COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table2.Pendingamt), ''))),'') ) END) AS Rcpl_Emppayrollprocess_IDR, 
+Rchr_Banksalpaymentsappln.Rchr_Employee_ID, 
+(CASE WHEN Rchr_Banksalpaymentsappln.Rchr_Employee_ID IS NULL THEN '' ELSE  (COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table4.Punchno), ''))),'')  || ' - ' || COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table4.Employeename), ''))),'') ) END) AS Rchr_Employee_IDR, 
+Rchr_Banksalpaymentsappln.Process, 
+Rchr_Banksalpaymentsappln.Accountno, 
+Rchr_Banksalpaymentsappln.Ifsccode, 
+Rchr_Banksalpaymentsappln.Rchr_Bankmaster_ID, 
+(CASE WHEN Rchr_Banksalpaymentsappln.Rchr_Bankmaster_ID IS NULL THEN '' ELSE  (COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table5.Name), ''))),'') ) END) AS Rchr_Bankmaster_IDR, 
+Rchr_Banksalpaymentsappln.Accountname, 
+Rchr_Banksalpaymentsappln.AD_Client_ID, 
+Rchr_Banksalpaymentsappln.Rchr_Banksalpaymentsappln_ID, 
+ 
+        ? AS LANGUAGE 
+        FROM Rchr_Banksalpaymentsappln left join (select AD_Org_ID, Name from AD_Org) table1 on (Rchr_Banksalpaymentsappln.AD_Org_ID = table1.AD_Org_ID) left join ad_ref_list_v list1 on (Rchr_Banksalpaymentsappln.Status = list1.value and list1.ad_reference_id = '131' and list1.ad_language = ?)  left join (select Rcpl_Emppayrollprocess_ID, Rchr_Employee_ID, Pendingamt from Rcpl_Emppayrollprocess) table2 on (Rchr_Banksalpaymentsappln.Rcpl_Emppayrollprocess_ID = table2.Rcpl_Emppayrollprocess_ID) left join (select Rchr_Employee_ID, Punchno, Employeename from Rchr_Employee) table3 on (table2.Rchr_Employee_ID = table3.Rchr_Employee_ID) left join (select Rchr_Employee_ID, Punchno, Employeename from Rchr_Employee) table4 on (Rchr_Banksalpaymentsappln.Rchr_Employee_ID = table4.Rchr_Employee_ID) left join (select Rchr_Bankmaster_ID, Name from Rchr_Bankmaster) table5 on (Rchr_Banksalpaymentsappln.Rchr_Bankmaster_ID = table5.Rchr_Bankmaster_ID)
+        WHERE 2=2 
+
+        AND 1=1 
+        AND Rchr_Banksalpaymentsappln.Rchr_Banksalpaymentsappln_ID = ? 
+        AND Rchr_Banksalpaymentsappln.AD_Client_ID IN ('1') 
+           AND Rchr_Banksalpaymentsappln.AD_Org_ID IN ('1') 
+    ]]></Sql>
+    <Parameter name="dateTimeFormat"></Parameter>
+    <Parameter name="dateTimeFormat"></Parameter>
+    
+    <Parameter name="paramLanguage"></Parameter>
+<Parameter name="paramLanguage"/>
+
+    <Parameter name="rchrBanksalpaymentsappId" optional="true" after="AND 1=1 " id="paramKeyParent"> AND Rchr_Banksalpaymentsappln.Rchr_Banksalpaymentsapp_ID = ? </Parameter>
+    <Parameter name="key"></Parameter>
+        <Parameter name="adUserClient" type="replace" optional="true" after="Rchr_Banksalpaymentsappln.AD_Client_ID IN (" text="'1'"/>
+        <Parameter name="adOrgClient" type="replace" optional="true" after="Rchr_Banksalpaymentsappln.AD_Org_ID IN (" text="'1'"/>
+
+    <Field name="adUserClient" value="void"></Field>
+    <Field name="adOrgClient" value="void"></Field>
+    <Field name="createdby" value="void"></Field>
+    
+    <Field name="trBgcolor" value="void"></Field>
+    <Field name="totalCount" value="void"></Field>
+    <Field name="dateTimeFormat" value=""></Field>
+  </SqlMethod>
+  
+  
+
+  <SqlMethod name="set" type="constant" return="multiple">
+      <SqlMethodComment>Create a registry</SqlMethodComment>
+      <Sql></Sql>
+    <Parameter name="rchrBanksalpaymentsappId" id="paramKeyParent"></Parameter>
+<Parameter name="updatedby"></Parameter><Parameter name="updatedbyr"></Parameter><Parameter name="rchrBankmasterId"></Parameter><Parameter name="ifsccode"></Parameter><Parameter name="adOrgId"></Parameter><Parameter name="accountname"></Parameter><Parameter name="salalry"></Parameter><Parameter name="adClientId"></Parameter><Parameter name="isactive"></Parameter><Parameter name="rchrExbanksalpaymentsempId"></Parameter><Parameter name="rchrEmployeeId"></Parameter><Parameter name="accountno"></Parameter><Parameter name="documentno"></Parameter><Parameter name="status"></Parameter><Parameter name="createdby"></Parameter><Parameter name="createdbyr"></Parameter><Parameter name="rchrBanksalpaymentsolId"></Parameter><Parameter name="rchrBanksalpaymentslnId"></Parameter><Parameter name="rchrBanksalpaymentsapplnId"></Parameter><Parameter name="rcplEmppayrollprocessId"></Parameter><Parameter name="process"></Parameter>
+   </SqlMethod>
+
+
+
+
+
+
+   <SqlMethod name="selectDef02CDB190DC164EBF9B78485F49219995_0" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>Select for auxiliar field</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT  ( COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table2.Name), ''))), '') ) as Updatedby FROM AD_User left join (select AD_User_ID, Name from AD_User) table2 on (AD_User.AD_User_ID = table2.AD_User_ID) WHERE AD_User.isActive='Y' AND AD_User.AD_User_ID = ?  
+    ]]></Sql>
+<Parameter name="UpdatedbyR"/>
+  </SqlMethod>
+
+   <SqlMethod name="selectDef99838D5D596544EFB083EC4562CA1FC1_1" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>Select for auxiliar field</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT  ( COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table2.Name), ''))), '') ) as Createdby FROM AD_User left join (select AD_User_ID, Name from AD_User) table2 on (AD_User.AD_User_ID = table2.AD_User_ID) WHERE AD_User.isActive='Y' AND AD_User.AD_User_ID = ?  
+    ]]></Sql>
+<Parameter name="CreatedbyR"/>
+  </SqlMethod>
+
+
+
+  <SqlMethod name="selectParentID" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>return the parent ID</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT Rchr_Banksalpaymentsappln.Rchr_Banksalpaymentsapp_ID AS NAME
+        FROM Rchr_Banksalpaymentsappln
+        WHERE Rchr_Banksalpaymentsappln.Rchr_Banksalpaymentsappln_ID = ?
+    ]]></Sql>
+    <Parameter name="key"></Parameter>
+  </SqlMethod>
+
+   <SqlMethod name="selectParent" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>Select for parent field</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT (TO_CHAR(COALESCE(TO_CHAR(table2.Monthname), '')) || ' - ' || TO_CHAR(COALESCE(TO_CHAR(table2.Type), '')) || ' - ' || TO_CHAR(COALESCE(TO_CHAR(table1.Chequeno), '')) || ' - ' || TO_CHAR(COALESCE(TO_CHAR(table1.Bankname), ''))) AS NAME FROM Rchr_Banksalpaymentsapp left join (select Rchr_Banksalpaymentsapp_ID, Rchr_Attd_Process_ID, Chequeno, Bankname from Rchr_Banksalpaymentsapp) table1 on (Rchr_Banksalpaymentsapp.Rchr_Banksalpaymentsapp_ID = table1.Rchr_Banksalpaymentsapp_ID) left join (select Rchr_Attd_Process_ID, Monthname, Type from Rchr_Attd_Process) table2 on (table1.Rchr_Attd_Process_ID = table2.Rchr_Attd_Process_ID) WHERE Rchr_Banksalpaymentsapp.Rchr_Banksalpaymentsapp_ID = ?  
+    ]]></Sql>
+<Parameter name="rchrBanksalpaymentsappId"/>
+
+  </SqlMethod>
+
+
+
+
+   <SqlMethod name="selectParentTrl" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>Select for parent field</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT (TO_CHAR(COALESCE(TO_CHAR(table2.Monthname), '')) || ' - ' || TO_CHAR(COALESCE(TO_CHAR(table2.Type), '')) || ' - ' || TO_CHAR(COALESCE(TO_CHAR(table1.Chequeno), '')) || ' - ' || TO_CHAR(COALESCE(TO_CHAR(table1.Bankname), ''))) AS NAME FROM Rchr_Banksalpaymentsapp left join (select Rchr_Banksalpaymentsapp_ID, Rchr_Attd_Process_ID, Chequeno, Bankname from Rchr_Banksalpaymentsapp) table1 on (Rchr_Banksalpaymentsapp.Rchr_Banksalpaymentsapp_ID = table1.Rchr_Banksalpaymentsapp_ID) left join (select Rchr_Attd_Process_ID, Monthname, Type from Rchr_Attd_Process) table2 on (table1.Rchr_Attd_Process_ID = table2.Rchr_Attd_Process_ID) WHERE Rchr_Banksalpaymentsapp.Rchr_Banksalpaymentsapp_ID = ?  
+    ]]></Sql>
+<Parameter name="rchrBanksalpaymentsappId"/>
+
+  </SqlMethod>
+
+
+
+
+
+
+
+
+  <SqlMethod name="update" type="preparedStatement" return="rowCount" static="false" connection="true">
+    <Sql><![CDATA[
+        UPDATE Rchr_Banksalpaymentsappln
+        SET AD_Org_ID = (?) , Isactive = (?) , Rchr_Banksalpaymentsapp_ID = (?) , Rchr_Banksalpaymentsol_ID = (?) , Rchr_Banksalpaymentsln_ID = (?) , Rchr_Exbanksalpaymentsemp_ID = (?) , Documentno = (?) , Status = (?) , Salalry = TO_NUMBER(?) , Rcpl_Emppayrollprocess_ID = (?) , Rchr_Employee_ID = (?) , Process = (?) , Accountno = (?) , Ifsccode = (?) , Rchr_Bankmaster_ID = (?) , Accountname = (?) , AD_Client_ID = (?) , Rchr_Banksalpaymentsappln_ID = (?) , updated = now(), updatedby = ? 
+        WHERE Rchr_Banksalpaymentsappln.Rchr_Banksalpaymentsappln_ID = ? 
+                 AND Rchr_Banksalpaymentsappln.Rchr_Banksalpaymentsapp_ID = ? 
+        AND Rchr_Banksalpaymentsappln.AD_Client_ID IN ('1') 
+        AND Rchr_Banksalpaymentsappln.AD_Org_ID IN ('1') 
+    ]]></Sql>
+    <Parameter name="adOrgId"></Parameter> <Parameter name="isactive"></Parameter> <Parameter name="rchrBanksalpaymentsappId"></Parameter> <Parameter name="rchrBanksalpaymentsolId"></Parameter> <Parameter name="rchrBanksalpaymentslnId"></Parameter> <Parameter name="rchrExbanksalpaymentsempId"></Parameter> <Parameter name="documentno"></Parameter> <Parameter name="status"></Parameter> <Parameter name="salalry"></Parameter> <Parameter name="rcplEmppayrollprocessId"></Parameter> <Parameter name="rchrEmployeeId"></Parameter> <Parameter name="process"></Parameter> <Parameter name="accountno"></Parameter> <Parameter name="ifsccode"></Parameter> <Parameter name="rchrBankmasterId"></Parameter> <Parameter name="accountname"></Parameter> <Parameter name="adClientId"></Parameter> <Parameter name="rchrBanksalpaymentsapplnId"></Parameter> 
+    <Parameter name="updatedby"></Parameter>
+    <Parameter id="paramKey" name="rchrBanksalpaymentsapplnId"></Parameter>
+    
+    <Parameter name="rchrBanksalpaymentsappId" id="paramKeyParent"></Parameter>
+        <Parameter name="adUserClient" type="replace" optional="true" after="Rchr_Banksalpaymentsappln.AD_Client_ID IN (" text="'1'"/>
+        <Parameter name="adOrgClient" type="replace" optional="true" after="Rchr_Banksalpaymentsappln.AD_Org_ID IN (" text="'1'"/>
+  </SqlMethod>
+
+  <SqlMethod name="insert" type="preparedStatement" return="rowCount" static="false" connection="true">
+    <Sql><![CDATA[
+        INSERT INTO Rchr_Banksalpaymentsappln 
+        (AD_Org_ID, Isactive, Rchr_Banksalpaymentsapp_ID, Rchr_Banksalpaymentsol_ID, Rchr_Banksalpaymentsln_ID, Rchr_Exbanksalpaymentsemp_ID, Documentno, Status, Salalry, Rcpl_Emppayrollprocess_ID, Rchr_Employee_ID, Process, Accountno, Ifsccode, Rchr_Bankmaster_ID, Accountname, AD_Client_ID, Rchr_Banksalpaymentsappln_ID, created, createdby, updated, updatedBy)
+        VALUES ((?), (?), (?), (?), (?), (?), (?), (?), TO_NUMBER(?), (?), (?), (?), (?), (?), (?), (?), (?), (?), now(), ?, now(), ?)
+    ]]></Sql>
+    <Parameter name="adOrgId"></Parameter> <Parameter name="isactive"></Parameter> <Parameter name="rchrBanksalpaymentsappId"></Parameter> <Parameter name="rchrBanksalpaymentsolId"></Parameter> <Parameter name="rchrBanksalpaymentslnId"></Parameter> <Parameter name="rchrExbanksalpaymentsempId"></Parameter> <Parameter name="documentno"></Parameter> <Parameter name="status"></Parameter> <Parameter name="salalry"></Parameter> <Parameter name="rcplEmppayrollprocessId"></Parameter> <Parameter name="rchrEmployeeId"></Parameter> <Parameter name="process"></Parameter> <Parameter name="accountno"></Parameter> <Parameter name="ifsccode"></Parameter> <Parameter name="rchrBankmasterId"></Parameter> <Parameter name="accountname"></Parameter> <Parameter name="adClientId"></Parameter> <Parameter name="rchrBanksalpaymentsapplnId"></Parameter> 
+    <Parameter name="createdby"></Parameter>
+    <Parameter name="updatedby"></Parameter>
+  </SqlMethod>
+
+  <SqlMethod name="delete" type="preparedStatement" return="rowCount">
+    <Sql><![CDATA[
+        DELETE FROM Rchr_Banksalpaymentsappln
+        WHERE Rchr_Banksalpaymentsappln.Rchr_Banksalpaymentsappln_ID = ? 
+                 AND Rchr_Banksalpaymentsappln.Rchr_Banksalpaymentsapp_ID = ? 
+        AND Rchr_Banksalpaymentsappln.AD_Client_ID IN ('1') 
+        AND Rchr_Banksalpaymentsappln.AD_Org_ID IN ('1') 
+    ]]></Sql>
+    <Parameter name="param1"></Parameter>
+        <Parameter name="rchrBanksalpaymentsappId" id="paramKeyParent"></Parameter>
+        <Parameter name="adUserClient" type="replace" optional="true" after="Rchr_Banksalpaymentsappln.AD_Client_ID IN (" text="'1'"/>
+        <Parameter name="adOrgClient" type="replace" optional="true" after="Rchr_Banksalpaymentsappln.AD_Org_ID IN (" text="'1'"/>
+  </SqlMethod>
+
+  <SqlMethod name="selectOrg" type="preparedStatement" return="string">
+    <SqlMethodComment>Select for relation</SqlMethodComment>
+    <Sql><![CDATA[ 
+        SELECT AD_ORG_ID
+          FROM Rchr_Banksalpaymentsappln
+         WHERE Rchr_Banksalpaymentsappln.Rchr_Banksalpaymentsappln_ID = ? 
+    ]]></Sql>
+    <Parameter name="id"></Parameter>
+  </SqlMethod>
+  
+  <SqlMethod name="getCurrentDBTimestamp" type="preparedStatement" return="string">
+    <Sql><![CDATA[ 
+        SELECT to_char(Updated, 'YYYYMMDDHH24MISS') as Updated_Time_Stamp
+          FROM Rchr_Banksalpaymentsappln
+         WHERE Rchr_Banksalpaymentsappln.Rchr_Banksalpaymentsappln_ID = ? 
+    ]]></Sql>
+    <Parameter name="id"></Parameter>
+  </SqlMethod>
+</SqlClass>

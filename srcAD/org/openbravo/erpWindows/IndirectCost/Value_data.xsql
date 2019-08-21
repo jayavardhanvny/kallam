@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SqlClass id="class" name="ValueData" package="org.openbravo.erpWindows.IndirectCost">
+  <SqlClassComment>WAD Generated class</SqlClassComment>
+
+  <SqlMethod name="selectEdit" type="preparedStatement" return="multiple">
+    <SqlMethodComment>Select for edit</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT to_char(MA_Indirect_Cost_Value.Created, ?) as created, 
+        (SELECT NAME FROM AD_USER u WHERE AD_USER_ID = MA_Indirect_Cost_Value.CreatedBy) as CreatedByR, 
+        to_char(MA_Indirect_Cost_Value.Updated, ?) as updated, 
+        to_char(MA_Indirect_Cost_Value.Updated, 'YYYYMMDDHH24MISS') as Updated_Time_Stamp,  
+        MA_Indirect_Cost_Value.UpdatedBy, 
+        (SELECT NAME FROM AD_USER u WHERE AD_USER_ID = MA_Indirect_Cost_Value.UpdatedBy) as UpdatedByR,
+        MA_Indirect_Cost_Value.DateFrom, 
+MA_Indirect_Cost_Value.DateTo, 
+MA_Indirect_Cost_Value.Cost_Uom, 
+(CASE WHEN MA_Indirect_Cost_Value.Cost_Uom IS NULL THEN '' ELSE  ( COALESCE(TO_CHAR(list1.name),'') ) END) AS Cost_UomR, 
+MA_Indirect_Cost_Value.Cost, 
+MA_Indirect_Cost_Value.Total, 
+MA_Indirect_Cost_Value.Calculate, 
+COALESCE(MA_Indirect_Cost_Value.Calculated, 'N') AS Calculated, 
+MA_Indirect_Cost_Value.MA_Indirect_Cost_Value_ID, 
+MA_Indirect_Cost_Value.AD_Org_ID, 
+COALESCE(MA_Indirect_Cost_Value.IsActive, 'N') AS IsActive, 
+MA_Indirect_Cost_Value.MA_Indirect_Cost_ID, 
+MA_Indirect_Cost_Value.AD_Client_ID, 
+ 
+        ? AS LANGUAGE 
+        FROM MA_Indirect_Cost_Value left join ad_ref_list_v list1 on (MA_Indirect_Cost_Value.Cost_Uom = list1.value and list1.ad_reference_id = '800088' and list1.ad_language = ?) 
+        WHERE 2=2 
+
+        AND 1=1 
+        AND MA_Indirect_Cost_Value.MA_Indirect_Cost_Value_ID = ? 
+        AND MA_Indirect_Cost_Value.AD_Client_ID IN ('1') 
+           AND MA_Indirect_Cost_Value.AD_Org_ID IN ('1') 
+    ]]></Sql>
+    <Parameter name="dateTimeFormat"></Parameter>
+    <Parameter name="dateTimeFormat"></Parameter>
+    
+    <Parameter name="paramLanguage"></Parameter>
+<Parameter name="paramLanguage"/>
+
+    <Parameter name="maIndirectCostId" optional="true" after="AND 1=1 " id="paramKeyParent"> AND MA_Indirect_Cost_Value.MA_Indirect_Cost_ID = ? </Parameter>
+    <Parameter name="key"></Parameter>
+        <Parameter name="adUserClient" type="replace" optional="true" after="MA_Indirect_Cost_Value.AD_Client_ID IN (" text="'1'"/>
+        <Parameter name="adOrgClient" type="replace" optional="true" after="MA_Indirect_Cost_Value.AD_Org_ID IN (" text="'1'"/>
+
+    <Field name="adUserClient" value="void"></Field>
+    <Field name="adOrgClient" value="void"></Field>
+    <Field name="createdby" value="void"></Field>
+    
+    <Field name="trBgcolor" value="void"></Field>
+    <Field name="totalCount" value="void"></Field>
+    <Field name="dateTimeFormat" value=""></Field>
+  </SqlMethod>
+  
+  
+
+  <SqlMethod name="set" type="constant" return="multiple">
+      <SqlMethodComment>Create a registry</SqlMethodComment>
+      <Sql></Sql>
+    <Parameter name="maIndirectCostId" id="paramKeyParent"></Parameter>
+<Parameter name="maIndirectCostValueId"></Parameter><Parameter name="adClientId"></Parameter><Parameter name="adOrgId"></Parameter><Parameter name="isactive"></Parameter><Parameter name="createdby"></Parameter><Parameter name="createdbyr"></Parameter><Parameter name="updatedby"></Parameter><Parameter name="updatedbyr"></Parameter><Parameter name="datefrom"></Parameter><Parameter name="dateto"></Parameter><Parameter name="total"></Parameter><Parameter name="cost"></Parameter><Parameter name="calculate"></Parameter><Parameter name="costUom"></Parameter><Parameter name="calculated"></Parameter>
+   </SqlMethod>
+
+
+
+
+
+
+   <SqlMethod name="selectDef803192_0" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>Select for auxiliar field</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT  ( COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table2.Name), ''))), '') ) as Createdby FROM AD_User left join (select AD_User_ID, Name from AD_User) table2 on (AD_User.AD_User_ID = table2.AD_User_ID) WHERE AD_User.isActive='Y' AND AD_User.AD_User_ID = ?  
+    ]]></Sql>
+<Parameter name="CreatedbyR"/>
+  </SqlMethod>
+
+   <SqlMethod name="selectDef803194_1" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>Select for auxiliar field</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT  ( COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table2.Name), ''))), '') ) as Updatedby FROM AD_User left join (select AD_User_ID, Name from AD_User) table2 on (AD_User.AD_User_ID = table2.AD_User_ID) WHERE AD_User.isActive='Y' AND AD_User.AD_User_ID = ?  
+    ]]></Sql>
+<Parameter name="UpdatedbyR"/>
+  </SqlMethod>
+
+
+
+  <SqlMethod name="selectParentID" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>return the parent ID</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT MA_Indirect_Cost_Value.MA_Indirect_Cost_ID AS NAME
+        FROM MA_Indirect_Cost_Value
+        WHERE MA_Indirect_Cost_Value.MA_Indirect_Cost_Value_ID = ?
+    ]]></Sql>
+    <Parameter name="key"></Parameter>
+  </SqlMethod>
+
+   <SqlMethod name="selectParent" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>Select for parent field</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT (TO_CHAR(COALESCE(TO_CHAR(table1.Name), ''))) AS NAME FROM MA_Indirect_Cost left join (select MA_Indirect_Cost_ID, Name from MA_Indirect_Cost) table1 on (MA_Indirect_Cost.MA_Indirect_Cost_ID = table1.MA_Indirect_Cost_ID) WHERE MA_Indirect_Cost.MA_Indirect_Cost_ID = ?  
+    ]]></Sql>
+<Parameter name="maIndirectCostId"/>
+
+  </SqlMethod>
+
+
+
+
+   <SqlMethod name="selectParentTrl" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>Select for parent field</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT (TO_CHAR(COALESCE(TO_CHAR(table1.Name), ''))) AS NAME FROM MA_Indirect_Cost left join (select MA_Indirect_Cost_ID, Name from MA_Indirect_Cost) table1 on (MA_Indirect_Cost.MA_Indirect_Cost_ID = table1.MA_Indirect_Cost_ID) WHERE MA_Indirect_Cost.MA_Indirect_Cost_ID = ?  
+    ]]></Sql>
+<Parameter name="maIndirectCostId"/>
+
+  </SqlMethod>
+
+
+
+
+
+
+
+
+  <SqlMethod name="update" type="preparedStatement" return="rowCount" static="false" connection="true">
+    <Sql><![CDATA[
+        UPDATE MA_Indirect_Cost_Value
+        SET DateFrom = TO_DATE(?) , DateTo = TO_DATE(?) , Cost_Uom = (?) , Cost = TO_NUMBER(?) , Total = TO_NUMBER(?) , Calculate = (?) , Calculated = (?) , MA_Indirect_Cost_Value_ID = (?) , AD_Org_ID = (?) , IsActive = (?) , MA_Indirect_Cost_ID = (?) , AD_Client_ID = (?) , updated = now(), updatedby = ? 
+        WHERE MA_Indirect_Cost_Value.MA_Indirect_Cost_Value_ID = ? 
+                 AND MA_Indirect_Cost_Value.MA_Indirect_Cost_ID = ? 
+        AND MA_Indirect_Cost_Value.AD_Client_ID IN ('1') 
+        AND MA_Indirect_Cost_Value.AD_Org_ID IN ('1') 
+    ]]></Sql>
+    <Parameter name="datefrom"></Parameter> <Parameter name="dateto"></Parameter> <Parameter name="costUom"></Parameter> <Parameter name="cost"></Parameter> <Parameter name="total"></Parameter> <Parameter name="calculate"></Parameter> <Parameter name="calculated"></Parameter> <Parameter name="maIndirectCostValueId"></Parameter> <Parameter name="adOrgId"></Parameter> <Parameter name="isactive"></Parameter> <Parameter name="maIndirectCostId"></Parameter> <Parameter name="adClientId"></Parameter> 
+    <Parameter name="updatedby"></Parameter>
+    <Parameter id="paramKey" name="maIndirectCostValueId"></Parameter>
+    
+    <Parameter name="maIndirectCostId" id="paramKeyParent"></Parameter>
+        <Parameter name="adUserClient" type="replace" optional="true" after="MA_Indirect_Cost_Value.AD_Client_ID IN (" text="'1'"/>
+        <Parameter name="adOrgClient" type="replace" optional="true" after="MA_Indirect_Cost_Value.AD_Org_ID IN (" text="'1'"/>
+  </SqlMethod>
+
+  <SqlMethod name="insert" type="preparedStatement" return="rowCount" static="false" connection="true">
+    <Sql><![CDATA[
+        INSERT INTO MA_Indirect_Cost_Value 
+        (DateFrom, DateTo, Cost_Uom, Cost, Total, Calculate, Calculated, MA_Indirect_Cost_Value_ID, AD_Org_ID, IsActive, MA_Indirect_Cost_ID, AD_Client_ID, created, createdby, updated, updatedBy)
+        VALUES (TO_DATE(?), TO_DATE(?), (?), TO_NUMBER(?), TO_NUMBER(?), (?), (?), (?), (?), (?), (?), (?), now(), ?, now(), ?)
+    ]]></Sql>
+    <Parameter name="datefrom"></Parameter> <Parameter name="dateto"></Parameter> <Parameter name="costUom"></Parameter> <Parameter name="cost"></Parameter> <Parameter name="total"></Parameter> <Parameter name="calculate"></Parameter> <Parameter name="calculated"></Parameter> <Parameter name="maIndirectCostValueId"></Parameter> <Parameter name="adOrgId"></Parameter> <Parameter name="isactive"></Parameter> <Parameter name="maIndirectCostId"></Parameter> <Parameter name="adClientId"></Parameter> 
+    <Parameter name="createdby"></Parameter>
+    <Parameter name="updatedby"></Parameter>
+  </SqlMethod>
+
+  <SqlMethod name="delete" type="preparedStatement" return="rowCount">
+    <Sql><![CDATA[
+        DELETE FROM MA_Indirect_Cost_Value
+        WHERE MA_Indirect_Cost_Value.MA_Indirect_Cost_Value_ID = ? 
+                 AND MA_Indirect_Cost_Value.MA_Indirect_Cost_ID = ? 
+        AND MA_Indirect_Cost_Value.AD_Client_ID IN ('1') 
+        AND MA_Indirect_Cost_Value.AD_Org_ID IN ('1') 
+    ]]></Sql>
+    <Parameter name="param1"></Parameter>
+        <Parameter name="maIndirectCostId" id="paramKeyParent"></Parameter>
+        <Parameter name="adUserClient" type="replace" optional="true" after="MA_Indirect_Cost_Value.AD_Client_ID IN (" text="'1'"/>
+        <Parameter name="adOrgClient" type="replace" optional="true" after="MA_Indirect_Cost_Value.AD_Org_ID IN (" text="'1'"/>
+  </SqlMethod>
+
+  <SqlMethod name="selectOrg" type="preparedStatement" return="string">
+    <SqlMethodComment>Select for relation</SqlMethodComment>
+    <Sql><![CDATA[ 
+        SELECT AD_ORG_ID
+          FROM MA_Indirect_Cost_Value
+         WHERE MA_Indirect_Cost_Value.MA_Indirect_Cost_Value_ID = ? 
+    ]]></Sql>
+    <Parameter name="id"></Parameter>
+  </SqlMethod>
+  
+  <SqlMethod name="getCurrentDBTimestamp" type="preparedStatement" return="string">
+    <Sql><![CDATA[ 
+        SELECT to_char(Updated, 'YYYYMMDDHH24MISS') as Updated_Time_Stamp
+          FROM MA_Indirect_Cost_Value
+         WHERE MA_Indirect_Cost_Value.MA_Indirect_Cost_Value_ID = ? 
+    ]]></Sql>
+    <Parameter name="id"></Parameter>
+  </SqlMethod>
+</SqlClass>

@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SqlClass id="class" name="SessionData" package="org.openbravo.erpWindows.Session">
+  <SqlClassComment>WAD Generated class</SqlClassComment>
+
+  <SqlMethod name="selectEdit" type="preparedStatement" return="multiple">
+    <SqlMethodComment>Select for edit</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT to_char(AD_Session.Created, ?) as created, 
+        (SELECT NAME FROM AD_USER u WHERE AD_USER_ID = AD_Session.CreatedBy) as CreatedByR, 
+        to_char(AD_Session.Updated, ?) as updated, 
+        to_char(AD_Session.Updated, 'YYYYMMDDHH24MISS') as Updated_Time_Stamp,  
+        AD_Session.UpdatedBy, 
+        (SELECT NAME FROM AD_USER u WHERE AD_USER_ID = AD_Session.UpdatedBy) as UpdatedByR,
+        AD_Session.Username, 
+AD_Session.Remote_Addr, 
+AD_Session.Remote_Host, 
+AD_Session.Server_Url, 
+AD_Session.Login_Status, 
+(CASE WHEN AD_Session.Login_Status IS NULL THEN '' ELSE  ( COALESCE(TO_CHAR(list1.name),'') ) END) AS Login_StatusR, 
+TO_CHAR(AD_Session.Last_Session_Ping, ?) AS Last_Session_Ping, 
+AD_Session.Session_Active, 
+AD_Session.AD_Session_ID, 
+AD_Session.WebSession, 
+AD_Session.AD_Org_ID, 
+COALESCE(AD_Session.IsActive, 'N') AS IsActive, 
+AD_Session.AD_Client_ID, 
+COALESCE(AD_Session.Processed, 'N') AS Processed, 
+ 
+        ? AS LANGUAGE 
+        FROM AD_Session left join ad_ref_list_v list1 on (AD_Session.Login_Status = list1.value and list1.ad_reference_id = '86086D70DDBC42B09E2BEB51D25C159F' and list1.ad_language = ?) 
+        WHERE 2=2 
+
+        AND 1=1 
+        AND AD_Session.AD_Session_ID = ? 
+        AND AD_Session.AD_Client_ID IN ('1') 
+           AND AD_Session.AD_Org_ID IN ('1') 
+    ]]></Sql>
+    <Parameter name="dateTimeFormat"></Parameter>
+    <Parameter name="dateTimeFormat"></Parameter>
+    <Parameter name="dateTimeFormat"/>
+    <Parameter name="paramLanguage"></Parameter>
+<Parameter name="paramLanguage"/>
+
+
+    <Parameter name="key"></Parameter>
+        <Parameter name="adUserClient" type="replace" optional="true" after="AD_Session.AD_Client_ID IN (" text="'1'"/>
+        <Parameter name="adOrgClient" type="replace" optional="true" after="AD_Session.AD_Org_ID IN (" text="'1'"/>
+
+    <Field name="adUserClient" value="void"></Field>
+    <Field name="adOrgClient" value="void"></Field>
+    <Field name="createdby" value="void"></Field>
+    
+    <Field name="trBgcolor" value="void"></Field>
+    <Field name="totalCount" value="void"></Field>
+    <Field name="dateTimeFormat" value=""></Field>
+  </SqlMethod>
+  
+  
+
+  <SqlMethod name="set" type="constant" return="multiple">
+      <SqlMethodComment>Create a registry</SqlMethodComment>
+      <Sql></Sql>
+
+<Parameter name="sessionActive"></Parameter><Parameter name="serverUrl"></Parameter><Parameter name="lastSessionPing"></Parameter><Parameter name="username"></Parameter><Parameter name="loginStatus"></Parameter><Parameter name="adClientId"></Parameter><Parameter name="createdby"></Parameter><Parameter name="createdbyr"></Parameter><Parameter name="remoteAddr"></Parameter><Parameter name="remoteHost"></Parameter><Parameter name="created"></Parameter><Parameter name="updatedby"></Parameter><Parameter name="updatedbyr"></Parameter><Parameter name="isactive"></Parameter><Parameter name="adOrgId"></Parameter><Parameter name="websession"></Parameter><Parameter name="adSessionId"></Parameter><Parameter name="processed"></Parameter>
+   </SqlMethod>
+
+
+
+
+
+
+   <SqlMethod name="selectDef8577_0" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>Select for auxiliar field</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT  ( COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table2.Name), ''))), '') ) as CreatedBy FROM AD_User left join (select AD_User_ID, Name from AD_User) table2 on (AD_User.AD_User_ID = table2.AD_User_ID) WHERE AD_User.isActive='Y' AND AD_User.AD_User_ID = ?  
+    ]]></Sql>
+<Parameter name="CreatedByR"/>
+  </SqlMethod>
+
+   <SqlMethod name="selectDef8581_1" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>Select for auxiliar field</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT  ( COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table2.Name), ''))), '') ) as UpdatedBy FROM AD_User left join (select AD_User_ID, Name from AD_User) table2 on (AD_User.AD_User_ID = table2.AD_User_ID) WHERE AD_User.isActive='Y' AND AD_User.AD_User_ID = ?  
+    ]]></Sql>
+<Parameter name="UpdatedByR"/>
+  </SqlMethod>
+
+
+
+
+
+
+
+
+
+
+  <SqlMethod name="update" type="preparedStatement" return="rowCount" static="false" connection="true">
+    <Sql><![CDATA[
+        UPDATE AD_Session
+        SET Username = (?) , Remote_Addr = (?) , Remote_Host = (?) , Server_Url = (?) , Login_Status = (?) , Last_Session_Ping = TO_TIMESTAMP(?, ?) , Session_Active = (?) , WebSession = (?) , AD_Session_ID = (?) , AD_Org_ID = (?) , IsActive = (?) , AD_Client_ID = (?) , Processed = (?) , updated = now(), updatedby = ? 
+        WHERE AD_Session.AD_Session_ID = ? 
+        
+        AND AD_Session.AD_Client_ID IN ('1') 
+        AND AD_Session.AD_Org_ID IN ('1') 
+    ]]></Sql>
+    <Parameter name="username"></Parameter> <Parameter name="remoteAddr"></Parameter> <Parameter name="remoteHost"></Parameter> <Parameter name="serverUrl"></Parameter> <Parameter name="loginStatus"></Parameter> <Parameter name="lastSessionPing"></Parameter> <Parameter name="dateTimeFormat"></Parameter> <Parameter name="sessionActive"></Parameter> <Parameter name="websession"></Parameter> <Parameter name="adSessionId"></Parameter> <Parameter name="adOrgId"></Parameter> <Parameter name="isactive"></Parameter> <Parameter name="adClientId"></Parameter> <Parameter name="processed"></Parameter> 
+    <Parameter name="updatedby"></Parameter>
+    <Parameter id="paramKey" name="adSessionId"></Parameter>
+    
+    
+        <Parameter name="adUserClient" type="replace" optional="true" after="AD_Session.AD_Client_ID IN (" text="'1'"/>
+        <Parameter name="adOrgClient" type="replace" optional="true" after="AD_Session.AD_Org_ID IN (" text="'1'"/>
+  </SqlMethod>
+
+  <SqlMethod name="insert" type="preparedStatement" return="rowCount" static="false" connection="true">
+    <Sql><![CDATA[
+        INSERT INTO AD_Session 
+        (Username, Remote_Addr, Remote_Host, Server_Url, Login_Status, Last_Session_Ping, Session_Active, AD_Session_ID, WebSession, AD_Org_ID, IsActive, AD_Client_ID, Processed, created, createdby, updated, updatedBy)
+        VALUES ((?), (?), (?), (?), (?), TO_TIMESTAMP(?, ?), (?), (?), (?), (?), (?), (?), (?), now(), ?, now(), ?)
+    ]]></Sql>
+    <Parameter name="username"></Parameter> <Parameter name="remoteAddr"></Parameter> <Parameter name="remoteHost"></Parameter> <Parameter name="serverUrl"></Parameter> <Parameter name="loginStatus"></Parameter> <Parameter name="lastSessionPing"></Parameter> <Parameter name="dateTimeFormat"></Parameter> <Parameter name="sessionActive"></Parameter> <Parameter name="adSessionId"></Parameter> <Parameter name="websession"></Parameter> <Parameter name="adOrgId"></Parameter> <Parameter name="isactive"></Parameter> <Parameter name="adClientId"></Parameter> <Parameter name="processed"></Parameter> 
+    <Parameter name="createdby"></Parameter>
+    <Parameter name="updatedby"></Parameter>
+  </SqlMethod>
+
+  <SqlMethod name="delete" type="preparedStatement" return="rowCount">
+    <Sql><![CDATA[
+        DELETE FROM AD_Session
+        WHERE AD_Session.AD_Session_ID = ? 
+        
+        AND AD_Session.AD_Client_ID IN ('1') 
+        AND AD_Session.AD_Org_ID IN ('1') 
+    ]]></Sql>
+    <Parameter name="param1"></Parameter>
+    
+        <Parameter name="adUserClient" type="replace" optional="true" after="AD_Session.AD_Client_ID IN (" text="'1'"/>
+        <Parameter name="adOrgClient" type="replace" optional="true" after="AD_Session.AD_Org_ID IN (" text="'1'"/>
+  </SqlMethod>
+
+  <SqlMethod name="selectOrg" type="preparedStatement" return="string">
+    <SqlMethodComment>Select for relation</SqlMethodComment>
+    <Sql><![CDATA[ 
+        SELECT AD_ORG_ID
+          FROM AD_Session
+         WHERE AD_Session.AD_Session_ID = ? 
+    ]]></Sql>
+    <Parameter name="id"></Parameter>
+  </SqlMethod>
+  
+  <SqlMethod name="getCurrentDBTimestamp" type="preparedStatement" return="string">
+    <Sql><![CDATA[ 
+        SELECT to_char(Updated, 'YYYYMMDDHH24MISS') as Updated_Time_Stamp
+          FROM AD_Session
+         WHERE AD_Session.AD_Session_ID = ? 
+    ]]></Sql>
+    <Parameter name="id"></Parameter>
+  </SqlMethod>
+</SqlClass>

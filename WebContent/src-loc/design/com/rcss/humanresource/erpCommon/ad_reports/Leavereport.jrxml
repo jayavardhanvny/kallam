@@ -1,0 +1,422 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Leavereport" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<property name="ireport.zoom" value="1.996500000000001"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="LeaveId" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[select
+upper(e.employeename) as empname,
+e.punchno as empno,
+upper(desig.name) as designation,
+head.totalleaves as noofleaves,
+head.fromdate as fromdate,
+head.todate as todate,
+head.reason as reason,
+e.phoneno as phoneno,
+head.requisitiondate as reqdate,
+head.weekoffleaves as weekoff,
+head.el as sl,
+head.cl as cl,
+head.lopleaves as lops,
+head.coffs as coffs,
+(select case when head.docstatus='PN' then 'Pending'
+	     when head.docstatus='DR' THEN 'Draft'
+	     when head.docstatus='AP' THEN 'Draft Approved'
+             when head.docstatus='CO' THEN 'Completed'
+             when head.docstatus='CJ' THEN 'Rejected' end
+) as status,
+ltype.name as leavetype,
+line.leavedate as leavedate,
+
+(select (select name from ad_user u where u.ad_user_id=app.ad_user_id) as requesteduser
+ from rchr_approvalhistrory app where  decision ='APR'
+and recordid=head.rchr_leaverequisition_id order by lastapproved desc limit 1),
+
+(select
+ case when split_part(lastapproved,'-->',2)='' then
+(select name from ad_user u where u.ad_user_id=app.approvebyuser)
+else split_part(lastapproved,'-->',2)
+end ::text
+as firstapprover
+ from rchr_approvalhistrory app where  decision ='APR'
+and recordid=head.rchr_leaverequisition_id order by lastapproved desc limit 1),
+
+
+(select
+case when split_part(lastapproved,'-->',3)='' then ''
+
+ else split_part(lastapproved,'-->',3)
+end ::text
+as secondapprover
+ from rchr_approvalhistrory app where  decision ='APR'
+and recordid=head.rchr_leaverequisition_id order by lastapproved desc limit 1),
+
+(select
+case when split_part(lastapproved,'-->',3)='' or split_part(lastapproved,'-->',3)=(select name from ad_user u where u.ad_user_id=app.approvebyuser)::text
+then '' else
+
+(select name from ad_user u where u.ad_user_id=app.approvebyuser)::text end
+as thirdapprover from rchr_approvalhistrory app where  decision ='APR'
+and recordid=head.rchr_leaverequisition_id order by lastapproved desc limit 1)
+
+from
+rchr_leaverequisitionline line
+left join rchr_leaverequisition head on head.rchr_leaverequisition_id=line.rchr_leaverequisition_id
+left join rchr_employee e on e.rchr_employee_id=head.rchr_employee_id
+left join rchr_designation desig on desig.rchr_designation_id=e.rchr_designation_id
+left join rchr_leavetype ltype on ltype.rchr_leavetype_id=line.rchr_leavetype_id
+where head.rchr_leaverequisition_id=$P{LeaveId}
+and head.docstatus='CO'
+order by leavedate asc]]>
+	</queryString>
+	<field name="empname" class="java.lang.String"/>
+	<field name="empno" class="java.lang.String"/>
+	<field name="designation" class="java.lang.String"/>
+	<field name="noofleaves" class="java.math.BigDecimal"/>
+	<field name="fromdate" class="java.sql.Timestamp"/>
+	<field name="todate" class="java.sql.Timestamp"/>
+	<field name="reason" class="java.lang.String"/>
+	<field name="phoneno" class="java.lang.String"/>
+	<field name="reqdate" class="java.sql.Timestamp"/>
+	<field name="weekoff" class="java.math.BigDecimal"/>
+	<field name="sl" class="java.math.BigDecimal"/>
+	<field name="cl" class="java.math.BigDecimal"/>
+	<field name="lops" class="java.math.BigDecimal"/>
+	<field name="coffs" class="java.math.BigDecimal"/>
+	<field name="status" class="java.lang.String"/>
+	<field name="leavetype" class="java.lang.String"/>
+	<field name="leavedate" class="java.sql.Timestamp"/>
+	<field name="requesteduser" class="java.lang.String"/>
+	<field name="firstapprover" class="java.lang.String"/>
+	<field name="secondapprover" class="java.lang.String"/>
+	<field name="thirdapprover" class="java.lang.String"/>
+	<variable name="Sno" class="java.math.BigDecimal" calculation="Count">
+		<variableExpression><![CDATA[]]></variableExpression>
+	</variable>
+	<variable name="totalwage" class="java.math.BigDecimal">
+		<variableExpression><![CDATA[]]></variableExpression>
+	</variable>
+	<variable name="pagetotal" class="java.math.BigDecimal" resetType="Column" calculation="Sum">
+		<variableExpression><![CDATA[]]></variableExpression>
+		<initialValueExpression><![CDATA[]]></initialValueExpression>
+	</variable>
+	<variable name="Grandtotal" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[]]></variableExpression>
+		<initialValueExpression><![CDATA[]]></initialValueExpression>
+	</variable>
+	<title>
+		<band height="14" splitType="Stretch">
+			<line>
+				<reportElement x="554" y="0" width="1" height="14"/>
+			</line>
+			<line>
+				<reportElement x="0" y="0" width="1" height="14"/>
+			</line>
+			<line>
+				<reportElement x="1" y="0" width="554" height="1"/>
+			</line>
+			<staticText>
+				<reportElement key="staticText-2" x="162" y="1" width="239" height="13"/>
+				<textElement textAlignment="Center" verticalAlignment="Top" lineSpacing="Single">
+					<font fontName="Verdana" size="9" isBold="true" isUnderline="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[LEAVE APPLICATION FORM]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="101" splitType="Stretch">
+			<line>
+				<reportElement x="0" y="0" width="1" height="101"/>
+			</line>
+			<line>
+				<reportElement x="554" y="0" width="1" height="100"/>
+			</line>
+			<staticText>
+				<reportElement key="staticText-2" x="4" y="14" width="54" height="12"/>
+				<textElement verticalAlignment="Top" lineSpacing="Single">
+					<font fontName="DejaVu Sans" size="8" isBold="true" isUnderline="false" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[ Name :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-2" x="4" y="28" width="69" height="12"/>
+				<textElement verticalAlignment="Top" lineSpacing="Single">
+					<font fontName="DejaVu Sans" size="8" isBold="true" isUnderline="false" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[ Designation :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-2" x="4" y="41" width="59" height="12"/>
+				<textElement verticalAlignment="Top" lineSpacing="Single">
+					<font fontName="DejaVu Sans" size="8" isBold="true" isUnderline="false" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[ No of Days :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-2" x="4" y="74" width="94" height="12"/>
+				<textElement verticalAlignment="Top" lineSpacing="Single">
+					<font fontName="DejaVu Sans" size="8" isBold="true" isUnderline="false" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[ Reasons for leave :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-2" x="4" y="88" width="187" height="12"/>
+				<textElement verticalAlignment="Top" lineSpacing="Single">
+					<font fontName="DejaVu Sans" size="8" isBold="true" isUnderline="false" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[ Address & Telphone No.s During Leave :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-2" x="4" y="54" width="38" height="12"/>
+				<textElement verticalAlignment="Top" lineSpacing="Single">
+					<font fontName="DejaVu Sans" size="8" isBold="true" isUnderline="false" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[From]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-2" x="103" y="54" width="32" height="12"/>
+				<textElement verticalAlignment="Top" lineSpacing="Single">
+					<font fontName="DejaVu Sans" size="8" isBold="true" isUnderline="false" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[To]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="100" width="555" height="1"/>
+			</line>
+			<staticText>
+				<reportElement key="staticText-2" x="419" y="3" width="36" height="12"/>
+				<textElement verticalAlignment="Top" lineSpacing="Single">
+					<font fontName="DejaVu Sans" size="8" isBold="true" isUnderline="false" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[Date: ]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="77" y="14" width="100" height="12"/>
+				<textElement lineSpacing="Single">
+					<font fontName="DejaVu Sans" size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{empname}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="77" y="28" width="100" height="12"/>
+				<textElement lineSpacing="Single">
+					<font fontName="DejaVu Sans" size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{designation}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0" isBlankWhenNull="true">
+				<reportElement x="66" y="41" width="31" height="12"/>
+				<textElement lineSpacing="Single">
+					<font fontName="DejaVu Sans" size="8"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{noofleaves}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="43" y="54" width="59" height="12"/>
+				<textElement lineSpacing="Single">
+					<font fontName="DejaVu Sans" size="8"/>
+				</textElement>
+				<textFieldExpression class="java.sql.Timestamp"><![CDATA[$F{fromdate}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement x="135" y="54" width="49" height="12"/>
+				<textElement lineSpacing="Single">
+					<font fontName="DejaVu Sans" size="8"/>
+				</textElement>
+				<textFieldExpression class="java.sql.Timestamp"><![CDATA[$F{todate}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="192" y="88" width="100" height="12"/>
+				<textElement lineSpacing="Single">
+					<font fontName="DejaVu Sans" size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{phoneno}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="102" y="74" width="364" height="12"/>
+				<textElement lineSpacing="Single">
+					<font fontName="DejaVu Sans" size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{reason}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement key="staticText-2" x="419" y="15" width="36" height="12"/>
+				<textElement verticalAlignment="Top" lineSpacing="Single">
+					<font fontName="DejaVu Sans" size="8" isBold="true" isUnderline="false" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[Status :]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="455" y="15" width="97" height="12"/>
+				<textElement lineSpacing="Single">
+					<font fontName="DejaVu Sans" size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{status}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement key="staticText-2" x="4" y="2" width="54" height="12"/>
+				<textElement verticalAlignment="Top" lineSpacing="Single">
+					<font fontName="DejaVu Sans" size="8" isBold="true" isUnderline="false" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[ Punch No :]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="77" y="2" width="100" height="12"/>
+				<textElement verticalAlignment="Middle" lineSpacing="Single">
+					<font fontName="DejaVu Sans" size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{empno}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="98" y="41" width="26" height="12"/>
+				<textElement lineSpacing="Single">
+					<font fontName="DejaVu Sans" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[SL :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="143" y="41" width="20" height="12"/>
+				<textElement lineSpacing="Single">
+					<font fontName="DejaVu Sans" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[CL]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="238" y="41" width="34" height="12"/>
+				<textElement lineSpacing="Single">
+					<font fontName="DejaVu Sans" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[C'OFF :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="185" y="41" width="24" height="12"/>
+				<textElement lineSpacing="Single">
+					<font fontName="DejaVu Sans" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[LOP :]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="125" y="41" width="18" height="12"/>
+				<textElement lineSpacing="Single">
+					<font fontName="DejaVu Sans" size="8"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{sl}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="164" y="41" width="20" height="12"/>
+				<textElement lineSpacing="Single">
+					<font fontName="DejaVu Sans" size="8"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{cl}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="291" y="40" width="39" height="13"/>
+				<textElement lineSpacing="Single">
+					<font fontName="DejaVu Sans" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[W/Offfs :]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="209" y="41" width="27" height="12"/>
+				<textElement lineSpacing="Single">
+					<font fontName="DejaVu Sans" size="8"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{lops}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="330" y="40" width="20" height="13"/>
+				<textElement lineSpacing="Single">
+					<font fontName="DejaVu Sans" size="8"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{weekoff}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="456" y="2" width="100" height="13"/>
+				<textElement lineSpacing="Single">
+					<font fontName="DejaVu Sans" size="8"/>
+				</textElement>
+				<textFieldExpression class="java.sql.Timestamp"><![CDATA[$F{reqdate}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="272" y="41" width="18" height="12"/>
+				<textElement lineSpacing="Single">
+					<font fontName="DejaVu Sans" size="8"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{coffs}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<summary>
+		<band height="101">
+			<staticText>
+				<reportElement key="staticText-2" x="1" y="31" width="127" height="12"/>
+				<textElement textAlignment="Center" verticalAlignment="Top" lineSpacing="Single">
+					<font fontName="Verdana" size="9" isBold="true" isUnderline="false" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[Supervisor]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-2" x="424" y="31" width="127" height="12"/>
+				<textElement textAlignment="Center" verticalAlignment="Top" lineSpacing="Single">
+					<font fontName="Verdana" size="9" isBold="true" isUnderline="false" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[Employee Signature]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-2" x="216" y="76" width="127" height="12"/>
+				<textElement textAlignment="Center" verticalAlignment="Top" lineSpacing="Single">
+					<font fontName="Verdana" size="9" isBold="true" isUnderline="false" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[GM]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-2" x="428" y="76" width="124" height="12"/>
+				<textElement textAlignment="Center" verticalAlignment="Top" lineSpacing="Single">
+					<font fontName="Verdana" size="9" isBold="true" isUnderline="false" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[M.D. / Director]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="0" width="555" height="1"/>
+			</line>
+			<line>
+				<reportElement x="0" y="88" width="555" height="1"/>
+			</line>
+			<line>
+				<reportElement x="0" y="0" width="1" height="88"/>
+			</line>
+			<line>
+				<reportElement x="554" y="0" width="1" height="89"/>
+			</line>
+			<staticText>
+				<reportElement key="staticText-2" x="1" y="76" width="127" height="12"/>
+				<textElement textAlignment="Center" verticalAlignment="Top" lineSpacing="Single">
+					<font fontName="Verdana" size="9" isBold="true" isUnderline="false" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[H.O.D]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="4" y="18" width="124" height="13"/>
+				<textElement textAlignment="Center" lineSpacing="Single"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{requesteduser}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="1" y="63" width="127" height="13"/>
+				<textElement textAlignment="Center" lineSpacing="Single"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{firstapprover}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="216" y="63" width="127" height="13"/>
+				<textElement textAlignment="Center" lineSpacing="Single"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{secondapprover}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="428" y="63" width="123" height="13"/>
+				<textElement textAlignment="Center" lineSpacing="Single"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{thirdapprover}]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
+</jasperReport>

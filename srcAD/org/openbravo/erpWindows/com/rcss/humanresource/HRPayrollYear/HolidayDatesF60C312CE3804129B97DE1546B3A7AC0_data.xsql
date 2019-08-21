@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SqlClass id="class" name="HolidayDatesF60C312CE3804129B97DE1546B3A7AC0Data" package="org.openbravo.erpWindows.com.rcss.humanresource.HRPayrollYear">
+  <SqlClassComment>WAD Generated class</SqlClassComment>
+
+  <SqlMethod name="selectEdit" type="preparedStatement" return="multiple">
+    <SqlMethodComment>Select for edit</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT to_char(Rchr_Holidays_List.Created, ?) as created, 
+        (SELECT NAME FROM AD_USER u WHERE AD_USER_ID = Rchr_Holidays_List.CreatedBy) as CreatedByR, 
+        to_char(Rchr_Holidays_List.Updated, ?) as updated, 
+        to_char(Rchr_Holidays_List.Updated, 'YYYYMMDDHH24MISS') as Updated_Time_Stamp,  
+        Rchr_Holidays_List.UpdatedBy, 
+        (SELECT NAME FROM AD_USER u WHERE AD_USER_ID = Rchr_Holidays_List.UpdatedBy) as UpdatedByR,
+        Rchr_Holidays_List.AD_Org_ID, 
+(CASE WHEN Rchr_Holidays_List.AD_Org_ID IS NULL THEN '' ELSE  (COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table1.Name), ''))),'') ) END) AS AD_Org_IDR, 
+COALESCE(Rchr_Holidays_List.Isactive, 'N') AS Isactive, 
+Rchr_Holidays_List.Rchr_Year_ID, 
+(CASE WHEN Rchr_Holidays_List.Rchr_Year_ID IS NULL THEN '' ELSE  (COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table2.Name), ''))),'') ) END) AS Rchr_Year_IDR, 
+Rchr_Holidays_List.Holidaydate, 
+Rchr_Holidays_List.Attendanceprocess, 
+COALESCE(Rchr_Holidays_List.Otprocess, 'N') AS Otprocess, 
+COALESCE(Rchr_Holidays_List.Payrollprocess, 'N') AS Payrollprocess, 
+COALESCE(Rchr_Holidays_List.Payrollpost, 'N') AS Payrollpost, 
+COALESCE(Rchr_Holidays_List.Incentive, 'N') AS Incentive, 
+Rchr_Holidays_List.AD_Client_ID, 
+Rchr_Holidays_List.Rchr_Holidays_List_ID, 
+ 
+        ? AS LANGUAGE 
+        FROM Rchr_Holidays_List left join (select AD_Org_ID, Name from AD_Org) table1 on (Rchr_Holidays_List.AD_Org_ID = table1.AD_Org_ID) left join (select Rchr_Year_ID, Name from Rchr_Year) table2 on (Rchr_Holidays_List.Rchr_Year_ID = table2.Rchr_Year_ID)
+        WHERE 2=2 
+
+        AND 1=1 
+        AND Rchr_Holidays_List.Rchr_Holidays_List_ID = ? 
+        AND Rchr_Holidays_List.AD_Client_ID IN ('1') 
+           AND Rchr_Holidays_List.AD_Org_ID IN ('1') 
+    ]]></Sql>
+    <Parameter name="dateTimeFormat"></Parameter>
+    <Parameter name="dateTimeFormat"></Parameter>
+    
+    <Parameter name="paramLanguage"></Parameter>
+
+    <Parameter name="rchrYearId" optional="true" after="AND 1=1 " id="paramKeyParent"> AND Rchr_Holidays_List.Rchr_Year_ID = ? </Parameter>
+    <Parameter name="key"></Parameter>
+        <Parameter name="adUserClient" type="replace" optional="true" after="Rchr_Holidays_List.AD_Client_ID IN (" text="'1'"/>
+        <Parameter name="adOrgClient" type="replace" optional="true" after="Rchr_Holidays_List.AD_Org_ID IN (" text="'1'"/>
+
+    <Field name="adUserClient" value="void"></Field>
+    <Field name="adOrgClient" value="void"></Field>
+    <Field name="createdby" value="void"></Field>
+    
+    <Field name="trBgcolor" value="void"></Field>
+    <Field name="totalCount" value="void"></Field>
+    <Field name="dateTimeFormat" value=""></Field>
+  </SqlMethod>
+  
+  
+
+  <SqlMethod name="set" type="constant" return="multiple">
+      <SqlMethodComment>Create a registry</SqlMethodComment>
+      <Sql></Sql>
+    <Parameter name="rchrYearId" id="paramKeyParent"></Parameter>
+<Parameter name="rchrHolidaysListId"></Parameter><Parameter name="payrollprocess"></Parameter><Parameter name="adClientId"></Parameter><Parameter name="payrollpost"></Parameter><Parameter name="incentive"></Parameter><Parameter name="holidaydate"></Parameter><Parameter name="attendanceprocess"></Parameter><Parameter name="adOrgId"></Parameter><Parameter name="updatedby"></Parameter><Parameter name="updatedbyr"></Parameter><Parameter name="otprocess"></Parameter><Parameter name="createdby"></Parameter><Parameter name="createdbyr"></Parameter><Parameter name="isactive"></Parameter>
+   </SqlMethod>
+
+
+
+
+
+
+   <SqlMethod name="selectDefBA9A97D721A84C599E02120458F1BA5A_0" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>Select for auxiliar field</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT  ( COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table2.Name), ''))), '') ) as Updatedby FROM AD_User left join (select AD_User_ID, Name from AD_User) table2 on (AD_User.AD_User_ID = table2.AD_User_ID) WHERE AD_User.isActive='Y' AND AD_User.AD_User_ID = ?  
+    ]]></Sql>
+<Parameter name="UpdatedbyR"/>
+  </SqlMethod>
+
+   <SqlMethod name="selectDefE8A6A65900504263BD7186A9E952D4E5_1" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>Select for auxiliar field</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT  ( COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table2.Name), ''))), '') ) as Createdby FROM AD_User left join (select AD_User_ID, Name from AD_User) table2 on (AD_User.AD_User_ID = table2.AD_User_ID) WHERE AD_User.isActive='Y' AND AD_User.AD_User_ID = ?  
+    ]]></Sql>
+<Parameter name="CreatedbyR"/>
+  </SqlMethod>
+
+
+
+  <SqlMethod name="selectParentID" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>return the parent ID</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT Rchr_Holidays_List.Rchr_Year_ID AS NAME
+        FROM Rchr_Holidays_List
+        WHERE Rchr_Holidays_List.Rchr_Holidays_List_ID = ?
+    ]]></Sql>
+    <Parameter name="key"></Parameter>
+  </SqlMethod>
+
+   <SqlMethod name="selectParent" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>Select for parent field</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT (TO_CHAR(COALESCE(TO_CHAR(table1.Name), ''))) AS NAME FROM Rchr_Year left join (select Rchr_Year_ID, Name from Rchr_Year) table1 on (Rchr_Year.Rchr_Year_ID = table1.Rchr_Year_ID) WHERE Rchr_Year.Rchr_Year_ID = ?  
+    ]]></Sql>
+<Parameter name="rchrYearId"/>
+
+  </SqlMethod>
+
+
+
+
+   <SqlMethod name="selectParentTrl" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>Select for parent field</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT (TO_CHAR(COALESCE(TO_CHAR(table1.Name), ''))) AS NAME FROM Rchr_Year left join (select Rchr_Year_ID, Name from Rchr_Year) table1 on (Rchr_Year.Rchr_Year_ID = table1.Rchr_Year_ID) WHERE Rchr_Year.Rchr_Year_ID = ?  
+    ]]></Sql>
+<Parameter name="rchrYearId"/>
+
+  </SqlMethod>
+
+
+
+
+
+
+
+
+  <SqlMethod name="update" type="preparedStatement" return="rowCount" static="false" connection="true">
+    <Sql><![CDATA[
+        UPDATE Rchr_Holidays_List
+        SET AD_Org_ID = (?) , Isactive = (?) , Rchr_Year_ID = (?) , Holidaydate = TO_DATE(?) , Attendanceprocess = (?) , Otprocess = (?) , Payrollprocess = (?) , Payrollpost = (?) , Incentive = (?) , AD_Client_ID = (?) , Rchr_Holidays_List_ID = (?) , updated = now(), updatedby = ? 
+        WHERE Rchr_Holidays_List.Rchr_Holidays_List_ID = ? 
+                 AND Rchr_Holidays_List.Rchr_Year_ID = ? 
+        AND Rchr_Holidays_List.AD_Client_ID IN ('1') 
+        AND Rchr_Holidays_List.AD_Org_ID IN ('1') 
+    ]]></Sql>
+    <Parameter name="adOrgId"></Parameter> <Parameter name="isactive"></Parameter> <Parameter name="rchrYearId"></Parameter> <Parameter name="holidaydate"></Parameter> <Parameter name="attendanceprocess"></Parameter> <Parameter name="otprocess"></Parameter> <Parameter name="payrollprocess"></Parameter> <Parameter name="payrollpost"></Parameter> <Parameter name="incentive"></Parameter> <Parameter name="adClientId"></Parameter> <Parameter name="rchrHolidaysListId"></Parameter> 
+    <Parameter name="updatedby"></Parameter>
+    <Parameter id="paramKey" name="rchrHolidaysListId"></Parameter>
+    
+    <Parameter name="rchrYearId" id="paramKeyParent"></Parameter>
+        <Parameter name="adUserClient" type="replace" optional="true" after="Rchr_Holidays_List.AD_Client_ID IN (" text="'1'"/>
+        <Parameter name="adOrgClient" type="replace" optional="true" after="Rchr_Holidays_List.AD_Org_ID IN (" text="'1'"/>
+  </SqlMethod>
+
+  <SqlMethod name="insert" type="preparedStatement" return="rowCount" static="false" connection="true">
+    <Sql><![CDATA[
+        INSERT INTO Rchr_Holidays_List 
+        (AD_Org_ID, Isactive, Rchr_Year_ID, Holidaydate, Attendanceprocess, Otprocess, Payrollprocess, Payrollpost, Incentive, AD_Client_ID, Rchr_Holidays_List_ID, created, createdby, updated, updatedBy)
+        VALUES ((?), (?), (?), TO_DATE(?), (?), (?), (?), (?), (?), (?), (?), now(), ?, now(), ?)
+    ]]></Sql>
+    <Parameter name="adOrgId"></Parameter> <Parameter name="isactive"></Parameter> <Parameter name="rchrYearId"></Parameter> <Parameter name="holidaydate"></Parameter> <Parameter name="attendanceprocess"></Parameter> <Parameter name="otprocess"></Parameter> <Parameter name="payrollprocess"></Parameter> <Parameter name="payrollpost"></Parameter> <Parameter name="incentive"></Parameter> <Parameter name="adClientId"></Parameter> <Parameter name="rchrHolidaysListId"></Parameter> 
+    <Parameter name="createdby"></Parameter>
+    <Parameter name="updatedby"></Parameter>
+  </SqlMethod>
+
+  <SqlMethod name="delete" type="preparedStatement" return="rowCount">
+    <Sql><![CDATA[
+        DELETE FROM Rchr_Holidays_List
+        WHERE Rchr_Holidays_List.Rchr_Holidays_List_ID = ? 
+                 AND Rchr_Holidays_List.Rchr_Year_ID = ? 
+        AND Rchr_Holidays_List.AD_Client_ID IN ('1') 
+        AND Rchr_Holidays_List.AD_Org_ID IN ('1') 
+    ]]></Sql>
+    <Parameter name="param1"></Parameter>
+        <Parameter name="rchrYearId" id="paramKeyParent"></Parameter>
+        <Parameter name="adUserClient" type="replace" optional="true" after="Rchr_Holidays_List.AD_Client_ID IN (" text="'1'"/>
+        <Parameter name="adOrgClient" type="replace" optional="true" after="Rchr_Holidays_List.AD_Org_ID IN (" text="'1'"/>
+  </SqlMethod>
+
+  <SqlMethod name="selectOrg" type="preparedStatement" return="string">
+    <SqlMethodComment>Select for relation</SqlMethodComment>
+    <Sql><![CDATA[ 
+        SELECT AD_ORG_ID
+          FROM Rchr_Holidays_List
+         WHERE Rchr_Holidays_List.Rchr_Holidays_List_ID = ? 
+    ]]></Sql>
+    <Parameter name="id"></Parameter>
+  </SqlMethod>
+  
+  <SqlMethod name="getCurrentDBTimestamp" type="preparedStatement" return="string">
+    <Sql><![CDATA[ 
+        SELECT to_char(Updated, 'YYYYMMDDHH24MISS') as Updated_Time_Stamp
+          FROM Rchr_Holidays_List
+         WHERE Rchr_Holidays_List.Rchr_Holidays_List_ID = ? 
+    ]]></Sql>
+    <Parameter name="id"></Parameter>
+  </SqlMethod>
+</SqlClass>

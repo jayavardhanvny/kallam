@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SqlClass id="class" name="MobalizerServiceIncentiveCF669DCF8AF04688AFCA7B97D84C3E98Data" package="org.openbravo.erpWindows.com.rcss.humanresource.MobalizerServiceIncentive">
+  <SqlClassComment>WAD Generated class</SqlClassComment>
+
+  <SqlMethod name="selectEdit" type="preparedStatement" return="multiple">
+    <SqlMethodComment>Select for edit</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT to_char(RCHR_Mobalizerserviceinc.Created, ?) as created, 
+        (SELECT NAME FROM AD_USER u WHERE AD_USER_ID = RCHR_Mobalizerserviceinc.CreatedBy) as CreatedByR, 
+        to_char(RCHR_Mobalizerserviceinc.Updated, ?) as updated, 
+        to_char(RCHR_Mobalizerserviceinc.Updated, 'YYYYMMDDHH24MISS') as Updated_Time_Stamp,  
+        RCHR_Mobalizerserviceinc.UpdatedBy, 
+        (SELECT NAME FROM AD_USER u WHERE AD_USER_ID = RCHR_Mobalizerserviceinc.UpdatedBy) as UpdatedByR,
+        RCHR_Mobalizerserviceinc.AD_Org_ID, 
+(CASE WHEN RCHR_Mobalizerserviceinc.AD_Org_ID IS NULL THEN '' ELSE  (COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table1.Name), ''))),'') ) END) AS AD_Org_IDR, 
+COALESCE(RCHR_Mobalizerserviceinc.Isactive, 'N') AS Isactive, 
+RCHR_Mobalizerserviceinc.Rchr_Mobalizer_ID, 
+(CASE WHEN RCHR_Mobalizerserviceinc.Rchr_Mobalizer_ID IS NULL THEN '' ELSE  (COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table3.Punchno), ''))),'')  || ' - ' || COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table3.Employeename), ''))),'') ) END) AS Rchr_Mobalizer_IDR, 
+RCHR_Mobalizerserviceinc.Rchr_Attd_Process_ID, 
+(CASE WHEN RCHR_Mobalizerserviceinc.Rchr_Attd_Process_ID IS NULL THEN '' ELSE  (COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table4.Monthname), ''))),'')  || ' - ' || COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table4.Type), ''))),'') ) END) AS Rchr_Attd_Process_IDR, 
+RCHR_Mobalizerserviceinc.Getincentive, 
+RCHR_Mobalizerserviceinc.AD_Client_ID, 
+RCHR_Mobalizerserviceinc.Rchr_Mobalizerserviceinc_ID, 
+ 
+        ? AS LANGUAGE 
+        FROM RCHR_Mobalizerserviceinc left join (select AD_Org_ID, Name from AD_Org) table1 on (RCHR_Mobalizerserviceinc.AD_Org_ID = table1.AD_Org_ID) left join (select Rchr_Mobalizer_ID, Rchr_Employee_ID from Rchr_Mobalizer) table2 on (RCHR_Mobalizerserviceinc.Rchr_Mobalizer_ID = table2.Rchr_Mobalizer_ID) left join (select Rchr_Employee_ID, Punchno, Employeename from Rchr_Employee) table3 on (table2.Rchr_Employee_ID = table3.Rchr_Employee_ID) left join (select Rchr_Attd_Process_ID, Monthname, Type from Rchr_Attd_Process) table4 on (RCHR_Mobalizerserviceinc.Rchr_Attd_Process_ID = table4.Rchr_Attd_Process_ID)
+        WHERE 2=2 
+
+        AND 1=1 
+        AND RCHR_Mobalizerserviceinc.Rchr_Mobalizerserviceinc_ID = ? 
+        AND RCHR_Mobalizerserviceinc.AD_Client_ID IN ('1') 
+           AND RCHR_Mobalizerserviceinc.AD_Org_ID IN ('1') 
+    ]]></Sql>
+    <Parameter name="dateTimeFormat"></Parameter>
+    <Parameter name="dateTimeFormat"></Parameter>
+    
+    <Parameter name="paramLanguage"></Parameter>
+
+
+    <Parameter name="key"></Parameter>
+        <Parameter name="adUserClient" type="replace" optional="true" after="RCHR_Mobalizerserviceinc.AD_Client_ID IN (" text="'1'"/>
+        <Parameter name="adOrgClient" type="replace" optional="true" after="RCHR_Mobalizerserviceinc.AD_Org_ID IN (" text="'1'"/>
+
+    <Field name="adUserClient" value="void"></Field>
+    <Field name="adOrgClient" value="void"></Field>
+    <Field name="createdby" value="void"></Field>
+    
+    <Field name="trBgcolor" value="void"></Field>
+    <Field name="totalCount" value="void"></Field>
+    <Field name="dateTimeFormat" value=""></Field>
+  </SqlMethod>
+  
+  
+
+  <SqlMethod name="set" type="constant" return="multiple">
+      <SqlMethodComment>Create a registry</SqlMethodComment>
+      <Sql></Sql>
+
+<Parameter name="createdby"></Parameter><Parameter name="createdbyr"></Parameter><Parameter name="adOrgId"></Parameter><Parameter name="rchrAttdProcessId"></Parameter><Parameter name="updatedby"></Parameter><Parameter name="updatedbyr"></Parameter><Parameter name="isactive"></Parameter><Parameter name="rchrMobalizerserviceincId"></Parameter><Parameter name="adClientId"></Parameter><Parameter name="getincentive"></Parameter><Parameter name="rchrMobalizerId"></Parameter>
+   </SqlMethod>
+
+
+
+
+
+
+   <SqlMethod name="selectDef04D6D4FAD15D4741808369C1A9E0614B_0" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>Select for auxiliar field</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT  ( COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table2.Name), ''))), '') ) as Createdby FROM AD_User left join (select AD_User_ID, Name from AD_User) table2 on (AD_User.AD_User_ID = table2.AD_User_ID) WHERE AD_User.isActive='Y' AND AD_User.AD_User_ID = ?  
+    ]]></Sql>
+<Parameter name="CreatedbyR"/>
+  </SqlMethod>
+
+   <SqlMethod name="selectDef3B88C5261B4C447C9A80049E1BC40890_1" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>Select for auxiliar field</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT  ( COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table2.Name), ''))), '') ) as Updatedby FROM AD_User left join (select AD_User_ID, Name from AD_User) table2 on (AD_User.AD_User_ID = table2.AD_User_ID) WHERE AD_User.isActive='Y' AND AD_User.AD_User_ID = ?  
+    ]]></Sql>
+<Parameter name="UpdatedbyR"/>
+  </SqlMethod>
+
+
+
+
+
+
+
+
+
+
+  <SqlMethod name="update" type="preparedStatement" return="rowCount" static="false" connection="true">
+    <Sql><![CDATA[
+        UPDATE RCHR_Mobalizerserviceinc
+        SET AD_Org_ID = (?) , Isactive = (?) , Rchr_Mobalizer_ID = (?) , Rchr_Attd_Process_ID = (?) , Getincentive = (?) , AD_Client_ID = (?) , Rchr_Mobalizerserviceinc_ID = (?) , updated = now(), updatedby = ? 
+        WHERE RCHR_Mobalizerserviceinc.Rchr_Mobalizerserviceinc_ID = ? 
+        
+        AND RCHR_Mobalizerserviceinc.AD_Client_ID IN ('1') 
+        AND RCHR_Mobalizerserviceinc.AD_Org_ID IN ('1') 
+    ]]></Sql>
+    <Parameter name="adOrgId"></Parameter> <Parameter name="isactive"></Parameter> <Parameter name="rchrMobalizerId"></Parameter> <Parameter name="rchrAttdProcessId"></Parameter> <Parameter name="getincentive"></Parameter> <Parameter name="adClientId"></Parameter> <Parameter name="rchrMobalizerserviceincId"></Parameter> 
+    <Parameter name="updatedby"></Parameter>
+    <Parameter id="paramKey" name="rchrMobalizerserviceincId"></Parameter>
+    
+    
+        <Parameter name="adUserClient" type="replace" optional="true" after="RCHR_Mobalizerserviceinc.AD_Client_ID IN (" text="'1'"/>
+        <Parameter name="adOrgClient" type="replace" optional="true" after="RCHR_Mobalizerserviceinc.AD_Org_ID IN (" text="'1'"/>
+  </SqlMethod>
+
+  <SqlMethod name="insert" type="preparedStatement" return="rowCount" static="false" connection="true">
+    <Sql><![CDATA[
+        INSERT INTO RCHR_Mobalizerserviceinc 
+        (AD_Org_ID, Isactive, Rchr_Mobalizer_ID, Rchr_Attd_Process_ID, Getincentive, AD_Client_ID, Rchr_Mobalizerserviceinc_ID, created, createdby, updated, updatedBy)
+        VALUES ((?), (?), (?), (?), (?), (?), (?), now(), ?, now(), ?)
+    ]]></Sql>
+    <Parameter name="adOrgId"></Parameter> <Parameter name="isactive"></Parameter> <Parameter name="rchrMobalizerId"></Parameter> <Parameter name="rchrAttdProcessId"></Parameter> <Parameter name="getincentive"></Parameter> <Parameter name="adClientId"></Parameter> <Parameter name="rchrMobalizerserviceincId"></Parameter> 
+    <Parameter name="createdby"></Parameter>
+    <Parameter name="updatedby"></Parameter>
+  </SqlMethod>
+
+  <SqlMethod name="delete" type="preparedStatement" return="rowCount">
+    <Sql><![CDATA[
+        DELETE FROM RCHR_Mobalizerserviceinc
+        WHERE RCHR_Mobalizerserviceinc.Rchr_Mobalizerserviceinc_ID = ? 
+        
+        AND RCHR_Mobalizerserviceinc.AD_Client_ID IN ('1') 
+        AND RCHR_Mobalizerserviceinc.AD_Org_ID IN ('1') 
+    ]]></Sql>
+    <Parameter name="param1"></Parameter>
+    
+        <Parameter name="adUserClient" type="replace" optional="true" after="RCHR_Mobalizerserviceinc.AD_Client_ID IN (" text="'1'"/>
+        <Parameter name="adOrgClient" type="replace" optional="true" after="RCHR_Mobalizerserviceinc.AD_Org_ID IN (" text="'1'"/>
+  </SqlMethod>
+
+  <SqlMethod name="selectOrg" type="preparedStatement" return="string">
+    <SqlMethodComment>Select for relation</SqlMethodComment>
+    <Sql><![CDATA[ 
+        SELECT AD_ORG_ID
+          FROM RCHR_Mobalizerserviceinc
+         WHERE RCHR_Mobalizerserviceinc.Rchr_Mobalizerserviceinc_ID = ? 
+    ]]></Sql>
+    <Parameter name="id"></Parameter>
+  </SqlMethod>
+  
+  <SqlMethod name="getCurrentDBTimestamp" type="preparedStatement" return="string">
+    <Sql><![CDATA[ 
+        SELECT to_char(Updated, 'YYYYMMDDHH24MISS') as Updated_Time_Stamp
+          FROM RCHR_Mobalizerserviceinc
+         WHERE RCHR_Mobalizerserviceinc.Rchr_Mobalizerserviceinc_ID = ? 
+    ]]></Sql>
+    <Parameter name="id"></Parameter>
+  </SqlMethod>
+</SqlClass>

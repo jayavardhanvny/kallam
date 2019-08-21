@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ApplicationForSalaryAdvance" pageWidth="612" pageHeight="792" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="98"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="AdvanceId" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[select
+(select documentno from rchr_gas_advance where rchr_gas_advance_id = $P{AdvanceId}) as documentno,
+duedate as duedate,
+loanamount as amount,
+paid as paid
+from rchr_gas_advancelines where rchr_gas_advance_id = $P{AdvanceId}
+]]>
+	</queryString>
+	<field name="documentno" class="java.lang.String"/>
+	<field name="duedate" class="java.sql.Timestamp"/>
+	<field name="amount" class="java.math.BigDecimal"/>
+	<field name="paid" class="java.lang.String"/>
+	<variable name="sno" class="java.math.BigDecimal" calculation="Count">
+		<variableExpression><![CDATA[$F{documentno}]]></variableExpression>
+		<initialValueExpression><![CDATA[]]></initialValueExpression>
+	</variable>
+	<pageHeader>
+		<band height="21">
+			<staticText>
+				<reportElement x="0" y="0" width="468" height="12"/>
+				<textElement>
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ Advance For Gas Connection :]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="14">
+			<line>
+				<reportElement x="51" y="13" width="471" height="1"/>
+			</line>
+			<line>
+				<reportElement x="51" y="0" width="472" height="1"/>
+			</line>
+			<line>
+				<reportElement x="522" y="0" width="1" height="14"/>
+			</line>
+			<line>
+				<reportElement x="110" y="0" width="1" height="14"/>
+			</line>
+			<line>
+				<reportElement x="313" y="0" width="1" height="14"/>
+			</line>
+			<staticText>
+				<reportElement x="55" y="0" width="50" height="12"/>
+				<textElement textAlignment="Center">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[S.no:]]></text>
+			</staticText>
+			<line>
+				<reportElement x="50" y="0" width="1" height="14"/>
+			</line>
+			<line>
+				<reportElement x="440" y="0" width="1" height="14"/>
+			</line>
+			<staticText>
+				<reportElement x="117" y="0" width="62" height="12"/>
+				<textElement textAlignment="Center">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Document No]]></text>
+			</staticText>
+			<line>
+				<reportElement x="183" y="0" width="1" height="14"/>
+			</line>
+			<staticText>
+				<reportElement x="184" y="0" width="129" height="14"/>
+				<textElement textAlignment="Center">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Due Date]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="314" y="0" width="126" height="14"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Amount]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="460" y="0" width="59" height="14"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[paid]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="14">
+			<line>
+				<reportElement x="51" y="13" width="471" height="1"/>
+			</line>
+			<line>
+				<reportElement x="110" y="0" width="1" height="14"/>
+			</line>
+			<line>
+				<reportElement x="313" y="0" width="1" height="14"/>
+			</line>
+			<line>
+				<reportElement x="50" y="0" width="1" height="14"/>
+			</line>
+			<line>
+				<reportElement x="522" y="0" width="1" height="14"/>
+			</line>
+			<line>
+				<reportElement x="440" y="0" width="1" height="14"/>
+			</line>
+			<textField isBlankWhenNull="true">
+				<reportElement x="55" y="0" width="48" height="12"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{sno}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="113" y="0" width="63" height="13"/>
+				<textElement textAlignment="Right">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{documentno}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="183" y="0" width="1" height="13"/>
+			</line>
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement x="222" y="1" width="82" height="12"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.sql.Timestamp"><![CDATA[$F{duedate}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="324" y="0" width="104" height="14"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{amount}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="462" y="0" width="58" height="14"/>
+				<textElement textAlignment="Justified" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{paid}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="75">
+			<line>
+				<reportElement x="50" y="74" width="472" height="1"/>
+			</line>
+			<line>
+				<reportElement x="522" y="0" width="1" height="74"/>
+			</line>
+			<line>
+				<reportElement x="50" y="0" width="1" height="74"/>
+			</line>
+			<staticText>
+				<reportElement x="67" y="50" width="49" height="12"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Prepared]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="159" y="50" width="57" height="12"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[TO Incharge]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="270" y="50" width="47" height="12"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[HOD  HR]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="362" y="51" width="40" height="11"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[A / C]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="460" y="51" width="49" height="11"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Approval]]></text>
+			</staticText>
+		</band>
+	</columnFooter>
+</jasperReport>

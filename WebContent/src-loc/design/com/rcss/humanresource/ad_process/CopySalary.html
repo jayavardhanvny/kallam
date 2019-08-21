@@ -1,0 +1,631 @@
+<!--
+ *************************************************************************
+ * The contents of this file are subject to the Openbravo  Public  License
+ * Version  1.1  (the  "License"),  being   the  Mozilla   Public  License
+ * Version 1.1  with a permitted attribution clause; you may not  use this
+ * file except in compliance with the License. You  may  obtain  a copy of
+ * the License at http://www.openbravo.com/legal/license.html 
+ * Software distributed under the License  is  distributed  on  an "AS IS"
+ * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+ * License for the specific  language  governing  rights  and  limitations
+ * under the License. 
+ * The Original Code is Openbravo ERP. 
+ * The Initial Developer of the Original Code is Openbravo SLU 
+ * All portions are Copyright (C) 2001-2012 Openbravo SLU 
+ * All Rights Reserved. 
+ * Contributor(s):  ______________________________________.
+ ************************************************************************
+-->
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <title>Copy OT List</title>
+  <link rel="shortcut icon" href="../../../../../web/images/favicon.ico" type="image/x-icon" />
+  <link rel="stylesheet" type="text/css" href="../../../../../web/skins/Default/Openbravo_ERP_250.css" id="paramCSS"/>
+    <link rel="stylesheet" type="text/css" href="../../../../../web/skins/Default/bootstrap.css" id="paramBCSS"/>
+  <script language="JavaScript" src="../../../../../web/js/shortcuts.js" type="text/javascript"></script>
+  <script language="JavaScript" src="../../../../../web/js/utils.js" type="text/javascript"></script>
+  <script language="JavaScript" src="../../../../../web/js/ajax.js" type="text/javascript"></script>
+  <script language="JavaScript" src="../../../../../web/js/messages.js" type="text/javascript"></script>
+  <script language="JavaScript" type="text/javascript" id="paramDirectory">var baseDirectory = "../../../../../web/";</script>
+  <script language="JavaScript" type="text/javascript" id="paramLanguage">defaultLang = "en_US";</script>
+  <script language="JavaScript" src="../utility/DynamicJS.js" type="text/javascript"></script>
+  <script language="JavaScript" src="../../../../../web/js/default/MessageBox.js" type="text/javascript"></script>
+  <script language="JavaScript" src="../../../../../web/js/windowKeyboard.js" type="text/javascript"></script>
+  <script language="JavaScript" src="../../../../../web/js/appStatus.js" type="text/javascript"></script>
+  <script language="JavaScript" src="../../../../../web/js/searchs.js" type="text/javascript"></script>
+    <script language="JavaScript" src="../../../../../web/js/jquery.min.js" type="text/javascript"></script>
+    <script language="JavaScript" src="../../../../../web/js/bootstrap.js" type="text/javascript"></script>
+  <script language="JavaScript" type="text/javascript">
+
+ window.onunload = reloadOpener; // reloads opener on closing
+ 
+ var tamt=0;
+ function markAllData(chk, bolMark)
+ {
+   
+   if (bolMark==null) {bolMark = false;tamt=0;}
+   if (!chk) {return false;tamt=0;}
+   else if (!chk.length) {
+     tamt=0;
+     chk.checked = bolMark;
+     loadData(chk.value, bolMark);
+   } else {
+     tamt=0;		
+     var total = chk.length;
+     for (var i=0;i<total;i++) {
+       chk[i].checked = bolMark;
+       loadData(chk[i].value, bolMark);
+     }
+   }
+   return true;
+ }
+
+ var state=false;
+ //var cnt=0;
+ 
+ function loadData(value, enable) {
+    if(enable){        
+    var x = document.getElementById("student_table").tBodies[0].rows[value-1];
+    var oCells = x.cells;
+    var cellVal = oCells.item(1).children[0].value;
+    var cellVal1 = oCells.item(4).children[0].value;
+    
+    tamt=tamt+parseInt(cellVal);   
+    //tempamt=tamt+parseInt(cellVal);   
+    }
+    else{
+    var x = document.getElementById("student_table").tBodies[0].rows[value-1];
+    var oCells = x.cells;
+    var cellVal = oCells.item(1).children[0].value;   
+    //tamt=tempamt-parseInt(cellVal);
+    tamt=tamt-parseInt(cellVal);    
+    }
+    document.getElementById("totalamt").innerHTML =tamt;
+ 	  	 
+ }
+
+ function validate(action) {
+   var frm=document.frmMain;
+   for (i=0; i < frm.elements.length; i++) {
+     var chk = frm.elements[i].name.slice(0, "inpRownumId".length);
+ 	if ((chk === "inpRownumId") && (frm.elements[i].checked == true)) {
+ 	  var numRow = frm.elements[i].id.slice("CheckNum".length);
+ 	}
+   }
+   return true;
+ }
+ </script>
+
+ <script language="JavaScript" type="text/javascript">
+     var selectedRow = "";
+     function selectActual(obj) {
+       if (selectedRow != "") {
+         selectedRow.className = selectedRow.className.replace(' DataGrid_Body_Row_selected', '');
+       }
+       selectedRow = obj;
+       selectedRow.className += " DataGrid_Body_Row_selected";
+     }
+
+     function checkActual(obj) {
+       selectedCheck = selectedRow.id.toString().replace('funcEvenOddRow', 'CheckNum');
+       document.getElementById(selectedCheck).checked = !document.getElementById(selectedCheck).checked;
+       loadData(document.getElementById(selectedCheck).value,document.getElementById(selectedCheck).checked);
+     }
+
+     function HoverCell(cell) {
+       cell.className = cell.className + ' DataGrid_Body_Cell_hover';
+     }
+
+     function unHoverCell(cell) {
+       cell.className = cell.className.replace(' DataGrid_Body_Cell_hover', '');
+     }
+   </script>
+
+
+   <script language="JavaScript" type="text/javascript">
+     function onLoadDo(){
+       this.windowTables = new Array(
+         new windowTableId('client_middle', 'buttonOK'),
+         new windowTableId('client_bottom', 'buttonOK')
+       );
+       setWindowTableParentElement();
+       this.tabsTables = new Array(
+         new tabTableId('tdtopTabs')
+       );
+       setTabTableParentElement();
+
+       enableShortcuts('popup');
+       setBrowserAutoComplete(false);
+         
+       resizeAreaCreateFrom();
+
+       setWindowElementFocus('firstElement');
+     }
+
+     function onResizeDo(){
+       resizeAreaCreateFrom();
+     }
+   </script>
+
+   <script language="JavaScript" type="text/javascript">
+     function closeThisPage() {
+       closePage();
+       return true;
+     }
+
+     function submitThisPage(strCommand) {    	     	
+       if (validate(strCommand)) {
+    	   var inp= document.frmMain.inprchrBanksalpaymentsId;
+         setProcessingMode('popup', true);
+         submitCommandForm(strCommand, false, null, 'CopySalary.html', null);
+         return true;
+       }
+       return true;
+     }
+     
+     function isValidNumber(input, name, idd) {
+       var id = input.name.slice(name.length);
+       var errorSpan = document.getElementById(idd+id);
+       if (errorSpan) {
+         var isValid = validateNumber(input.value, true, true);
+         errorSpan.style.display = isValid ? 'none' : 'block';
+         if (!isValid) {
+           return false;
+         }
+       }
+       return true;
+     } 
+  </script>  
+</head>
+
+
+<body leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onload="onLoadDo();" onresize="onResizeDo();">
+<form id="form" method="post" action="../ad_process/CopySalary.html" name="frmMain">
+  <input type="hidden" name="Command"/>
+  <input type="hidden" name="IsPopUpCall" value="1"/>
+ <input type="hidden" name="inprchrBanksalpaymentsId" value="" id="paramKey"/>
+  <input type="hidden" name="inpWindowId" value="" id="paramWindowId"/>
+ <input type="hidden" name="inpTabId" value="" id="paramTabId"/>
+<!--  <input type="hidden" name="inpissotrx" value="" id="paramisSOTrx"/>-->
+
+  <div class="Popup_ContentPane_CircleLogo">
+    <div class="Popup_WindowLogo">
+      <img class="Popup_WindowLogo_Icon Popup_WindowLogo_Icon_process" src="../../../../../web/images/blank.gif" border="0"/>
+    </div>
+  </div>
+
+  <table id="table_header" cellspacing="0" cellpadding="0" width="100%">
+
+    <tr>
+      <td>
+        <table cellspacing="0" cellpadding="0" class="Popup_ContentPane_NavBar" id="tdToolBar">
+          <tr class="Popup_NavBar_bg"><td></td>
+            <td class="Popup_NavBar_separator_cell"></td>
+            <td class="Popup_NavBar_bg_logo_left"></td>
+            <td class="Popup_NavBar_bg_logo" width="1" onclick="openNewBrowser('http://www.openbravo.com', 'Openbravo');return false;"><img src="../../../../../web/images/blank.gif" alt="Openbravo" title="Openbravo" border="0" id="openbravoLogo" class="Popup_NavBar_logo" /></td>
+            <td class="Popup_NavBar_bg_logo_right"></td>
+            <td class="Popup_NavBar_Popup_title_cell"><span>Copy Cheque Salary</span></td>
+            <td class="Popup_NavBar_separator_cell"></td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        <table cellspacing="0" cellpadding="0" class="Popup_ContentPane_SeparatorBar" id="tdbottomSeparator">
+          <tr>
+            <td class="Popup_SeparatorBar_bg"></td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+
+  <table cellspacing="0" cellpadding="0" width="100%">
+    <tr>
+      <td>
+        <div class="Popup_ContentPane_Client" style="overflow: auto;" id="client_messagebox">
+
+          <!-- MessageBox -->
+          <table cellpadding="0" cellspacing="0" id="messageBoxID" class="MessageBoxyy">
+            <tbody>
+            <tr class="MessageBox_TopMargin">
+              <td class="MessageBox_LeftMargin"></td>
+              <td></td>
+              <td class="MessageBox_RightMargin"></td>
+            </tr>
+            <tr>
+              <td class="MessageBox_LeftMargin"></td>
+              <td>
+
+                <table cellpadding="0" cellspacing="0" class="MessageBox_Container">
+                  <tbody>
+                  <tr>
+                    <td class="MessageBox_LeftTrans">
+                      <table style="width: 100%; height: 100%" cellpadding="0" cellspacing="0">
+                        <tbody>
+                        <tr>
+                          <td class="MessageBox_TopLeft"></td>
+                        </tr>
+                        <tr>
+                          <td class="MessageBox_Left"></td>
+                        </tr>
+                        </tbody>
+                      </table>
+                    </td>
+                    <td class="MessageBox_bg">
+
+                      <table class="MessageBox_Top">
+                      <tbody>
+                        <tr>
+                          <td>
+                            <span>
+                            <table cellpadding="0" cellspacing="0" class="MessageBox_Body_ContentCell">
+                              <tbody>
+                              <tr>
+                                <td class="MessageBox_Icon_ContentCell">
+                                  <div class="MessageBox_Icon"></div>
+                                </td>
+                                <td style="vertical-align: top;" id="messageBoxIDContent">
+                                  <span>
+                                    <div class="MessageBox_TextTitle" id="messageBoxIDTitle">
+                                      xxInfo: AccessTableWithNoView
+                                    </div>
+                                    <div class="MessageBox_TextDescription" id="messageBoxIDMessage">
+                                      xxThe current information is empty.
+                                    </div>
+                                    <div class="MessageBox_TextSeparator"></div>
+                                  </span>
+                                </td>
+                              </tr>
+                              </tbody>
+                            </table>
+                            </span>
+                          </td>
+                        </tr>
+                        </tbody>
+                      </table>
+
+                    </td>
+                    <td class="MessageBox_RightTrans">
+                      <table style="width: 100%; height: 100%" cellpadding="0" cellspacing="0">
+                        <tbody>
+                        <tr>
+                          <td class="MessageBox_TopRight"></td>
+                        </tr>
+                        <tr>
+                          <td class="MessageBox_Right"></td>
+                        </tr>
+                        </tbody>
+                      </table>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td rowspan="2" class="MessageBox_BottomLeft">
+                    </td>
+                    <td class="MessageBox_BottomTrans MessageBox_bg">
+                    </td>
+                    <td rowspan="2" class="MessageBox_BottomRight">
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="MessageBox_Bottom">
+                    </td>
+                  </tr>
+                  </tbody>
+                </table>
+
+              </td>
+              <td class="MessageBox_RightMargin"></td>
+            </tr>
+            <tr class="MessageBox_BottomMargin">
+              <td class="MessageBox_LeftMargin"></td>
+              <td></td>
+                <td class="MessageBox_RightMargin"></td>
+              </tr>
+            </tbody>
+          </table>
+        <!-- MessageBox END -->
+        </div>
+      </td>
+    </tr>
+  </table>
+
+  <table cellspacing="0" cellpadding="0" width="100%">
+    <tr>
+      <td>
+        <div class="Popup_ContentPane_Client" style="overflow: auto;" id="client_top">
+          <table cellspacing="0" cellpadding="0" class="Popup_Client_TableSelector" id="tdtopTabs">
+            <tr>
+              <td class="TableEdition_OneCell_width"></td>
+              <td class="TableEdition_OneCell_width"></td>
+              <td class="TableEdition_OneCell_width"></td>
+              <td class="TableEdition_OneCell_width"></td>
+              <td class="TableEdition_OneCell_width"></td>
+              <td class="TableEdition_OneCell_width"></td>
+            </tr>
+
+	    <tr>
+            	<td class="TitleCell"><span class="LabelText">Total Amount</span></td>
+                 
+                <td class="TitleCell"><span class="LabelText" id="totalamt" name="totalamt"></span></td>
+                  	
+               </td>
+               <td class="TitleCell"><span class="LabelText">Today Paid Amount</span></td>
+                  <td class="Combo_ContentCell"  colspan="2"> 
+                  	<span id="paidamt" name="paidamt"></span>
+                  	
+               </td>
+            </tr>                                    
+            <tr>
+              <td colspan="6">
+                <table class="FieldGroup" cellspacing="0" cellpadding="0" border="0">
+                <tbody>
+                  <tr class="FieldGroup_TopMargin"/>
+                  <tr>
+                    <td class="FieldGroupTitle_Left"><img class="FieldGroupTitle_Left_bg" border="0" src="../../../../../web/images/blank.gif"/></td>
+                    <td class="FieldGroupTitle">Filter</td>
+                    <td class="FieldGroupTitle_Right"><img class="FieldGroupTitle_Right_bg" border="0" src="../../../../../web/images/blank.gif"/></td>
+                    <td class="FieldGroupContent"/>
+                  </tr>
+                  <tr class="FieldGroup_BottomMargin"/>
+                </tbody>
+                </table>
+              </td>
+            </tr>
+
+
+        </table>
+        </div>
+      </td>
+    </tr>
+             
+    <tr>
+      <td>
+        <div class="Popup_ContentPane_Client" style="overflow: auto; display: none;" id="client_middle">
+         
+          <table height="100%" border="0" cellpadding="0" cellspacing="0" id="main">
+
+            <tr>
+              <td valign="top" class="Popup_Client_Selector_DataGrid_LeftMargin">
+                <table width="100%" border="0" cellspacing="0" cellpadding="0" id="tdleftSeparator">
+                  <tr><td class="Popup_Client_Selector_DataGrid_LeftMargin"></td></tr>
+                </table>
+              </td>
+              <td valign="top">
+                  <div align="center">
+                      <input type="text" name="search" id="search" placeholder="Find an Employee" class="form-control" />
+                  </div>
+
+                  <table id="student_table" cellspacing="0" cellpadding="0" width="100%" class="DataGrid_Header_Table DataGrid_Body_Table" style="table-layout: auto;">
+                    <thead>
+                    <tr class="DataGrid_Body_Row">
+                      <th width="24px" class="DataGrid_Header_LineNoCell DataGrid_Body_Cell_CheckBox"><span class="Checkbox_container_NOT_Focused"><input class="DataGrid_CheckBox" type="checkbox" name="inpTodos" onclick="markAllData(document.frmMain.inpRownumId, this.checked);return true;"/></span></th>
+                     
+                     <th width="5%" class="DataGrid_Header_Cell">PROCESSING AMOUNT</th>
+                                          					  		
+		             <th width="5%" class="DataGrid_Header_Cell">BALANCE</th>
+		     
+		            <th width="5%" class="DataGrid_Header_Cell">NET SALARY</th>
+		      		         					
+		            <th width="5%" class="DataGrid_Header_Cell">Employee No</th>
+		       	
+		            <th width="5%" class="DataGrid_Header_Cell">Employee Name</th>
+				
+			        <th width="5%" class="DataGrid_Header_Cell">Account No</th>
+			
+			        <th width="5%" class="DataGrid_Header_Cell">IFSC Code</th>
+			  
+			        <th width="5%" class="DataGrid_Header_Cell">BankName</th>
+					                 		  						
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <div id="sectionDetail">
+
+                      <tr class="DataGrid_Body_Row DataGrid_Body_Row_yy" onclick="selectActual(this); return true;" id="funcEvenOddRowxx"> 
+                        <td width="2%" class="DataGrid_Body_LineNoCell DataGrid_Body_Cell_CheckBox">
+                          <span class="Checkbox_container_NOT_Focused">
+                              <input type="checkbox" name="inpRownumId" onclick="loadData(this.value, this.checked);return true;" id="CheckNumxx" value="xx"/></span>
+                        </td>
+
+
+                          <td width="2%" id="fieldPamttd" name="inppamtxx" class="DataGrid_Body_Cell" onmouseover="HoverCell(this);"
+                              onmouseout="unHoverCell(this);">
+                              <input class="dojoValidateValid readonly"
+                                     id="fieldPamt" style="font-weight: normal;" name="inppamtxx"
+                                     type="text" size="8" value="0" outputformat="euroEdition"
+                                     onfocus="numberInputEvent('onfocus', this);" onblur="numberInputEvent('onblur', this);"
+                                     onkeydown="numberInputEvent('onkeydown', this, event);"
+                              />
+                          </td>
+
+                          <td width="2%" id="fieldPBamttd" name="inppamtxx" class="DataGrid_Body_Cell" onmouseover="HoverCell(this);"
+                              onmouseout="unHoverCell(this);">
+                              <input class="dojoValidateValid readonly" type="hidden"
+                                     id="fieldPBamt" style="font-weight: normal;" name="inppamtxx"
+                                     type="text" size="8" value="0" outputformat="euroEdition"
+                                     onfocus="numberInputEvent('onfocus', this);" onblur="numberInputEvent('onblur', this);"
+                                     onkeydown="numberInputEvent('onkeydown', this, event);"
+                              />&nbsp;
+
+                          </td>
+
+                          <td width="2%" class="DataGrid_Body_Cell" id="fieldTotalpaytd" onmouseover="HoverCell(this);" onmouseout="unHoverCell(this);">
+                              <input class="dojoValidateValid readonly" type="hidden"
+                                     id="fieldTotalpay" style="font-weight: normal;" name="inptotalpaytxx" type="text" size="8"
+                                     value="0" outputformat="euroEdition"
+                                     onfocus="numberInputEvent('onfocus', this);"
+                                     onblur="numberInputEvent('onblur', this);"
+                                     onkeydown="numberInputEvent('onkeydown', this, event);"
+                              />&nbsp;
+                          </td>
+
+                          <td width="2%" class="DataGrid_Body_Cell" id="fieldEmpnotd"  onmouseover="HoverCell(this);" onmouseout="unHoverCell(this);">
+                              <input class="dojoValidateValid readonly" id="fieldEmpno"  type="hidden"
+                                     style="font-weight: normal;" name="inpempnoxx" type="text" size="30" value="0"
+                                     onfocus="numberInputEvent('onfocus', this);" onblur="numberInputEvent('onblur', this);"
+                                     onkeydown="numberInputEvent('onkeydown', this, event);"
+                              />&nbsp;
+
+                          </td>
+
+
+                          <td width="2%" class="DataGrid_Body_Cell" onmouseover="HoverCell(this);" id="fieldEnametd"
+                              onmouseout="unHoverCell(this);">
+                              <input class="dojoValidateValid readonly" id="fieldEname" type="hidden"
+                                     style="font-weight: normal;" name="inpenamexx" type="text" size="30" value="0"
+                                     onfocus="numberInputEvent('onfocus', this);" onblur="numberInputEvent('onblur', this);"
+                                     onkeydown="numberInputEvent('onkeydown', this, event);"
+                              />&nbsp;
+
+                          </td>
+
+                          <td width="2%" class="DataGrid_Body_Cell" onmouseover="HoverCell(this);" id="fieldAcnotd"
+                              onmouseout="unHoverCell(this);">
+                              <input class="dojoValidateValid readonly" id="fieldAcno" type="hidden"
+                                     style="font-weight: normal;" name="inpacnoxx" type="text" size="30" value="0"
+                                     onfocus="numberInputEvent('onfocus', this);" onblur="numberInputEvent('onblur', this);"
+                                     onkeydown="numberInputEvent('onkeydown', this, event);"
+                              />&nbsp;
+
+                          </td>
+
+                          <td width="2%" class="DataGrid_Body_Cell" onmouseover="HoverCell(this);" id="fieldIfsccodetd"
+                              onmouseout="unHoverCell(this);">
+                              <input class="dojoValidateValid readonly" id="fieldIfsccode" type="hidden"
+                                     style="font-weight: normal;" name="inpifsccodexx"
+                                     type="text" size="30" value="0"
+                                     onfocus="numberInputEvent('onfocus', this);" onblur="numberInputEvent('onblur', this);"
+                                     onkeydown="numberInputEvent('onkeydown', this, event);"
+                              />&nbsp;
+
+                          </td>
+
+                          <td width="2%" class="DataGrid_Body_Cell" onmouseover="HoverCell(this);"  id="fieldBanknametd"
+                              onmouseout="unHoverCell(this);">
+                              <input class="dojoValidateValid readonly" id="fieldBankname" type="hidden"
+                                     style="font-weight: normal;" name="inpbanknamexx" type="text" size="30" value="0"
+                                     onfocus="numberInputEvent('onfocus', this);" onblur="numberInputEvent('onblur', this);"
+                                     onkeydown="numberInputEvent('onkeydown', this, event);" />&nbsp;
+
+                          </td>
+						
+                      </tr>
+               
+                    </div>
+                    </tbody>
+                  </table>
+              </td>
+
+              <td valign="top" class="Popup_Client_Selector_DataGrid_RightMargin">
+                <table width="100%" border="0" cellspacing="0" cellpadding="0" id="tdrightSeparator">
+                  <tr><td class="Popup_Client_Selector_DataGrid_RightMargin"></td></tr>
+                </table>
+              </td>
+            </tr>
+            
+          </table>
+        </div>
+     </td>
+    </tr>
+    <tr>
+      <td>
+        <div class="Popup_ContentPane_Client" style="overflow: auto; padding-bottom: 5px;" id="client_bottom">
+        <table cellspacing="0" cellpadding="0" class="Popup_Client_TablePopup">
+          <tr>
+            <td class="TableEdition_OneCell_width"></td>
+            <td class="TableEdition_OneCell_width"></td>
+            <td class="TableEdition_OneCell_width"></td>
+            <td class="TableEdition_OneCell_width"></td>
+          </tr>
+          <tr>
+            <td></td>
+            <td class="Button_RightAlign_ContentCell">
+              <div>
+                <button type="button" 
+                  id="buttonOK" 
+                  class="ButtonLink" 
+                  onclick="submitThisPage('SAVE');return false;" 
+                  onfocus="buttonEvent('onfocus', this); window.status='Accept'; return true;" 
+                  onblur="buttonEvent('onblur', this);" 
+                  onkeyup="buttonEvent('onkeyup', this);" 
+                  onkeydown="buttonEvent('onkeydown', this);" 
+                  onkeypress="buttonEvent('onkeypress', this);" 
+                  onmouseup="buttonEvent('onmouseup', this);" 
+                  onmousedown="buttonEvent('onmousedown', this);" 
+                  onmouseover="buttonEvent('onmouseover', this); window.status='Accept'; return true;" 
+                  onmouseout="buttonEvent('onmouseout', this);">
+                  <table class="Button">
+                    <tr>
+                      <td class="Button_left"><img class="Button_Icon Button_Icon_ok" alt="Accept" title="Accept" src="../../../../../web/images/blank.gif" border="0" /></td>
+                      <td class="Button_text Button_width">OK</td>
+                      <td class="Button_right"></td>
+                    </tr>
+                  </table>
+                </button>
+              </div>
+            </td>
+            <td class="Button_LeftAlign_ContentCell">
+              <div>
+                <button type="button" 
+                  id="buttonCancel" 
+                  class="ButtonLink" 
+                  onclick="closeThisPage();return false;" 
+                  onfocus="buttonEvent('onfocus', this); window.status='Cancel'; return true;" 
+                  onblur="buttonEvent('onblur', this);" 
+                  onkeyup="buttonEvent('onkeyup', this);" 
+                  onkeydown="buttonEvent('onkeydown', this);" 
+                  onkeypress="buttonEvent('onkeypress', this);" 
+                  onmouseup="buttonEvent('onmouseup', this);" 
+                  onmousedown="buttonEvent('onmousedown', this);" 
+                  onmouseover="buttonEvent('onmouseover', this); window.status='Cancel'; return true;" 
+                  onmouseout="buttonEvent('onmouseout', this);">
+                  <table class="Button">
+                    <tr>
+                      <td class="Button_left"><img class="Button_Icon Button_Icon_cancel" alt="Cancel" title="Cancel" src="../../../../../web/images/blank.gif" border="0" /></td>
+                      <td class="Button_text Button_width">Cancel</td>
+                      <td class="Button_right"></td>
+                    </tr>
+                  </table>
+                </button>
+            </td>
+            <td></td>
+          </tr>
+        </table>
+      </div>
+      </td>
+    </tr>
+  </table>
+ 
+</form>
+</body>
+<script>
+      $(document).ready(function(){
+           $('#search').keyup(function(){
+                search_table($(this).val());
+           });
+           function search_table(value){
+                $('#student_table tr').each(function(){
+                     var found = 'false';
+                     $(this).each(function(){
+                          if($(this).text().toLowerCase().indexOf(value.toLowerCase()) >= 0)
+                          {
+                               found = 'true';
+                          }
+                     });
+                     if(found == 'true')
+                     {
+                          $(this).show();
+                     }
+                     else
+                     {
+                          $(this).hide();
+                     }
+                });
+           }
+      });
+ </script>
+</html>

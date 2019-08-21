@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SqlClass id="class" name="OperationData" package="org.openbravo.erpWindows.ProcessPlan">
+  <SqlClassComment>WAD Generated class</SqlClassComment>
+
+  <SqlMethod name="selectEdit" type="preparedStatement" return="multiple">
+    <SqlMethodComment>Select for edit</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT to_char(MA_Sequence.Created, ?) as created, 
+        (SELECT NAME FROM AD_USER u WHERE AD_USER_ID = MA_Sequence.CreatedBy) as CreatedByR, 
+        to_char(MA_Sequence.Updated, ?) as updated, 
+        to_char(MA_Sequence.Updated, 'YYYYMMDDHH24MISS') as Updated_Time_Stamp,  
+        MA_Sequence.UpdatedBy, 
+        (SELECT NAME FROM AD_USER u WHERE AD_USER_ID = MA_Sequence.UpdatedBy) as UpdatedByR,
+        MA_Sequence.SeqNo, 
+MA_Sequence.Value, 
+MA_Sequence.Name, 
+MA_Sequence.MA_Process_ID, 
+(CASE WHEN MA_Sequence.MA_Process_ID IS NULL THEN '' ELSE  (COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table1.Name), ''))),'') ) END) AS MA_Process_IDR, 
+MA_Sequence.Estimatedtime, 
+MA_Sequence.CostCenterUse, 
+MA_Sequence.Preptime, 
+MA_Sequence.Description, 
+MA_Sequence.Multiplier, 
+COALESCE(MA_Sequence.Noqty, 'N') AS Noqty, 
+COALESCE(MA_Sequence.Groupuse, 'N') AS Groupuse, 
+COALESCE(MA_Sequence.Outsourced, 'N') AS Outsourced, 
+MA_Sequence.Outsourcingcost, 
+COALESCE(MA_Sequence.Isdefault, 'N') AS Isdefault, 
+COALESCE(MA_Sequence.IsActive, 'N') AS IsActive, 
+MA_Sequence.Costcentercost, 
+COALESCE(MA_Sequence.Usedmaterial, 'N') AS Usedmaterial, 
+MA_Sequence.AD_Org_ID, 
+MA_Sequence.MA_Processplan_Version_ID, 
+MA_Sequence.AD_Client_ID, 
+COALESCE(MA_Sequence.Calculated, 'N') AS Calculated, 
+MA_Sequence.MA_Sequence_ID, 
+ 
+        ? AS LANGUAGE 
+        FROM MA_Sequence left join (select MA_Process_ID, Name from MA_Process) table1 on (MA_Sequence.MA_Process_ID = table1.MA_Process_ID)
+        WHERE 2=2 
+
+        AND 1=1 
+        AND MA_Sequence.MA_Sequence_ID = ? 
+        AND MA_Sequence.AD_Client_ID IN ('1') 
+           AND MA_Sequence.AD_Org_ID IN ('1') 
+    ]]></Sql>
+    <Parameter name="dateTimeFormat"></Parameter>
+    <Parameter name="dateTimeFormat"></Parameter>
+    
+    <Parameter name="paramLanguage"></Parameter>
+
+    <Parameter name="maProcessplanVersionId" optional="true" after="AND 1=1 " id="paramKeyParent"> AND MA_Sequence.MA_Processplan_Version_ID = ? </Parameter>
+    <Parameter name="key"></Parameter>
+        <Parameter name="adUserClient" type="replace" optional="true" after="MA_Sequence.AD_Client_ID IN (" text="'1'"/>
+        <Parameter name="adOrgClient" type="replace" optional="true" after="MA_Sequence.AD_Org_ID IN (" text="'1'"/>
+
+    <Field name="adUserClient" value="void"></Field>
+    <Field name="adOrgClient" value="void"></Field>
+    <Field name="createdby" value="void"></Field>
+    
+    <Field name="trBgcolor" value="void"></Field>
+    <Field name="totalCount" value="void"></Field>
+    <Field name="dateTimeFormat" value=""></Field>
+  </SqlMethod>
+  
+  
+
+  <SqlMethod name="set" type="constant" return="multiple">
+      <SqlMethodComment>Create a registry</SqlMethodComment>
+      <Sql></Sql>
+    <Parameter name="maProcessplanVersionId" id="paramKeyParent"></Parameter>
+<Parameter name="usedmaterial"></Parameter><Parameter name="maSequenceId"></Parameter><Parameter name="adClientId"></Parameter><Parameter name="adOrgId"></Parameter><Parameter name="isactive"></Parameter><Parameter name="createdby"></Parameter><Parameter name="createdbyr"></Parameter><Parameter name="updatedby"></Parameter><Parameter name="updatedbyr"></Parameter><Parameter name="maProcessId"></Parameter><Parameter name="value"></Parameter><Parameter name="name"></Parameter><Parameter name="description"></Parameter><Parameter name="costcenteruse"></Parameter><Parameter name="preptime"></Parameter><Parameter name="multiplier"></Parameter><Parameter name="seqno"></Parameter><Parameter name="noqty"></Parameter><Parameter name="groupuse"></Parameter><Parameter name="calculated"></Parameter><Parameter name="outsourced"></Parameter><Parameter name="outsourcingcost"></Parameter><Parameter name="costcentercost"></Parameter><Parameter name="isdefault"></Parameter><Parameter name="estimatedtime"></Parameter>
+   </SqlMethod>
+
+
+
+
+
+
+   <SqlMethod name="selectDef801524_0" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>Select for auxiliar field</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT  ( COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table2.Name), ''))), '') ) as Createdby FROM AD_User left join (select AD_User_ID, Name from AD_User) table2 on (AD_User.AD_User_ID = table2.AD_User_ID) WHERE AD_User.isActive='Y' AND AD_User.AD_User_ID = ?  
+    ]]></Sql>
+<Parameter name="CreatedbyR"/>
+  </SqlMethod>
+
+   <SqlMethod name="selectDef801526_1" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>Select for auxiliar field</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT  ( COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table2.Name), ''))), '') ) as Updatedby FROM AD_User left join (select AD_User_ID, Name from AD_User) table2 on (AD_User.AD_User_ID = table2.AD_User_ID) WHERE AD_User.isActive='Y' AND AD_User.AD_User_ID = ?  
+    ]]></Sql>
+<Parameter name="UpdatedbyR"/>
+  </SqlMethod>
+
+   <SqlMethod name="selectDef801758" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>Select for auxiliar field</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT COALESCE(MAX(SEQNO),0)+10 AS DefaultValue FROM MA_SEQUENCE WHERE MA_PROCESSPLAN_VERSION_ID=? 
+    ]]></Sql>
+
+<Parameter name="MA_PROCESSPLAN_VERSION_ID"/>
+  </SqlMethod>
+
+
+
+  <SqlMethod name="selectParentID" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>return the parent ID</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT MA_Sequence.MA_Processplan_Version_ID AS NAME
+        FROM MA_Sequence
+        WHERE MA_Sequence.MA_Sequence_ID = ?
+    ]]></Sql>
+    <Parameter name="key"></Parameter>
+  </SqlMethod>
+
+   <SqlMethod name="selectParent" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>Select for parent field</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT (TO_CHAR(COALESCE(TO_CHAR(table2.Name), '')) || ' - ' || TO_CHAR(COALESCE(TO_CHAR(table1.DocumentNo), ''))) AS NAME FROM MA_ProcessPlan_Version left join (select MA_Processplan_Version_ID, MA_Processplan_ID, DocumentNo from MA_Processplan_Version) table1 on (MA_ProcessPlan_Version.MA_Processplan_Version_ID = table1.MA_Processplan_Version_ID) left join (select MA_Processplan_ID, Name from MA_Processplan) table2 on (table1.MA_Processplan_ID = table2.MA_Processplan_ID) WHERE MA_ProcessPlan_Version.MA_Processplan_Version_ID = ?  
+    ]]></Sql>
+<Parameter name="maProcessplanVersionId"/>
+
+  </SqlMethod>
+
+
+
+
+   <SqlMethod name="selectParentTrl" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>Select for parent field</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT (TO_CHAR(COALESCE(TO_CHAR(table2.Name), '')) || ' - ' || TO_CHAR(COALESCE(TO_CHAR(table1.DocumentNo), ''))) AS NAME FROM MA_ProcessPlan_Version left join (select MA_Processplan_Version_ID, MA_Processplan_ID, DocumentNo from MA_Processplan_Version) table1 on (MA_ProcessPlan_Version.MA_Processplan_Version_ID = table1.MA_Processplan_Version_ID) left join (select MA_Processplan_ID, Name from MA_Processplan) table2 on (table1.MA_Processplan_ID = table2.MA_Processplan_ID) WHERE MA_ProcessPlan_Version.MA_Processplan_Version_ID = ?  
+    ]]></Sql>
+<Parameter name="maProcessplanVersionId"/>
+
+  </SqlMethod>
+
+
+
+
+
+
+
+
+  <SqlMethod name="update" type="preparedStatement" return="rowCount" static="false" connection="true">
+    <Sql><![CDATA[
+        UPDATE MA_Sequence
+        SET SeqNo = TO_NUMBER(?) , Value = (?) , Name = (?) , MA_Process_ID = (?) , Estimatedtime = TO_NUMBER(?) , CostCenterUse = TO_NUMBER(?) , Preptime = TO_NUMBER(?) , Description = (?) , Multiplier = TO_NUMBER(?) , Noqty = (?) , Groupuse = (?) , Outsourced = (?) , Outsourcingcost = TO_NUMBER(?) , Isdefault = (?) , IsActive = (?) , Costcentercost = TO_NUMBER(?) , Usedmaterial = (?) , AD_Org_ID = (?) , MA_Processplan_Version_ID = (?) , AD_Client_ID = (?) , Calculated = (?) , MA_Sequence_ID = (?) , updated = now(), updatedby = ? 
+        WHERE MA_Sequence.MA_Sequence_ID = ? 
+                 AND MA_Sequence.MA_Processplan_Version_ID = ? 
+        AND MA_Sequence.AD_Client_ID IN ('1') 
+        AND MA_Sequence.AD_Org_ID IN ('1') 
+    ]]></Sql>
+    <Parameter name="seqno"></Parameter> <Parameter name="value"></Parameter> <Parameter name="name"></Parameter> <Parameter name="maProcessId"></Parameter> <Parameter name="estimatedtime"></Parameter> <Parameter name="costcenteruse"></Parameter> <Parameter name="preptime"></Parameter> <Parameter name="description"></Parameter> <Parameter name="multiplier"></Parameter> <Parameter name="noqty"></Parameter> <Parameter name="groupuse"></Parameter> <Parameter name="outsourced"></Parameter> <Parameter name="outsourcingcost"></Parameter> <Parameter name="isdefault"></Parameter> <Parameter name="isactive"></Parameter> <Parameter name="costcentercost"></Parameter> <Parameter name="usedmaterial"></Parameter> <Parameter name="adOrgId"></Parameter> <Parameter name="maProcessplanVersionId"></Parameter> <Parameter name="adClientId"></Parameter> <Parameter name="calculated"></Parameter> <Parameter name="maSequenceId"></Parameter> 
+    <Parameter name="updatedby"></Parameter>
+    <Parameter id="paramKey" name="maSequenceId"></Parameter>
+    
+    <Parameter name="maProcessplanVersionId" id="paramKeyParent"></Parameter>
+        <Parameter name="adUserClient" type="replace" optional="true" after="MA_Sequence.AD_Client_ID IN (" text="'1'"/>
+        <Parameter name="adOrgClient" type="replace" optional="true" after="MA_Sequence.AD_Org_ID IN (" text="'1'"/>
+  </SqlMethod>
+
+  <SqlMethod name="insert" type="preparedStatement" return="rowCount" static="false" connection="true">
+    <Sql><![CDATA[
+        INSERT INTO MA_Sequence 
+        (SeqNo, Value, Name, MA_Process_ID, Estimatedtime, CostCenterUse, Preptime, Description, Multiplier, Noqty, Groupuse, Outsourced, Outsourcingcost, Isdefault, IsActive, Costcentercost, Usedmaterial, AD_Org_ID, MA_Processplan_Version_ID, AD_Client_ID, Calculated, MA_Sequence_ID, created, createdby, updated, updatedBy)
+        VALUES (TO_NUMBER(?), (?), (?), (?), TO_NUMBER(?), TO_NUMBER(?), TO_NUMBER(?), (?), TO_NUMBER(?), (?), (?), (?), TO_NUMBER(?), (?), (?), TO_NUMBER(?), (?), (?), (?), (?), (?), (?), now(), ?, now(), ?)
+    ]]></Sql>
+    <Parameter name="seqno"></Parameter> <Parameter name="value"></Parameter> <Parameter name="name"></Parameter> <Parameter name="maProcessId"></Parameter> <Parameter name="estimatedtime"></Parameter> <Parameter name="costcenteruse"></Parameter> <Parameter name="preptime"></Parameter> <Parameter name="description"></Parameter> <Parameter name="multiplier"></Parameter> <Parameter name="noqty"></Parameter> <Parameter name="groupuse"></Parameter> <Parameter name="outsourced"></Parameter> <Parameter name="outsourcingcost"></Parameter> <Parameter name="isdefault"></Parameter> <Parameter name="isactive"></Parameter> <Parameter name="costcentercost"></Parameter> <Parameter name="usedmaterial"></Parameter> <Parameter name="adOrgId"></Parameter> <Parameter name="maProcessplanVersionId"></Parameter> <Parameter name="adClientId"></Parameter> <Parameter name="calculated"></Parameter> <Parameter name="maSequenceId"></Parameter> 
+    <Parameter name="createdby"></Parameter>
+    <Parameter name="updatedby"></Parameter>
+  </SqlMethod>
+
+  <SqlMethod name="delete" type="preparedStatement" return="rowCount">
+    <Sql><![CDATA[
+        DELETE FROM MA_Sequence
+        WHERE MA_Sequence.MA_Sequence_ID = ? 
+                 AND MA_Sequence.MA_Processplan_Version_ID = ? 
+        AND MA_Sequence.AD_Client_ID IN ('1') 
+        AND MA_Sequence.AD_Org_ID IN ('1') 
+    ]]></Sql>
+    <Parameter name="param1"></Parameter>
+        <Parameter name="maProcessplanVersionId" id="paramKeyParent"></Parameter>
+        <Parameter name="adUserClient" type="replace" optional="true" after="MA_Sequence.AD_Client_ID IN (" text="'1'"/>
+        <Parameter name="adOrgClient" type="replace" optional="true" after="MA_Sequence.AD_Org_ID IN (" text="'1'"/>
+  </SqlMethod>
+
+  <SqlMethod name="selectOrg" type="preparedStatement" return="string">
+    <SqlMethodComment>Select for relation</SqlMethodComment>
+    <Sql><![CDATA[ 
+        SELECT AD_ORG_ID
+          FROM MA_Sequence
+         WHERE MA_Sequence.MA_Sequence_ID = ? 
+    ]]></Sql>
+    <Parameter name="id"></Parameter>
+  </SqlMethod>
+  
+  <SqlMethod name="getCurrentDBTimestamp" type="preparedStatement" return="string">
+    <Sql><![CDATA[ 
+        SELECT to_char(Updated, 'YYYYMMDDHH24MISS') as Updated_Time_Stamp
+          FROM MA_Sequence
+         WHERE MA_Sequence.MA_Sequence_ID = ? 
+    ]]></Sql>
+    <Parameter name="id"></Parameter>
+  </SqlMethod>
+</SqlClass>

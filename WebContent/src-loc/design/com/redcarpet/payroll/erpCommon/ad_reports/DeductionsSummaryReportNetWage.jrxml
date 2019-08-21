@@ -1,0 +1,271 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="DeductionSummary" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<property name="ireport.zoom" value="1.2100000000000006"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<style name="Crosstab Data Text" hAlign="Center" lineSpacing="Single"/>
+	<parameter name="ProcessID" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["/home/rcss/production/modules/com.redcarpet.payroll/src/com/redcarpet/payroll/erpCommon/ad_reports/"]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+payded.name as deduction,
+emppp.employeetype as emptype,
+ empded.deductions as dedamount,
+(case when (select isdyeing from rchr_emp_dept where rchr_emp_dept_id=emppp.rchr_emp_dept_id )='Y' then 'Dyeing'
+else 'weaving'
+end ) as type,
+
+(select monthname from rchr_attd_process where rchr_attd_process_id =$P{ProcessID}) as monthname
+
+FROM rcpl_payrollprocess pp
+left join rcpl_emppayrollprocess emppp ON emppp.rcpl_payrollprocess_id = pp.rcpl_payrollprocess_id
+left join RCPL_EmpPaydead empded ON emppp.rcpl_emppayrollprocess_id=empded.rcpl_emppayrollprocess_id
+left join rcpl_paydeducitionshead payded ON payded.rcpl_paydeducitionshead_id=empded.rcpl_paydeducitionshead_id
+WHERE pp.rchr_attd_process_id= $P{ProcessID}
+and emppp.totalpay>0]]>
+	</queryString>
+	<field name="deduction" class="java.lang.String"/>
+	<field name="emptype" class="java.lang.String"/>
+	<field name="dedamount" class="java.math.BigDecimal"/>
+	<field name="type" class="java.lang.String"/>
+	<field name="monthname" class="java.lang.String"/>
+	<pageHeader>
+		<band height="23">
+			<staticText>
+				<reportElement x="54" y="0" width="315" height="22"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle" lineSpacing="Single">
+					<font size="14" isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[Deduction Summary Report For The Month Of]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="369" y="0" width="100" height="23"/>
+				<textElement verticalAlignment="Middle" lineSpacing="Single">
+					<font size="14" isBold="true" isItalic="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{monthname}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<summary>
+		<band height="374" splitType="Stretch">
+			<crosstab>
+				<reportElement x="0" y="0" width="629" height="240"/>
+				<rowGroup name="emptype" width="45" totalPosition="End">
+					<bucket>
+						<bucketExpression><![CDATA[$F{emptype}]]></bucketExpression>
+					</bucket>
+					<crosstabRowHeader>
+						<cellContents backcolor="#F0F8FF" mode="Opaque">
+							<box>
+								<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+							</box>
+							<textField>
+								<reportElement style="Crosstab Data Text" x="0" y="0" width="45" height="25"/>
+								<textElement verticalAlignment="Middle" lineSpacing="Single">
+									<font size="6"/>
+								</textElement>
+								<textFieldExpression class="java.lang.String"><![CDATA[$V{emptype}]]></textFieldExpression>
+							</textField>
+						</cellContents>
+					</crosstabRowHeader>
+					<crosstabTotalRowHeader>
+						<cellContents backcolor="#005FB3" mode="Opaque">
+							<box>
+								<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+							</box>
+							<staticText>
+								<reportElement x="0" y="0" width="46" height="25" forecolor="#FFFFFF"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle" lineSpacing="Single">
+									<font size="6"/>
+								</textElement>
+								<text><![CDATA[Total emptype]]></text>
+							</staticText>
+						</cellContents>
+					</crosstabTotalRowHeader>
+				</rowGroup>
+				<rowGroup name="type" width="47" totalPosition="End">
+					<bucket>
+						<bucketExpression><![CDATA[$F{type}]]></bucketExpression>
+					</bucket>
+					<crosstabRowHeader>
+						<cellContents backcolor="#F0F8FF" mode="Opaque">
+							<box>
+								<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+							</box>
+							<textField>
+								<reportElement style="Crosstab Data Text" x="0" y="0" width="46" height="25"/>
+								<textElement verticalAlignment="Middle" lineSpacing="Single">
+									<font size="6"/>
+								</textElement>
+								<textFieldExpression class="java.lang.String"><![CDATA[$V{type}]]></textFieldExpression>
+							</textField>
+						</cellContents>
+					</crosstabRowHeader>
+					<crosstabTotalRowHeader>
+						<cellContents backcolor="#BFE1FF" mode="Opaque">
+							<box>
+								<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+							</box>
+							<staticText>
+								<reportElement x="0" y="0" width="46" height="25"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle" lineSpacing="Single">
+									<font size="6"/>
+								</textElement>
+								<text><![CDATA[Total type]]></text>
+							</staticText>
+						</cellContents>
+					</crosstabTotalRowHeader>
+				</rowGroup>
+				<columnGroup name="deduction" height="30" totalPosition="End">
+					<bucket>
+						<bucketExpression><![CDATA[$F{deduction}]]></bucketExpression>
+					</bucket>
+					<crosstabColumnHeader>
+						<cellContents backcolor="#F0F8FF" mode="Opaque">
+							<box>
+								<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+							</box>
+							<textField>
+								<reportElement style="Crosstab Data Text" x="0" y="0" width="37" height="30"/>
+								<textElement verticalAlignment="Middle" lineSpacing="Single">
+									<font size="6"/>
+								</textElement>
+								<textFieldExpression class="java.lang.String"><![CDATA[$V{deduction}]]></textFieldExpression>
+							</textField>
+						</cellContents>
+					</crosstabColumnHeader>
+					<crosstabTotalColumnHeader>
+						<cellContents backcolor="#BFE1FF" mode="Opaque">
+							<box>
+								<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+							</box>
+							<staticText>
+								<reportElement x="0" y="0" width="39" height="30"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle" lineSpacing="Single">
+									<font size="6"/>
+								</textElement>
+								<text><![CDATA[Total deduction]]></text>
+							</staticText>
+						</cellContents>
+					</crosstabTotalColumnHeader>
+				</columnGroup>
+				<measure name="dedamountMeasure" class="java.math.BigDecimal" calculation="Sum">
+					<measureExpression><![CDATA[$F{dedamount}]]></measureExpression>
+				</measure>
+				<crosstabCell width="37" height="25">
+					<cellContents>
+						<box>
+							<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						</box>
+						<textField>
+							<reportElement style="Crosstab Data Text" x="0" y="0" width="37" height="25"/>
+							<textElement textAlignment="Right" verticalAlignment="Middle" lineSpacing="Single">
+								<font size="6"/>
+							</textElement>
+							<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{dedamountMeasure}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell width="37" height="25" rowTotalGroup="emptype">
+					<cellContents backcolor="#005FB3" mode="Opaque">
+						<box>
+							<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						</box>
+						<textField>
+							<reportElement style="Crosstab Data Text" x="0" y="0" width="37" height="25" forecolor="#FFFFFF"/>
+							<textElement textAlignment="Right" verticalAlignment="Middle" lineSpacing="Single">
+								<font size="6"/>
+							</textElement>
+							<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{dedamountMeasure}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell width="39" columnTotalGroup="deduction">
+					<cellContents backcolor="#BFE1FF" mode="Opaque">
+						<box>
+							<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						</box>
+						<textField>
+							<reportElement style="Crosstab Data Text" x="0" y="0" width="39" height="25"/>
+							<textElement textAlignment="Right" verticalAlignment="Middle" lineSpacing="Single">
+								<font size="6"/>
+							</textElement>
+							<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{dedamountMeasure}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell width="39" rowTotalGroup="emptype" columnTotalGroup="deduction">
+					<cellContents backcolor="#005FB3" mode="Opaque">
+						<box>
+							<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						</box>
+						<textField>
+							<reportElement style="Crosstab Data Text" x="0" y="0" width="39" height="25" forecolor="#FFFFFF"/>
+							<textElement textAlignment="Right" verticalAlignment="Middle" lineSpacing="Single">
+								<font size="6"/>
+							</textElement>
+							<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{dedamountMeasure}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell width="37" height="25" rowTotalGroup="type">
+					<cellContents backcolor="#BFE1FF" mode="Opaque">
+						<box>
+							<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						</box>
+						<textField>
+							<reportElement style="Crosstab Data Text" x="0" y="0" width="37" height="25"/>
+							<textElement textAlignment="Right" verticalAlignment="Middle" lineSpacing="Single">
+								<font size="6"/>
+							</textElement>
+							<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{dedamountMeasure}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell width="39" rowTotalGroup="type" columnTotalGroup="deduction">
+					<cellContents backcolor="#BFE1FF" mode="Opaque">
+						<box>
+							<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						</box>
+						<textField>
+							<reportElement style="Crosstab Data Text" x="0" y="0" width="39" height="25"/>
+							<textElement textAlignment="Right" verticalAlignment="Middle" lineSpacing="Single">
+								<font size="6"/>
+							</textElement>
+							<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{dedamountMeasure}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+			</crosstab>
+			<subreport>
+				<reportElement stretchType="RelativeToBandHeight" isPrintRepeatedValues="false" x="629" y="-5" width="173" height="31"/>
+				<subreportParameter name="ProcessID">
+					<subreportParameterExpression><![CDATA[$P{ProcessID}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "DeductionsSummaryReportNetWage_subreport1.jasper"]]></subreportExpression>
+			</subreport>
+			<subreport>
+				<reportElement x="629" y="119" width="173" height="26"/>
+				<subreportParameter name="ProcessID">
+					<subreportParameterExpression><![CDATA[$P{ProcessID}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "DeductionsSummaryReportNetWage_subreport2.jasper"]]></subreportExpression>
+			</subreport>
+			<subreport>
+				<reportElement x="629" y="238" width="173" height="25"/>
+				<subreportParameter name="ProcessID">
+					<subreportParameterExpression><![CDATA[$P{ProcessID}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "DeductionsSummaryReportNetWage_subreport3.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</summary>
+</jasperReport>

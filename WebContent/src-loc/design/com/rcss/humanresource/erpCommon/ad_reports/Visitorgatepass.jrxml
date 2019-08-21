@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Visitor gate pass" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="GatePassId" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[select
+documentno,
+date,
+additionalcount as count,
+badgenumber as badges,
+mobilenumber,
+companydetails,
+(select employeename from rchr_employee where rchr_employee_id=rchr_visitorgatepass.rchr_employee_id) as empname,
+visitorname,
+fromtime,
+totime,
+(select name from ad_user where ad_user_id=rchr_visitorgatepass.createdby) as createdby,
+reason,
+(select binarydata from ad_image where ad_image_id  =rchr_visitorgatepass.ad_image_id) AS bynary
+from rchr_visitorgatepass
+where rchr_visitorgatepass_id = $P{GatePassId}]]>
+	</queryString>
+	<field name="documentno" class="java.lang.String"/>
+	<field name="date" class="java.sql.Timestamp"/>
+	<field name="count" class="java.math.BigDecimal"/>
+	<field name="badges" class="java.lang.String"/>
+	<field name="mobilenumber" class="java.lang.String"/>
+	<field name="companydetails" class="java.lang.String"/>
+	<field name="empname" class="java.lang.String"/>
+	<field name="visitorname" class="java.lang.String"/>
+	<field name="fromtime" class="java.sql.Timestamp"/>
+	<field name="totime" class="java.sql.Timestamp"/>
+	<field name="createdby" class="java.lang.String"/>
+	<field name="reason" class="java.lang.String"/>
+	<field name="bynary" class="java.io.InputStream"/>
+	<variable name="Sno" class="java.math.BigDecimal" calculation="Count">
+		<variableExpression><![CDATA[]]></variableExpression>
+	</variable>
+	<variable name="totalwage" class="java.math.BigDecimal">
+		<variableExpression><![CDATA[]]></variableExpression>
+	</variable>
+	<variable name="pagetotal" class="java.math.BigDecimal" resetType="Column" calculation="Sum">
+		<variableExpression><![CDATA[]]></variableExpression>
+		<initialValueExpression><![CDATA[]]></initialValueExpression>
+	</variable>
+	<variable name="Grandtotal" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[]]></variableExpression>
+		<initialValueExpression><![CDATA[]]></initialValueExpression>
+	</variable>
+	<title>
+		<band height="221" splitType="Stretch">
+			<line>
+				<reportElement x="554" y="0" width="1" height="220"/>
+			</line>
+			<line>
+				<reportElement x="0" y="0" width="1" height="220"/>
+			</line>
+			<line>
+				<reportElement x="1" y="0" width="554" height="1"/>
+			</line>
+			<staticText>
+				<reportElement key="staticText-3" x="184" y="2" width="136" height="16"/>
+				<textElement textAlignment="Right">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[VISITOR GATE PASS -]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="2" y="25" width="61" height="13"/>
+				<textElement verticalAlignment="Middle">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Visitor Name:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="436" y="2" width="40" height="15"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Date :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="27" y="40" width="36" height="13"/>
+				<textElement verticalAlignment="Middle">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Time In:]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="220" width="554" height="1"/>
+			</line>
+			<textField isBlankWhenNull="true">
+				<reportElement x="323" y="2" width="74" height="15"/>
+				<textElement verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{documentno}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement x="477" y="2" width="74" height="15"/>
+				<textElement verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.sql.Timestamp"><![CDATA[$F{date}]]></textFieldExpression>
+			</textField>
+			<textField pattern="h.mm a" isBlankWhenNull="true">
+				<reportElement x="67" y="40" width="100" height="13"/>
+				<textElement verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.sql.Timestamp"><![CDATA[$F{fromtime}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="68" y="25" width="86" height="13"/>
+				<textElement verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{visitorname}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="127" y="187" width="71" height="19"/>
+				<textElement verticalAlignment="Middle">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Prepared by]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="68" y="96" width="160" height="15"/>
+				<textElement verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{reason}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="4" y="96" width="56" height="15"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Purpose :]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="155" y="25" width="44" height="13"/>
+				<textElement verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["+"+$F{count}.toString()]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="67" y="114" width="100" height="13"/>
+				<textElement verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{mobilenumber}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="68" y="58" width="160" height="38"/>
+				<textElement verticalAlignment="Top">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{companydetails}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="279" y="201" width="100" height="13"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{empname}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="8" y="114" width="52" height="13"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Mobile No:]]></text>
+			</staticText>
+			<textField pattern="h.mm a" isBlankWhenNull="true">
+				<reportElement x="67" y="148" width="100" height="13"/>
+				<textElement verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.sql.Timestamp"><![CDATA[$F{totime}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="15" y="148" width="47" height="13"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Time Out :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="4" y="58" width="58" height="25"/>
+				<textElement textAlignment="Right" verticalAlignment="Top">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Company Details :]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="109" y="203" width="100" height="13"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{createdby}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="233" y="23" width="51" height="13"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Badge No's :]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="286" y="23" width="82" height="46"/>
+				<textElement verticalAlignment="Top">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{badges}]]></textFieldExpression>
+			</textField>
+			<image onErrorType="Blank">
+				<reportElement x="379" y="22" width="175" height="199"/>
+				<imageExpression class="java.io.InputStream"><![CDATA[$F{bynary}]]></imageExpression>
+			</image>
+		</band>
+	</title>
+</jasperReport>

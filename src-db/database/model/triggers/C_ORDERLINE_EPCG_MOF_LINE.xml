@@ -1,0 +1,61 @@
+<?xml version="1.0"?>
+  <database name="TRIGGER C_ORDERLINE_EPCG_MOF_LINE">
+    <trigger name="C_ORDERLINE_EPCG_MOF_LINE" table="C_ORDERLINE" fires="after" insert="true" update="true" delete="false" foreach="row">
+      <body><![CDATA[
+	
+	V_ID VARCHAR(32);
+	so VARCHAR(1);
+	v_documentid VARCHAR(32);
+	v_documentno VARCHAR(32);
+	v_dateordered DATE ;
+	v_deliverdate DATE ;
+	v_c_bpartner_id VARCHAR(32);
+	v_rchr_qualitystandard_id VARCHAR(32);
+	v_qstandard VARCHAR(80);
+	v_orderquantity NUMBER;
+	v_DocStatus VARCHAR(32);
+	v_oncontract VARCHAR(80);
+	v_c_paymentterm_id VARCHAR(32);
+	v_fin_paymentmethod_id VARCHAR(32);
+BEGIN
+	
+		V_ID:=:NEW.c_orderline_id;
+		select issotrx into so from c_order where c_order_id=:new.c_order_id;
+	IF(so='Y') THEN
+	select c_doctypetarget_id,documentno,dateordered,c_bpartner_id
+	into v_documentid,v_documentno,v_dateordered, v_c_bpartner_id
+	from c_order where c_order_id=:new.c_order_id;
+
+	select deliverdate,orderquantity,oncontract,fin_paymentmethod_id,c_paymentterm_id into v_deliverdate,v_orderquantity, v_oncontract,
+	v_fin_paymentmethod_id,v_c_paymentterm_id
+	 from epcg_costenquiry 
+	where epcg_costenquiry_id=:new.epcg_costenquiry_id;
+
+	select rchr_qualitystandard_id,qstandard into v_rchr_qualitystandard_id, 
+	v_qstandard
+	from epcg_costenquiry 
+	where epcg_costenquiry_id=:new.epcg_costenquiry_id;
+
+	IF(TG_OP='INSERT') THEN
+		INSERT INTO epcg_mof (epcg_mof_id,ad_client_id,ad_org_id,createdby,updatedby,c_doctype_id,
+		documentno,contractdate,epcg_costenquiry_id,deliverdate,m_product_id,
+	rchr_qualitystandard_id,oncontract,qstandard,orderquantity,c_bpartner_id,
+	status,c_orderline_id
+		) VALUES (get_uuid(),:new.ad_client_id,:new.ad_org_id,:new.createdby,:new.updatedby,
+	v_documentid,v_documentno,v_dateordered,:new.epcg_costenquiry_id,v_deliverdate,:new.m_product_id,
+	v_rchr_qualitystandard_id,v_oncontract,v_qstandard,v_orderquantity,v_c_bpartner_id,
+	'DR',V_ID);
+		UPDATE c_order SET fin_paymentmethod_id=v_fin_paymentmethod_id,c_paymentterm_id=v_c_paymentterm_id 
+		WHERE c_order.c_order_id=:new.c_order_id;
+	END IF;
+	END IF;
+	
+	
+	IF(TG_OP='DELETE') THEN RETURN OLD;
+	ELSE RETURN NEW;
+		
+	END IF;
+	END C_ORDERLINE_EPCG_MOF_LINE
+]]></body>
+    </trigger>
+  </database>

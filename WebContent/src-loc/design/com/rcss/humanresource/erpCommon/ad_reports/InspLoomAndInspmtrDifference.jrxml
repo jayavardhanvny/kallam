@@ -1,0 +1,288 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="InspLoomAndInspmtrDifference" pageWidth="402" pageHeight="842" columnWidth="362" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="FromD" class="java.util.Date"/>
+	<parameter name="BeforeDate1" class="java.util.Date"/>
+	<parameter name="BeforeDate2" class="java.util.Date"/>
+	<queryString>
+		<![CDATA[select
+loomctr.name as loomcategory,
+count(loom.rcpl_loom_id)::numeric as loomcount,
+(select
+count(sheet.rcpl_insploomctgry_id)
+from rchr_inspectionsheet sheet
+  where sheet.inspdate=$P{FromD} and sheet.rcpl_insploomctgry_id=loomctr.rcpl_insploomctgry_id
+  group by sheet.rcpl_insploomctgry_id
+)::numeric as piececount,
+(select
+count(sheet.rcpl_insploomctgry_id)
+from rchr_inspectionsheet sheet
+  where sheet.inspdate=$P{FromD} and sheet.rcpl_insploomctgry_id=loomctr.rcpl_insploomctgry_id
+  and ((totalmtr-loommtr) > 5 OR (totalmtr-loommtr) <-5 ) and  ((totalmtr-loommtr) <>0)
+  group by sheet.rcpl_insploomctgry_id
+)::numeric as five_and_above,
+
+(select
+count(sheet.rcpl_insploomctgry_id)
+from rchr_inspectionsheet sheet
+  where sheet.inspdate=$P{FromD} and sheet.rcpl_insploomctgry_id=loomctr.rcpl_insploomctgry_id
+  and ((totalmtr-loommtr) between -5 and 5 ) and ((totalmtr-loommtr) <>0)
+  group by sheet.rcpl_insploomctgry_id
+)::numeric as five_and_below,
+
+(select
+count(sheet.rcpl_insploomctgry_id)
+from rchr_inspectionsheet sheet
+  where sheet.inspdate=$P{FromD} and sheet.rcpl_insploomctgry_id=loomctr.rcpl_insploomctgry_id
+  and ((totalmtr-loommtr) =0)
+  group by sheet.rcpl_insploomctgry_id
+)::numeric as equal_to_zero,
+100::numeric as percwnt
+
+from rcpl_loom loom
+left join rcpl_insploomctgry loomctr  on loomctr.rcpl_insploomctgry_id=loom.rcpl_insploomctgry_id
+group by loomctr.name,loomctr.rcpl_insploomctgry_id]]>
+	</queryString>
+	<field name="loomcategory" class="java.lang.String"/>
+	<field name="loomcount" class="java.math.BigDecimal"/>
+	<field name="piececount" class="java.math.BigDecimal"/>
+	<field name="five_and_above" class="java.math.BigDecimal"/>
+	<field name="five_and_below" class="java.math.BigDecimal"/>
+	<field name="equal_to_zero" class="java.math.BigDecimal"/>
+	<field name="percwnt" class="java.math.BigDecimal"/>
+	<variable name="Five_above_per" class="java.math.BigDecimal">
+		<variableExpression><![CDATA[$F{five_and_above}.divide($F{piececount},2,RoundingMode.CEILING).multiply($F{percwnt})]]></variableExpression>
+		<initialValueExpression><![CDATA[$F{five_and_above}.divide($F{piececount},2,RoundingMode.CEILING).multiply($F{percwnt})]]></initialValueExpression>
+	</variable>
+	<variable name="Five_below_per" class="java.math.BigDecimal">
+		<variableExpression><![CDATA[$F{five_and_below}.divide($F{piececount},2,RoundingMode.CEILING).multiply($F{percwnt})]]></variableExpression>
+		<initialValueExpression><![CDATA[$F{five_and_below}.divide($F{piececount},2,RoundingMode.CEILING).multiply($F{percwnt})]]></initialValueExpression>
+	</variable>
+	<variable name="Equal_per" class="java.math.BigDecimal">
+		<variableExpression><![CDATA[$F{equal_to_zero}.divide($F{piececount},2,RoundingMode.CEILING).multiply($F{percwnt})]]></variableExpression>
+		<initialValueExpression><![CDATA[$F{equal_to_zero}.divide($F{piececount},2,RoundingMode.CEILING).multiply($F{percwnt})]]></initialValueExpression>
+	</variable>
+	<pageHeader>
+		<band height="11">
+			<staticText>
+				<reportElement key="staticText-9" x="85" y="0" width="192" height="11"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Verdana" size="8" isBold="true" isItalic="true" isUnderline="false" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[Miss Match Loom and Inspecton Mtrs. Report]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="22" splitType="Stretch">
+			<line>
+				<reportElement x="0" y="1" width="1" height="19"/>
+			</line>
+			<line>
+				<reportElement x="88" y="0" width="1" height="20"/>
+			</line>
+			<line>
+				<reportElement x="121" y="0" width="1" height="20"/>
+			</line>
+			<line>
+				<reportElement x="310" y="0" width="1" height="20"/>
+			</line>
+			<line>
+				<reportElement x="361" y="0" width="1" height="21"/>
+			</line>
+			<line>
+				<reportElement x="0" y="0" width="361" height="1"/>
+			</line>
+			<staticText>
+				<reportElement x="53" y="1" width="35" height="21"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Total
+Looms]]></text>
+			</staticText>
+			<line>
+				<reportElement x="51" y="0" width="1" height="20"/>
+			</line>
+			<staticText>
+				<reportElement x="124" y="0" width="26" height="21"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[+/- 5
+Above]]></text>
+			</staticText>
+			<line>
+				<reportElement x="264" y="0" width="1" height="20"/>
+			</line>
+			<staticText>
+				<reportElement x="3" y="1" width="47" height="19"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Shed Name]]></text>
+			</staticText>
+			<line>
+				<reportElement x="152" y="0" width="1" height="20"/>
+			</line>
+			<staticText>
+				<reportElement x="90" y="0" width="30" height="21"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Piece
+Count]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="21" width="362" height="1"/>
+			</line>
+			<staticText>
+				<reportElement x="154" y="0" width="37" height="21"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[+/- 5 Above%]]></text>
+			</staticText>
+			<line>
+				<reportElement x="193" y="0" width="1" height="20"/>
+			</line>
+			<staticText>
+				<reportElement x="195" y="0" width="32" height="21"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[+/- 5
+Below]]></text>
+			</staticText>
+			<line>
+				<reportElement x="229" y="1" width="1" height="20"/>
+			</line>
+			<staticText>
+				<reportElement x="232" y="0" width="31" height="21"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[+/- 5
+Below%]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="266" y="0" width="43" height="21"/>
+				<textElement textAlignment="Center" verticalAlignment="Top">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ Zero diff
+(No Differ.)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="312" y="0" width="48" height="21"/>
+				<textElement textAlignment="Center" verticalAlignment="Top">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ Zero diff
+(No Differ.) %]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="14" splitType="Stretch">
+			<line>
+				<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="1" height="13"/>
+			</line>
+			<line>
+				<reportElement stretchType="RelativeToBandHeight" x="88" y="0" width="1" height="13"/>
+			</line>
+			<line>
+				<reportElement stretchType="RelativeToBandHeight" x="121" y="0" width="1" height="13"/>
+			</line>
+			<line>
+				<reportElement stretchType="RelativeToBandHeight" x="361" y="0" width="1" height="13"/>
+			</line>
+			<line>
+				<reportElement positionType="Float" x="0" y="13" width="362" height="1"/>
+			</line>
+			<line>
+				<reportElement stretchType="RelativeToBandHeight" x="310" y="0" width="1" height="13"/>
+			</line>
+			<line>
+				<reportElement stretchType="RelativeToBandHeight" x="51" y="0" width="1" height="13"/>
+			</line>
+			<line>
+				<reportElement stretchType="RelativeToBandHeight" x="264" y="0" width="1" height="13"/>
+			</line>
+			<line>
+				<reportElement stretchType="RelativeToBandHeight" x="152" y="0" width="1" height="13"/>
+			</line>
+			<line>
+				<reportElement stretchType="RelativeToBandHeight" x="193" y="0" width="1" height="13"/>
+			</line>
+			<line>
+				<reportElement stretchType="RelativeToBandHeight" x="229" y="0" width="1" height="13"/>
+			</line>
+			<textField isBlankWhenNull="true">
+				<reportElement x="3" y="0" width="46" height="13"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{loomcategory}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="53" y="0" width="32" height="13"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{loomcount}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="90" y="0" width="28" height="12"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{piececount}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="195" y="0" width="31" height="12"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{five_and_below}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="266" y="1" width="42" height="12"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{equal_to_zero}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="123" y="0" width="26" height="12"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{five_and_above}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="154" y="1" width="34" height="11"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$V{Five_above_per}.toString().concat(" %")]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="232" y="1" width="31" height="12"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$V{Five_below_per}.toString().concat(" %")]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="313" y="1" width="47" height="12"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$V{Equal_per}.toString().concat(" %")]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SqlClass id="class" name="LoanAdvancesScheduleA4F65EE6B51C4CD5AB762343DB67E170Data" package="org.openbravo.erpWindows.com.rcss.humanresource.LoanAdvancesSchedule">
+  <SqlClassComment>WAD Generated class</SqlClassComment>
+
+  <SqlMethod name="selectEdit" type="preparedStatement" return="multiple">
+    <SqlMethodComment>Select for edit</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT to_char(RCHR_Emp_Loan.Created, ?) as created, 
+        (SELECT NAME FROM AD_USER u WHERE AD_USER_ID = RCHR_Emp_Loan.CreatedBy) as CreatedByR, 
+        to_char(RCHR_Emp_Loan.Updated, ?) as updated, 
+        to_char(RCHR_Emp_Loan.Updated, 'YYYYMMDDHH24MISS') as Updated_Time_Stamp,  
+        RCHR_Emp_Loan.UpdatedBy, 
+        (SELECT NAME FROM AD_USER u WHERE AD_USER_ID = RCHR_Emp_Loan.UpdatedBy) as UpdatedByR,
+        RCHR_Emp_Loan.AD_Org_ID, 
+(CASE WHEN RCHR_Emp_Loan.AD_Org_ID IS NULL THEN '' ELSE  (COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table1.Name), ''))),'') ) END) AS AD_Org_IDR, 
+COALESCE(RCHR_Emp_Loan.Isactive, 'N') AS Isactive, 
+RCHR_Emp_Loan.Rchr_Loan_Type_ID, 
+(CASE WHEN RCHR_Emp_Loan.Rchr_Loan_Type_ID IS NULL THEN '' ELSE  (COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table2.Name), ''))),'') ) END) AS Rchr_Loan_Type_IDR, 
+RCHR_Emp_Loan.Rchr_Homeappliance_ID, 
+(CASE WHEN RCHR_Emp_Loan.Rchr_Homeappliance_ID IS NULL THEN '' ELSE  (COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table3.Name), ''))),'') ) END) AS Rchr_Homeappliance_IDR, 
+RCHR_Emp_Loan.Documentno, 
+RCHR_Emp_Loan.Rchr_Attd_Process_ID, 
+(CASE WHEN RCHR_Emp_Loan.Rchr_Attd_Process_ID IS NULL THEN '' ELSE  (COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table4.Monthname), ''))),'')  || ' - ' || COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table4.Type), ''))),'') ) END) AS Rchr_Attd_Process_IDR, 
+RCHR_Emp_Loan.Rchr_Employee_ID, 
+(CASE WHEN RCHR_Emp_Loan.Rchr_Employee_ID IS NULL THEN '' ELSE  (COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table5.Punchno), ''))),'')  || ' - ' || COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table5.Employeename), ''))),'') ) END) AS Rchr_Employee_IDR, 
+RCHR_Emp_Loan.Suretyempid, 
+RCHR_Emp_Loan.Requisitiondate, 
+RCHR_Emp_Loan.Startdate, 
+RCHR_Emp_Loan.Enddate, 
+RCHR_Emp_Loan.Loanamt, 
+RCHR_Emp_Loan.Tenuremonths, 
+RCHR_Emp_Loan.Noofpresents, 
+RCHR_Emp_Loan.Process, 
+RCHR_Emp_Loan.Pendingadvances, 
+RCHR_Emp_Loan.Departmentstore, 
+RCHR_Emp_Loan.Loanpendings, 
+RCHR_Emp_Loan.Messbill, 
+COALESCE(RCHR_Emp_Loan.Processing, 'N') AS Processing, 
+RCHR_Emp_Loan.Status, 
+(CASE WHEN RCHR_Emp_Loan.Status IS NULL THEN '' ELSE  ( COALESCE(TO_CHAR(list1.name),'') ) END) AS StatusR, 
+RCHR_Emp_Loan.Approve, 
+RCHR_Emp_Loan.AD_Image_ID, 
+RCHR_Emp_Loan.Issued, 
+RCHR_Emp_Loan.Paiddate, 
+RCHR_Emp_Loan.Paid, 
+RCHR_Emp_Loan.Rchr_Saladvance_ID, 
+(CASE WHEN RCHR_Emp_Loan.Rchr_Saladvance_ID IS NULL THEN '' ELSE  (COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table7.Punchno), ''))),'')  || ' - ' || COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table7.Employeename), ''))),'') ) END) AS Rchr_Saladvance_IDR, 
+COALESCE(RCHR_Emp_Loan.Isremark, 'N') AS Isremark, 
+RCHR_Emp_Loan.Description, 
+RCHR_Emp_Loan.Rchr_Emp_Dept_ID, 
+(CASE WHEN RCHR_Emp_Loan.Rchr_Emp_Dept_ID IS NULL THEN '' ELSE  (COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table8.Name), ''))),'') ) END) AS Rchr_Emp_Dept_IDR, 
+RCHR_Emp_Loan.Rchr_Designation_ID, 
+(CASE WHEN RCHR_Emp_Loan.Rchr_Designation_ID IS NULL THEN '' ELSE  (COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table9.Name), ''))),'') ) END) AS Rchr_Designation_IDR, 
+RCHR_Emp_Loan.Reject, 
+RCHR_Emp_Loan.Rchr_Emp_Loan_ID, 
+RCHR_Emp_Loan.AD_Client_ID, 
+ 
+        ? AS LANGUAGE 
+        FROM RCHR_Emp_Loan left join (select AD_Org_ID, Name from AD_Org) table1 on (RCHR_Emp_Loan.AD_Org_ID = table1.AD_Org_ID) left join (select Rchr_Loan_Type_ID, Name from Rchr_Loan_Type) table2 on (RCHR_Emp_Loan.Rchr_Loan_Type_ID = table2.Rchr_Loan_Type_ID) left join (select Rchr_Homeappliance_ID, Name from Rchr_Homeappliance) table3 on (RCHR_Emp_Loan.Rchr_Homeappliance_ID = table3.Rchr_Homeappliance_ID) left join (select Rchr_Attd_Process_ID, Monthname, Type from Rchr_Attd_Process) table4 on (RCHR_Emp_Loan.Rchr_Attd_Process_ID = table4.Rchr_Attd_Process_ID) left join (select Rchr_Employee_ID, Punchno, Employeename from Rchr_Employee) table5 on (RCHR_Emp_Loan.Rchr_Employee_ID = table5.Rchr_Employee_ID) left join ad_ref_list_v list1 on (RCHR_Emp_Loan.Status = list1.value and list1.ad_reference_id = '5901BE65AE974FC983073C6726BFC55D' and list1.ad_language = ?)  left join (select Rchr_Saladvance_ID, Rchr_Employee_ID from Rchr_Saladvance) table6 on (RCHR_Emp_Loan.Rchr_Saladvance_ID = table6.Rchr_Saladvance_ID) left join (select Rchr_Employee_ID, Punchno, Employeename from Rchr_Employee) table7 on (table6.Rchr_Employee_ID = table7.Rchr_Employee_ID) left join (select Rchr_Emp_Dept_ID, Name from Rchr_Emp_Dept) table8 on (RCHR_Emp_Loan.Rchr_Emp_Dept_ID = table8.Rchr_Emp_Dept_ID) left join (select Rchr_Designation_ID, Name from Rchr_Designation) table9 on (RCHR_Emp_Loan.Rchr_Designation_ID = table9.Rchr_Designation_ID)
+        WHERE 2=2 
+
+        AND 1=1 
+        AND RCHR_Emp_Loan.Rchr_Emp_Loan_ID = ? 
+        AND RCHR_Emp_Loan.AD_Client_ID IN ('1') 
+           AND RCHR_Emp_Loan.AD_Org_ID IN ('1') 
+    ]]></Sql>
+    <Parameter name="dateTimeFormat"></Parameter>
+    <Parameter name="dateTimeFormat"></Parameter>
+    
+    <Parameter name="paramLanguage"></Parameter>
+<Parameter name="paramLanguage"/>
+
+
+    <Parameter name="key"></Parameter>
+        <Parameter name="adUserClient" type="replace" optional="true" after="RCHR_Emp_Loan.AD_Client_ID IN (" text="'1'"/>
+        <Parameter name="adOrgClient" type="replace" optional="true" after="RCHR_Emp_Loan.AD_Org_ID IN (" text="'1'"/>
+
+    <Field name="adUserClient" value="void"></Field>
+    <Field name="adOrgClient" value="void"></Field>
+    <Field name="createdby" value="void"></Field>
+    
+    <Field name="trBgcolor" value="void"></Field>
+    <Field name="totalCount" value="void"></Field>
+    <Field name="dateTimeFormat" value=""></Field>
+  </SqlMethod>
+  
+  
+
+  <SqlMethod name="set" type="constant" return="multiple">
+      <SqlMethodComment>Create a registry</SqlMethodComment>
+      <Sql></Sql>
+
+<Parameter name="description"></Parameter><Parameter name="adOrgId"></Parameter><Parameter name="rchrSaladvanceId"></Parameter><Parameter name="issued"></Parameter><Parameter name="rchrEmpLoanId"></Parameter><Parameter name="rchrDesignationId"></Parameter><Parameter name="loanamt"></Parameter><Parameter name="documentno"></Parameter><Parameter name="rchrAttdProcessId"></Parameter><Parameter name="rchrLoanTypeId"></Parameter><Parameter name="approve"></Parameter><Parameter name="tenuremonths"></Parameter><Parameter name="noofpresents"></Parameter><Parameter name="messbill"></Parameter><Parameter name="requisitiondate"></Parameter><Parameter name="paid"></Parameter><Parameter name="pendingadvances"></Parameter><Parameter name="paiddate"></Parameter><Parameter name="process"></Parameter><Parameter name="adClientId"></Parameter><Parameter name="suretyempid"></Parameter><Parameter name="departmentstore"></Parameter><Parameter name="processing"></Parameter><Parameter name="createdby"></Parameter><Parameter name="createdbyr"></Parameter><Parameter name="rchrEmployeeId"></Parameter><Parameter name="adImageId"></Parameter><Parameter name="isremark"></Parameter><Parameter name="rchrHomeapplianceId"></Parameter><Parameter name="reject"></Parameter><Parameter name="updatedby"></Parameter><Parameter name="updatedbyr"></Parameter><Parameter name="enddate"></Parameter><Parameter name="loanpendings"></Parameter><Parameter name="rchrEmpDeptId"></Parameter><Parameter name="isactive"></Parameter><Parameter name="startdate"></Parameter><Parameter name="status"></Parameter>
+   </SqlMethod>
+
+
+
+
+
+
+   <SqlMethod name="selectDefB05F1DCF078640C7A61F971D9DE790E1_0" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>Select for auxiliar field</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT  ( COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table2.Name), ''))), '') ) as Createdby FROM AD_User left join (select AD_User_ID, Name from AD_User) table2 on (AD_User.AD_User_ID = table2.AD_User_ID) WHERE AD_User.isActive='Y' AND AD_User.AD_User_ID = ?  
+    ]]></Sql>
+<Parameter name="CreatedbyR"/>
+  </SqlMethod>
+
+   <SqlMethod name="selectDefC6534633841540B8B6939133DE9B1B1C_1" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>Select for auxiliar field</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT  ( COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table2.Name), ''))), '') ) as Updatedby FROM AD_User left join (select AD_User_ID, Name from AD_User) table2 on (AD_User.AD_User_ID = table2.AD_User_ID) WHERE AD_User.isActive='Y' AND AD_User.AD_User_ID = ?  
+    ]]></Sql>
+<Parameter name="UpdatedbyR"/>
+  </SqlMethod>
+
+
+
+
+
+
+
+
+
+
+  <SqlMethod name="update" type="preparedStatement" return="rowCount" static="false" connection="true">
+    <Sql><![CDATA[
+        UPDATE RCHR_Emp_Loan
+        SET AD_Org_ID = (?) , Isactive = (?) , Rchr_Loan_Type_ID = (?) , Rchr_Homeappliance_ID = (?) , Documentno = (?) , Rchr_Attd_Process_ID = (?) , Rchr_Employee_ID = (?) , Suretyempid = (?) , Requisitiondate = TO_DATE(?) , Startdate = TO_DATE(?) , Enddate = TO_DATE(?) , Loanamt = TO_NUMBER(?) , Tenuremonths = TO_NUMBER(?) , Noofpresents = TO_NUMBER(?) , Process = (?) , Pendingadvances = TO_NUMBER(?) , Departmentstore = TO_NUMBER(?) , Loanpendings = TO_NUMBER(?) , Messbill = TO_NUMBER(?) , Processing = (?) , Status = (?) , Approve = (?) , AD_Image_ID = (?) , Issued = (?) , Paiddate = TO_DATE(?) , Paid = (?) , Rchr_Saladvance_ID = (?) , Isremark = (?) , Description = (?) , Rchr_Emp_Dept_ID = (?) , Rchr_Designation_ID = (?) , Reject = (?) , Rchr_Emp_Loan_ID = (?) , AD_Client_ID = (?) , updated = now(), updatedby = ? 
+        WHERE RCHR_Emp_Loan.Rchr_Emp_Loan_ID = ? 
+        
+        AND RCHR_Emp_Loan.AD_Client_ID IN ('1') 
+        AND RCHR_Emp_Loan.AD_Org_ID IN ('1') 
+    ]]></Sql>
+    <Parameter name="adOrgId"></Parameter> <Parameter name="isactive"></Parameter> <Parameter name="rchrLoanTypeId"></Parameter> <Parameter name="rchrHomeapplianceId"></Parameter> <Parameter name="documentno"></Parameter> <Parameter name="rchrAttdProcessId"></Parameter> <Parameter name="rchrEmployeeId"></Parameter> <Parameter name="suretyempid"></Parameter> <Parameter name="requisitiondate"></Parameter> <Parameter name="startdate"></Parameter> <Parameter name="enddate"></Parameter> <Parameter name="loanamt"></Parameter> <Parameter name="tenuremonths"></Parameter> <Parameter name="noofpresents"></Parameter> <Parameter name="process"></Parameter> <Parameter name="pendingadvances"></Parameter> <Parameter name="departmentstore"></Parameter> <Parameter name="loanpendings"></Parameter> <Parameter name="messbill"></Parameter> <Parameter name="processing"></Parameter> <Parameter name="status"></Parameter> <Parameter name="approve"></Parameter> <Parameter name="adImageId"></Parameter> <Parameter name="issued"></Parameter> <Parameter name="paiddate"></Parameter> <Parameter name="paid"></Parameter> <Parameter name="rchrSaladvanceId"></Parameter> <Parameter name="isremark"></Parameter> <Parameter name="description"></Parameter> <Parameter name="rchrEmpDeptId"></Parameter> <Parameter name="rchrDesignationId"></Parameter> <Parameter name="reject"></Parameter> <Parameter name="rchrEmpLoanId"></Parameter> <Parameter name="adClientId"></Parameter> 
+    <Parameter name="updatedby"></Parameter>
+    <Parameter id="paramKey" name="rchrEmpLoanId"></Parameter>
+    
+    
+        <Parameter name="adUserClient" type="replace" optional="true" after="RCHR_Emp_Loan.AD_Client_ID IN (" text="'1'"/>
+        <Parameter name="adOrgClient" type="replace" optional="true" after="RCHR_Emp_Loan.AD_Org_ID IN (" text="'1'"/>
+  </SqlMethod>
+
+  <SqlMethod name="insert" type="preparedStatement" return="rowCount" static="false" connection="true">
+    <Sql><![CDATA[
+        INSERT INTO RCHR_Emp_Loan 
+        (AD_Org_ID, Isactive, Rchr_Loan_Type_ID, Rchr_Homeappliance_ID, Documentno, Rchr_Attd_Process_ID, Rchr_Employee_ID, Suretyempid, Requisitiondate, Startdate, Enddate, Loanamt, Tenuremonths, Noofpresents, Process, Pendingadvances, Departmentstore, Loanpendings, Messbill, Processing, Status, Approve, AD_Image_ID, Issued, Paiddate, Paid, Rchr_Saladvance_ID, Isremark, Description, Rchr_Emp_Dept_ID, Rchr_Designation_ID, Reject, Rchr_Emp_Loan_ID, AD_Client_ID, created, createdby, updated, updatedBy)
+        VALUES ((?), (?), (?), (?), (?), (?), (?), (?), TO_DATE(?), TO_DATE(?), TO_DATE(?), TO_NUMBER(?), TO_NUMBER(?), TO_NUMBER(?), (?), TO_NUMBER(?), TO_NUMBER(?), TO_NUMBER(?), TO_NUMBER(?), (?), (?), (?), (?), (?), TO_DATE(?), (?), (?), (?), (?), (?), (?), (?), (?), (?), now(), ?, now(), ?)
+    ]]></Sql>
+    <Parameter name="adOrgId"></Parameter> <Parameter name="isactive"></Parameter> <Parameter name="rchrLoanTypeId"></Parameter> <Parameter name="rchrHomeapplianceId"></Parameter> <Parameter name="documentno"></Parameter> <Parameter name="rchrAttdProcessId"></Parameter> <Parameter name="rchrEmployeeId"></Parameter> <Parameter name="suretyempid"></Parameter> <Parameter name="requisitiondate"></Parameter> <Parameter name="startdate"></Parameter> <Parameter name="enddate"></Parameter> <Parameter name="loanamt"></Parameter> <Parameter name="tenuremonths"></Parameter> <Parameter name="noofpresents"></Parameter> <Parameter name="process"></Parameter> <Parameter name="pendingadvances"></Parameter> <Parameter name="departmentstore"></Parameter> <Parameter name="loanpendings"></Parameter> <Parameter name="messbill"></Parameter> <Parameter name="processing"></Parameter> <Parameter name="status"></Parameter> <Parameter name="approve"></Parameter> <Parameter name="adImageId"></Parameter> <Parameter name="issued"></Parameter> <Parameter name="paiddate"></Parameter> <Parameter name="paid"></Parameter> <Parameter name="rchrSaladvanceId"></Parameter> <Parameter name="isremark"></Parameter> <Parameter name="description"></Parameter> <Parameter name="rchrEmpDeptId"></Parameter> <Parameter name="rchrDesignationId"></Parameter> <Parameter name="reject"></Parameter> <Parameter name="rchrEmpLoanId"></Parameter> <Parameter name="adClientId"></Parameter> 
+    <Parameter name="createdby"></Parameter>
+    <Parameter name="updatedby"></Parameter>
+  </SqlMethod>
+
+  <SqlMethod name="delete" type="preparedStatement" return="rowCount">
+    <Sql><![CDATA[
+        DELETE FROM RCHR_Emp_Loan
+        WHERE RCHR_Emp_Loan.Rchr_Emp_Loan_ID = ? 
+        
+        AND RCHR_Emp_Loan.AD_Client_ID IN ('1') 
+        AND RCHR_Emp_Loan.AD_Org_ID IN ('1') 
+    ]]></Sql>
+    <Parameter name="param1"></Parameter>
+    
+        <Parameter name="adUserClient" type="replace" optional="true" after="RCHR_Emp_Loan.AD_Client_ID IN (" text="'1'"/>
+        <Parameter name="adOrgClient" type="replace" optional="true" after="RCHR_Emp_Loan.AD_Org_ID IN (" text="'1'"/>
+  </SqlMethod>
+
+  <SqlMethod name="selectOrg" type="preparedStatement" return="string">
+    <SqlMethodComment>Select for relation</SqlMethodComment>
+    <Sql><![CDATA[ 
+        SELECT AD_ORG_ID
+          FROM RCHR_Emp_Loan
+         WHERE RCHR_Emp_Loan.Rchr_Emp_Loan_ID = ? 
+    ]]></Sql>
+    <Parameter name="id"></Parameter>
+  </SqlMethod>
+  
+  <SqlMethod name="getCurrentDBTimestamp" type="preparedStatement" return="string">
+    <Sql><![CDATA[ 
+        SELECT to_char(Updated, 'YYYYMMDDHH24MISS') as Updated_Time_Stamp
+          FROM RCHR_Emp_Loan
+         WHERE RCHR_Emp_Loan.Rchr_Emp_Loan_ID = ? 
+    ]]></Sql>
+    <Parameter name="id"></Parameter>
+  </SqlMethod>
+</SqlClass>

@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SqlClass id="class" name="DepartmentalStoreRequisition1F72DCE242B945F3BAD14A72A930FDB8Data" package="org.openbravo.erpWindows.com.redcarpet.payroll.DepartmentalStoreRequisition">
+  <SqlClassComment>WAD Generated class</SqlClassComment>
+
+  <SqlMethod name="selectEdit" type="preparedStatement" return="multiple">
+    <SqlMethodComment>Select for edit</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT to_char(RCPL_Deprtmtstorerequsition.Created, ?) as created, 
+        (SELECT NAME FROM AD_USER u WHERE AD_USER_ID = RCPL_Deprtmtstorerequsition.CreatedBy) as CreatedByR, 
+        to_char(RCPL_Deprtmtstorerequsition.Updated, ?) as updated, 
+        to_char(RCPL_Deprtmtstorerequsition.Updated, 'YYYYMMDDHH24MISS') as Updated_Time_Stamp,  
+        RCPL_Deprtmtstorerequsition.UpdatedBy, 
+        (SELECT NAME FROM AD_USER u WHERE AD_USER_ID = RCPL_Deprtmtstorerequsition.UpdatedBy) as UpdatedByR,
+        RCPL_Deprtmtstorerequsition.AD_Org_ID, 
+(CASE WHEN RCPL_Deprtmtstorerequsition.AD_Org_ID IS NULL THEN '' ELSE  (COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table1.Name), ''))),'') ) END) AS AD_Org_IDR, 
+COALESCE(RCPL_Deprtmtstorerequsition.Isactive, 'N') AS Isactive, 
+RCPL_Deprtmtstorerequsition.Rchr_Employee_ID, 
+(CASE WHEN RCPL_Deprtmtstorerequsition.Rchr_Employee_ID IS NULL THEN '' ELSE  (COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table2.Punchno), ''))),'')  || ' - ' || COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table2.Employeename), ''))),'') ) END) AS Rchr_Employee_IDR, 
+RCPL_Deprtmtstorerequsition.Numberofpresents, 
+RCPL_Deprtmtstorerequsition.Amount, 
+RCPL_Deprtmtstorerequsition.Rchr_Room_ID, 
+(CASE WHEN RCPL_Deprtmtstorerequsition.Rchr_Room_ID IS NULL THEN '' ELSE  (COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table3.Roomno), ''))),'')  || ' - ' || COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table3.Maxnoofemployees), ''))),'') ) END) AS Rchr_Room_IDR, 
+RCPL_Deprtmtstorerequsition.Noofpersonsinroom, 
+RCPL_Deprtmtstorerequsition.Status, 
+(CASE WHEN RCPL_Deprtmtstorerequsition.Status IS NULL THEN '' ELSE  ( COALESCE(TO_CHAR(list1.name),'') ) END) AS StatusR, 
+RCPL_Deprtmtstorerequsition.Process, 
+RCPL_Deprtmtstorerequsition.Requisitondate, 
+RCPL_Deprtmtstorerequsition.Approvedamount, 
+RCPL_Deprtmtstorerequsition.Rcpl_Deprtmtstorerequsition_ID, 
+RCPL_Deprtmtstorerequsition.AD_Client_ID, 
+ 
+        ? AS LANGUAGE 
+        FROM RCPL_Deprtmtstorerequsition left join (select AD_Org_ID, Name from AD_Org) table1 on (RCPL_Deprtmtstorerequsition.AD_Org_ID = table1.AD_Org_ID) left join (select Rchr_Employee_ID, Punchno, Employeename from Rchr_Employee) table2 on (RCPL_Deprtmtstorerequsition.Rchr_Employee_ID = table2.Rchr_Employee_ID) left join (select Rchr_Room_ID, Roomno, Maxnoofemployees from Rchr_Room) table3 on (RCPL_Deprtmtstorerequsition.Rchr_Room_ID = table3.Rchr_Room_ID) left join ad_ref_list_v list1 on (RCPL_Deprtmtstorerequsition.Status = list1.value and list1.ad_reference_id = '5901BE65AE974FC983073C6726BFC55D' and list1.ad_language = ?) 
+        WHERE 2=2 
+
+        AND 1=1 
+        AND RCPL_Deprtmtstorerequsition.Rcpl_Deprtmtstorerequsition_ID = ? 
+        AND RCPL_Deprtmtstorerequsition.AD_Client_ID IN ('1') 
+           AND RCPL_Deprtmtstorerequsition.AD_Org_ID IN ('1') 
+    ]]></Sql>
+    <Parameter name="dateTimeFormat"></Parameter>
+    <Parameter name="dateTimeFormat"></Parameter>
+    
+    <Parameter name="paramLanguage"></Parameter>
+<Parameter name="paramLanguage"/>
+
+
+    <Parameter name="key"></Parameter>
+        <Parameter name="adUserClient" type="replace" optional="true" after="RCPL_Deprtmtstorerequsition.AD_Client_ID IN (" text="'1'"/>
+        <Parameter name="adOrgClient" type="replace" optional="true" after="RCPL_Deprtmtstorerequsition.AD_Org_ID IN (" text="'1'"/>
+
+    <Field name="adUserClient" value="void"></Field>
+    <Field name="adOrgClient" value="void"></Field>
+    <Field name="createdby" value="void"></Field>
+    
+    <Field name="trBgcolor" value="void"></Field>
+    <Field name="totalCount" value="void"></Field>
+    <Field name="dateTimeFormat" value=""></Field>
+  </SqlMethod>
+  
+  
+
+  <SqlMethod name="set" type="constant" return="multiple">
+      <SqlMethodComment>Create a registry</SqlMethodComment>
+      <Sql></Sql>
+
+<Parameter name="requisitondate"></Parameter><Parameter name="rchrEmployeeId"></Parameter><Parameter name="numberofpresents"></Parameter><Parameter name="updatedby"></Parameter><Parameter name="updatedbyr"></Parameter><Parameter name="amount"></Parameter><Parameter name="isactive"></Parameter><Parameter name="process"></Parameter><Parameter name="createdby"></Parameter><Parameter name="createdbyr"></Parameter><Parameter name="status"></Parameter><Parameter name="rcplDeprtmtstorerequsitionId"></Parameter><Parameter name="adClientId"></Parameter><Parameter name="approvedamount"></Parameter><Parameter name="rchrRoomId"></Parameter><Parameter name="adOrgId"></Parameter><Parameter name="noofpersonsinroom"></Parameter>
+   </SqlMethod>
+
+
+
+
+
+
+   <SqlMethod name="selectDef44F0A2FCFA2B49EE8BCF9524FE23D774_0" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>Select for auxiliar field</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT  ( COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table2.Name), ''))), '') ) as Updatedby FROM AD_User left join (select AD_User_ID, Name from AD_User) table2 on (AD_User.AD_User_ID = table2.AD_User_ID) WHERE AD_User.isActive='Y' AND AD_User.AD_User_ID = ?  
+    ]]></Sql>
+<Parameter name="UpdatedbyR"/>
+  </SqlMethod>
+
+   <SqlMethod name="selectDef7151558C2AC346CD8064CD4E071895F3_1" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>Select for auxiliar field</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT  ( COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table2.Name), ''))), '') ) as Createdby FROM AD_User left join (select AD_User_ID, Name from AD_User) table2 on (AD_User.AD_User_ID = table2.AD_User_ID) WHERE AD_User.isActive='Y' AND AD_User.AD_User_ID = ?  
+    ]]></Sql>
+<Parameter name="CreatedbyR"/>
+  </SqlMethod>
+
+
+
+
+
+
+
+
+
+
+  <SqlMethod name="update" type="preparedStatement" return="rowCount" static="false" connection="true">
+    <Sql><![CDATA[
+        UPDATE RCPL_Deprtmtstorerequsition
+        SET AD_Org_ID = (?) , Isactive = (?) , Rchr_Employee_ID = (?) , Numberofpresents = TO_NUMBER(?) , Amount = TO_NUMBER(?) , Rchr_Room_ID = (?) , Noofpersonsinroom = TO_NUMBER(?) , Status = (?) , Process = (?) , Requisitondate = TO_DATE(?) , Approvedamount = TO_NUMBER(?) , Rcpl_Deprtmtstorerequsition_ID = (?) , AD_Client_ID = (?) , updated = now(), updatedby = ? 
+        WHERE RCPL_Deprtmtstorerequsition.Rcpl_Deprtmtstorerequsition_ID = ? 
+        
+        AND RCPL_Deprtmtstorerequsition.AD_Client_ID IN ('1') 
+        AND RCPL_Deprtmtstorerequsition.AD_Org_ID IN ('1') 
+    ]]></Sql>
+    <Parameter name="adOrgId"></Parameter> <Parameter name="isactive"></Parameter> <Parameter name="rchrEmployeeId"></Parameter> <Parameter name="numberofpresents"></Parameter> <Parameter name="amount"></Parameter> <Parameter name="rchrRoomId"></Parameter> <Parameter name="noofpersonsinroom"></Parameter> <Parameter name="status"></Parameter> <Parameter name="process"></Parameter> <Parameter name="requisitondate"></Parameter> <Parameter name="approvedamount"></Parameter> <Parameter name="rcplDeprtmtstorerequsitionId"></Parameter> <Parameter name="adClientId"></Parameter> 
+    <Parameter name="updatedby"></Parameter>
+    <Parameter id="paramKey" name="rcplDeprtmtstorerequsitionId"></Parameter>
+    
+    
+        <Parameter name="adUserClient" type="replace" optional="true" after="RCPL_Deprtmtstorerequsition.AD_Client_ID IN (" text="'1'"/>
+        <Parameter name="adOrgClient" type="replace" optional="true" after="RCPL_Deprtmtstorerequsition.AD_Org_ID IN (" text="'1'"/>
+  </SqlMethod>
+
+  <SqlMethod name="insert" type="preparedStatement" return="rowCount" static="false" connection="true">
+    <Sql><![CDATA[
+        INSERT INTO RCPL_Deprtmtstorerequsition 
+        (AD_Org_ID, Isactive, Rchr_Employee_ID, Numberofpresents, Amount, Rchr_Room_ID, Noofpersonsinroom, Status, Process, Requisitondate, Approvedamount, Rcpl_Deprtmtstorerequsition_ID, AD_Client_ID, created, createdby, updated, updatedBy)
+        VALUES ((?), (?), (?), TO_NUMBER(?), TO_NUMBER(?), (?), TO_NUMBER(?), (?), (?), TO_DATE(?), TO_NUMBER(?), (?), (?), now(), ?, now(), ?)
+    ]]></Sql>
+    <Parameter name="adOrgId"></Parameter> <Parameter name="isactive"></Parameter> <Parameter name="rchrEmployeeId"></Parameter> <Parameter name="numberofpresents"></Parameter> <Parameter name="amount"></Parameter> <Parameter name="rchrRoomId"></Parameter> <Parameter name="noofpersonsinroom"></Parameter> <Parameter name="status"></Parameter> <Parameter name="process"></Parameter> <Parameter name="requisitondate"></Parameter> <Parameter name="approvedamount"></Parameter> <Parameter name="rcplDeprtmtstorerequsitionId"></Parameter> <Parameter name="adClientId"></Parameter> 
+    <Parameter name="createdby"></Parameter>
+    <Parameter name="updatedby"></Parameter>
+  </SqlMethod>
+
+  <SqlMethod name="delete" type="preparedStatement" return="rowCount">
+    <Sql><![CDATA[
+        DELETE FROM RCPL_Deprtmtstorerequsition
+        WHERE RCPL_Deprtmtstorerequsition.Rcpl_Deprtmtstorerequsition_ID = ? 
+        
+        AND RCPL_Deprtmtstorerequsition.AD_Client_ID IN ('1') 
+        AND RCPL_Deprtmtstorerequsition.AD_Org_ID IN ('1') 
+    ]]></Sql>
+    <Parameter name="param1"></Parameter>
+    
+        <Parameter name="adUserClient" type="replace" optional="true" after="RCPL_Deprtmtstorerequsition.AD_Client_ID IN (" text="'1'"/>
+        <Parameter name="adOrgClient" type="replace" optional="true" after="RCPL_Deprtmtstorerequsition.AD_Org_ID IN (" text="'1'"/>
+  </SqlMethod>
+
+  <SqlMethod name="selectOrg" type="preparedStatement" return="string">
+    <SqlMethodComment>Select for relation</SqlMethodComment>
+    <Sql><![CDATA[ 
+        SELECT AD_ORG_ID
+          FROM RCPL_Deprtmtstorerequsition
+         WHERE RCPL_Deprtmtstorerequsition.Rcpl_Deprtmtstorerequsition_ID = ? 
+    ]]></Sql>
+    <Parameter name="id"></Parameter>
+  </SqlMethod>
+  
+  <SqlMethod name="getCurrentDBTimestamp" type="preparedStatement" return="string">
+    <Sql><![CDATA[ 
+        SELECT to_char(Updated, 'YYYYMMDDHH24MISS') as Updated_Time_Stamp
+          FROM RCPL_Deprtmtstorerequsition
+         WHERE RCPL_Deprtmtstorerequsition.Rcpl_Deprtmtstorerequsition_ID = ? 
+    ]]></Sql>
+    <Parameter name="id"></Parameter>
+  </SqlMethod>
+</SqlClass>

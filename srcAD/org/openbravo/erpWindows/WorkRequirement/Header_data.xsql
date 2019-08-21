@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SqlClass id="class" name="HeaderData" package="org.openbravo.erpWindows.WorkRequirement">
+  <SqlClassComment>WAD Generated class</SqlClassComment>
+
+  <SqlMethod name="selectEdit" type="preparedStatement" return="multiple">
+    <SqlMethodComment>Select for edit</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT to_char(MA_WorkRequirement.Created, ?) as created, 
+        (SELECT NAME FROM AD_USER u WHERE AD_USER_ID = MA_WorkRequirement.CreatedBy) as CreatedByR, 
+        to_char(MA_WorkRequirement.Updated, ?) as updated, 
+        to_char(MA_WorkRequirement.Updated, 'YYYYMMDDHH24MISS') as Updated_Time_Stamp,  
+        MA_WorkRequirement.UpdatedBy, 
+        (SELECT NAME FROM AD_USER u WHERE AD_USER_ID = MA_WorkRequirement.UpdatedBy) as UpdatedByR,
+        MA_WorkRequirement.AD_Org_ID, 
+(CASE WHEN MA_WorkRequirement.AD_Org_ID IS NULL THEN '' ELSE  (COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table1.Name), ''))),'') ) END) AS AD_Org_IDR, 
+MA_WorkRequirement.C_Doctype_ID, 
+(CASE WHEN MA_WorkRequirement.C_Doctype_ID IS NULL THEN '' ELSE  (COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR((CASE WHEN tableTRL2.Name IS NULL THEN TO_CHAR(table2.Name) ELSE TO_CHAR(tableTRL2.Name) END)), ''))),'') ) END) AS C_Doctype_IDR, 
+MA_WorkRequirement.DocumentNo, 
+MA_WorkRequirement.MA_Processplan_ID, 
+(CASE WHEN MA_WorkRequirement.MA_Processplan_ID IS NULL THEN '' ELSE  (COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table3.Name), ''))),'') ) END) AS MA_Processplan_IDR, 
+MA_WorkRequirement.Quantity, 
+MA_WorkRequirement.Launchdate, 
+MA_WorkRequirement.StartDate, 
+MA_WorkRequirement.EndDate, 
+MA_WorkRequirement.Conversionrate, 
+MA_WorkRequirement.Secondaryqty, 
+COALESCE(MA_WorkRequirement.Explodephases, 'N') AS Explodephases, 
+MA_WorkRequirement.Secondaryunit, 
+MA_WorkRequirement.Estimatedtime, 
+MA_WorkRequirement.Runtime, 
+COALESCE(MA_WorkRequirement.Processed, 'N') AS Processed, 
+MA_WorkRequirement.Explote, 
+MA_WorkRequirement.Closed, 
+MA_WorkRequirement.Createworkrequirement, 
+MA_WorkRequirement.AD_Client_ID, 
+MA_WorkRequirement.Name, 
+COALESCE(MA_WorkRequirement.IsActive, 'N') AS IsActive, 
+MA_WorkRequirement.MA_Workrequirement_ID, 
+ 
+        ? AS LANGUAGE 
+        FROM MA_WorkRequirement left join (select AD_Org_ID, Name from AD_Org) table1 on (MA_WorkRequirement.AD_Org_ID = table1.AD_Org_ID) left join (select C_Doctype_ID, Name from C_Doctype) table2 on (MA_WorkRequirement.C_Doctype_ID = table2.C_Doctype_ID) left join (select C_DocType_ID,AD_Language, Name from C_DocType_TRL) tableTRL2 on (table2.C_DocType_ID = tableTRL2.C_DocType_ID and tableTRL2.AD_Language = ?)  left join (select MA_Processplan_ID, Name from MA_Processplan) table3 on (MA_WorkRequirement.MA_Processplan_ID = table3.MA_Processplan_ID)
+        WHERE 2=2 
+
+        AND 1=1 
+        AND MA_WorkRequirement.MA_Workrequirement_ID = ? 
+        AND MA_WorkRequirement.AD_Client_ID IN ('1') 
+           AND MA_WorkRequirement.AD_Org_ID IN ('1') 
+    ]]></Sql>
+    <Parameter name="dateTimeFormat"></Parameter>
+    <Parameter name="dateTimeFormat"></Parameter>
+    
+    <Parameter name="paramLanguage"></Parameter>
+<Parameter name="paramLanguage"/>
+
+
+    <Parameter name="key"></Parameter>
+        <Parameter name="adUserClient" type="replace" optional="true" after="MA_WorkRequirement.AD_Client_ID IN (" text="'1'"/>
+        <Parameter name="adOrgClient" type="replace" optional="true" after="MA_WorkRequirement.AD_Org_ID IN (" text="'1'"/>
+
+    <Field name="adUserClient" value="void"></Field>
+    <Field name="adOrgClient" value="void"></Field>
+    <Field name="createdby" value="void"></Field>
+    
+    <Field name="trBgcolor" value="void"></Field>
+    <Field name="totalCount" value="void"></Field>
+    <Field name="dateTimeFormat" value=""></Field>
+  </SqlMethod>
+  
+  
+
+  <SqlMethod name="set" type="constant" return="multiple">
+      <SqlMethodComment>Create a registry</SqlMethodComment>
+      <Sql></Sql>
+
+<Parameter name="cDoctypeId"></Parameter><Parameter name="maWorkrequirementId"></Parameter><Parameter name="adClientId"></Parameter><Parameter name="adOrgId"></Parameter><Parameter name="isactive"></Parameter><Parameter name="createdby"></Parameter><Parameter name="createdbyr"></Parameter><Parameter name="updatedby"></Parameter><Parameter name="updatedbyr"></Parameter><Parameter name="name"></Parameter><Parameter name="maProcessplanId"></Parameter><Parameter name="quantity"></Parameter><Parameter name="launchdate"></Parameter><Parameter name="startdate"></Parameter><Parameter name="enddate"></Parameter><Parameter name="closed"></Parameter><Parameter name="explote"></Parameter><Parameter name="processed"></Parameter><Parameter name="documentno"></Parameter><Parameter name="explodephases"></Parameter><Parameter name="secondaryqty"></Parameter><Parameter name="secondaryunit"></Parameter><Parameter name="conversionrate"></Parameter><Parameter name="runtime"></Parameter><Parameter name="createworkrequirement"></Parameter><Parameter name="estimatedtime"></Parameter>
+   </SqlMethod>
+
+
+
+
+
+
+   <SqlMethod name="selectDef55356831DB104AF0BE1319D15BBBF6FE" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>Select for auxiliar field</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT C_DocType_ID from C_DocType WHERE AD_ISORGINCLUDED(?,C_DocType.AD_Org_ID, ?) <> -1 AND C_DocType.DocBaseType = 'WRE'ORDER BY C_DocType.isdefault DESC 
+    ]]></Sql>
+
+<Parameter name="AD_Org_ID"/>
+<Parameter name="AD_Client_ID"/>
+  </SqlMethod>
+
+   <SqlMethod name="selectDef801554_0" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>Select for auxiliar field</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT  ( COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table2.Name), ''))), '') ) as Createdby FROM AD_User left join (select AD_User_ID, Name from AD_User) table2 on (AD_User.AD_User_ID = table2.AD_User_ID) WHERE AD_User.isActive='Y' AND AD_User.AD_User_ID = ?  
+    ]]></Sql>
+<Parameter name="CreatedbyR"/>
+  </SqlMethod>
+
+   <SqlMethod name="selectDef801556_1" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>Select for auxiliar field</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT  ( COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table2.Name), ''))), '') ) as Updatedby FROM AD_User left join (select AD_User_ID, Name from AD_User) table2 on (AD_User.AD_User_ID = table2.AD_User_ID) WHERE AD_User.isActive='Y' AND AD_User.AD_User_ID = ?  
+    ]]></Sql>
+<Parameter name="UpdatedbyR"/>
+  </SqlMethod>
+
+
+
+
+
+
+
+
+
+
+  <SqlMethod name="update" type="preparedStatement" return="rowCount" static="false" connection="true">
+    <Sql><![CDATA[
+        UPDATE MA_WorkRequirement
+        SET AD_Org_ID = (?) , C_Doctype_ID = (?) , DocumentNo = (?) , MA_Processplan_ID = (?) , Quantity = TO_NUMBER(?) , Launchdate = TO_DATE(?) , StartDate = TO_DATE(?) , EndDate = TO_DATE(?) , Conversionrate = TO_NUMBER(?) , Secondaryqty = TO_NUMBER(?) , Explodephases = (?) , Secondaryunit = (?) , Estimatedtime = TO_NUMBER(?) , Runtime = TO_NUMBER(?) , Processed = (?) , Explote = (?) , Closed = (?) , Createworkrequirement = (?) , AD_Client_ID = (?) , Name = (?) , IsActive = (?) , MA_Workrequirement_ID = (?) , updated = now(), updatedby = ? 
+        WHERE MA_WorkRequirement.MA_Workrequirement_ID = ? 
+        
+        AND MA_WorkRequirement.AD_Client_ID IN ('1') 
+        AND MA_WorkRequirement.AD_Org_ID IN ('1') 
+    ]]></Sql>
+    <Parameter name="adOrgId"></Parameter> <Parameter name="cDoctypeId"></Parameter> <Parameter name="documentno"></Parameter> <Parameter name="maProcessplanId"></Parameter> <Parameter name="quantity"></Parameter> <Parameter name="launchdate"></Parameter> <Parameter name="startdate"></Parameter> <Parameter name="enddate"></Parameter> <Parameter name="conversionrate"></Parameter> <Parameter name="secondaryqty"></Parameter> <Parameter name="explodephases"></Parameter> <Parameter name="secondaryunit"></Parameter> <Parameter name="estimatedtime"></Parameter> <Parameter name="runtime"></Parameter> <Parameter name="processed"></Parameter> <Parameter name="explote"></Parameter> <Parameter name="closed"></Parameter> <Parameter name="createworkrequirement"></Parameter> <Parameter name="adClientId"></Parameter> <Parameter name="name"></Parameter> <Parameter name="isactive"></Parameter> <Parameter name="maWorkrequirementId"></Parameter> 
+    <Parameter name="updatedby"></Parameter>
+    <Parameter id="paramKey" name="maWorkrequirementId"></Parameter>
+    
+    
+        <Parameter name="adUserClient" type="replace" optional="true" after="MA_WorkRequirement.AD_Client_ID IN (" text="'1'"/>
+        <Parameter name="adOrgClient" type="replace" optional="true" after="MA_WorkRequirement.AD_Org_ID IN (" text="'1'"/>
+  </SqlMethod>
+
+  <SqlMethod name="insert" type="preparedStatement" return="rowCount" static="false" connection="true">
+    <Sql><![CDATA[
+        INSERT INTO MA_WorkRequirement 
+        (AD_Org_ID, C_Doctype_ID, DocumentNo, MA_Processplan_ID, Quantity, Launchdate, StartDate, EndDate, Conversionrate, Secondaryqty, Explodephases, Secondaryunit, Estimatedtime, Runtime, Processed, Explote, Closed, Createworkrequirement, AD_Client_ID, Name, IsActive, MA_Workrequirement_ID, created, createdby, updated, updatedBy)
+        VALUES ((?), (?), (?), (?), TO_NUMBER(?), TO_DATE(?), TO_DATE(?), TO_DATE(?), TO_NUMBER(?), TO_NUMBER(?), (?), (?), TO_NUMBER(?), TO_NUMBER(?), (?), (?), (?), (?), (?), (?), (?), (?), now(), ?, now(), ?)
+    ]]></Sql>
+    <Parameter name="adOrgId"></Parameter> <Parameter name="cDoctypeId"></Parameter> <Parameter name="documentno"></Parameter> <Parameter name="maProcessplanId"></Parameter> <Parameter name="quantity"></Parameter> <Parameter name="launchdate"></Parameter> <Parameter name="startdate"></Parameter> <Parameter name="enddate"></Parameter> <Parameter name="conversionrate"></Parameter> <Parameter name="secondaryqty"></Parameter> <Parameter name="explodephases"></Parameter> <Parameter name="secondaryunit"></Parameter> <Parameter name="estimatedtime"></Parameter> <Parameter name="runtime"></Parameter> <Parameter name="processed"></Parameter> <Parameter name="explote"></Parameter> <Parameter name="closed"></Parameter> <Parameter name="createworkrequirement"></Parameter> <Parameter name="adClientId"></Parameter> <Parameter name="name"></Parameter> <Parameter name="isactive"></Parameter> <Parameter name="maWorkrequirementId"></Parameter> 
+    <Parameter name="createdby"></Parameter>
+    <Parameter name="updatedby"></Parameter>
+  </SqlMethod>
+
+  <SqlMethod name="delete" type="preparedStatement" return="rowCount">
+    <Sql><![CDATA[
+        DELETE FROM MA_WorkRequirement
+        WHERE MA_WorkRequirement.MA_Workrequirement_ID = ? 
+        
+        AND MA_WorkRequirement.AD_Client_ID IN ('1') 
+        AND MA_WorkRequirement.AD_Org_ID IN ('1') 
+    ]]></Sql>
+    <Parameter name="param1"></Parameter>
+    
+        <Parameter name="adUserClient" type="replace" optional="true" after="MA_WorkRequirement.AD_Client_ID IN (" text="'1'"/>
+        <Parameter name="adOrgClient" type="replace" optional="true" after="MA_WorkRequirement.AD_Org_ID IN (" text="'1'"/>
+  </SqlMethod>
+
+  <SqlMethod name="selectOrg" type="preparedStatement" return="string">
+    <SqlMethodComment>Select for relation</SqlMethodComment>
+    <Sql><![CDATA[ 
+        SELECT AD_ORG_ID
+          FROM MA_WorkRequirement
+         WHERE MA_WorkRequirement.MA_Workrequirement_ID = ? 
+    ]]></Sql>
+    <Parameter name="id"></Parameter>
+  </SqlMethod>
+  
+  <SqlMethod name="getCurrentDBTimestamp" type="preparedStatement" return="string">
+    <Sql><![CDATA[ 
+        SELECT to_char(Updated, 'YYYYMMDDHH24MISS') as Updated_Time_Stamp
+          FROM MA_WorkRequirement
+         WHERE MA_WorkRequirement.MA_Workrequirement_ID = ? 
+    ]]></Sql>
+    <Parameter name="id"></Parameter>
+  </SqlMethod>
+</SqlClass>

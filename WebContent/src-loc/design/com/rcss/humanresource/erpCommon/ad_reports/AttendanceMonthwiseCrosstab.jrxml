@@ -1,0 +1,295 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="AttendanceSummaryMonthwiseReport" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<style name="Crosstab Data Text" hAlign="Center" lineSpacing="Single"/>
+	<parameter name="FromD" class="java.util.Date"/>
+	<parameter name="ToDate" class="java.util.Date"/>
+	<parameter name="EmpName" class="java.lang.String">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="aux_empname" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[$P{EmpName}.equals("") ? " " : " AND RCHR_EMPLOYEE.RCHR_EMPLOYEE_ID = '" + $P{EmpName} + "'"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="Emp_Type" class="java.lang.String">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="aux_emptype" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[$P{Emp_Type}.equals("") ? " " : " AND RCHR_EMPLOYEE.EMPLOYEETYPE = '" + $P{Emp_Type} + "'"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="Dept_ID" class="java.lang.String">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="aux_dept" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[$P{Dept_ID}.equals("") ? " " : " AND RCHR_EMPLOYEE.RCHR_EMP_DEPT_ID = '" + $P{Dept_ID} + "'"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="SubDept_ID" class="java.lang.String">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="aux_subdept" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[$P{SubDept_ID}.equals("") ? " " : " AND RCHR_EMPLOYEE.RCHR_SUBDEPARTMENT_ID = '" + $P{SubDept_ID} + "'"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="Designation_ID" class="java.lang.String">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="aux_designation" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[$P{Designation_ID}.equals("") ? " " : " AND RCHR_EMPLOYEE.RCHR_DESIGNATION_ID = '" +$P{Designation_ID} + "'"]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[select
+(rchr_employee.documentno ||'-'||rchr_employee.employeename) as empno,
+rchr_employee.employeename as empname,
+rchr_employee.punchno as punchno,
+rchr_employee.employeetype as employeetpye,
+(select rchr_designation.name from rchr_designation where rchr_designation.rchr_designation_id=rchr_employee.rchr_designation_id) as designation,
+(select rchr_emp_dept.name from rchr_emp_dept where rchr_emp_dept.rchr_emp_dept_id=rchr_employee.rchr_emp_dept_id) as department,
+COALESCE((select Count(present) from rchr_dailyattenddemo where present='Y' and isovertime='N' and isweeklyoff='N' and attdate Between rchr_attd_process.startdate And rchr_attd_process.enddate
+and attdate Between $P{FromD} And $P{ToDate}
+and rchr_dailyattenddemo.rchr_employee_id=rchr_employee.rchr_employee_id),0) as presendays,
+
+COALESCE((select Count(isweeklyoff) from rchr_dailyattenddemo where isweeklyoff='Y' and attdate Between rchr_attd_process.startdate And rchr_attd_process.enddate
+and attdate Between $P{FromD} And $P{ToDate}
+and rchr_dailyattenddemo.rchr_employee_id=rchr_employee.rchr_employee_id),0) as weeeklyoffdays,
+
+COALESCE((select Count(present) from rchr_dailyattenddemo where present='Y' and isweeklyoff='Y'  and attdate Between rchr_attd_process.startdate And rchr_attd_process.enddate
+and attdate Between $P{FromD} And $P{ToDate}
+and rchr_dailyattenddemo.rchr_employee_id=rchr_employee.rchr_employee_id),0) as WOP,
+
+COALESCE((select Count(present) from rchr_dailyattenddemo where present='N' and isweeklyoff='N' and attdate Between rchr_attd_process.startdate And rchr_attd_process.enddate
+and attdate Between $P{FromD} And $P{ToDate}
+and rchr_dailyattenddemo.rchr_employee_id=rchr_employee.rchr_employee_id),0) as absentdays,
+(select name from rchr_emp_dept where rchr_emp_dept_id=$P{Dept_ID}) as parm_dept,
+(select name from rchr_subdepartment where rchr_subdepartment_id=$P{SubDept_ID}) as parm_subdept,
+(select name  from rchr_designation where rchr_designation.rchr_designation_id=$P{Designation_ID}) as parm_desg,
+(to_char(startdate,'MM-YY')) as monthname,
+startdate,
+enddate,
+(processingdays) as totaldays,
+ 1  as oneday
+from rchr_employee, rchr_attd_process
+where  ((enddate between $P{FromD} And $P{ToDate})
+OR  (startdate between $P{FromD} And $P{ToDate})) and rchr_employee.isactive='Y'
+and 1=1
+$P!{aux_empname}
+$P!{aux_dept}
+$P!{aux_subdept}
+$P!{aux_emptype}
+$P!{aux_designation}
+ORDER BY startdate,rchr_employee.punchno
+
+]]>
+	</queryString>
+	<field name="empno" class="java.lang.String"/>
+	<field name="empname" class="java.lang.String"/>
+	<field name="punchno" class="java.lang.String"/>
+	<field name="employeetpye" class="java.lang.String"/>
+	<field name="designation" class="java.lang.String"/>
+	<field name="department" class="java.lang.String"/>
+	<field name="presendays" class="java.lang.Long"/>
+	<field name="weeeklyoffdays" class="java.lang.Long"/>
+	<field name="wop" class="java.lang.Long"/>
+	<field name="absentdays" class="java.lang.Long"/>
+	<field name="parm_dept" class="java.lang.String"/>
+	<field name="parm_subdept" class="java.lang.String"/>
+	<field name="parm_desg" class="java.lang.String"/>
+	<field name="monthname" class="java.lang.String"/>
+	<field name="startdate" class="java.sql.Timestamp"/>
+	<field name="enddate" class="java.sql.Timestamp"/>
+	<field name="totaldays" class="java.math.BigDecimal"/>
+	<field name="oneday" class="java.lang.Integer"/>
+	<variable name="sno" class="java.math.BigDecimal" calculation="Count">
+		<variableExpression><![CDATA[$F{empno}]]></variableExpression>
+	</variable>
+	<variable name="totaldays" class="java.lang.Integer">
+		<variableExpression><![CDATA[$F{enddate}.getDate() - $P{FromD}.getDate()]]></variableExpression>
+		<initialValueExpression><![CDATA[$P{ToDate}.getDate()-$P{FromD}.getDate()]]></initialValueExpression>
+	</variable>
+	<variable name="variable1" class="java.lang.Integer">
+		<variableExpression><![CDATA[$F{oneday}+$V{totaldays}]]></variableExpression>
+		<initialValueExpression><![CDATA[$F{oneday}+$V{totaldays}]]></initialValueExpression>
+	</variable>
+	<group name="Month">
+		<groupExpression><![CDATA[$F{monthname}]]></groupExpression>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<summary>
+		<band height="136" splitType="Stretch">
+			<staticText>
+				<reportElement x="166" y="3" width="201" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" lineSpacing="Single">
+					<font isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[Attendance Summary Moth Wise Report]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement x="377" y="3" width="76" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle" lineSpacing="Single">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.util.Date"><![CDATA[$P{FromD}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement x="474" y="3" width="82" height="20"/>
+				<textElement verticalAlignment="Middle" lineSpacing="Single">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.util.Date"><![CDATA[$P{ToDate}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="457" y="3" width="13" height="20"/>
+				<textElement verticalAlignment="Middle" lineSpacing="Single">
+					<font size="8" isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[To]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="255" y="21" width="100" height="20"/>
+				<textElement verticalAlignment="Middle" lineSpacing="Single">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{parm_subdept}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="354" y="21" width="100" height="20"/>
+				<textElement verticalAlignment="Middle" lineSpacing="Single">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{parm_desg}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="153" y="21" width="100" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle" lineSpacing="Single">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{parm_dept}]]></textFieldExpression>
+			</textField>
+			<crosstab>
+				<reportElement x="0" y="41" width="555" height="95"/>
+				<rowGroup name="empno" width="70" totalPosition="End">
+					<bucket>
+						<bucketExpression class="java.lang.String"><![CDATA[$F{empno}]]></bucketExpression>
+					</bucket>
+					<crosstabRowHeader>
+						<cellContents backcolor="#F0F8FF" mode="Opaque">
+							<box>
+								<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+							</box>
+							<textField>
+								<reportElement style="Crosstab Data Text" x="0" y="0" width="70" height="25"/>
+								<textElement lineSpacing="Single"/>
+								<textFieldExpression class="java.lang.String"><![CDATA[$V{empno}]]></textFieldExpression>
+							</textField>
+						</cellContents>
+					</crosstabRowHeader>
+					<crosstabTotalRowHeader>
+						<cellContents backcolor="#BFE1FF" mode="Opaque">
+							<box>
+								<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+							</box>
+							<staticText>
+								<reportElement x="0" y="0" width="70" height="25"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle" lineSpacing="Single"/>
+								<text><![CDATA[Total empno]]></text>
+							</staticText>
+						</cellContents>
+					</crosstabTotalRowHeader>
+				</rowGroup>
+				<columnGroup name="startdate" height="30" totalPosition="End">
+					<bucket>
+						<bucketExpression class="java.sql.Timestamp"><![CDATA[$F{startdate}]]></bucketExpression>
+					</bucket>
+					<crosstabColumnHeader>
+						<cellContents backcolor="#F0F8FF" mode="Opaque">
+							<box>
+								<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+							</box>
+							<textField pattern="dd-MMM-yy" isBlankWhenNull="true">
+								<reportElement style="Crosstab Data Text" x="0" y="0" width="50" height="30"/>
+								<textElement lineSpacing="Single">
+									<font size="8"/>
+								</textElement>
+								<textFieldExpression class="java.sql.Timestamp"><![CDATA[$V{startdate}]]></textFieldExpression>
+							</textField>
+						</cellContents>
+					</crosstabColumnHeader>
+					<crosstabTotalColumnHeader>
+						<cellContents backcolor="#BFE1FF" mode="Opaque">
+							<box>
+								<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+							</box>
+							<staticText>
+								<reportElement x="0" y="0" width="50" height="30"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle" lineSpacing="Single">
+									<font size="8"/>
+								</textElement>
+								<text><![CDATA[Total startdate]]></text>
+							</staticText>
+						</cellContents>
+					</crosstabTotalColumnHeader>
+				</columnGroup>
+				<measure name="presendaysMeasure" class="java.lang.Long" calculation="Sum">
+					<measureExpression><![CDATA[$F{presendays}]]></measureExpression>
+				</measure>
+				<crosstabCell width="50" height="25">
+					<cellContents>
+						<box>
+							<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						</box>
+						<textField>
+							<reportElement style="Crosstab Data Text" x="0" y="0" width="50" height="25"/>
+							<textElement lineSpacing="Single">
+								<font size="8"/>
+							</textElement>
+							<textFieldExpression class="java.lang.Long"><![CDATA[$V{presendaysMeasure}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell height="25" rowTotalGroup="empno">
+					<cellContents backcolor="#BFE1FF" mode="Opaque">
+						<box>
+							<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						</box>
+						<textField>
+							<reportElement style="Crosstab Data Text" x="0" y="0" width="50" height="25"/>
+							<textElement lineSpacing="Single">
+								<font size="8"/>
+							</textElement>
+							<textFieldExpression class="java.lang.Long"><![CDATA[$V{presendaysMeasure}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell width="50" columnTotalGroup="startdate">
+					<cellContents backcolor="#BFE1FF" mode="Opaque">
+						<box>
+							<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						</box>
+						<textField>
+							<reportElement style="Crosstab Data Text" x="0" y="0" width="50" height="25"/>
+							<textElement lineSpacing="Single">
+								<font size="8"/>
+							</textElement>
+							<textFieldExpression class="java.lang.Long"><![CDATA[$V{presendaysMeasure}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell rowTotalGroup="empno" columnTotalGroup="startdate">
+					<cellContents backcolor="#BFE1FF" mode="Opaque">
+						<box>
+							<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						</box>
+						<textField>
+							<reportElement style="Crosstab Data Text" x="0" y="0" width="50" height="25"/>
+							<textElement lineSpacing="Single">
+								<font size="8"/>
+							</textElement>
+							<textFieldExpression class="java.lang.Long"><![CDATA[$V{presendaysMeasure}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+			</crosstab>
+		</band>
+	</summary>
+</jasperReport>

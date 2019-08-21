@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SqlClass id="class" name="PreventiveMaintenanceOrder14087BE6483B4FD3B4259097F58DE757Data" package="org.openbravo.erpWindows.com.redcarpet.production.PreventiveMaintenanceOrder">
+  <SqlClassComment>WAD Generated class</SqlClassComment>
+
+  <SqlMethod name="selectEdit" type="preparedStatement" return="multiple">
+    <SqlMethodComment>Select for edit</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT to_char(RCPR_Preventivemaintenance.Created, ?) as created, 
+        (SELECT NAME FROM AD_USER u WHERE AD_USER_ID = RCPR_Preventivemaintenance.CreatedBy) as CreatedByR, 
+        to_char(RCPR_Preventivemaintenance.Updated, ?) as updated, 
+        to_char(RCPR_Preventivemaintenance.Updated, 'YYYYMMDDHH24MISS') as Updated_Time_Stamp,  
+        RCPR_Preventivemaintenance.UpdatedBy, 
+        (SELECT NAME FROM AD_USER u WHERE AD_USER_ID = RCPR_Preventivemaintenance.UpdatedBy) as UpdatedByR,
+        RCPR_Preventivemaintenance.AD_Org_ID, 
+(CASE WHEN RCPR_Preventivemaintenance.AD_Org_ID IS NULL THEN '' ELSE  (COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table1.Name), ''))),'') ) END) AS AD_Org_IDR, 
+RCPR_Preventivemaintenance.C_Doctype_ID, 
+(CASE WHEN RCPR_Preventivemaintenance.C_Doctype_ID IS NULL THEN '' ELSE  ( COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR((CASE WHEN tableTRL2.Name IS NULL THEN TO_CHAR(table2.Name) ELSE TO_CHAR(tableTRL2.Name) END)), ''))),'') ) END) AS C_Doctype_IDR, 
+COALESCE(RCPR_Preventivemaintenance.Isactive, 'N') AS Isactive, 
+RCPR_Preventivemaintenance.Documentno, 
+RCPR_Preventivemaintenance.Maintenancedate, 
+RCPR_Preventivemaintenance.Rcpr_Shift_ID, 
+(CASE WHEN RCPR_Preventivemaintenance.Rcpr_Shift_ID IS NULL THEN '' ELSE  (COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table3.Name), ''))),'') ) END) AS Rcpr_Shift_IDR, 
+RCPR_Preventivemaintenance.Process, 
+RCPR_Preventivemaintenance.AD_Client_ID, 
+RCPR_Preventivemaintenance.Rcpr_Preventivemaintenance_ID, 
+ 
+        ? AS LANGUAGE 
+        FROM RCPR_Preventivemaintenance left join (select AD_Org_ID, Name from AD_Org) table1 on (RCPR_Preventivemaintenance.AD_Org_ID = table1.AD_Org_ID) left join (select C_DocType_ID, Name from C_DocType) table2 on (RCPR_Preventivemaintenance.C_Doctype_ID =  table2.C_DocType_ID) left join (select C_DocType_ID,AD_Language, Name from C_DocType_TRL) tableTRL2 on (table2.C_DocType_ID = tableTRL2.C_DocType_ID and tableTRL2.AD_Language = ?)  left join (select Rcpr_Shift_ID, Name from Rcpr_Shift) table3 on (RCPR_Preventivemaintenance.Rcpr_Shift_ID = table3.Rcpr_Shift_ID)
+        WHERE 2=2 
+
+        AND 1=1 
+        AND RCPR_Preventivemaintenance.Rcpr_Preventivemaintenance_ID = ? 
+        AND RCPR_Preventivemaintenance.AD_Client_ID IN ('1') 
+           AND RCPR_Preventivemaintenance.AD_Org_ID IN ('1') 
+    ]]></Sql>
+    <Parameter name="dateTimeFormat"></Parameter>
+    <Parameter name="dateTimeFormat"></Parameter>
+    
+    <Parameter name="paramLanguage"></Parameter>
+<Parameter name="paramLanguage"/>
+
+
+    <Parameter name="key"></Parameter>
+        <Parameter name="adUserClient" type="replace" optional="true" after="RCPR_Preventivemaintenance.AD_Client_ID IN (" text="'1'"/>
+        <Parameter name="adOrgClient" type="replace" optional="true" after="RCPR_Preventivemaintenance.AD_Org_ID IN (" text="'1'"/>
+
+    <Field name="adUserClient" value="void"></Field>
+    <Field name="adOrgClient" value="void"></Field>
+    <Field name="createdby" value="void"></Field>
+    
+    <Field name="trBgcolor" value="void"></Field>
+    <Field name="totalCount" value="void"></Field>
+    <Field name="dateTimeFormat" value=""></Field>
+  </SqlMethod>
+  
+  
+
+  <SqlMethod name="set" type="constant" return="multiple">
+      <SqlMethodComment>Create a registry</SqlMethodComment>
+      <Sql></Sql>
+
+<Parameter name="rcprShiftId"></Parameter><Parameter name="process"></Parameter><Parameter name="rcprPreventivemaintenanceId"></Parameter><Parameter name="updatedby"></Parameter><Parameter name="updatedbyr"></Parameter><Parameter name="cDoctypeId"></Parameter><Parameter name="documentno"></Parameter><Parameter name="createdby"></Parameter><Parameter name="createdbyr"></Parameter><Parameter name="adClientId"></Parameter><Parameter name="adOrgId"></Parameter><Parameter name="isactive"></Parameter><Parameter name="maintenancedate"></Parameter>
+   </SqlMethod>
+
+
+
+
+
+
+   <SqlMethod name="selectDef51B1D20BF5C144B6BE87EC0502DF1F65_0" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>Select for auxiliar field</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT  ( COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table2.Name), ''))), '') ) as Updatedby FROM AD_User left join (select AD_User_ID, Name from AD_User) table2 on (AD_User.AD_User_ID = table2.AD_User_ID) WHERE AD_User.isActive='Y' AND AD_User.AD_User_ID = ?  
+    ]]></Sql>
+<Parameter name="UpdatedbyR"/>
+  </SqlMethod>
+
+   <SqlMethod name="selectDef9E5CBA1607D0490CB55CB9B982156D33_1" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>Select for auxiliar field</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT  ( COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table2.Name), ''))), '') ) as Createdby FROM AD_User left join (select AD_User_ID, Name from AD_User) table2 on (AD_User.AD_User_ID = table2.AD_User_ID) WHERE AD_User.isActive='Y' AND AD_User.AD_User_ID = ?  
+    ]]></Sql>
+<Parameter name="CreatedbyR"/>
+  </SqlMethod>
+
+
+
+
+
+
+
+
+
+
+  <SqlMethod name="update" type="preparedStatement" return="rowCount" static="false" connection="true">
+    <Sql><![CDATA[
+        UPDATE RCPR_Preventivemaintenance
+        SET AD_Org_ID = (?) , C_Doctype_ID = (?) , Isactive = (?) , Documentno = (?) , Maintenancedate = TO_DATE(?) , Rcpr_Shift_ID = (?) , Process = (?) , AD_Client_ID = (?) , Rcpr_Preventivemaintenance_ID = (?) , updated = now(), updatedby = ? 
+        WHERE RCPR_Preventivemaintenance.Rcpr_Preventivemaintenance_ID = ? 
+        
+        AND RCPR_Preventivemaintenance.AD_Client_ID IN ('1') 
+        AND RCPR_Preventivemaintenance.AD_Org_ID IN ('1') 
+    ]]></Sql>
+    <Parameter name="adOrgId"></Parameter> <Parameter name="cDoctypeId"></Parameter> <Parameter name="isactive"></Parameter> <Parameter name="documentno"></Parameter> <Parameter name="maintenancedate"></Parameter> <Parameter name="rcprShiftId"></Parameter> <Parameter name="process"></Parameter> <Parameter name="adClientId"></Parameter> <Parameter name="rcprPreventivemaintenanceId"></Parameter> 
+    <Parameter name="updatedby"></Parameter>
+    <Parameter id="paramKey" name="rcprPreventivemaintenanceId"></Parameter>
+    
+    
+        <Parameter name="adUserClient" type="replace" optional="true" after="RCPR_Preventivemaintenance.AD_Client_ID IN (" text="'1'"/>
+        <Parameter name="adOrgClient" type="replace" optional="true" after="RCPR_Preventivemaintenance.AD_Org_ID IN (" text="'1'"/>
+  </SqlMethod>
+
+  <SqlMethod name="insert" type="preparedStatement" return="rowCount" static="false" connection="true">
+    <Sql><![CDATA[
+        INSERT INTO RCPR_Preventivemaintenance 
+        (AD_Org_ID, C_Doctype_ID, Isactive, Documentno, Maintenancedate, Rcpr_Shift_ID, Process, AD_Client_ID, Rcpr_Preventivemaintenance_ID, created, createdby, updated, updatedBy)
+        VALUES ((?), (?), (?), (?), TO_DATE(?), (?), (?), (?), (?), now(), ?, now(), ?)
+    ]]></Sql>
+    <Parameter name="adOrgId"></Parameter> <Parameter name="cDoctypeId"></Parameter> <Parameter name="isactive"></Parameter> <Parameter name="documentno"></Parameter> <Parameter name="maintenancedate"></Parameter> <Parameter name="rcprShiftId"></Parameter> <Parameter name="process"></Parameter> <Parameter name="adClientId"></Parameter> <Parameter name="rcprPreventivemaintenanceId"></Parameter> 
+    <Parameter name="createdby"></Parameter>
+    <Parameter name="updatedby"></Parameter>
+  </SqlMethod>
+
+  <SqlMethod name="delete" type="preparedStatement" return="rowCount">
+    <Sql><![CDATA[
+        DELETE FROM RCPR_Preventivemaintenance
+        WHERE RCPR_Preventivemaintenance.Rcpr_Preventivemaintenance_ID = ? 
+        
+        AND RCPR_Preventivemaintenance.AD_Client_ID IN ('1') 
+        AND RCPR_Preventivemaintenance.AD_Org_ID IN ('1') 
+    ]]></Sql>
+    <Parameter name="param1"></Parameter>
+    
+        <Parameter name="adUserClient" type="replace" optional="true" after="RCPR_Preventivemaintenance.AD_Client_ID IN (" text="'1'"/>
+        <Parameter name="adOrgClient" type="replace" optional="true" after="RCPR_Preventivemaintenance.AD_Org_ID IN (" text="'1'"/>
+  </SqlMethod>
+
+  <SqlMethod name="selectOrg" type="preparedStatement" return="string">
+    <SqlMethodComment>Select for relation</SqlMethodComment>
+    <Sql><![CDATA[ 
+        SELECT AD_ORG_ID
+          FROM RCPR_Preventivemaintenance
+         WHERE RCPR_Preventivemaintenance.Rcpr_Preventivemaintenance_ID = ? 
+    ]]></Sql>
+    <Parameter name="id"></Parameter>
+  </SqlMethod>
+  
+  <SqlMethod name="getCurrentDBTimestamp" type="preparedStatement" return="string">
+    <Sql><![CDATA[ 
+        SELECT to_char(Updated, 'YYYYMMDDHH24MISS') as Updated_Time_Stamp
+          FROM RCPR_Preventivemaintenance
+         WHERE RCPR_Preventivemaintenance.Rcpr_Preventivemaintenance_ID = ? 
+    ]]></Sql>
+    <Parameter name="id"></Parameter>
+  </SqlMethod>
+</SqlClass>

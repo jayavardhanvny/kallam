@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ExSalesInvoiceReport" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="30" rightMargin="30" topMargin="20" bottomMargin="20">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="C_INVOICE_ID" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[select * from c_invoice where c_invoice_id=$P{C_INVOICE_ID}]]>
+	</queryString>
+	<field name="c_invoice_id" class="java.lang.String"/>
+	<field name="ad_client_id" class="java.lang.String"/>
+	<field name="ad_org_id" class="java.lang.String"/>
+	<field name="isactive" class="java.lang.String"/>
+	<field name="created" class="java.sql.Timestamp"/>
+	<field name="createdby" class="java.lang.String"/>
+	<field name="updated" class="java.sql.Timestamp"/>
+	<field name="updatedby" class="java.lang.String"/>
+	<field name="issotrx" class="java.lang.String"/>
+	<field name="documentno" class="java.lang.String"/>
+	<field name="docstatus" class="java.lang.String"/>
+	<field name="docaction" class="java.lang.String"/>
+	<field name="processing" class="java.lang.String"/>
+	<field name="processed" class="java.lang.String"/>
+	<field name="posted" class="java.lang.String"/>
+	<field name="c_doctype_id" class="java.lang.String"/>
+	<field name="c_doctypetarget_id" class="java.lang.String"/>
+	<field name="c_order_id" class="java.lang.String"/>
+	<field name="description" class="java.lang.String"/>
+	<field name="isprinted" class="java.lang.String"/>
+	<field name="salesrep_id" class="java.lang.String"/>
+	<field name="dateinvoiced" class="java.sql.Timestamp"/>
+	<field name="dateprinted" class="java.sql.Timestamp"/>
+	<field name="dateacct" class="java.sql.Timestamp"/>
+	<field name="c_bpartner_id" class="java.lang.String"/>
+	<field name="c_bpartner_location_id" class="java.lang.String"/>
+	<field name="poreference" class="java.lang.String"/>
+	<field name="isdiscountprinted" class="java.lang.String"/>
+	<field name="dateordered" class="java.sql.Timestamp"/>
+	<field name="c_currency_id" class="java.lang.String"/>
+	<field name="paymentrule" class="java.lang.String"/>
+	<field name="c_paymentterm_id" class="java.lang.String"/>
+	<field name="c_charge_id" class="java.lang.String"/>
+	<field name="chargeamt" class="java.math.BigDecimal"/>
+	<field name="totallines" class="java.math.BigDecimal"/>
+	<field name="grandtotal" class="java.math.BigDecimal"/>
+	<field name="m_pricelist_id" class="java.lang.String"/>
+	<field name="istaxincluded" class="java.lang.String"/>
+	<field name="c_campaign_id" class="java.lang.String"/>
+	<field name="c_project_id" class="java.lang.String"/>
+	<field name="c_activity_id" class="java.lang.String"/>
+	<field name="createfrom" class="java.lang.String"/>
+	<field name="generateto" class="java.lang.String"/>
+	<field name="ad_user_id" class="java.lang.String"/>
+	<field name="copyfrom" class="java.lang.String"/>
+	<field name="isselfservice" class="java.lang.String"/>
+	<field name="ad_orgtrx_id" class="java.lang.String"/>
+	<field name="user1_id" class="java.lang.String"/>
+	<field name="user2_id" class="java.lang.String"/>
+	<field name="withholdingamount" class="java.math.BigDecimal"/>
+	<field name="taxdate" class="java.sql.Timestamp"/>
+	<field name="c_withholding_id" class="java.lang.String"/>
+	<field name="ispaid" class="java.lang.String"/>
+	<field name="totalpaid" class="java.math.BigDecimal"/>
+	<field name="outstandingamt" class="java.math.BigDecimal"/>
+	<field name="daystilldue" class="java.math.BigDecimal"/>
+	<field name="dueamt" class="java.math.BigDecimal"/>
+	<field name="lastcalculatedondate" class="java.sql.Timestamp"/>
+	<field name="updatepaymentmonitor" class="java.lang.String"/>
+	<field name="fin_paymentmethod_id" class="java.lang.String"/>
+	<field name="fin_payment_priority_id" class="java.lang.String"/>
+	<field name="finalsettlement" class="java.sql.Timestamp"/>
+	<field name="daysoutstanding" class="java.math.BigDecimal"/>
+	<field name="percentageoverdue" class="java.math.BigDecimal"/>
+	<field name="c_costcenter_id" class="java.lang.String"/>
+	<field name="calculate_promotions" class="java.lang.String"/>
+	<field name="a_asset_id" class="java.lang.String"/>
+	<field name="c_bp_bankaccount_id" class="java.lang.String"/>
+	<field name="em_epcg_epcgone" class="java.lang.String"/>
+	<field name="em_epcg_check" class="java.lang.String"/>
+	<field name="em_epcg_invoicetype" class="java.lang.String"/>
+	<field name="em_epcg_domestictype" class="java.lang.String"/>
+	<field name="em_epcg_exporttype" class="java.lang.String"/>
+	<field name="em_epcg_edexempt" class="java.lang.String"/>
+	<field name="em_epcg_lcno" class="java.lang.String"/>
+	<field name="em_epcg_lcdate" class="java.sql.Timestamp"/>
+	<field name="em_epcg_waybillno" class="java.lang.String"/>
+	<field name="em_epcg_portload" class="java.lang.String"/>
+	<field name="em_epcg_portdischarge" class="java.lang.String"/>
+	<field name="em_epcg_finaldest" class="java.lang.String"/>
+	<field name="em_epcg_lrno" class="java.lang.String"/>
+	<field name="em_epcg_transname" class="java.lang.String"/>
+	<field name="em_epcg_areno" class="java.lang.String"/>
+	<field name="em_epcg_exciseno" class="java.lang.String"/>
+	<field name="em_epcg_remarks" class="java.lang.String"/>
+	<field name="em_epcg_printtype" class="java.lang.String"/>
+	<field name="em_epcg_locdelivery" class="java.lang.String"/>
+	<field name="em_epcg_inspector" class="java.lang.String"/>
+	<field name="em_epcg_superintendent" class="java.lang.String"/>
+	<field name="em_epcg_type" class="java.lang.String"/>
+	<field name="em_epcg_usdrate" class="java.math.BigDecimal"/>
+	<field name="em_aprm_addpayment" class="java.lang.String"/>
+	<field name="em_aprm_processinvoice" class="java.lang.String"/>
+	<field name="em_epcg_agent" class="java.lang.String"/>
+	<field name="em_rcfr_ratetype" class="java.lang.String"/>
+	<field name="em_rcfr_insuranceh" class="java.math.BigDecimal"/>
+	<field name="em_rcfr_freighth" class="java.math.BigDecimal"/>
+	<field name="em_rcfr_calcdistcosth" class="java.lang.String"/>
+	<field name="em_rcob_commission" class="java.math.BigDecimal"/>
+	<field name="em_rcob_calculatecommission" class="java.lang.String"/>
+	<field name="em_rcob_isinvoicecreated" class="java.lang.String"/>
+	<field name="em_epcg_formtypeno" class="java.lang.String"/>
+	<field name="em_epcg_poincval" class="java.math.BigDecimal"/>
+	<field name="em_rcfr_freightpaid" class="java.math.BigDecimal"/>
+	<field name="em_epcg_dispatchfrom" class="java.lang.String"/>
+	<field name="em_epcg_dispatchto" class="java.lang.String"/>
+	<field name="em_epcg_tin" class="java.lang.String"/>
+	<group name="groupone" keepTogether="true">
+		<groupExpression><![CDATA[$F{c_invoice_id}]]></groupExpression>
+		<groupHeader>
+			<band height="31">
+				<subreport runToBottom="true">
+					<reportElement mode="Transparent" x="-28" y="0" width="535" height="31" isRemoveLineWhenBlank="true" printWhenGroupChanges="groupone"/>
+					<subreportParameter name="strPrint"/>
+					<subreportParameter name="IncValue"/>
+					<subreportParameter name="C_INVOICE_ID">
+						<subreportParameterExpression><![CDATA[$F{c_invoice_id}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter name="InvoiceId"/>
+					<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					<subreportExpression class="java.lang.String"><![CDATA["D:\\production\\modules\\com.rcss.humanresource\\src\\com\\rcss\\humanresource\\erpCommon\\ad_reports\\DirectExportCommercialInvoice-report1.jasper"]]></subreportExpression>
+				</subreport>
+			</band>
+		</groupHeader>
+	</group>
+	<group name="grouptwo" keepTogether="true">
+		<groupExpression><![CDATA[$F{c_invoice_id}]]></groupExpression>
+		<groupHeader>
+			<band height="28">
+				<subreport runToBottom="true">
+					<reportElement x="-28" y="0" width="535" height="28" isRemoveLineWhenBlank="true" printWhenGroupChanges="grouptwo"/>
+					<subreportParameter name="strPrint"/>
+					<subreportParameter name="IncValue"/>
+					<subreportParameter name="C_INVOICE_ID">
+						<subreportParameterExpression><![CDATA[$F{c_invoice_id}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter name="InvoiceId"/>
+					<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					<subreportExpression class="java.lang.String"><![CDATA["D:\\production\\modules\\com.rcss.humanresource\\src\\com\\rcss\\humanresource\\erpCommon\\ad_reports\\DirectExportCommercialInvoice-report2.jasper"]]></subreportExpression>
+				</subreport>
+			</band>
+		</groupHeader>
+	</group>
+	<group name="groupthree" keepTogether="true">
+		<groupExpression><![CDATA[$F{c_invoice_id}]]></groupExpression>
+		<groupHeader>
+			<band height="28">
+				<subreport runToBottom="true">
+					<reportElement x="-28" y="0" width="535" height="28" isRemoveLineWhenBlank="true" printWhenGroupChanges="groupthree"/>
+					<subreportParameter name="strPrint"/>
+					<subreportParameter name="IncValue"/>
+					<subreportParameter name="C_INVOICE_ID">
+						<subreportParameterExpression><![CDATA[$F{c_invoice_id}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter name="InvoiceId"/>
+					<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					<subreportExpression class="java.lang.String"><![CDATA["D:\\production\\modules\\com.rcss.humanresource\\src\\com\\rcss\\humanresource\\erpCommon\\ad_reports\\DirectExportCommercialInvoice-report3.jasper"]]></subreportExpression>
+				</subreport>
+			</band>
+		</groupHeader>
+	</group>
+	<group name="groupfour" keepTogether="true">
+		<groupExpression><![CDATA[$F{c_invoice_id}]]></groupExpression>
+		<groupHeader>
+			<band height="28">
+				<subreport runToBottom="true">
+					<reportElement x="-28" y="0" width="535" height="28" isRemoveLineWhenBlank="true" printWhenGroupChanges="groupfour"/>
+					<subreportParameter name="strPrint"/>
+					<subreportParameter name="IncValue"/>
+					<subreportParameter name="C_INVOICE_ID">
+						<subreportParameterExpression><![CDATA[$F{c_invoice_id}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter name="InvoiceId"/>
+					<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					<subreportExpression class="java.lang.String"><![CDATA["D:\\production\\modules\\com.rcss.humanresource\\src\\com\\rcss\\humanresource\\erpCommon\\ad_reports\\DirectExportCommercialInvoice-report4.jasper"]]></subreportExpression>
+				</subreport>
+			</band>
+		</groupHeader>
+	</group>
+	<group name="groupfive" keepTogether="true">
+		<groupExpression><![CDATA[$F{c_invoice_id}]]></groupExpression>
+		<groupHeader>
+			<band height="28">
+				<subreport runToBottom="true">
+					<reportElement x="-28" y="0" width="535" height="28" isRemoveLineWhenBlank="true" printWhenGroupChanges="groupfive"/>
+					<subreportParameter name="strPrint"/>
+					<subreportParameter name="IncValue"/>
+					<subreportParameter name="C_INVOICE_ID">
+						<subreportParameterExpression><![CDATA[$F{c_invoice_id}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter name="InvoiceId"/>
+					<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					<subreportExpression class="java.lang.String"><![CDATA["D:\\production\\modules\\com.rcss.humanresource\\src\\com\\rcss\\humanresource\\erpCommon\\ad_reports\\DirectExportCommercialInvoice-report5.jasper"]]></subreportExpression>
+				</subreport>
+			</band>
+		</groupHeader>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band splitType="Stretch"/>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

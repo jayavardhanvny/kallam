@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SqlClass id="class" name="AssetsData" package="org.openbravo.erpWindows.Assets">
+  <SqlClassComment>WAD Generated class</SqlClassComment>
+
+  <SqlMethod name="selectEdit" type="preparedStatement" return="multiple">
+    <SqlMethodComment>Select for edit</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT to_char(A_Asset.Created, ?) as created, 
+        (SELECT NAME FROM AD_USER u WHERE AD_USER_ID = A_Asset.CreatedBy) as CreatedByR, 
+        to_char(A_Asset.Updated, ?) as updated, 
+        to_char(A_Asset.Updated, 'YYYYMMDDHH24MISS') as Updated_Time_Stamp,  
+        A_Asset.UpdatedBy, 
+        (SELECT NAME FROM AD_USER u WHERE AD_USER_ID = A_Asset.UpdatedBy) as UpdatedByR,
+        A_Asset.AD_Org_ID, 
+(CASE WHEN A_Asset.AD_Org_ID IS NULL THEN '' ELSE  (COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table1.Name), ''))),'') ) END) AS AD_Org_IDR, 
+A_Asset.Value, 
+A_Asset.Name, 
+A_Asset.A_Asset_Group_ID, 
+(CASE WHEN A_Asset.A_Asset_Group_ID IS NULL THEN '' ELSE  (COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table2.Name), ''))),'') ) END) AS A_Asset_Group_IDR, 
+A_Asset.DocumentNo, 
+A_Asset.Description, 
+A_Asset.C_Currency_ID, 
+(CASE WHEN A_Asset.C_Currency_ID IS NULL THEN '' ELSE  (COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table3.ISO_Code), ''))),'') ) END) AS C_Currency_IDR, 
+A_Asset.M_Product_ID, 
+(CASE WHEN A_Asset.M_Product_ID IS NULL THEN '' ELSE  (COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table4.Value), ''))),'')  || ' - ' || COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR((CASE WHEN tableTRL4.Name IS NULL THEN TO_CHAR(table4.Name) ELSE TO_CHAR(tableTRL4.Name) END)), ''))),'')  || ' - ' || COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table4.EM_Rcgi_Ksmlbarcode), ''))),'') ) END) AS M_Product_IDR, 
+COALESCE(A_Asset.Issummary, 'N') AS Issummary, 
+COALESCE(A_Asset.IsStatic, 'N') AS IsStatic, 
+COALESCE(A_Asset.IsDepreciated, 'N') AS IsDepreciated, 
+A_Asset.Amortizationtype, 
+(CASE WHEN A_Asset.Amortizationtype IS NULL THEN '' ELSE  ( COALESCE(TO_CHAR(list1.name),'') ) END) AS AmortizationtypeR, 
+A_Asset.Amortizationcalctype, 
+(CASE WHEN A_Asset.Amortizationcalctype IS NULL THEN '' ELSE  ( COALESCE(TO_CHAR(list2.name),'') ) END) AS AmortizationcalctypeR, 
+A_Asset.Annualamortizationpercentage, 
+A_Asset.Assetschedule, 
+(CASE WHEN A_Asset.Assetschedule IS NULL THEN '' ELSE  ( COALESCE(TO_CHAR(list3.name),'') ) END) AS AssetscheduleR, 
+A_Asset.UseLifeYears, 
+A_Asset.UseLifeMonths, 
+COALESCE(A_Asset.Is30DayMonth, 'N') AS Is30DayMonth, 
+A_Asset.Datepurchased, 
+A_Asset.Datecancelled, 
+A_Asset.Amortizationstartdate, 
+A_Asset.Amortizationenddate, 
+A_Asset.AssetValueAmt, 
+A_Asset.Residualassetvalueamt, 
+A_Asset.Amortizationvalueamt, 
+A_Asset.Depreciatedpreviousamt, 
+A_Asset.Processed, 
+A_Asset.Depreciatedvalue, 
+A_Asset.Depreciatedplan, 
+COALESCE(A_Asset.IsFullyDepreciated, 'N') AS IsFullyDepreciated, 
+A_Asset.M_AttributeSetInstance_ID, 
+COALESCE(A_Asset.IsActive, 'N') AS IsActive, 
+A_Asset.Qty, 
+A_Asset.C_Project_ID, 
+(CASE WHEN A_Asset.C_Project_ID IS NULL THEN '' ELSE  (COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table5.Value), ''))),'')  || ' - ' || COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table5.Name), ''))),'') ) END) AS C_Project_IDR, 
+A_Asset.Process_Asset, 
+list4.name as Process_Asset_BTN, 
+A_Asset.C_Location_ID, 
+A_Asset.C_BPartner_Location_ID, 
+A_Asset.A_Asset_ID, 
+A_Asset.Profit, 
+A_Asset.Lot, 
+COALESCE(A_Asset.IsInPosession, 'N') AS IsInPosession, 
+A_Asset.AD_User_ID, 
+A_Asset.AssetServiceDate, 
+A_Asset.Acctvalueamt, 
+A_Asset.AD_Client_ID, 
+A_Asset.UseUnits, 
+A_Asset.C_BPartner_ID, 
+A_Asset.AssetDisposalDate, 
+A_Asset.GuaranteeDate, 
+COALESCE(A_Asset.IsOwned, 'N') AS IsOwned, 
+A_Asset.Help, 
+A_Asset.AssetDepreciationDate, 
+A_Asset.LocationComment, 
+A_Asset.VersionNo, 
+A_Asset.SerNo, 
+A_Asset.M_Locator_ID, 
+COALESCE(A_Asset.IsDisposed, 'N') AS IsDisposed, 
+A_Asset.LifeUseUnits, 
+ 
+        ? AS LANGUAGE 
+        FROM A_Asset left join (select AD_Org_ID, Name from AD_Org) table1 on (A_Asset.AD_Org_ID = table1.AD_Org_ID) left join (select A_Asset_Group_ID, Name from A_Asset_Group) table2 on (A_Asset.A_Asset_Group_ID = table2.A_Asset_Group_ID) left join (select C_Currency_ID, ISO_Code from C_Currency) table3 on (A_Asset.C_Currency_ID = table3.C_Currency_ID) left join (select M_Product_ID, Value, Name, EM_Rcgi_Ksmlbarcode from M_Product) table4 on (A_Asset.M_Product_ID = table4.M_Product_ID) left join (select M_Product_ID,AD_Language, Name from M_Product_TRL) tableTRL4 on (table4.M_Product_ID = tableTRL4.M_Product_ID and tableTRL4.AD_Language = ?)  left join ad_ref_list_v list1 on (A_Asset.Amortizationtype = list1.value and list1.ad_reference_id = '800040' and list1.ad_language = ?)  left join ad_ref_list_v list2 on (A_Asset.Amortizationcalctype = list2.value and list2.ad_reference_id = '800068' and list2.ad_language = ?)  left join ad_ref_list_v list3 on (A_Asset.Assetschedule = list3.value and list3.ad_reference_id = '800041' and list3.ad_language = ?)  left join (select C_Project_ID, Value, Name from C_Project) table5 on (A_Asset.C_Project_ID = table5.C_Project_ID) left join ad_ref_list_v list4 on (list4.ad_reference_id = '800042' and list4.ad_language = ?  AND A_Asset.Process_Asset = TO_CHAR(list4.value))
+        WHERE 2=2 
+
+        AND 1=1 
+        AND A_Asset.A_Asset_ID = ? 
+        AND A_Asset.AD_Client_ID IN ('1') 
+           AND A_Asset.AD_Org_ID IN ('1') 
+    ]]></Sql>
+    <Parameter name="dateTimeFormat"></Parameter>
+    <Parameter name="dateTimeFormat"></Parameter>
+    
+    <Parameter name="paramLanguage"></Parameter>
+<Parameter name="paramLanguage"/>
+<Parameter name="paramLanguage"/>
+<Parameter name="paramLanguage"/>
+<Parameter name="paramLanguage"/>
+<Parameter name="paramLanguage"/>
+
+
+    <Parameter name="key"></Parameter>
+        <Parameter name="adUserClient" type="replace" optional="true" after="A_Asset.AD_Client_ID IN (" text="'1'"/>
+        <Parameter name="adOrgClient" type="replace" optional="true" after="A_Asset.AD_Org_ID IN (" text="'1'"/>
+
+    <Field name="adUserClient" value="void"></Field>
+    <Field name="adOrgClient" value="void"></Field>
+    <Field name="createdby" value="void"></Field>
+    
+    <Field name="trBgcolor" value="void"></Field>
+    <Field name="totalCount" value="void"></Field>
+    <Field name="dateTimeFormat" value=""></Field>
+  </SqlMethod>
+  
+  
+
+  <SqlMethod name="set" type="constant" return="multiple">
+      <SqlMethodComment>Create a registry</SqlMethodComment>
+      <Sql></Sql>
+
+<Parameter name="processAsset"></Parameter><Parameter name="processAssetBtn"></Parameter><Parameter name="cProjectId"></Parameter><Parameter name="cProjectIdr"></Parameter><Parameter name="datepurchased"></Parameter><Parameter name="datecancelled"></Parameter><Parameter name="amortizationstartdate"></Parameter><Parameter name="amortizationenddate"></Parameter><Parameter name="annualamortizationpercentage"></Parameter><Parameter name="cCurrencyId"></Parameter><Parameter name="assetvalueamt"></Parameter><Parameter name="residualassetvalueamt"></Parameter><Parameter name="mAttributesetinstanceId"></Parameter><Parameter name="acctvalueamt"></Parameter><Parameter name="amortizationtype"></Parameter><Parameter name="amortizationvalueamt"></Parameter><Parameter name="assetschedule"></Parameter><Parameter name="documentno"></Parameter><Parameter name="processed"></Parameter><Parameter name="processedBtn"></Parameter><Parameter name="profit"></Parameter><Parameter name="qty"></Parameter><Parameter name="depreciatedvalue"></Parameter><Parameter name="depreciatedplan"></Parameter><Parameter name="amortizationcalctype"></Parameter><Parameter name="depreciatedpreviousamt"></Parameter><Parameter name="lot"></Parameter><Parameter name="adUserId"></Parameter><Parameter name="isdisposed"></Parameter><Parameter name="mLocatorId"></Parameter><Parameter name="isinposession"></Parameter><Parameter name="isactive"></Parameter><Parameter name="assetdepreciationdate"></Parameter><Parameter name="createdby"></Parameter><Parameter name="createdbyr"></Parameter><Parameter name="uselifeyears"></Parameter><Parameter name="mProductId"></Parameter><Parameter name="mProductIdr"></Parameter><Parameter name="assetdisposaldate"></Parameter><Parameter name="cLocationId"></Parameter><Parameter name="aAssetGroupId"></Parameter><Parameter name="adOrgId"></Parameter><Parameter name="versionno"></Parameter><Parameter name="value"></Parameter><Parameter name="isowned"></Parameter><Parameter name="name"></Parameter><Parameter name="description"></Parameter><Parameter name="locationcomment"></Parameter><Parameter name="isdepreciated"></Parameter><Parameter name="lifeuseunits"></Parameter><Parameter name="help"></Parameter><Parameter name="updatedby"></Parameter><Parameter name="updatedbyr"></Parameter><Parameter name="adClientId"></Parameter><Parameter name="cBpartnerId"></Parameter><Parameter name="guaranteedate"></Parameter><Parameter name="uselifemonths"></Parameter><Parameter name="assetservicedate"></Parameter><Parameter name="useunits"></Parameter><Parameter name="aAssetId"></Parameter><Parameter name="serno"></Parameter><Parameter name="cBpartnerLocationId"></Parameter><Parameter name="isfullydepreciated"></Parameter><Parameter name="isstatic"></Parameter><Parameter name="issummary"></Parameter><Parameter name="is30daymonth"></Parameter>
+   </SqlMethod>
+
+
+   <SqlMethod name="selectAux0C9EAE5805B14C159CE74DAF015A12C9" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>Select for auxiliar field</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT M_ATTRIBUTESET_ID FROM M_PRODUCT WHERE M_PRODUCT_ID=? 
+    ]]></Sql>
+
+<Parameter name="M_Product_ID"/>
+  </SqlMethod>
+
+   <SqlMethod name="selectAux42236E76CCB2491B8B2E5BCDA4E83624" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>Select for auxiliar field</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT ATTRSETVALUETYPE FROM M_PRODUCT WHERE M_PRODUCT_ID=? 
+    ]]></Sql>
+
+<Parameter name="M_Product_ID"/>
+  </SqlMethod>
+
+   <SqlMethod name="selectAuxAD306651FEC841DF9D01E831482C6A09" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>Select for auxiliar field</SqlMethodComment>
+    <Sql><![CDATA[
+        select 'Y' from dual where exists (select 1 from a_amortizationline where a_amortizationline.a_asset_id  = ?) 
+    ]]></Sql>
+
+<Parameter name="A_Asset_ID"/>
+  </SqlMethod>
+
+
+
+
+
+   <SqlMethod name="selectDef3808ABE5D08E4650A2DE65596DB61F49_0" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>Select for auxiliar field</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT  ( COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table2.Value), ''))), '')  || ' - ' || COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table2.Name), ''))), '') ) as C_Project_ID FROM C_Project left join (select C_Project_ID, Value, Name from C_Project) table2 on (C_Project.C_Project_ID = table2.C_Project_ID) WHERE C_Project.isActive='Y' AND C_Project.C_Project_ID = ?  
+    ]]></Sql>
+<Parameter name="C_Project_IDR"/>
+  </SqlMethod>
+
+   <SqlMethod name="selectDef8045_1" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>Select for auxiliar field</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT  ( COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table2.Name), ''))), '') ) as CreatedBy FROM AD_User left join (select AD_User_ID, Name from AD_User) table2 on (AD_User.AD_User_ID = table2.AD_User_ID) WHERE AD_User.isActive='Y' AND AD_User.AD_User_ID = ?  
+    ]]></Sql>
+<Parameter name="CreatedByR"/>
+  </SqlMethod>
+
+   <SqlMethod name="selectDef8047_2" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>Select for auxiliar field</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT  ( COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table2.Value), ''))), '')  || ' - ' || COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR((CASE WHEN tableTRL2.Name IS NULL THEN TO_CHAR(table2.Name) ELSE TO_CHAR(tableTRL2.Name) END)), ''))), '')  || ' - ' || COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table2.EM_Rcgi_Ksmlbarcode), ''))), '') ) as M_Product_ID FROM M_Product left join (select M_Product_ID, Value, Name, EM_Rcgi_Ksmlbarcode from M_Product) table2 on (M_Product.M_Product_ID = table2.M_Product_ID)left join (select M_Product_ID,AD_Language, Name from M_Product_TRL) tableTRL2 on (table2.M_Product_ID = tableTRL2.M_Product_ID and tableTRL2.AD_Language = ?)  WHERE M_Product.isActive='Y' AND M_Product.M_Product_ID = ?  
+    ]]></Sql>
+<Parameter name="paramLanguage"/>
+<Parameter name="M_Product_IDR"/>
+  </SqlMethod>
+
+   <SqlMethod name="selectDef8063_3" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>Select for auxiliar field</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT  ( COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table2.Name), ''))), '') ) as UpdatedBy FROM AD_User left join (select AD_User_ID, Name from AD_User) table2 on (AD_User.AD_User_ID = table2.AD_User_ID) WHERE AD_User.isActive='Y' AND AD_User.AD_User_ID = ?  
+    ]]></Sql>
+<Parameter name="UpdatedByR"/>
+  </SqlMethod>
+
+
+
+
+
+
+
+
+
+
+  <SqlMethod name="update" type="preparedStatement" return="rowCount" static="false" connection="true">
+    <Sql><![CDATA[
+        UPDATE A_Asset
+        SET AD_Org_ID = (?) , Value = (?) , Name = (?) , A_Asset_Group_ID = (?) , DocumentNo = (?) , Description = (?) , C_Currency_ID = (?) , M_Product_ID = (?) , Issummary = (?) , IsStatic = (?) , IsDepreciated = (?) , Amortizationtype = (?) , Amortizationcalctype = (?) , Annualamortizationpercentage = TO_NUMBER(?) , Assetschedule = (?) , UseLifeYears = TO_NUMBER(?) , UseLifeMonths = TO_NUMBER(?) , Is30DayMonth = (?) , Datepurchased = TO_DATE(?) , Datecancelled = TO_DATE(?) , Amortizationstartdate = TO_DATE(?) , Amortizationenddate = TO_DATE(?) , AssetValueAmt = TO_NUMBER(?) , Residualassetvalueamt = TO_NUMBER(?) , Amortizationvalueamt = TO_NUMBER(?) , Depreciatedpreviousamt = TO_NUMBER(?) , Processed = (?) , Depreciatedvalue = TO_NUMBER(?) , Depreciatedplan = TO_NUMBER(?) , IsFullyDepreciated = (?) , M_AttributeSetInstance_ID = (?) , IsActive = (?) , Qty = TO_NUMBER(?) , C_Project_ID = (?) , Process_Asset = (?) , C_Location_ID = (?) , C_BPartner_Location_ID = (?) , A_Asset_ID = (?) , Profit = TO_NUMBER(?) , Lot = (?) , IsInPosession = (?) , AD_User_ID = (?) , AssetServiceDate = TO_DATE(?) , Acctvalueamt = TO_NUMBER(?) , AD_Client_ID = (?) , UseUnits = TO_NUMBER(?) , C_BPartner_ID = (?) , AssetDisposalDate = TO_DATE(?) , GuaranteeDate = TO_DATE(?) , IsOwned = (?) , Help = (?) , AssetDepreciationDate = TO_DATE(?) , LocationComment = (?) , VersionNo = (?) , SerNo = (?) , M_Locator_ID = (?) , IsDisposed = (?) , LifeUseUnits = TO_NUMBER(?) , updated = now(), updatedby = ? 
+        WHERE A_Asset.A_Asset_ID = ? 
+        
+        AND A_Asset.AD_Client_ID IN ('1') 
+        AND A_Asset.AD_Org_ID IN ('1') 
+    ]]></Sql>
+    <Parameter name="adOrgId"></Parameter> <Parameter name="value"></Parameter> <Parameter name="name"></Parameter> <Parameter name="aAssetGroupId"></Parameter> <Parameter name="documentno"></Parameter> <Parameter name="description"></Parameter> <Parameter name="cCurrencyId"></Parameter> <Parameter name="mProductId"></Parameter> <Parameter name="issummary"></Parameter> <Parameter name="isstatic"></Parameter> <Parameter name="isdepreciated"></Parameter> <Parameter name="amortizationtype"></Parameter> <Parameter name="amortizationcalctype"></Parameter> <Parameter name="annualamortizationpercentage"></Parameter> <Parameter name="assetschedule"></Parameter> <Parameter name="uselifeyears"></Parameter> <Parameter name="uselifemonths"></Parameter> <Parameter name="is30daymonth"></Parameter> <Parameter name="datepurchased"></Parameter> <Parameter name="datecancelled"></Parameter> <Parameter name="amortizationstartdate"></Parameter> <Parameter name="amortizationenddate"></Parameter> <Parameter name="assetvalueamt"></Parameter> <Parameter name="residualassetvalueamt"></Parameter> <Parameter name="amortizationvalueamt"></Parameter> <Parameter name="depreciatedpreviousamt"></Parameter> <Parameter name="processed"></Parameter> <Parameter name="depreciatedvalue"></Parameter> <Parameter name="depreciatedplan"></Parameter> <Parameter name="isfullydepreciated"></Parameter> <Parameter name="mAttributesetinstanceId"></Parameter> <Parameter name="isactive"></Parameter> <Parameter name="qty"></Parameter> <Parameter name="cProjectId"></Parameter> <Parameter name="processAsset"></Parameter> <Parameter name="cLocationId"></Parameter> <Parameter name="cBpartnerLocationId"></Parameter> <Parameter name="aAssetId"></Parameter> <Parameter name="profit"></Parameter> <Parameter name="lot"></Parameter> <Parameter name="isinposession"></Parameter> <Parameter name="adUserId"></Parameter> <Parameter name="assetservicedate"></Parameter> <Parameter name="acctvalueamt"></Parameter> <Parameter name="adClientId"></Parameter> <Parameter name="useunits"></Parameter> <Parameter name="cBpartnerId"></Parameter> <Parameter name="assetdisposaldate"></Parameter> <Parameter name="guaranteedate"></Parameter> <Parameter name="isowned"></Parameter> <Parameter name="help"></Parameter> <Parameter name="assetdepreciationdate"></Parameter> <Parameter name="locationcomment"></Parameter> <Parameter name="versionno"></Parameter> <Parameter name="serno"></Parameter> <Parameter name="mLocatorId"></Parameter> <Parameter name="isdisposed"></Parameter> <Parameter name="lifeuseunits"></Parameter> 
+    <Parameter name="updatedby"></Parameter>
+    <Parameter id="paramKey" name="aAssetId"></Parameter>
+    
+    
+        <Parameter name="adUserClient" type="replace" optional="true" after="A_Asset.AD_Client_ID IN (" text="'1'"/>
+        <Parameter name="adOrgClient" type="replace" optional="true" after="A_Asset.AD_Org_ID IN (" text="'1'"/>
+  </SqlMethod>
+
+  <SqlMethod name="insert" type="preparedStatement" return="rowCount" static="false" connection="true">
+    <Sql><![CDATA[
+        INSERT INTO A_Asset 
+        (AD_Org_ID, Value, Name, A_Asset_Group_ID, DocumentNo, Description, C_Currency_ID, M_Product_ID, Issummary, IsStatic, IsDepreciated, Amortizationtype, Amortizationcalctype, Annualamortizationpercentage, Assetschedule, UseLifeYears, UseLifeMonths, Is30DayMonth, Datepurchased, Datecancelled, Amortizationstartdate, Amortizationenddate, AssetValueAmt, Residualassetvalueamt, Amortizationvalueamt, Depreciatedpreviousamt, Processed, Depreciatedvalue, Depreciatedplan, IsFullyDepreciated, M_AttributeSetInstance_ID, IsActive, Qty, C_Project_ID, Process_Asset, C_Location_ID, C_BPartner_Location_ID, A_Asset_ID, Profit, Lot, IsInPosession, AD_User_ID, AssetServiceDate, Acctvalueamt, AD_Client_ID, UseUnits, C_BPartner_ID, AssetDisposalDate, GuaranteeDate, IsOwned, Help, AssetDepreciationDate, LocationComment, VersionNo, SerNo, M_Locator_ID, IsDisposed, LifeUseUnits, created, createdby, updated, updatedBy)
+        VALUES ((?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), TO_NUMBER(?), (?), TO_NUMBER(?), TO_NUMBER(?), (?), TO_DATE(?), TO_DATE(?), TO_DATE(?), TO_DATE(?), TO_NUMBER(?), TO_NUMBER(?), TO_NUMBER(?), TO_NUMBER(?), (?), TO_NUMBER(?), TO_NUMBER(?), (?), (?), (?), TO_NUMBER(?), (?), (?), (?), (?), (?), TO_NUMBER(?), (?), (?), (?), TO_DATE(?), TO_NUMBER(?), (?), TO_NUMBER(?), (?), TO_DATE(?), TO_DATE(?), (?), (?), TO_DATE(?), (?), (?), (?), (?), (?), TO_NUMBER(?), now(), ?, now(), ?)
+    ]]></Sql>
+    <Parameter name="adOrgId"></Parameter> <Parameter name="value"></Parameter> <Parameter name="name"></Parameter> <Parameter name="aAssetGroupId"></Parameter> <Parameter name="documentno"></Parameter> <Parameter name="description"></Parameter> <Parameter name="cCurrencyId"></Parameter> <Parameter name="mProductId"></Parameter> <Parameter name="issummary"></Parameter> <Parameter name="isstatic"></Parameter> <Parameter name="isdepreciated"></Parameter> <Parameter name="amortizationtype"></Parameter> <Parameter name="amortizationcalctype"></Parameter> <Parameter name="annualamortizationpercentage"></Parameter> <Parameter name="assetschedule"></Parameter> <Parameter name="uselifeyears"></Parameter> <Parameter name="uselifemonths"></Parameter> <Parameter name="is30daymonth"></Parameter> <Parameter name="datepurchased"></Parameter> <Parameter name="datecancelled"></Parameter> <Parameter name="amortizationstartdate"></Parameter> <Parameter name="amortizationenddate"></Parameter> <Parameter name="assetvalueamt"></Parameter> <Parameter name="residualassetvalueamt"></Parameter> <Parameter name="amortizationvalueamt"></Parameter> <Parameter name="depreciatedpreviousamt"></Parameter> <Parameter name="processed"></Parameter> <Parameter name="depreciatedvalue"></Parameter> <Parameter name="depreciatedplan"></Parameter> <Parameter name="isfullydepreciated"></Parameter> <Parameter name="mAttributesetinstanceId"></Parameter> <Parameter name="isactive"></Parameter> <Parameter name="qty"></Parameter> <Parameter name="cProjectId"></Parameter> <Parameter name="processAsset"></Parameter> <Parameter name="cLocationId"></Parameter> <Parameter name="cBpartnerLocationId"></Parameter> <Parameter name="aAssetId"></Parameter> <Parameter name="profit"></Parameter> <Parameter name="lot"></Parameter> <Parameter name="isinposession"></Parameter> <Parameter name="adUserId"></Parameter> <Parameter name="assetservicedate"></Parameter> <Parameter name="acctvalueamt"></Parameter> <Parameter name="adClientId"></Parameter> <Parameter name="useunits"></Parameter> <Parameter name="cBpartnerId"></Parameter> <Parameter name="assetdisposaldate"></Parameter> <Parameter name="guaranteedate"></Parameter> <Parameter name="isowned"></Parameter> <Parameter name="help"></Parameter> <Parameter name="assetdepreciationdate"></Parameter> <Parameter name="locationcomment"></Parameter> <Parameter name="versionno"></Parameter> <Parameter name="serno"></Parameter> <Parameter name="mLocatorId"></Parameter> <Parameter name="isdisposed"></Parameter> <Parameter name="lifeuseunits"></Parameter> 
+    <Parameter name="createdby"></Parameter>
+    <Parameter name="updatedby"></Parameter>
+  </SqlMethod>
+
+  <SqlMethod name="delete" type="preparedStatement" return="rowCount">
+    <Sql><![CDATA[
+        DELETE FROM A_Asset
+        WHERE A_Asset.A_Asset_ID = ? 
+        
+        AND A_Asset.AD_Client_ID IN ('1') 
+        AND A_Asset.AD_Org_ID IN ('1') 
+    ]]></Sql>
+    <Parameter name="param1"></Parameter>
+    
+        <Parameter name="adUserClient" type="replace" optional="true" after="A_Asset.AD_Client_ID IN (" text="'1'"/>
+        <Parameter name="adOrgClient" type="replace" optional="true" after="A_Asset.AD_Org_ID IN (" text="'1'"/>
+  </SqlMethod>
+
+  <SqlMethod name="selectOrg" type="preparedStatement" return="string">
+    <SqlMethodComment>Select for relation</SqlMethodComment>
+    <Sql><![CDATA[ 
+        SELECT AD_ORG_ID
+          FROM A_Asset
+         WHERE A_Asset.A_Asset_ID = ? 
+    ]]></Sql>
+    <Parameter name="id"></Parameter>
+  </SqlMethod>
+  
+  <SqlMethod name="getCurrentDBTimestamp" type="preparedStatement" return="string">
+    <Sql><![CDATA[ 
+        SELECT to_char(Updated, 'YYYYMMDDHH24MISS') as Updated_Time_Stamp
+          FROM A_Asset
+         WHERE A_Asset.A_Asset_ID = ? 
+    ]]></Sql>
+    <Parameter name="id"></Parameter>
+  </SqlMethod>
+</SqlClass>

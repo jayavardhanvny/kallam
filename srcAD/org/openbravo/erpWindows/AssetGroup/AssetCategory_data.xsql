@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SqlClass id="class" name="AssetCategoryData" package="org.openbravo.erpWindows.AssetGroup">
+  <SqlClassComment>WAD Generated class</SqlClassComment>
+
+  <SqlMethod name="selectEdit" type="preparedStatement" return="multiple">
+    <SqlMethodComment>Select for edit</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT to_char(A_Asset_Group.Created, ?) as created, 
+        (SELECT NAME FROM AD_USER u WHERE AD_USER_ID = A_Asset_Group.CreatedBy) as CreatedByR, 
+        to_char(A_Asset_Group.Updated, ?) as updated, 
+        to_char(A_Asset_Group.Updated, 'YYYYMMDDHH24MISS') as Updated_Time_Stamp,  
+        A_Asset_Group.UpdatedBy, 
+        (SELECT NAME FROM AD_USER u WHERE AD_USER_ID = A_Asset_Group.UpdatedBy) as UpdatedByR,
+        A_Asset_Group.AD_Org_ID, 
+(CASE WHEN A_Asset_Group.AD_Org_ID IS NULL THEN '' ELSE  (COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table1.Name), ''))),'') ) END) AS AD_Org_IDR, 
+A_Asset_Group.Name, 
+A_Asset_Group.Description, 
+COALESCE(A_Asset_Group.IsActive, 'N') AS IsActive, 
+A_Asset_Group.Help, 
+COALESCE(A_Asset_Group.IsDepreciated, 'N') AS IsDepreciated, 
+A_Asset_Group.Amortizationtype, 
+(CASE WHEN A_Asset_Group.Amortizationtype IS NULL THEN '' ELSE  ( COALESCE(TO_CHAR(list1.name),'') ) END) AS AmortizationtypeR, 
+A_Asset_Group.Amortizationcalctype, 
+(CASE WHEN A_Asset_Group.Amortizationcalctype IS NULL THEN '' ELSE  ( COALESCE(TO_CHAR(list2.name),'') ) END) AS AmortizationcalctypeR, 
+A_Asset_Group.Annualamortizationpercentage, 
+A_Asset_Group.Assetschedule, 
+(CASE WHEN A_Asset_Group.Assetschedule IS NULL THEN '' ELSE  ( COALESCE(TO_CHAR(list3.name),'') ) END) AS AssetscheduleR, 
+A_Asset_Group.UseLifeYears, 
+A_Asset_Group.UseLifeMonths, 
+COALESCE(A_Asset_Group.Is30DayMonth, 'N') AS Is30DayMonth, 
+A_Asset_Group.A_Asset_Group_ID, 
+COALESCE(A_Asset_Group.Isowned, 'N') AS Isowned, 
+A_Asset_Group.AD_Client_ID, 
+ 
+        ? AS LANGUAGE 
+        FROM A_Asset_Group left join (select AD_Org_ID, Name from AD_Org) table1 on (A_Asset_Group.AD_Org_ID = table1.AD_Org_ID) left join ad_ref_list_v list1 on (A_Asset_Group.Amortizationtype = list1.value and list1.ad_reference_id = '800040' and list1.ad_language = ?)  left join ad_ref_list_v list2 on (A_Asset_Group.Amortizationcalctype = list2.value and list2.ad_reference_id = '800068' and list2.ad_language = ?)  left join ad_ref_list_v list3 on (A_Asset_Group.Assetschedule = list3.value and list3.ad_reference_id = '800041' and list3.ad_language = ?) 
+        WHERE 2=2 
+
+        AND 1=1 
+        AND A_Asset_Group.A_Asset_Group_ID = ? 
+        AND A_Asset_Group.AD_Client_ID IN ('1') 
+           AND A_Asset_Group.AD_Org_ID IN ('1') 
+    ]]></Sql>
+    <Parameter name="dateTimeFormat"></Parameter>
+    <Parameter name="dateTimeFormat"></Parameter>
+    
+    <Parameter name="paramLanguage"></Parameter>
+<Parameter name="paramLanguage"/>
+<Parameter name="paramLanguage"/>
+<Parameter name="paramLanguage"/>
+
+
+    <Parameter name="key"></Parameter>
+        <Parameter name="adUserClient" type="replace" optional="true" after="A_Asset_Group.AD_Client_ID IN (" text="'1'"/>
+        <Parameter name="adOrgClient" type="replace" optional="true" after="A_Asset_Group.AD_Org_ID IN (" text="'1'"/>
+
+    <Field name="adUserClient" value="void"></Field>
+    <Field name="adOrgClient" value="void"></Field>
+    <Field name="createdby" value="void"></Field>
+    
+    <Field name="trBgcolor" value="void"></Field>
+    <Field name="totalCount" value="void"></Field>
+    <Field name="dateTimeFormat" value=""></Field>
+  </SqlMethod>
+  
+  
+
+  <SqlMethod name="set" type="constant" return="multiple">
+      <SqlMethodComment>Create a registry</SqlMethodComment>
+      <Sql></Sql>
+
+<Parameter name="amortizationcalctype"></Parameter><Parameter name="is30daymonth"></Parameter><Parameter name="annualamortizationpercentage"></Parameter><Parameter name="uselifeyears"></Parameter><Parameter name="isowned"></Parameter><Parameter name="name"></Parameter><Parameter name="description"></Parameter><Parameter name="help"></Parameter><Parameter name="createdby"></Parameter><Parameter name="createdbyr"></Parameter><Parameter name="adOrgId"></Parameter><Parameter name="isactive"></Parameter><Parameter name="adClientId"></Parameter><Parameter name="aAssetGroupId"></Parameter><Parameter name="isdepreciated"></Parameter><Parameter name="updatedby"></Parameter><Parameter name="updatedbyr"></Parameter><Parameter name="amortizationtype"></Parameter><Parameter name="assetschedule"></Parameter><Parameter name="uselifemonths"></Parameter>
+   </SqlMethod>
+
+
+
+
+
+
+   <SqlMethod name="selectDef8109_0" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>Select for auxiliar field</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT  ( COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table2.Name), ''))), '') ) as CreatedBy FROM AD_User left join (select AD_User_ID, Name from AD_User) table2 on (AD_User.AD_User_ID = table2.AD_User_ID) WHERE AD_User.isActive='Y' AND AD_User.AD_User_ID = ?  
+    ]]></Sql>
+<Parameter name="CreatedByR"/>
+  </SqlMethod>
+
+   <SqlMethod name="selectDef8116_1" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>Select for auxiliar field</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT  ( COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table2.Name), ''))), '') ) as UpdatedBy FROM AD_User left join (select AD_User_ID, Name from AD_User) table2 on (AD_User.AD_User_ID = table2.AD_User_ID) WHERE AD_User.isActive='Y' AND AD_User.AD_User_ID = ?  
+    ]]></Sql>
+<Parameter name="UpdatedByR"/>
+  </SqlMethod>
+
+
+
+
+
+
+
+
+
+
+  <SqlMethod name="update" type="preparedStatement" return="rowCount" static="false" connection="true">
+    <Sql><![CDATA[
+        UPDATE A_Asset_Group
+        SET AD_Org_ID = (?) , Name = (?) , Description = (?) , IsActive = (?) , Help = (?) , IsDepreciated = (?) , Amortizationtype = (?) , Amortizationcalctype = (?) , Annualamortizationpercentage = TO_NUMBER(?) , Assetschedule = (?) , UseLifeYears = TO_NUMBER(?) , UseLifeMonths = TO_NUMBER(?) , Is30DayMonth = (?) , A_Asset_Group_ID = (?) , Isowned = (?) , AD_Client_ID = (?) , updated = now(), updatedby = ? 
+        WHERE A_Asset_Group.A_Asset_Group_ID = ? 
+        
+        AND A_Asset_Group.AD_Client_ID IN ('1') 
+        AND A_Asset_Group.AD_Org_ID IN ('1') 
+    ]]></Sql>
+    <Parameter name="adOrgId"></Parameter> <Parameter name="name"></Parameter> <Parameter name="description"></Parameter> <Parameter name="isactive"></Parameter> <Parameter name="help"></Parameter> <Parameter name="isdepreciated"></Parameter> <Parameter name="amortizationtype"></Parameter> <Parameter name="amortizationcalctype"></Parameter> <Parameter name="annualamortizationpercentage"></Parameter> <Parameter name="assetschedule"></Parameter> <Parameter name="uselifeyears"></Parameter> <Parameter name="uselifemonths"></Parameter> <Parameter name="is30daymonth"></Parameter> <Parameter name="aAssetGroupId"></Parameter> <Parameter name="isowned"></Parameter> <Parameter name="adClientId"></Parameter> 
+    <Parameter name="updatedby"></Parameter>
+    <Parameter id="paramKey" name="aAssetGroupId"></Parameter>
+    
+    
+        <Parameter name="adUserClient" type="replace" optional="true" after="A_Asset_Group.AD_Client_ID IN (" text="'1'"/>
+        <Parameter name="adOrgClient" type="replace" optional="true" after="A_Asset_Group.AD_Org_ID IN (" text="'1'"/>
+  </SqlMethod>
+
+  <SqlMethod name="insert" type="preparedStatement" return="rowCount" static="false" connection="true">
+    <Sql><![CDATA[
+        INSERT INTO A_Asset_Group 
+        (AD_Org_ID, Name, Description, IsActive, Help, IsDepreciated, Amortizationtype, Amortizationcalctype, Annualamortizationpercentage, Assetschedule, UseLifeYears, UseLifeMonths, Is30DayMonth, A_Asset_Group_ID, Isowned, AD_Client_ID, created, createdby, updated, updatedBy)
+        VALUES ((?), (?), (?), (?), (?), (?), (?), (?), TO_NUMBER(?), (?), TO_NUMBER(?), TO_NUMBER(?), (?), (?), (?), (?), now(), ?, now(), ?)
+    ]]></Sql>
+    <Parameter name="adOrgId"></Parameter> <Parameter name="name"></Parameter> <Parameter name="description"></Parameter> <Parameter name="isactive"></Parameter> <Parameter name="help"></Parameter> <Parameter name="isdepreciated"></Parameter> <Parameter name="amortizationtype"></Parameter> <Parameter name="amortizationcalctype"></Parameter> <Parameter name="annualamortizationpercentage"></Parameter> <Parameter name="assetschedule"></Parameter> <Parameter name="uselifeyears"></Parameter> <Parameter name="uselifemonths"></Parameter> <Parameter name="is30daymonth"></Parameter> <Parameter name="aAssetGroupId"></Parameter> <Parameter name="isowned"></Parameter> <Parameter name="adClientId"></Parameter> 
+    <Parameter name="createdby"></Parameter>
+    <Parameter name="updatedby"></Parameter>
+  </SqlMethod>
+
+  <SqlMethod name="delete" type="preparedStatement" return="rowCount">
+    <Sql><![CDATA[
+        DELETE FROM A_Asset_Group
+        WHERE A_Asset_Group.A_Asset_Group_ID = ? 
+        
+        AND A_Asset_Group.AD_Client_ID IN ('1') 
+        AND A_Asset_Group.AD_Org_ID IN ('1') 
+    ]]></Sql>
+    <Parameter name="param1"></Parameter>
+    
+        <Parameter name="adUserClient" type="replace" optional="true" after="A_Asset_Group.AD_Client_ID IN (" text="'1'"/>
+        <Parameter name="adOrgClient" type="replace" optional="true" after="A_Asset_Group.AD_Org_ID IN (" text="'1'"/>
+  </SqlMethod>
+
+  <SqlMethod name="selectOrg" type="preparedStatement" return="string">
+    <SqlMethodComment>Select for relation</SqlMethodComment>
+    <Sql><![CDATA[ 
+        SELECT AD_ORG_ID
+          FROM A_Asset_Group
+         WHERE A_Asset_Group.A_Asset_Group_ID = ? 
+    ]]></Sql>
+    <Parameter name="id"></Parameter>
+  </SqlMethod>
+  
+  <SqlMethod name="getCurrentDBTimestamp" type="preparedStatement" return="string">
+    <Sql><![CDATA[ 
+        SELECT to_char(Updated, 'YYYYMMDDHH24MISS') as Updated_Time_Stamp
+          FROM A_Asset_Group
+         WHERE A_Asset_Group.A_Asset_Group_ID = ? 
+    ]]></Sql>
+    <Parameter name="id"></Parameter>
+  </SqlMethod>
+</SqlClass>

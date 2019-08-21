@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+  <database name="TRIGGER C_BPARTNER_SEARCKEYCODEGEN_TRG">
+    <trigger name="C_BPARTNER_SEARCKEYCODEGEN_TRG" table="C_BPARTNER" fires="after" insert="true" update="true" delete="false" foreach="row">
+      <body><![CDATA[	Cur_Defaults RECORD;
+	v_bp_id varchar(32);
+	v_bp_group_id varchar(32);
+	
+	v_number NUMBER;
+BEGIN
+	IF(TG_OP='INSERT') THEN 
+		v_bp_id:=:NEW.c_bpartner_id;
+		v_bp_group_id:=:NEW.C_BP_Group_id;
+		
+		SELECT EM_Epcg_Nextassignnumber INTO v_number
+		FROM C_BP_Group WHERE C_BP_Group_id=:new.C_BP_Group_id;
+		update C_BP_Group set EM_Epcg_Nextassignnumber=v_number+1 
+		WHERE C_BP_Group_id=:new.C_BP_Group_id;
+	END IF;
+	IF(TG_OP='DELETE') THEN RETURN OLD;
+	ELSE RETURN NEW;
+	END IF;
+	END C_BPARTNER_SEARCKEYCODEGEN_TRG
+]]></body>
+    </trigger>
+  </database>

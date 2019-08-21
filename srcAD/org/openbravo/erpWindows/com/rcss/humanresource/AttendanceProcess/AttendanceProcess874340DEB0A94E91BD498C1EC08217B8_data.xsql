@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SqlClass id="class" name="AttendanceProcess874340DEB0A94E91BD498C1EC08217B8Data" package="org.openbravo.erpWindows.com.rcss.humanresource.AttendanceProcess">
+  <SqlClassComment>WAD Generated class</SqlClassComment>
+
+  <SqlMethod name="selectEdit" type="preparedStatement" return="multiple">
+    <SqlMethodComment>Select for edit</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT to_char(Rchr_Attendance.Created, ?) as created, 
+        (SELECT NAME FROM AD_USER u WHERE AD_USER_ID = Rchr_Attendance.CreatedBy) as CreatedByR, 
+        to_char(Rchr_Attendance.Updated, ?) as updated, 
+        to_char(Rchr_Attendance.Updated, 'YYYYMMDDHH24MISS') as Updated_Time_Stamp,  
+        Rchr_Attendance.UpdatedBy, 
+        (SELECT NAME FROM AD_USER u WHERE AD_USER_ID = Rchr_Attendance.UpdatedBy) as UpdatedByR,
+        Rchr_Attendance.AD_Org_ID, 
+(CASE WHEN Rchr_Attendance.AD_Org_ID IS NULL THEN '' ELSE  (COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table1.Name), ''))),'') ) END) AS AD_Org_IDR, 
+COALESCE(Rchr_Attendance.Isactive, 'N') AS Isactive, 
+Rchr_Attendance.Fromdate, 
+Rchr_Attendance.Process, 
+Rchr_Attendance.Rcpr_Shift_ID, 
+(CASE WHEN Rchr_Attendance.Rcpr_Shift_ID IS NULL THEN '' ELSE  (COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table2.Name), ''))),'') ) END) AS Rcpr_Shift_IDR, 
+Rchr_Attendance.Duration, 
+Rchr_Attendance.Lostduration, 
+Rchr_Attendance.Processlosttime, 
+Rchr_Attendance.Processsshift, 
+Rchr_Attendance.Description, 
+Rchr_Attendance.Rchr_Attendance_ID, 
+Rchr_Attendance.AD_Client_ID, 
+ 
+        ? AS LANGUAGE 
+        FROM Rchr_Attendance left join (select AD_Org_ID, Name from AD_Org) table1 on (Rchr_Attendance.AD_Org_ID = table1.AD_Org_ID) left join (select Rcpr_Shift_ID, Name from Rcpr_Shift) table2 on (Rchr_Attendance.Rcpr_Shift_ID = table2.Rcpr_Shift_ID)
+        WHERE 2=2 
+
+        AND 1=1 
+        AND Rchr_Attendance.Rchr_Attendance_ID = ? 
+        AND Rchr_Attendance.AD_Client_ID IN ('1') 
+           AND Rchr_Attendance.AD_Org_ID IN ('1') 
+    ]]></Sql>
+    <Parameter name="dateTimeFormat"></Parameter>
+    <Parameter name="dateTimeFormat"></Parameter>
+    
+    <Parameter name="paramLanguage"></Parameter>
+
+
+    <Parameter name="key"></Parameter>
+        <Parameter name="adUserClient" type="replace" optional="true" after="Rchr_Attendance.AD_Client_ID IN (" text="'1'"/>
+        <Parameter name="adOrgClient" type="replace" optional="true" after="Rchr_Attendance.AD_Org_ID IN (" text="'1'"/>
+
+    <Field name="adUserClient" value="void"></Field>
+    <Field name="adOrgClient" value="void"></Field>
+    <Field name="createdby" value="void"></Field>
+    
+    <Field name="trBgcolor" value="void"></Field>
+    <Field name="totalCount" value="void"></Field>
+    <Field name="dateTimeFormat" value=""></Field>
+  </SqlMethod>
+  
+  
+
+  <SqlMethod name="set" type="constant" return="multiple">
+      <SqlMethodComment>Create a registry</SqlMethodComment>
+      <Sql></Sql>
+
+<Parameter name="process"></Parameter><Parameter name="processlosttime"></Parameter><Parameter name="createdby"></Parameter><Parameter name="createdbyr"></Parameter><Parameter name="adOrgId"></Parameter><Parameter name="rcprShiftId"></Parameter><Parameter name="lostduration"></Parameter><Parameter name="duration"></Parameter><Parameter name="rchrAttendanceId"></Parameter><Parameter name="isactive"></Parameter><Parameter name="adClientId"></Parameter><Parameter name="description"></Parameter><Parameter name="processsshift"></Parameter><Parameter name="updatedby"></Parameter><Parameter name="updatedbyr"></Parameter><Parameter name="fromdate"></Parameter>
+   </SqlMethod>
+
+
+
+
+
+
+   <SqlMethod name="selectDef281AD1ADD04B47E7BBD024968AA2DC27_0" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>Select for auxiliar field</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT  ( COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table2.Name), ''))), '') ) as Createdby FROM AD_User left join (select AD_User_ID, Name from AD_User) table2 on (AD_User.AD_User_ID = table2.AD_User_ID) WHERE AD_User.isActive='Y' AND AD_User.AD_User_ID = ?  
+    ]]></Sql>
+<Parameter name="CreatedbyR"/>
+  </SqlMethod>
+
+   <SqlMethod name="selectDefC9DEFC25EA554680A1477DDAF342E887_1" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>Select for auxiliar field</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT  ( COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table2.Name), ''))), '') ) as Updatedby FROM AD_User left join (select AD_User_ID, Name from AD_User) table2 on (AD_User.AD_User_ID = table2.AD_User_ID) WHERE AD_User.isActive='Y' AND AD_User.AD_User_ID = ?  
+    ]]></Sql>
+<Parameter name="UpdatedbyR"/>
+  </SqlMethod>
+
+
+
+
+
+
+
+
+
+
+  <SqlMethod name="update" type="preparedStatement" return="rowCount" static="false" connection="true">
+    <Sql><![CDATA[
+        UPDATE Rchr_Attendance
+        SET AD_Org_ID = (?) , Isactive = (?) , Fromdate = TO_DATE(?) , Process = (?) , Rcpr_Shift_ID = (?) , Duration = (?) , Lostduration = (?) , Processlosttime = (?) , Processsshift = (?) , Description = (?) , Rchr_Attendance_ID = (?) , AD_Client_ID = (?) , updated = now(), updatedby = ? 
+        WHERE Rchr_Attendance.Rchr_Attendance_ID = ? 
+        
+        AND Rchr_Attendance.AD_Client_ID IN ('1') 
+        AND Rchr_Attendance.AD_Org_ID IN ('1') 
+    ]]></Sql>
+    <Parameter name="adOrgId"></Parameter> <Parameter name="isactive"></Parameter> <Parameter name="fromdate"></Parameter> <Parameter name="process"></Parameter> <Parameter name="rcprShiftId"></Parameter> <Parameter name="duration"></Parameter> <Parameter name="lostduration"></Parameter> <Parameter name="processlosttime"></Parameter> <Parameter name="processsshift"></Parameter> <Parameter name="description"></Parameter> <Parameter name="rchrAttendanceId"></Parameter> <Parameter name="adClientId"></Parameter> 
+    <Parameter name="updatedby"></Parameter>
+    <Parameter id="paramKey" name="rchrAttendanceId"></Parameter>
+    
+    
+        <Parameter name="adUserClient" type="replace" optional="true" after="Rchr_Attendance.AD_Client_ID IN (" text="'1'"/>
+        <Parameter name="adOrgClient" type="replace" optional="true" after="Rchr_Attendance.AD_Org_ID IN (" text="'1'"/>
+  </SqlMethod>
+
+  <SqlMethod name="insert" type="preparedStatement" return="rowCount" static="false" connection="true">
+    <Sql><![CDATA[
+        INSERT INTO Rchr_Attendance 
+        (AD_Org_ID, Isactive, Fromdate, Process, Rcpr_Shift_ID, Duration, Lostduration, Processlosttime, Processsshift, Description, Rchr_Attendance_ID, AD_Client_ID, created, createdby, updated, updatedBy)
+        VALUES ((?), (?), TO_DATE(?), (?), (?), (?), (?), (?), (?), (?), (?), (?), now(), ?, now(), ?)
+    ]]></Sql>
+    <Parameter name="adOrgId"></Parameter> <Parameter name="isactive"></Parameter> <Parameter name="fromdate"></Parameter> <Parameter name="process"></Parameter> <Parameter name="rcprShiftId"></Parameter> <Parameter name="duration"></Parameter> <Parameter name="lostduration"></Parameter> <Parameter name="processlosttime"></Parameter> <Parameter name="processsshift"></Parameter> <Parameter name="description"></Parameter> <Parameter name="rchrAttendanceId"></Parameter> <Parameter name="adClientId"></Parameter> 
+    <Parameter name="createdby"></Parameter>
+    <Parameter name="updatedby"></Parameter>
+  </SqlMethod>
+
+  <SqlMethod name="delete" type="preparedStatement" return="rowCount">
+    <Sql><![CDATA[
+        DELETE FROM Rchr_Attendance
+        WHERE Rchr_Attendance.Rchr_Attendance_ID = ? 
+        
+        AND Rchr_Attendance.AD_Client_ID IN ('1') 
+        AND Rchr_Attendance.AD_Org_ID IN ('1') 
+    ]]></Sql>
+    <Parameter name="param1"></Parameter>
+    
+        <Parameter name="adUserClient" type="replace" optional="true" after="Rchr_Attendance.AD_Client_ID IN (" text="'1'"/>
+        <Parameter name="adOrgClient" type="replace" optional="true" after="Rchr_Attendance.AD_Org_ID IN (" text="'1'"/>
+  </SqlMethod>
+
+  <SqlMethod name="selectOrg" type="preparedStatement" return="string">
+    <SqlMethodComment>Select for relation</SqlMethodComment>
+    <Sql><![CDATA[ 
+        SELECT AD_ORG_ID
+          FROM Rchr_Attendance
+         WHERE Rchr_Attendance.Rchr_Attendance_ID = ? 
+    ]]></Sql>
+    <Parameter name="id"></Parameter>
+  </SqlMethod>
+  
+  <SqlMethod name="getCurrentDBTimestamp" type="preparedStatement" return="string">
+    <Sql><![CDATA[ 
+        SELECT to_char(Updated, 'YYYYMMDDHH24MISS') as Updated_Time_Stamp
+          FROM Rchr_Attendance
+         WHERE Rchr_Attendance.Rchr_Attendance_ID = ? 
+    ]]></Sql>
+    <Parameter name="id"></Parameter>
+  </SqlMethod>
+</SqlClass>

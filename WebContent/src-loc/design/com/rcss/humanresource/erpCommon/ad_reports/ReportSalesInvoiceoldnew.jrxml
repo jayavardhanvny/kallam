@@ -1,0 +1,959 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="invoice" pageWidth="595" pageHeight="920" columnWidth="535" leftMargin="30" rightMargin="30" topMargin="20" bottomMargin="20" isIgnorePagination="true">
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="363"/>
+	<property name="ireport.scriptlethandling" value="0"/>
+	<property name="ireport.encoding" value="UTF-8"/>
+	<import value="net.sf.jasperreports.engine.*"/>
+	<import value="java.util.*"/>
+	<import value="net.sf.jasperreports.engine.data.*"/>
+	<parameter name="InvoiceId" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="C_INVOICE_ID" class="java.lang.String"/>
+	<parameter name="strPrint" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="IncValue" class="java.lang.String" isForPrompting="false"/>
+	<queryString>
+		<![CDATA[select c_invoice.c_invoice_id,c_invoice.documentno,dateinvoiced, c_bpartner.name as businesspartner,c_paymentterm.name as payment,c_bpartner_location.name as location,Round((c_invoiceline.line/10),0) as line,
+c_invoiceline.taxamt,c_invoiceline.qtyinvoiced,c_invoiceline.pricelist,c_invoice.description,
+Round(c_invoice.grandtotal,0) as grandtotal,(SELECT Documentno FROm c_order Where c_order_id = (Select  c_order_id FROM c_orderline Where c_orderline_id = (SELECT c_orderline_id FROM c_invoiceline Where c_invoice_id = c_invoice.c_invoice_id and c_invoiceline.line = '10' Limit 1)Limit 1)Limit 1) as c_order_id ,
+c_invoiceline.chargeamt,m_product.name as product,c_invoiceline.Financial_Invoice_Line,c_bpartner.EM_Epcg_Tin as Tinno,
+c_bpartner.EM_Epcg_Cst as Cstno,
+
+Case WHEN c_invoiceline.Financial_Invoice_Line = 'N' THEN
+(Select name from m_product Where c_invoiceline.m_product_id = m_product.m_product_id) ||
+(Select name from epcg_packaging Where c_invoiceline.epcg_packaging_id =epcg_packaging_id)
+Else
+(Select name from C_Glitem Where c_invoiceline.Account_ID =C_Glitem.C_Glitem_ID) END as pack,
+
+c_uom.name as UOM,c_invoiceline.pricelist as pricelist,c_invoiceline.linenetamt as linenetamount,
+c_invoice.totallines as linetotal,Round((select sum(taxamt) from c_invoicetax where c_invoicetax.c_invoice_id=c_invoice.c_invoice_id),0) as taxamount,
+c_invoice.em_epcg_epcgone as epcgid,(select epcglicenseno from epcg_epcgnew where epcg_epcgnew.epcg_epcgnew_id=c_invoice.em_epcg_epcgone) as epcglno,
+(select name as agentname from c_bpartner where c_bpartner_id=c_invoice.em_epcg_agent limit 1)  as agentname,em_epcg_lcno,
+em_epcg_lcdate,em_epcg_waybillno,em_epcg_portload,em_epcg_portdischarge,em_epcg_finaldest,
+em_epcg_lrno,em_epcg_transname,em_epcg_areno,em_epcg_exciseno,em_epcg_remarks,em_epcg_edexempt,
+em_epcg_exporttype,em_epcg_domestictype,em_epcg_invoicetype,c_invoice.ad_org_id as orgid, (select ad_orginfo.c_location_id where c_invoice.ad_org_id=ad_orginfo.ad_org_id) as locid,
+(select c_location.address1 where ad_orginfo.c_location_id=c_location.c_location_id) as orgaddr1,
+(select c_location.address2 where ad_orginfo.c_location_id=c_location.c_location_id) as orgaddr2,
+(select c_location.city where ad_orginfo.c_location_id=c_location.c_location_id) as orgcity,
+(select c_location.postal where ad_orginfo.c_location_id=c_location.c_location_id) as orgpostal,
+(select ad_org.em_epcg_tin from ad_org where c_invoice.ad_org_id=ad_org.ad_org_id) as orgtin,
+(select ad_org.em_epcg_division from ad_org where c_invoice.ad_org_id=ad_org.ad_org_id) as orgdivision,
+(select ad_org.em_epcg_iec from ad_org where c_invoice.ad_org_id=ad_org.ad_org_id) as orgiec,
+(select ad_org.em_epcg_pan from ad_org where c_invoice.ad_org_id=ad_org.ad_org_id) as orgpan,
+(select ad_org.em_epcg_ecc from ad_org where c_invoice.ad_org_id=ad_org.ad_org_id) as orgecc,
+(select ad_org.em_epcg_excise from ad_org where c_invoice.ad_org_id=ad_org.ad_org_id) as orgexcise, c_invoiceline.em_epcg_noofpacks as noofpacks,c_invoiceline.description as description,
+c_invoiceline.priceactual as priceperunit,c_invoice.c_order_id, c_order.documentno as orderno, c_invoice.POReference as orderreference,
+(select name from c_tax where c_tax.c_tax_id=c_invoiceline.c_tax_id) as taxname,(select taxamt from c_invoicelinetax where c_invoicelinetax.c_invoiceline_id=c_invoiceline.c_invoiceline_id) as taxamountnew,
+c_invoice.em_epcg_locdelivery,c_invoiceline.Account_ID, C_Glitem.name as accname, c_invoice.em_epcg_type as formtype,c_invoiceline.EM_Epcg_Noofpackages as newnopacks,FIN_Paymentmethod.description as paymethdes,(SELECT printName FROM C_DocType WHERE C_DocType_id = c_invoice.C_DocTypeTarget_ID limit 1) print
+
+from c_invoice
+              left join c_bpartner on c_invoice.c_bpartner_id = c_bpartner.c_bpartner_id
+              left join c_paymentterm on c_invoice.c_paymentterm_id = c_paymentterm.c_paymentterm_id
+              left join c_bpartner_location on c_invoice.c_bpartner_location_id = c_bpartner_location.c_bpartner_location_id
+              left join c_invoiceline on c_invoice.c_invoice_id = c_invoiceline.c_invoice_id
+              left join m_product on c_invoiceline.m_product_id = m_product.m_product_id
+              left join c_uom on c_invoiceline.c_uom_id = c_uom.c_uom_id
+              left join ad_orginfo on c_invoice.ad_org_id = ad_orginfo.ad_org_id
+              left join c_location on ad_orginfo.c_location_id = c_location.c_location_id
+              left join FIN_Paymentmethod on c_invoice.FIN_Paymentmethod_ID = FIN_Paymentmethod.FIN_Paymentmethod_ID
+              left join c_order on c_order.c_order_id = c_invoice.c_order_id
+              left join C_Glitem on c_invoiceline.Account_ID = C_Glitem.C_Glitem_ID
+
+
+              where c_invoice.issotrx='Y' and c_invoice.c_invoice_id = $P{C_INVOICE_ID}]]>
+	</queryString>
+	<field name="c_invoice_id" class="java.lang.String"/>
+	<field name="documentno" class="java.lang.String"/>
+	<field name="dateinvoiced" class="java.sql.Timestamp"/>
+	<field name="businesspartner" class="java.lang.String"/>
+	<field name="payment" class="java.lang.String"/>
+	<field name="location" class="java.lang.String"/>
+	<field name="line" class="java.math.BigDecimal"/>
+	<field name="taxamt" class="java.math.BigDecimal"/>
+	<field name="qtyinvoiced" class="java.math.BigDecimal"/>
+	<field name="pricelist" class="java.math.BigDecimal"/>
+	<field name="description" class="java.lang.String"/>
+	<field name="grandtotal" class="java.math.BigDecimal"/>
+	<field name="c_order_id" class="java.lang.String"/>
+	<field name="chargeamt" class="java.math.BigDecimal"/>
+	<field name="product" class="java.lang.String"/>
+	<field name="financial_invoice_line" class="java.lang.String"/>
+	<field name="tinno" class="java.lang.String"/>
+	<field name="cstno" class="java.lang.String"/>
+	<field name="pack" class="java.lang.String"/>
+	<field name="uom" class="java.lang.String"/>
+	<field name="linenetamount" class="java.math.BigDecimal"/>
+	<field name="linetotal" class="java.math.BigDecimal"/>
+	<field name="taxamount" class="java.math.BigDecimal"/>
+	<field name="epcgid" class="java.lang.String"/>
+	<field name="epcglno" class="java.lang.String"/>
+	<field name="agentname" class="java.lang.String"/>
+	<field name="em_epcg_lcno" class="java.lang.String"/>
+	<field name="em_epcg_lcdate" class="java.sql.Timestamp"/>
+	<field name="em_epcg_waybillno" class="java.lang.String"/>
+	<field name="em_epcg_portload" class="java.lang.String"/>
+	<field name="em_epcg_portdischarge" class="java.lang.String"/>
+	<field name="em_epcg_finaldest" class="java.lang.String"/>
+	<field name="em_epcg_lrno" class="java.lang.String"/>
+	<field name="em_epcg_transname" class="java.lang.String"/>
+	<field name="em_epcg_areno" class="java.lang.String"/>
+	<field name="em_epcg_exciseno" class="java.lang.String"/>
+	<field name="em_epcg_remarks" class="java.lang.String"/>
+	<field name="em_epcg_edexempt" class="java.lang.String"/>
+	<field name="em_epcg_exporttype" class="java.lang.String"/>
+	<field name="em_epcg_domestictype" class="java.lang.String"/>
+	<field name="em_epcg_invoicetype" class="java.lang.String"/>
+	<field name="orgid" class="java.lang.String"/>
+	<field name="locid" class="java.lang.String"/>
+	<field name="orgaddr1" class="java.lang.String"/>
+	<field name="orgaddr2" class="java.lang.String"/>
+	<field name="orgcity" class="java.lang.String"/>
+	<field name="orgpostal" class="java.lang.String"/>
+	<field name="orgtin" class="java.lang.String"/>
+	<field name="orgdivision" class="java.lang.String"/>
+	<field name="orgiec" class="java.lang.String"/>
+	<field name="orgpan" class="java.lang.String"/>
+	<field name="orgecc" class="java.lang.String"/>
+	<field name="orgexcise" class="java.lang.String"/>
+	<field name="noofpacks" class="java.math.BigDecimal"/>
+	<field name="priceperunit" class="java.math.BigDecimal"/>
+	<field name="orderno" class="java.lang.String"/>
+	<field name="orderreference" class="java.lang.String"/>
+	<field name="taxname" class="java.lang.String"/>
+	<field name="taxamountnew" class="java.math.BigDecimal"/>
+	<field name="em_epcg_locdelivery" class="java.lang.String"/>
+	<field name="account_id" class="java.lang.String"/>
+	<field name="accname" class="java.lang.String"/>
+	<field name="formtype" class="java.lang.String"/>
+	<field name="newnopacks" class="java.math.BigDecimal"/>
+	<field name="paymethdes" class="java.lang.String"/>
+	<field name="print" class="java.lang.String"/>
+	<sortField name="line"/>
+	<variable name="GrandTotal" class="java.lang.String" resetType="None">
+		<variableExpression><![CDATA[new com.sam.numbertowords.NumberToWordsConverter_en_In().convertIt($F{grandtotal}.longValue())+" Only."]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="188" splitType="Stretch">
+			<staticText>
+				<reportElement key="staticText-1" x="4" y="27" width="524" height="21"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="14" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[      IDUPULAPADU COTTON MILLS (P) LTD.]]></text>
+			</staticText>
+			<line>
+				<reportElement key="line-8" x="1" y="-1" width="1" height="189"/>
+			</line>
+			<line>
+				<reportElement key="line-9" x="534" y="-1" width="1" height="189"/>
+			</line>
+			<line>
+				<reportElement key="line-10" x="2" y="-1" width="532" height="1"/>
+			</line>
+			<line>
+				<reportElement key="line-11" x="1" y="48" width="534" height="1"/>
+			</line>
+			<staticText>
+				<reportElement key="staticText-3" x="9" y="53" width="79" height="24"/>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<text><![CDATA[Reg. Office]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-4" x="9" y="82" width="79" height="28"/>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<text><![CDATA[C.E Range]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-5" x="99" y="52" width="435" height="25"/>
+				<textElement>
+					<font fontName="Times New Roman" size="9"/>
+				</textElement>
+				<text><![CDATA[# 206A,CINEMAHAL ROAD,GANAPPAVARAM-522619,Near Chilakukuripet,Guntur Dist(A.P),ph:08647-253444,253901 Fax:08647-253901,252847,Email:info@icmtex.com web:www.icmtex.com]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-6" x="99" y="82" width="374" height="28"/>
+				<textElement>
+					<font fontName="Times New Roman" size="10"/>
+				</textElement>
+				<text><![CDATA[Range-II,Subbareddy complex,Bodipet,GUNTUR Division:Asst.Commissioner,C.E.,GUNTUR]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-7" x="9" y="113" width="79" height="18"/>
+				<textElement textAlignment="Left">
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<text><![CDATA[Rule]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-8" x="99" y="113" width="183" height="18"/>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<text><![CDATA[11 & 8 of C.Ex.(No.2) Rules-2002]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-55" x="290" y="113" width="62" height="17"/>
+				<textElement textAlignment="Left">
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<text><![CDATA[Tariff No:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-56" x="354" y="113" width="103" height="17"/>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<text><![CDATA[5205 11 & 5205 19]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-10" x="212" y="138" width="44" height="18"/>
+				<textElement textAlignment="Justified" verticalAlignment="Middle">
+					<font fontName="Times New Roman" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[ECC NO:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-11" x="400" y="138" width="43" height="18"/>
+				<textElement textAlignment="Justified" verticalAlignment="Middle">
+					<font fontName="Times New Roman" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[ IEC NO:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-12" x="1" y="161" width="72" height="18"/>
+				<textElement textAlignment="Justified" verticalAlignment="Middle">
+					<font fontName="Times New Roman" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[ Central Exise]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-13" x="212" y="161" width="44" height="18"/>
+				<textElement textAlignment="Justified" verticalAlignment="Middle">
+					<font fontName="Times New Roman" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[Division:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-14" x="346" y="161" width="97" height="18"/>
+				<textElement textAlignment="Justified" verticalAlignment="Middle">
+					<font fontName="Times New Roman" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[Commissionerate:]]></text>
+			</staticText>
+			<line>
+				<reportElement key="line-4" x="1" y="183" width="534" height="1"/>
+			</line>
+			<staticText>
+				<reportElement key="staticText-62" x="444" y="161" width="61" height="18"/>
+				<textElement textAlignment="Justified" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="9"/>
+				</textElement>
+				<text><![CDATA[GUNTUR]]></text>
+			</staticText>
+			<line>
+				<reportElement key="line" x="2" y="136" width="532" height="1"/>
+			</line>
+			<line>
+				<reportElement key="line" x="1" y="159" width="533" height="1"/>
+			</line>
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField" x="77" y="138" width="132" height="18"/>
+				<textElement textAlignment="Justified" verticalAlignment="Middle">
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{orgtin}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField" x="77" y="161" width="132" height="18"/>
+				<textElement textAlignment="Justified" verticalAlignment="Middle">
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{orgexcise}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField" x="258" y="137" width="100" height="18"/>
+				<textElement textAlignment="Justified" verticalAlignment="Middle">
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{orgecc}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField" x="258" y="161" width="83" height="18"/>
+				<textElement textAlignment="Justified" verticalAlignment="Middle">
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{orgdivision}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField" x="445" y="138" width="85" height="18"/>
+				<textElement textAlignment="Justified" verticalAlignment="Middle">
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{orgiec}]]></textFieldExpression>
+			</textField>
+			<image>
+				<reportElement x="4" y="1" width="103" height="46"/>
+				<imageExpression class="java.lang.String"><![CDATA["D:\\production\\web\\images\\blankicm.gif"]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement key="staticText-10" x="6" y="138" width="67" height="18"/>
+				<textElement textAlignment="Justified" verticalAlignment="Middle">
+					<font fontName="Times New Roman" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[TIN & CST :]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="121" y="7" width="305" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="14"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{print}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="426" y="2" width="108" height="20"/>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{IncValue}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="213" splitType="Stretch">
+			<staticText>
+				<reportElement key="staticText-15" x="4" y="3" width="28" height="13"/>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<text><![CDATA[ To,]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-16" x="223" y="1" width="65" height="15"/>
+				<textElement textAlignment="Justified">
+					<font fontName="Times New Roman" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Invoice No:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-17" x="223" y="17" width="65" height="15"/>
+				<textElement textAlignment="Justified">
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<text><![CDATA[Purchase No:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-18" x="393" y="1" width="45" height="15"/>
+				<textElement>
+					<font fontName="Times New Roman" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Date:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-19" x="393" y="17" width="51" height="15"/>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<text><![CDATA[Sales No:]]></text>
+			</staticText>
+			<line>
+				<reportElement key="line-2" x="220" y="33" width="315" height="1"/>
+			</line>
+			<staticText>
+				<reportElement key="staticText-20" x="223" y="35" width="60" height="14"/>
+				<textElement textAlignment="Justified" verticalAlignment="Middle">
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<text><![CDATA[Way Bill No :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-21" x="395" y="35" width="46" height="14"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<text><![CDATA[L.R No   :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-22" x="223" y="65" width="60" height="15"/>
+				<textElement textAlignment="Justified" verticalAlignment="Middle">
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<text><![CDATA[Trans Name:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-24" x="395" y="65" width="46" height="15"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<text><![CDATA[A.R.E No:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-25" x="223" y="111" width="90" height="15"/>
+				<textElement textAlignment="Justified" verticalAlignment="Middle">
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<text><![CDATA[Terms of Payment :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-26" x="223" y="80" width="60" height="15"/>
+				<textElement textAlignment="Justified" verticalAlignment="Middle">
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<text><![CDATA[Destination :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-28" x="223" y="50" width="60" height="15"/>
+				<textElement textAlignment="Justified" verticalAlignment="Middle">
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<text><![CDATA[TIN No        :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-29" x="395" y="50" width="46" height="15"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<text><![CDATA[CST No  :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-30" x="223" y="95" width="60" height="15"/>
+				<textElement textAlignment="Justified" verticalAlignment="Middle">
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<text><![CDATA[Agent         :]]></text>
+			</staticText>
+			<line>
+				<reportElement key="line-3" x="2" y="89" width="218" height="1"/>
+			</line>
+			<staticText>
+				<reportElement key="staticText-31" x="5" y="92" width="197" height="12"/>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<text><![CDATA[Goods to be Delivered at:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-32" x="36" y="162" width="154" height="30"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[Description of goods 100% Cotton Yarn]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-33" x="2" y="162" width="30" height="30"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[SL No.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-34" x="191" y="160" width="41" height="30"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[No of Packages]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-35" x="233" y="162" width="49" height="28"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[Qty in Kgs]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-36" x="286" y="162" width="66" height="29"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[Rate per Kg Rupees]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-37" x="455" y="160" width="79" height="30"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[Total Value (INR)]]></text>
+			</staticText>
+			<line>
+				<reportElement key="line-24" x="2" y="159" width="532" height="1"/>
+			</line>
+			<line>
+				<reportElement key="line-34" x="1" y="-1" width="1" height="214"/>
+			</line>
+			<line>
+				<reportElement key="line-35" x="534" y="-1" width="1" height="214"/>
+			</line>
+			<line>
+				<reportElement key="line-36" x="220" y="-5" width="1" height="164"/>
+			</line>
+			<line>
+				<reportElement key="line" x="2" y="191" width="532" height="1"/>
+			</line>
+			<line>
+				<reportElement key="line" x="33" y="159" width="1" height="32"/>
+			</line>
+			<line>
+				<reportElement key="line" x="232" y="159" width="1" height="32"/>
+			</line>
+			<line>
+				<reportElement key="line" x="285" y="159" width="1" height="32"/>
+			</line>
+			<line>
+				<reportElement key="line" x="453" y="159" width="1" height="32"/>
+			</line>
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField" x="33" y="3" width="177" height="34"/>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{businesspartner}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField" x="5" y="39" width="204" height="41"/>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{location}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField" x="290" y="1" width="100" height="15"/>
+				<textElement>
+					<font fontName="Times New Roman" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{documentno}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField" x="445" y="1" width="82" height="15"/>
+				<textElement>
+					<font fontName="Times New Roman" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.sql.Timestamp"><![CDATA[$F{dateinvoiced}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField" x="314" y="111" width="209" height="15"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{payment}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField" x="288" y="95" width="235" height="15"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{agentname}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField" x="288" y="35" width="99" height="14"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{em_epcg_waybillno}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField" x="442" y="35" width="81" height="14"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{em_epcg_lrno}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField" x="442" y="65" width="81" height="15"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{em_epcg_areno}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField" x="288" y="80" width="235" height="15"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{em_epcg_finaldest}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField" x="288" y="65" width="100" height="15"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{em_epcg_transname}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField" x="290" y="17" width="100" height="15"/>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{orderreference}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement key="line" x="190" y="159" width="1" height="32"/>
+			</line>
+			<staticText>
+				<reportElement key="staticText-35" x="354" y="162" width="49" height="28"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[Tax]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-36" x="407" y="162" width="46" height="29"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[Tax Amount]]></text>
+			</staticText>
+			<line>
+				<reportElement key="line" x="354" y="159" width="1" height="32"/>
+			</line>
+			<line>
+				<reportElement key="line" x="406" y="159" width="1" height="32"/>
+			</line>
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField" x="6" y="105" width="203" height="47"/>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{em_epcg_locdelivery}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="288" y="50" width="100" height="15"/>
+				<textElement verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{tinno}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="442" y="50" width="81" height="15"/>
+				<textElement verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{cstno}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="445" y="17" width="82" height="15"/>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{c_order_id}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="314" y="127" width="209" height="15"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{em_epcg_portload}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="315" y="143" width="208" height="15"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{em_epcg_portdischarge}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement key="staticText-25" x="223" y="127" width="90" height="15"/>
+				<textElement textAlignment="Justified" verticalAlignment="Middle">
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<text><![CDATA[Port of Loading     :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-25" x="223" y="143" width="90" height="15"/>
+				<textElement textAlignment="Justified" verticalAlignment="Middle">
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<text><![CDATA[Port of Discharge  :]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="25" splitType="Stretch">
+			<line>
+				<reportElement key="line" x="2" y="1" width="533" height="1"/>
+			</line>
+			<line>
+				<reportElement key="line" x="453" y="-21" width="1" height="23"/>
+			</line>
+			<line>
+				<reportElement key="line" x="33" y="-23" width="1" height="24"/>
+			</line>
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField" x="2" y="-20" width="30" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="9"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{line}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement key="textField" x="453" y="-20" width="75" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="9"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{linenetamount}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.000" isBlankWhenNull="true">
+				<reportElement key="textField" x="288" y="-21" width="64" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="9"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{priceperunit}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement key="line" x="190" y="-23" width="1" height="24"/>
+			</line>
+			<line>
+				<reportElement key="line" x="232" y="-23" width="1" height="24"/>
+			</line>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement key="textField" x="234" y="-21" width="50" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="9"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{qtyinvoiced}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement key="line" x="285" y="-23" width="1" height="24"/>
+			</line>
+			<line>
+				<reportElement key="line" x="354" y="-23" width="1" height="24"/>
+			</line>
+			<line>
+				<reportElement key="line" x="406" y="-23" width="1" height="24"/>
+			</line>
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField" x="357" y="-20" width="49" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{taxname}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement key="textField" x="407" y="-20" width="42" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="9"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{taxamountnew}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="36" y="-19" width="154" height="20"/>
+				<textElement>
+					<font fontName="Times New Roman" size="8" isUnderline="false"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{pack}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="191" y="-20" width="41" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="9"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{newnopacks}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement key="line" x="534" y="0" width="1" height="25"/>
+			</line>
+			<line>
+				<reportElement key="line" x="453" y="2" width="1" height="23"/>
+			</line>
+			<line>
+				<reportElement key="line" x="1" y="0" width="1" height="25"/>
+			</line>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="275" splitType="Stretch">
+			<staticText>
+				<reportElement key="staticText-77" x="4" y="1" width="105" height="10"/>
+				<textElement>
+					<font fontName="Times New Roman" size="8"/>
+				</textElement>
+				<text><![CDATA[Export under EPCG License No]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField" x="109" y="1" width="116" height="10"/>
+				<textElement>
+					<font fontName="Times New Roman" size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{epcglno}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement key="staticText-50" x="9" y="252" width="79" height="20"/>
+				<textElement>
+					<font fontName="Times New Roman" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[Prepared By]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-51" x="191" y="252" width="79" height="20"/>
+				<textElement>
+					<font fontName="Times New Roman" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[Checked By]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-52" x="358" y="252" width="157" height="20"/>
+				<textElement textAlignment="Right">
+					<font fontName="Times New Roman" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[Authorized Signatory]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-54" x="346" y="209" width="186" height="20"/>
+				<textElement>
+					<font fontName="Times New Roman" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[For Idupulapadu Cotton Mills (P) Ltd.,]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-65" x="4" y="137" width="95" height="20"/>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<text><![CDATA[Online bank A/C No:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-67" x="5" y="161" width="116" height="16"/>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<text><![CDATA[Terms and Conditions:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-68" x="5" y="177" width="341" height="42"/>
+				<textElement>
+					<font fontName="Times New Roman" size="9"/>
+				</textElement>
+				<text><![CDATA[1. All payment should be made by either A/C payee cheque or D.D only.                                       2.Interest @ 24% will be charged on the overdue amount                                                                                                                   3.All Matters pertaining to the above are subjected to chilakaluripet Jurisdiction only.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-78" x="4" y="112" width="38" height="23"/>
+				<textElement>
+					<font fontName="Times New Roman" size="9"/>
+				</textElement>
+				<text><![CDATA[Rupees :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-80" x="384" y="112" width="68" height="22"/>
+				<textElement>
+					<font fontName="Times New Roman" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Grand Total]]></text>
+			</staticText>
+			<line>
+				<reportElement key="line" x="534" y="0" width="1" height="273"/>
+			</line>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement key="textField" x="457" y="114" width="71" height="20"/>
+				<textElement textAlignment="Right">
+					<font fontName="Times New Roman" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{grandtotal}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement key="staticText-74" x="384" y="95" width="64" height="13"/>
+				<textElement>
+					<font fontName="Times New Roman" size="10" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[Tax Total]]></text>
+			</staticText>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement key="textField" x="457" y="95" width="71" height="13"/>
+				<textElement textAlignment="Right">
+					<font fontName="Times New Roman" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{taxamount}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="43" y="112" width="336" height="20"/>
+				<textElement>
+					<font fontName="Times New Roman" size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$V{GrandTotal}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="99" y="137" width="346" height="20"/>
+				<textElement>
+					<font fontName="Times New Roman" isBold="false"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{paymethdes}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement key="line-32" x="2" y="135" width="532" height="1"/>
+			</line>
+			<line>
+				<reportElement key="line-33" x="1" y="108" width="534" height="1"/>
+			</line>
+			<line>
+				<reportElement key="line" x="1" y="0" width="1" height="273"/>
+			</line>
+			<line>
+				<reportElement key="line" x="453" y="0" width="1" height="135"/>
+			</line>
+			<line>
+				<reportElement key="line-31" x="2" y="273" width="532" height="1"/>
+			</line>
+			<staticText>
+				<reportElement key="staticText-69" x="4" y="-9" width="104" height="10"/>
+				<textElement>
+					<font fontName="Times New Roman" size="8" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Excise Duty Excemption as per:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-70" x="109" y="-9" width="205" height="10"/>
+				<textElement>
+					<font fontName="Times New Roman" size="8"/>
+				</textElement>
+				<text><![CDATA[NOTIFICATION NO;30/2004 CENTRAL EXCISE]]></text>
+			</staticText>
+			<subreport>
+				<reportElement x="-10" y="-8" width="335" height="15"/>
+				<subreportParameter name="C_INVOICE_ID">
+					<subreportParameterExpression><![CDATA[$F{c_invoice_id}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression class="java.lang.String"><![CDATA["D:\\production\\modules\\com.rcss.humanresource\\src\\com\\rcss\\humanresource\\erpCommon\\ad_reports\\VehicleDetailsRpt.jasper"]]></subreportExpression>
+			</subreport>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement key="textField" x="455" y="-22" width="73" height="14"/>
+				<textElement textAlignment="Right">
+					<font fontName="Times New Roman" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{linetotal}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement key="staticText-71" x="388" y="-21" width="62" height="13"/>
+				<textElement>
+					<font fontName="Times New Roman" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[Lines Total]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField" mode="Transparent" x="4" y="-21" width="375" height="12"/>
+				<textElement>
+					<font fontName="Times New Roman" size="10" isBold="true" isItalic="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{description}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="350" y="56" width="100" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{taxamountnew}]]></textFieldExpression>
+			</textField>
+		</band>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

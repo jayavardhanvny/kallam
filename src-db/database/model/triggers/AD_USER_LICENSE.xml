@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+  <database name="TRIGGER AD_USER_LICENSE">
+    <trigger name="AD_USER_LICENSE" table="AD_USER" fires="after" insert="true" update="true" delete="false" foreach="row">
+      <body><![CDATA[Declare 
+       v_license_count NUMBER:=0;
+       
+
+   BEGIN
+
+      
+        IF (INSERTING) THEN
+       
+        select count(ad_user_id) into v_license_count from ad_user where c_bpartner_id is null;
+        if(v_license_count>34) THEN
+	RAISE NO_DATA_FOUND;
+        END IF;
+        return NEW;
+        END IF;    
+        RETURN NULL;
+        END AD_USER_LICENSE
+]]></body>
+    </trigger>
+  </database>

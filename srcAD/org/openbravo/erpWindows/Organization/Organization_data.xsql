@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SqlClass id="class" name="OrganizationData" package="org.openbravo.erpWindows.Organization">
+  <SqlClassComment>WAD Generated class</SqlClassComment>
+
+  <SqlMethod name="selectEdit" type="preparedStatement" return="multiple">
+    <SqlMethodComment>Select for edit</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT to_char(AD_Org.Created, ?) as created, 
+        (SELECT NAME FROM AD_USER u WHERE AD_USER_ID = AD_Org.CreatedBy) as CreatedByR, 
+        to_char(AD_Org.Updated, ?) as updated, 
+        to_char(AD_Org.Updated, 'YYYYMMDDHH24MISS') as Updated_Time_Stamp,  
+        AD_Org.UpdatedBy, 
+        (SELECT NAME FROM AD_USER u WHERE AD_USER_ID = AD_Org.UpdatedBy) as UpdatedByR,
+        AD_Org.Value, 
+AD_Org.Name, 
+COALESCE(AD_Org.IsSummary, 'N') AS IsSummary, 
+AD_Org.Social_Name, 
+AD_Org.AD_Orgtype_ID, 
+(CASE WHEN AD_Org.AD_Orgtype_ID IS NULL THEN '' ELSE  (COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table1.Name), ''))),'') ) END) AS AD_Orgtype_IDR, 
+AD_Org.C_Currency_ID, 
+(CASE WHEN AD_Org.C_Currency_ID IS NULL THEN '' ELSE  (COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table2.ISO_Code), ''))),'') ) END) AS C_Currency_IDR, 
+COALESCE(AD_Org.IsPeriodControlAllowed, 'N') AS IsPeriodControlAllowed, 
+AD_Org.C_Calendar_ID, 
+(CASE WHEN AD_Org.C_Calendar_ID IS NULL THEN '' ELSE  (COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table3.Name), ''))),'') ) END) AS C_Calendar_IDR, 
+AD_Org.IsReady, 
+AD_Org.C_Acctschema_ID, 
+(CASE WHEN AD_Org.C_Acctschema_ID IS NULL THEN '' ELSE  (COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table4.Name), ''))),'') ) END) AS C_Acctschema_IDR, 
+AD_Org.EM_Epcg_Tin, 
+AD_Org.C_Region_ID, 
+(CASE WHEN AD_Org.C_Region_ID IS NULL THEN '' ELSE  (COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table5.Name), ''))),'')  || ' - ' || COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table5.EM_Epcg_Statecode), ''))),'') ) END) AS C_Region_IDR, 
+AD_Org.EM_Epcg_Division, 
+AD_Org.EM_Epcg_Iec, 
+AD_Org.EM_Epcg_Pan, 
+AD_Org.EM_Epcg_Ecc, 
+AD_Org.EM_Epcg_Excise, 
+COALESCE(AD_Org.IsActive, 'N') AS IsActive, 
+AD_Org.Description, 
+AD_Org.AD_Org_ID, 
+AD_Org.AD_Client_ID, 
+ 
+        ? AS LANGUAGE 
+        FROM AD_Org left join (select AD_Orgtype_ID, Name from AD_Orgtype) table1 on (AD_Org.AD_Orgtype_ID = table1.AD_Orgtype_ID) left join (select C_Currency_ID, ISO_Code from C_Currency) table2 on (AD_Org.C_Currency_ID = table2.C_Currency_ID) left join (select C_Calendar_ID, Name from C_Calendar) table3 on (AD_Org.C_Calendar_ID = table3.C_Calendar_ID) left join (select C_Acctschema_ID, Name from C_Acctschema) table4 on (AD_Org.C_Acctschema_ID = table4.C_Acctschema_ID) left join (select C_Region_ID, Name, EM_Epcg_Statecode from C_Region) table5 on (AD_Org.C_Region_ID = table5.C_Region_ID)
+        WHERE 2=2 
+
+        AND 1=1 
+        AND AD_Org.AD_Org_ID = ? 
+        AND AD_Org.AD_Client_ID IN ('1') 
+           AND AD_Org.AD_Org_ID IN ('1') 
+    ]]></Sql>
+    <Parameter name="dateTimeFormat"></Parameter>
+    <Parameter name="dateTimeFormat"></Parameter>
+    
+    <Parameter name="paramLanguage"></Parameter>
+
+
+    <Parameter name="key"></Parameter>
+        <Parameter name="adUserClient" type="replace" optional="true" after="AD_Org.AD_Client_ID IN (" text="'1'"/>
+        <Parameter name="adOrgClient" type="replace" optional="true" after="AD_Org.AD_Org_ID IN (" text="'1'"/>
+
+    <Field name="adUserClient" value="void"></Field>
+    <Field name="adOrgClient" value="void"></Field>
+    <Field name="createdby" value="void"></Field>
+    
+    <Field name="trBgcolor" value="void"></Field>
+    <Field name="totalCount" value="void"></Field>
+    <Field name="dateTimeFormat" value=""></Field>
+  </SqlMethod>
+  
+  
+
+  <SqlMethod name="set" type="constant" return="multiple">
+      <SqlMethodComment>Create a registry</SqlMethodComment>
+      <Sql></Sql>
+
+<Parameter name="value"></Parameter><Parameter name="issummary"></Parameter><Parameter name="cAcctschemaId"></Parameter><Parameter name="name"></Parameter><Parameter name="description"></Parameter><Parameter name="adClientId"></Parameter><Parameter name="adOrgId"></Parameter><Parameter name="adOrgtypeId"></Parameter><Parameter name="isperiodcontrolallowed"></Parameter><Parameter name="cCalendarId"></Parameter><Parameter name="isready"></Parameter><Parameter name="socialName"></Parameter><Parameter name="isactive"></Parameter><Parameter name="createdby"></Parameter><Parameter name="createdbyr"></Parameter><Parameter name="updatedby"></Parameter><Parameter name="updatedbyr"></Parameter><Parameter name="cCurrencyId"></Parameter><Parameter name="emEpcgTin"></Parameter><Parameter name="emEpcgExcise"></Parameter><Parameter name="emEpcgDivision"></Parameter><Parameter name="emEpcgEcc"></Parameter><Parameter name="cRegionId"></Parameter><Parameter name="emEpcgPan"></Parameter><Parameter name="emEpcgIec"></Parameter>
+   </SqlMethod>
+
+
+   <SqlMethod name="selectAux022E77136C554D3A9A23E95A724E7BC1" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>Select for auxiliar field</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT 'Y' FROM AD_ORGTYPE OT join ad_org o on (ot.ad_orgtype_id = o.ad_orgtype_id)
+WHERE ((IsAcctLegalEntity<>'N' or IsLegalEntity<>'Y') or (o.C_ACCTSCHEMA_ID is not null)) and o.ad_org_id=? 
+    ]]></Sql>
+
+<Parameter name="AD_ORG_ID"/>
+  </SqlMethod>
+
+   <SqlMethod name="selectAuxCA8005C0F23945E89C4AD3C7899E5E89" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>Select for auxiliar field</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT 'Y' FROM ad_org, ad_orgtype WHERE ad_org.ad_orgtype_id= ad_orgtype.ad_orgtype_id AND ad_org.ad_org_id=? AND (ISBUSINESSUNIT='Y' OR (ISLEGALENTITY='Y' AND ISACCTLEGALENTITY='Y')) 
+    ]]></Sql>
+
+<Parameter name="AD_ORG_ID"/>
+  </SqlMethod>
+
+
+
+
+
+   <SqlMethod name="selectDef713_0" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>Select for auxiliar field</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT  ( COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table2.Name), ''))), '') ) as CreatedBy FROM AD_User left join (select AD_User_ID, Name from AD_User) table2 on (AD_User.AD_User_ID = table2.AD_User_ID) WHERE AD_User.isActive='Y' AND AD_User.AD_User_ID = ?  
+    ]]></Sql>
+<Parameter name="CreatedByR"/>
+  </SqlMethod>
+
+   <SqlMethod name="selectDef715_1" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>Select for auxiliar field</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT  ( COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table2.Name), ''))), '') ) as UpdatedBy FROM AD_User left join (select AD_User_ID, Name from AD_User) table2 on (AD_User.AD_User_ID = table2.AD_User_ID) WHERE AD_User.isActive='Y' AND AD_User.AD_User_ID = ?  
+    ]]></Sql>
+<Parameter name="UpdatedByR"/>
+  </SqlMethod>
+
+
+
+
+
+
+
+
+
+
+  <SqlMethod name="update" type="preparedStatement" return="rowCount" static="false" connection="true">
+    <Sql><![CDATA[
+        UPDATE AD_Org
+        SET Value = (?) , Name = (?) , IsSummary = (?) , Social_Name = (?) , AD_Orgtype_ID = (?) , C_Currency_ID = (?) , IsPeriodControlAllowed = (?) , C_Calendar_ID = (?) , IsReady = (?) , C_Acctschema_ID = (?) , EM_Epcg_Tin = (?) , C_Region_ID = (?) , EM_Epcg_Division = (?) , EM_Epcg_Iec = (?) , EM_Epcg_Pan = (?) , EM_Epcg_Ecc = (?) , EM_Epcg_Excise = (?) , IsActive = (?) , Description = (?) , AD_Org_ID = (?) , AD_Client_ID = (?) , updated = now(), updatedby = ? 
+        WHERE AD_Org.AD_Org_ID = ? 
+        
+        AND AD_Org.AD_Client_ID IN ('1') 
+        AND AD_Org.AD_Org_ID IN ('1') 
+    ]]></Sql>
+    <Parameter name="value"></Parameter> <Parameter name="name"></Parameter> <Parameter name="issummary"></Parameter> <Parameter name="socialName"></Parameter> <Parameter name="adOrgtypeId"></Parameter> <Parameter name="cCurrencyId"></Parameter> <Parameter name="isperiodcontrolallowed"></Parameter> <Parameter name="cCalendarId"></Parameter> <Parameter name="isready"></Parameter> <Parameter name="cAcctschemaId"></Parameter> <Parameter name="emEpcgTin"></Parameter> <Parameter name="cRegionId"></Parameter> <Parameter name="emEpcgDivision"></Parameter> <Parameter name="emEpcgIec"></Parameter> <Parameter name="emEpcgPan"></Parameter> <Parameter name="emEpcgEcc"></Parameter> <Parameter name="emEpcgExcise"></Parameter> <Parameter name="isactive"></Parameter> <Parameter name="description"></Parameter> <Parameter name="adOrgId"></Parameter> <Parameter name="adClientId"></Parameter> 
+    <Parameter name="updatedby"></Parameter>
+    <Parameter id="paramKey" name="adOrgId"></Parameter>
+    
+    
+        <Parameter name="adUserClient" type="replace" optional="true" after="AD_Org.AD_Client_ID IN (" text="'1'"/>
+        <Parameter name="adOrgClient" type="replace" optional="true" after="AD_Org.AD_Org_ID IN (" text="'1'"/>
+  </SqlMethod>
+
+  <SqlMethod name="insert" type="preparedStatement" return="rowCount" static="false" connection="true">
+    <Sql><![CDATA[
+        INSERT INTO AD_Org 
+        (Value, Name, IsSummary, Social_Name, AD_Orgtype_ID, C_Currency_ID, IsPeriodControlAllowed, C_Calendar_ID, IsReady, C_Acctschema_ID, EM_Epcg_Tin, C_Region_ID, EM_Epcg_Division, EM_Epcg_Iec, EM_Epcg_Pan, EM_Epcg_Ecc, EM_Epcg_Excise, IsActive, Description, AD_Org_ID, AD_Client_ID, created, createdby, updated, updatedBy)
+        VALUES ((?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), now(), ?, now(), ?)
+    ]]></Sql>
+    <Parameter name="value"></Parameter> <Parameter name="name"></Parameter> <Parameter name="issummary"></Parameter> <Parameter name="socialName"></Parameter> <Parameter name="adOrgtypeId"></Parameter> <Parameter name="cCurrencyId"></Parameter> <Parameter name="isperiodcontrolallowed"></Parameter> <Parameter name="cCalendarId"></Parameter> <Parameter name="isready"></Parameter> <Parameter name="cAcctschemaId"></Parameter> <Parameter name="emEpcgTin"></Parameter> <Parameter name="cRegionId"></Parameter> <Parameter name="emEpcgDivision"></Parameter> <Parameter name="emEpcgIec"></Parameter> <Parameter name="emEpcgPan"></Parameter> <Parameter name="emEpcgEcc"></Parameter> <Parameter name="emEpcgExcise"></Parameter> <Parameter name="isactive"></Parameter> <Parameter name="description"></Parameter> <Parameter name="adOrgId"></Parameter> <Parameter name="adClientId"></Parameter> 
+    <Parameter name="createdby"></Parameter>
+    <Parameter name="updatedby"></Parameter>
+  </SqlMethod>
+
+  <SqlMethod name="delete" type="preparedStatement" return="rowCount">
+    <Sql><![CDATA[
+        DELETE FROM AD_Org
+        WHERE AD_Org.AD_Org_ID = ? 
+        
+        AND AD_Org.AD_Client_ID IN ('1') 
+        AND AD_Org.AD_Org_ID IN ('1') 
+    ]]></Sql>
+    <Parameter name="param1"></Parameter>
+    
+        <Parameter name="adUserClient" type="replace" optional="true" after="AD_Org.AD_Client_ID IN (" text="'1'"/>
+        <Parameter name="adOrgClient" type="replace" optional="true" after="AD_Org.AD_Org_ID IN (" text="'1'"/>
+  </SqlMethod>
+
+  <SqlMethod name="selectOrg" type="preparedStatement" return="string">
+    <SqlMethodComment>Select for relation</SqlMethodComment>
+    <Sql><![CDATA[ 
+        SELECT AD_ORG_ID
+          FROM AD_Org
+         WHERE AD_Org.AD_Org_ID = ? 
+    ]]></Sql>
+    <Parameter name="id"></Parameter>
+  </SqlMethod>
+  
+  <SqlMethod name="getCurrentDBTimestamp" type="preparedStatement" return="string">
+    <Sql><![CDATA[ 
+        SELECT to_char(Updated, 'YYYYMMDDHH24MISS') as Updated_Time_Stamp
+          FROM AD_Org
+         WHERE AD_Org.AD_Org_ID = ? 
+    ]]></Sql>
+    <Parameter name="id"></Parameter>
+  </SqlMethod>
+</SqlClass>

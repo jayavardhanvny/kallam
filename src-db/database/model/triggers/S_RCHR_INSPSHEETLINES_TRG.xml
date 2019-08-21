@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+  <database name="TRIGGER S_RCHR_INSPSHEETLINES_TRG">
+    <trigger name="S_RCHR_INSPSHEETLINES_TRG" table="RCHR_INSPCATEGORYLINE" fires="after" insert="true" update="true" delete="true" foreach="row">
+      <body><![CDATA[Declare 
+	v_rchr_inspectionsheet_id VARCHAR(32);
+	v_old_rchr_inspectionsheet_id VARCHAR(32);
+	v_totalfour NUMBER:=0;
+	v_totaltwo NUMBER:=0;
+	v_total NUMBER:=0;
+	v_totalmts NUMBER:=0;
+	v_roundtotal NUMBER:=0;
+	v_totalpoints NUMBER:=0;
+  BEGIN
+	IF (INSERTING OR UPDATING) THEN
+	v_rchr_inspectionsheet_id:=:NEW.rchr_inspectionsheet_id;
+	END IF;
+	IF (DELETING) THEN 
+	v_rchr_inspectionsheet_id:=:OLD.rchr_inspectionsheet_id;
+	END IF;
+	
+
+	SELECT sum(twopoints) into v_totaltwo from rchr_inspcategoryline where rchr_inspectionsheet_id=v_rchr_inspectionsheet_id;
+	SELECT sum(fourpoints) into v_totalfour from rchr_inspcategoryline where rchr_inspectionsheet_id=v_rchr_inspectionsheet_id;
+	IF((v_totaltwo IS NULL) OR (v_totalfour IS NULL)) THEN
+		v_totaltwo:=0;
+		v_totalfour:=0;
+	END IF;
+	
+	v_totalpoints := (v_totalfour*4)+(v_totaltwo*2);
+	
+	SELECT totalmtr into v_totalmts from rchr_inspectionsheet where rchr_inspectionsheet_id=v_rchr_inspectionsheet_id;
+	v_total :=(v_totalpoints/v_totalmts)*100;
+	v_roundtotal := round(v_total);
+	
+	UPDATE rchr_inspectionsheet SET totalfour=v_totalfour,totaltwo=v_totaltwo,totalpoints=v_roundtotal WHERE rchr_inspectionsheet_id=v_rchr_inspectionsheet_id;
+	
+-- 	UPDATE rchr_inspectionsheet SET totaltwo=v_totaltwo WHERE rchr_inspectionsheet_id=v_rchr_inspectionsheet_id;
+	
+	
+	IF (INSERTING OR UPDATING OR DELETING) THEN RETURN NEW; ELSE RETURN OLD; END IF; 
+--  	IF (TG_OP = 'DELETE') THEN RETURN OLD; ELSE RETURN NEW; END IF; 
+  END S_RCHR_INSPSHEETLINES_TRG
+]]></body>
+    </trigger>
+  </database>

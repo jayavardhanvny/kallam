@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SqlClass id="class" name="IndentData" package="org.openbravo.erpWindows.Indent">
+  <SqlClassComment>WAD Generated class</SqlClassComment>
+
+  <SqlMethod name="selectEdit" type="preparedStatement" return="multiple">
+    <SqlMethodComment>Select for edit</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT to_char(M_Requisition.Created, ?) as created, 
+        (SELECT NAME FROM AD_USER u WHERE AD_USER_ID = M_Requisition.CreatedBy) as CreatedByR, 
+        to_char(M_Requisition.Updated, ?) as updated, 
+        to_char(M_Requisition.Updated, 'YYYYMMDDHH24MISS') as Updated_Time_Stamp,  
+        M_Requisition.UpdatedBy, 
+        (SELECT NAME FROM AD_USER u WHERE AD_USER_ID = M_Requisition.UpdatedBy) as UpdatedByR,
+        M_Requisition.AD_Org_ID, 
+(CASE WHEN M_Requisition.AD_Org_ID IS NULL THEN '' ELSE  (COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table1.Name), ''))),'') ) END) AS AD_Org_IDR, 
+M_Requisition.C_Doctype_ID, 
+(CASE WHEN M_Requisition.C_Doctype_ID IS NULL THEN '' ELSE  ( COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR((CASE WHEN tableTRL2.Name IS NULL THEN TO_CHAR(table2.Name) ELSE TO_CHAR(tableTRL2.Name) END)), ''))),'') ) END) AS C_Doctype_IDR, 
+M_Requisition.DocumentNo, 
+M_Requisition.EM_Rcob_Indentdate, 
+M_Requisition.EM_Rcob_Deliverydate, 
+M_Requisition.M_Product_Category_ID, 
+M_Requisition.Description, 
+M_Requisition.C_BPartner_ID, 
+M_Requisition.AD_User_ID, 
+(CASE WHEN M_Requisition.AD_User_ID IS NULL THEN '' ELSE  (COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table3.Name), ''))),'') ) END) AS AD_User_IDR, 
+M_Requisition.M_PriceList_ID, 
+M_Requisition.C_Currency_ID, 
+(CASE WHEN M_Requisition.C_Currency_ID IS NULL THEN '' ELSE  (COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table4.ISO_Code), ''))),'') ) END) AS C_Currency_IDR, 
+M_Requisition.Rchr_Emp_Dept_Id, 
+(CASE WHEN M_Requisition.Rchr_Emp_Dept_Id IS NULL THEN '' ELSE  ( COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table5.Name), ''))),'') ) END) AS Rchr_Emp_Dept_IdR, 
+M_Requisition.DocAction, 
+list1.name as DocAction_BTN, 
+M_Requisition.DocStatus, 
+COALESCE(M_Requisition.Processing, 'N') AS Processing, 
+M_Requisition.Createpo, 
+COALESCE(M_Requisition.Processed, 'N') AS Processed, 
+COALESCE(M_Requisition.IsActive, 'N') AS IsActive, 
+M_Requisition.AD_Client_ID, 
+M_Requisition.M_Requisition_ID, 
+ 
+        ? AS LANGUAGE 
+        FROM M_Requisition left join (select AD_Org_ID, Name from AD_Org) table1 on (M_Requisition.AD_Org_ID = table1.AD_Org_ID) left join (select C_DocType_ID, Name from C_DocType) table2 on (M_Requisition.C_Doctype_ID =  table2.C_DocType_ID) left join (select C_DocType_ID,AD_Language, Name from C_DocType_TRL) tableTRL2 on (table2.C_DocType_ID = tableTRL2.C_DocType_ID and tableTRL2.AD_Language = ?)  left join (select AD_User_ID, Name from AD_User) table3 on (M_Requisition.AD_User_ID = table3.AD_User_ID) left join (select C_Currency_ID, ISO_Code from C_Currency) table4 on (M_Requisition.C_Currency_ID = table4.C_Currency_ID) left join (select Rchr_Emp_Dept_ID, Name from Rchr_Emp_Dept) table5 on (M_Requisition.Rchr_Emp_Dept_Id =  table5.Rchr_Emp_Dept_ID) left join ad_ref_list_v list1 on (list1.ad_reference_id = '135' and list1.ad_language = ?  AND (CASE M_Requisition.DocAction WHEN '--' THEN 'CL' ELSE TO_CHAR(M_Requisition.DocAction) END) = list1.value)
+        WHERE 2=2 
+
+        AND 1=1 
+        AND M_Requisition.M_Requisition_ID = ? 
+        AND M_Requisition.AD_Client_ID IN ('1') 
+           AND M_Requisition.AD_Org_ID IN ('1') 
+    ]]></Sql>
+    <Parameter name="dateTimeFormat"></Parameter>
+    <Parameter name="dateTimeFormat"></Parameter>
+    
+    <Parameter name="paramLanguage"></Parameter>
+<Parameter name="paramLanguage"/>
+<Parameter name="paramLanguage"/>
+
+
+    <Parameter name="key"></Parameter>
+        <Parameter name="adUserClient" type="replace" optional="true" after="M_Requisition.AD_Client_ID IN (" text="'1'"/>
+        <Parameter name="adOrgClient" type="replace" optional="true" after="M_Requisition.AD_Org_ID IN (" text="'1'"/>
+
+    <Field name="adUserClient" value="void"></Field>
+    <Field name="adOrgClient" value="void"></Field>
+    <Field name="createdby" value="void"></Field>
+    
+    <Field name="trBgcolor" value="void"></Field>
+    <Field name="totalCount" value="void"></Field>
+    <Field name="dateTimeFormat" value=""></Field>
+  </SqlMethod>
+  
+  
+
+  <SqlMethod name="set" type="constant" return="multiple">
+      <SqlMethodComment>Create a registry</SqlMethodComment>
+      <Sql></Sql>
+
+<Parameter name="createpo"></Parameter><Parameter name="docstatus"></Parameter><Parameter name="docaction"></Parameter><Parameter name="docactionBtn"></Parameter><Parameter name="processed"></Parameter><Parameter name="adUserId"></Parameter><Parameter name="processing"></Parameter><Parameter name="cDoctypeId"></Parameter><Parameter name="emRcobIndentdate"></Parameter><Parameter name="emRcobDeliverydate"></Parameter><Parameter name="rchrEmpDeptId"></Parameter><Parameter name="mProductCategoryId"></Parameter><Parameter name="mRequisitionId"></Parameter><Parameter name="adClientId"></Parameter><Parameter name="adOrgId"></Parameter><Parameter name="isactive"></Parameter><Parameter name="createdby"></Parameter><Parameter name="createdbyr"></Parameter><Parameter name="updatedby"></Parameter><Parameter name="updatedbyr"></Parameter><Parameter name="description"></Parameter><Parameter name="documentno"></Parameter><Parameter name="cBpartnerId"></Parameter><Parameter name="mPricelistId"></Parameter><Parameter name="cCurrencyId"></Parameter>
+   </SqlMethod>
+
+
+
+
+   <SqlMethod name="selectActP1004400000_C_BPartner_ID" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>Select for auxiliar field</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT M_Requisition.C_Bpartner_Id FROM M_Requisition, (SELECT count(*) as SameBP FROM M_Requisition inner join M_requisitionLine ON M_Requisition.M_Requisition_id = M_requisitionLine.M_Requisition_id WHERE M_Requisition.c_bpartner_id = M_requisitionLine.c_bpartner_id AND M_Requisition.M_Requisition_id = ?) SameBP,  (SELECT count(*) as QtyLines FROM M_RequisitionLine WHERE M_RequisitionLine.M_Requisition_id=?) QtyLines  WHERE SameBP.SameBP = QtyLines.QtyLines AND M_Requisition.M_Requisition_id =? 
+    ]]></Sql>
+
+<Parameter name="M_Requisition_ID"/>
+<Parameter name="M_Requisition_ID"/>
+<Parameter name="M_Requisition_ID"/>
+  </SqlMethod>
+
+   <SqlMethod name="selectActP1004400000_M_PriceList_ID" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>Select for auxiliar field</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT M_Requisition.m_pricelist_id  FROM M_Requisition,       (SELECT count(*) as SamePL        FROM M_Requisition inner join M_requisitionLine ON M_Requisition.M_Requisition_id = M_requisitionLine.M_Requisition_id       WHERE M_Requisition.m_pricelist_id = M_requisitionLine.m_pricelist_id AND M_Requisition.M_Requisition_id = ?) SamePL,        (SELECT count(*) as QtyLines       FROM M_RequisitionLine       WHERE M_RequisitionLine.M_Requisition_id=?) QtyLines   WHERE SamePL.SamePL = QtyLines.QtyLines AND M_Requisition.M_Requisition_id =? 
+    ]]></Sql>
+
+<Parameter name="M_Requisition_ID"/>
+<Parameter name="M_Requisition_ID"/>
+<Parameter name="M_Requisition_ID"/>
+  </SqlMethod>
+
+
+
+   <SqlMethod name="selectDef803534_0" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>Select for auxiliar field</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT  ( COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table2.Name), ''))), '') ) as Createdby FROM AD_User left join (select AD_User_ID, Name from AD_User) table2 on (AD_User.AD_User_ID = table2.AD_User_ID) WHERE AD_User.isActive='Y' AND AD_User.AD_User_ID = ?  
+    ]]></Sql>
+<Parameter name="CreatedbyR"/>
+  </SqlMethod>
+
+   <SqlMethod name="selectDef803536_1" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>Select for auxiliar field</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT  ( COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table2.Name), ''))), '') ) as Updatedby FROM AD_User left join (select AD_User_ID, Name from AD_User) table2 on (AD_User.AD_User_ID = table2.AD_User_ID) WHERE AD_User.isActive='Y' AND AD_User.AD_User_ID = ?  
+    ]]></Sql>
+<Parameter name="UpdatedbyR"/>
+  </SqlMethod>
+
+
+
+
+
+  <SqlMethod name="updateDocAction" type="preparedStatement" return="rowCount">
+    <Sql><![CDATA[
+        UPDATE M_Requisition
+        SET docaction = ? 
+        WHERE M_Requisition.M_Requisition_ID = ?
+    ]]></Sql>
+    <Parameter name="docaction"></Parameter>
+    <Parameter id="paramKey" name="mRequisitionId"></Parameter>
+  </SqlMethod>
+
+
+
+
+
+   <SqlMethod name="selectActDefC_BPartner_ID" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>Select for action search</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT Name FROM C_BPartner WHERE isActive='Y' AND C_BPartner_ID = ?  
+    ]]></Sql>
+    <Parameter name="C_BPartner_ID"/>
+  </SqlMethod>
+
+
+  <SqlMethod name="update" type="preparedStatement" return="rowCount" static="false" connection="true">
+    <Sql><![CDATA[
+        UPDATE M_Requisition
+        SET AD_Org_ID = (?) , C_Doctype_ID = (?) , DocumentNo = (?) , EM_Rcob_Indentdate = TO_DATE(?) , EM_Rcob_Deliverydate = TO_DATE(?) , M_Product_Category_ID = (?) , Description = (?) , C_BPartner_ID = (?) , AD_User_ID = (?) , M_PriceList_ID = (?) , C_Currency_ID = (?) , Rchr_Emp_Dept_Id = (?) , DocAction = (?) , DocStatus = (?) , Processing = (?) , Createpo = (?) , Processed = (?) , IsActive = (?) , AD_Client_ID = (?) , M_Requisition_ID = (?) , updated = now(), updatedby = ? 
+        WHERE M_Requisition.M_Requisition_ID = ? 
+        
+        AND M_Requisition.AD_Client_ID IN ('1') 
+        AND M_Requisition.AD_Org_ID IN ('1') 
+    ]]></Sql>
+    <Parameter name="adOrgId"></Parameter> <Parameter name="cDoctypeId"></Parameter> <Parameter name="documentno"></Parameter> <Parameter name="emRcobIndentdate"></Parameter> <Parameter name="emRcobDeliverydate"></Parameter> <Parameter name="mProductCategoryId"></Parameter> <Parameter name="description"></Parameter> <Parameter name="cBpartnerId"></Parameter> <Parameter name="adUserId"></Parameter> <Parameter name="mPricelistId"></Parameter> <Parameter name="cCurrencyId"></Parameter> <Parameter name="rchrEmpDeptId"></Parameter> <Parameter name="docaction"></Parameter> <Parameter name="docstatus"></Parameter> <Parameter name="processing"></Parameter> <Parameter name="createpo"></Parameter> <Parameter name="processed"></Parameter> <Parameter name="isactive"></Parameter> <Parameter name="adClientId"></Parameter> <Parameter name="mRequisitionId"></Parameter> 
+    <Parameter name="updatedby"></Parameter>
+    <Parameter id="paramKey" name="mRequisitionId"></Parameter>
+    
+    
+        <Parameter name="adUserClient" type="replace" optional="true" after="M_Requisition.AD_Client_ID IN (" text="'1'"/>
+        <Parameter name="adOrgClient" type="replace" optional="true" after="M_Requisition.AD_Org_ID IN (" text="'1'"/>
+  </SqlMethod>
+
+  <SqlMethod name="insert" type="preparedStatement" return="rowCount" static="false" connection="true">
+    <Sql><![CDATA[
+        INSERT INTO M_Requisition 
+        (AD_Org_ID, C_Doctype_ID, DocumentNo, EM_Rcob_Indentdate, EM_Rcob_Deliverydate, M_Product_Category_ID, Description, C_BPartner_ID, AD_User_ID, M_PriceList_ID, C_Currency_ID, Rchr_Emp_Dept_Id, DocAction, DocStatus, Processing, Createpo, Processed, IsActive, AD_Client_ID, M_Requisition_ID, created, createdby, updated, updatedBy)
+        VALUES ((?), (?), (?), TO_DATE(?), TO_DATE(?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), now(), ?, now(), ?)
+    ]]></Sql>
+    <Parameter name="adOrgId"></Parameter> <Parameter name="cDoctypeId"></Parameter> <Parameter name="documentno"></Parameter> <Parameter name="emRcobIndentdate"></Parameter> <Parameter name="emRcobDeliverydate"></Parameter> <Parameter name="mProductCategoryId"></Parameter> <Parameter name="description"></Parameter> <Parameter name="cBpartnerId"></Parameter> <Parameter name="adUserId"></Parameter> <Parameter name="mPricelistId"></Parameter> <Parameter name="cCurrencyId"></Parameter> <Parameter name="rchrEmpDeptId"></Parameter> <Parameter name="docaction"></Parameter> <Parameter name="docstatus"></Parameter> <Parameter name="processing"></Parameter> <Parameter name="createpo"></Parameter> <Parameter name="processed"></Parameter> <Parameter name="isactive"></Parameter> <Parameter name="adClientId"></Parameter> <Parameter name="mRequisitionId"></Parameter> 
+    <Parameter name="createdby"></Parameter>
+    <Parameter name="updatedby"></Parameter>
+  </SqlMethod>
+
+  <SqlMethod name="delete" type="preparedStatement" return="rowCount">
+    <Sql><![CDATA[
+        DELETE FROM M_Requisition
+        WHERE M_Requisition.M_Requisition_ID = ? 
+        
+        AND M_Requisition.AD_Client_ID IN ('1') 
+        AND M_Requisition.AD_Org_ID IN ('1') 
+    ]]></Sql>
+    <Parameter name="param1"></Parameter>
+    
+        <Parameter name="adUserClient" type="replace" optional="true" after="M_Requisition.AD_Client_ID IN (" text="'1'"/>
+        <Parameter name="adOrgClient" type="replace" optional="true" after="M_Requisition.AD_Org_ID IN (" text="'1'"/>
+  </SqlMethod>
+
+  <SqlMethod name="selectOrg" type="preparedStatement" return="string">
+    <SqlMethodComment>Select for relation</SqlMethodComment>
+    <Sql><![CDATA[ 
+        SELECT AD_ORG_ID
+          FROM M_Requisition
+         WHERE M_Requisition.M_Requisition_ID = ? 
+    ]]></Sql>
+    <Parameter name="id"></Parameter>
+  </SqlMethod>
+  
+  <SqlMethod name="getCurrentDBTimestamp" type="preparedStatement" return="string">
+    <Sql><![CDATA[ 
+        SELECT to_char(Updated, 'YYYYMMDDHH24MISS') as Updated_Time_Stamp
+          FROM M_Requisition
+         WHERE M_Requisition.M_Requisition_ID = ? 
+    ]]></Sql>
+    <Parameter name="id"></Parameter>
+  </SqlMethod>
+</SqlClass>

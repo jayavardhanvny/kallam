@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SqlClass id="class" name="HeaderData" package="org.openbravo.erpWindows.GoodsTransfers">
+  <SqlClassComment>WAD Generated class</SqlClassComment>
+
+  <SqlMethod name="selectEdit" type="preparedStatement" return="multiple">
+    <SqlMethodComment>Select for edit</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT to_char(M_Movement.Created, ?) as created, 
+        (SELECT NAME FROM AD_USER u WHERE AD_USER_ID = M_Movement.CreatedBy) as CreatedByR, 
+        to_char(M_Movement.Updated, ?) as updated, 
+        to_char(M_Movement.Updated, 'YYYYMMDDHH24MISS') as Updated_Time_Stamp,  
+        M_Movement.UpdatedBy, 
+        (SELECT NAME FROM AD_USER u WHERE AD_USER_ID = M_Movement.UpdatedBy) as UpdatedByR,
+        M_Movement.AD_Org_ID, 
+(CASE WHEN M_Movement.AD_Org_ID IS NULL THEN '' ELSE  (COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table1.Name), ''))),'') ) END) AS AD_Org_IDR, 
+M_Movement.C_Doctype_ID, 
+(CASE WHEN M_Movement.C_Doctype_ID IS NULL THEN '' ELSE  ( COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR((CASE WHEN tableTRL2.Name IS NULL THEN TO_CHAR(table2.Name) ELSE TO_CHAR(tableTRL2.Name) END)), ''))),'') ) END) AS C_Doctype_IDR, 
+M_Movement.DocumentNo, 
+M_Movement.EM_Epcg_Doctype, 
+(CASE WHEN M_Movement.EM_Epcg_Doctype IS NULL THEN '' ELSE  ( COALESCE(TO_CHAR(list1.name),'') ) END) AS EM_Epcg_DoctypeR, 
+M_Movement.Name, 
+M_Movement.MovementDate, 
+M_Movement.EM_Epcg_Disfrom, 
+(CASE WHEN M_Movement.EM_Epcg_Disfrom IS NULL THEN '' ELSE  ( COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table3.Branchname), ''))),'') ) END) AS EM_Epcg_DisfromR, 
+M_Movement.EM_Epcg_Disto, 
+(CASE WHEN M_Movement.EM_Epcg_Disto IS NULL THEN '' ELSE  ( COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table4.Branchname), ''))),'') ) END) AS EM_Epcg_DistoR, 
+M_Movement.EM_Epcg_Vehicleno, 
+M_Movement.EM_Epcg_Waybillno, 
+M_Movement.Description, 
+M_Movement.Move_FromTo_Locator, 
+M_Movement.Processing, 
+M_Movement.Posted, 
+list2.name as Posted_BTN, 
+COALESCE(M_Movement.IsActive, 'N') AS IsActive, 
+M_Movement.AD_OrgTrx_ID, 
+M_Movement.C_Project_ID, 
+(CASE WHEN M_Movement.C_Project_ID IS NULL THEN '' ELSE  (COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table5.Value), ''))),'')  || ' - ' || COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table5.Name), ''))),'') ) END) AS C_Project_IDR, 
+M_Movement.C_Costcenter_ID, 
+M_Movement.A_Asset_ID, 
+M_Movement.C_Activity_ID, 
+(CASE WHEN M_Movement.C_Activity_ID IS NULL THEN '' ELSE  (COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table6.Name), ''))),'') ) END) AS C_Activity_IDR, 
+M_Movement.C_Campaign_ID, 
+(CASE WHEN M_Movement.C_Campaign_ID IS NULL THEN '' ELSE  (COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table7.Name), ''))),'') ) END) AS C_Campaign_IDR, 
+M_Movement.User1_ID, 
+M_Movement.User2_ID, 
+M_Movement.M_Movement_ID, 
+COALESCE(M_Movement.Processed, 'N') AS Processed, 
+M_Movement.AD_Client_ID, 
+ 
+        ? AS LANGUAGE 
+        FROM M_Movement left join (select AD_Org_ID, Name from AD_Org) table1 on (M_Movement.AD_Org_ID = table1.AD_Org_ID) left join (select C_DocType_ID, Name from C_DocType) table2 on (M_Movement.C_Doctype_ID =  table2.C_DocType_ID) left join (select C_DocType_ID,AD_Language, Name from C_DocType_TRL) tableTRL2 on (table2.C_DocType_ID = tableTRL2.C_DocType_ID and tableTRL2.AD_Language = ?)  left join ad_ref_list_v list1 on (M_Movement.EM_Epcg_Doctype = list1.value and list1.ad_reference_id = '1D8636825ABC42C19B0F06A7EF2B4515' and list1.ad_language = ?)  left join (select Epcg_Branchaddr_ID, Branchname from Epcg_Branchaddr) table3 on (M_Movement.EM_Epcg_Disfrom =  table3.Epcg_Branchaddr_ID) left join (select Epcg_Branchaddr_ID, Branchname from Epcg_Branchaddr) table4 on (M_Movement.EM_Epcg_Disto =  table4.Epcg_Branchaddr_ID) left join ad_ref_list_v list2 on (list2.ad_reference_id = '234' and list2.ad_language = ?  AND M_Movement.Posted = TO_CHAR(list2.value)) left join (select C_Project_ID, Value, Name from C_Project) table5 on (M_Movement.C_Project_ID = table5.C_Project_ID) left join (select C_Activity_ID, Name from C_Activity) table6 on (M_Movement.C_Activity_ID = table6.C_Activity_ID) left join (select C_Campaign_ID, Name from C_Campaign) table7 on (M_Movement.C_Campaign_ID = table7.C_Campaign_ID)
+        WHERE 2=2 
+
+        AND 1=1 
+        AND M_Movement.M_Movement_ID = ? 
+        AND M_Movement.AD_Client_ID IN ('1') 
+           AND M_Movement.AD_Org_ID IN ('1') 
+    ]]></Sql>
+    <Parameter name="dateTimeFormat"></Parameter>
+    <Parameter name="dateTimeFormat"></Parameter>
+    
+    <Parameter name="paramLanguage"></Parameter>
+<Parameter name="paramLanguage"/>
+<Parameter name="paramLanguage"/>
+<Parameter name="paramLanguage"/>
+
+
+    <Parameter name="key"></Parameter>
+        <Parameter name="adUserClient" type="replace" optional="true" after="M_Movement.AD_Client_ID IN (" text="'1'"/>
+        <Parameter name="adOrgClient" type="replace" optional="true" after="M_Movement.AD_Org_ID IN (" text="'1'"/>
+
+    <Field name="adUserClient" value="void"></Field>
+    <Field name="adOrgClient" value="void"></Field>
+    <Field name="createdby" value="void"></Field>
+    
+    <Field name="trBgcolor" value="void"></Field>
+    <Field name="totalCount" value="void"></Field>
+    <Field name="dateTimeFormat" value=""></Field>
+  </SqlMethod>
+  
+  
+
+  <SqlMethod name="set" type="constant" return="multiple">
+      <SqlMethodComment>Create a registry</SqlMethodComment>
+      <Sql></Sql>
+
+<Parameter name="mMovementId"></Parameter><Parameter name="adClientId"></Parameter><Parameter name="adOrgId"></Parameter><Parameter name="isactive"></Parameter><Parameter name="createdby"></Parameter><Parameter name="createdbyr"></Parameter><Parameter name="updatedby"></Parameter><Parameter name="updatedbyr"></Parameter><Parameter name="name"></Parameter><Parameter name="description"></Parameter><Parameter name="movementdate"></Parameter><Parameter name="processed"></Parameter><Parameter name="processing"></Parameter><Parameter name="emEpcgDoctype"></Parameter><Parameter name="aAssetId"></Parameter><Parameter name="posted"></Parameter><Parameter name="postedBtn"></Parameter><Parameter name="emEpcgDisto"></Parameter><Parameter name="moveFromtoLocator"></Parameter><Parameter name="documentno"></Parameter><Parameter name="emEpcgVehicleno"></Parameter><Parameter name="cDoctypeId"></Parameter><Parameter name="cActivityId"></Parameter><Parameter name="user2Id"></Parameter><Parameter name="user1Id"></Parameter><Parameter name="cProjectId"></Parameter><Parameter name="cProjectIdr"></Parameter><Parameter name="cCampaignId"></Parameter><Parameter name="adOrgtrxId"></Parameter><Parameter name="emEpcgWaybillno"></Parameter><Parameter name="emEpcgDisfrom"></Parameter><Parameter name="cCostcenterId"></Parameter>
+   </SqlMethod>
+
+
+
+
+
+
+   <SqlMethod name="selectDef3574_0" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>Select for auxiliar field</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT  ( COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table2.Name), ''))), '') ) as CreatedBy FROM AD_User left join (select AD_User_ID, Name from AD_User) table2 on (AD_User.AD_User_ID = table2.AD_User_ID) WHERE AD_User.isActive='Y' AND AD_User.AD_User_ID = ?  
+    ]]></Sql>
+<Parameter name="CreatedByR"/>
+  </SqlMethod>
+
+   <SqlMethod name="selectDef3575_1" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>Select for auxiliar field</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT  ( COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table2.Name), ''))), '') ) as UpdatedBy FROM AD_User left join (select AD_User_ID, Name from AD_User) table2 on (AD_User.AD_User_ID = table2.AD_User_ID) WHERE AD_User.isActive='Y' AND AD_User.AD_User_ID = ?  
+    ]]></Sql>
+<Parameter name="UpdatedByR"/>
+  </SqlMethod>
+
+   <SqlMethod name="selectDef9548_2" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>Select for auxiliar field</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT  ( COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table2.Value), ''))), '')  || ' - ' || COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table2.Name), ''))), '') ) as C_Project_ID FROM C_Project left join (select C_Project_ID, Value, Name from C_Project) table2 on (C_Project.C_Project_ID = table2.C_Project_ID) WHERE C_Project.isActive='Y' AND C_Project.C_Project_ID = ?  
+    ]]></Sql>
+<Parameter name="C_Project_IDR"/>
+  </SqlMethod>
+
+
+
+
+
+
+
+
+
+   <SqlMethod name="selectActDefM_LocatorFrom" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>Select for action search</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT Value FROM M_Locator WHERE isActive='Y' AND M_Locator_ID = ?  
+    ]]></Sql>
+    <Parameter name="M_LocatorFrom"/>
+  </SqlMethod>
+
+   <SqlMethod name="selectActDefM_LocatorTo" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>Select for action search</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT Value FROM M_Locator WHERE isActive='Y' AND M_Locator_ID = ?  
+    ]]></Sql>
+    <Parameter name="M_LocatorTo"/>
+  </SqlMethod>
+
+
+  <SqlMethod name="update" type="preparedStatement" return="rowCount" static="false" connection="true">
+    <Sql><![CDATA[
+        UPDATE M_Movement
+        SET AD_Org_ID = (?) , C_Doctype_ID = (?) , DocumentNo = (?) , EM_Epcg_Doctype = (?) , Name = (?) , MovementDate = TO_DATE(?) , EM_Epcg_Disfrom = (?) , EM_Epcg_Disto = (?) , EM_Epcg_Vehicleno = (?) , EM_Epcg_Waybillno = (?) , Description = (?) , Move_FromTo_Locator = (?) , Processing = (?) , Posted = (?) , IsActive = (?) , AD_OrgTrx_ID = (?) , C_Project_ID = (?) , C_Costcenter_ID = (?) , A_Asset_ID = (?) , C_Activity_ID = (?) , C_Campaign_ID = (?) , User1_ID = (?) , User2_ID = (?) , M_Movement_ID = (?) , Processed = (?) , AD_Client_ID = (?) , updated = now(), updatedby = ? 
+        WHERE M_Movement.M_Movement_ID = ? 
+        
+        AND M_Movement.AD_Client_ID IN ('1') 
+        AND M_Movement.AD_Org_ID IN ('1') 
+    ]]></Sql>
+    <Parameter name="adOrgId"></Parameter> <Parameter name="cDoctypeId"></Parameter> <Parameter name="documentno"></Parameter> <Parameter name="emEpcgDoctype"></Parameter> <Parameter name="name"></Parameter> <Parameter name="movementdate"></Parameter> <Parameter name="emEpcgDisfrom"></Parameter> <Parameter name="emEpcgDisto"></Parameter> <Parameter name="emEpcgVehicleno"></Parameter> <Parameter name="emEpcgWaybillno"></Parameter> <Parameter name="description"></Parameter> <Parameter name="moveFromtoLocator"></Parameter> <Parameter name="processing"></Parameter> <Parameter name="posted"></Parameter> <Parameter name="isactive"></Parameter> <Parameter name="adOrgtrxId"></Parameter> <Parameter name="cProjectId"></Parameter> <Parameter name="cCostcenterId"></Parameter> <Parameter name="aAssetId"></Parameter> <Parameter name="cActivityId"></Parameter> <Parameter name="cCampaignId"></Parameter> <Parameter name="user1Id"></Parameter> <Parameter name="user2Id"></Parameter> <Parameter name="mMovementId"></Parameter> <Parameter name="processed"></Parameter> <Parameter name="adClientId"></Parameter> 
+    <Parameter name="updatedby"></Parameter>
+    <Parameter id="paramKey" name="mMovementId"></Parameter>
+    
+    
+        <Parameter name="adUserClient" type="replace" optional="true" after="M_Movement.AD_Client_ID IN (" text="'1'"/>
+        <Parameter name="adOrgClient" type="replace" optional="true" after="M_Movement.AD_Org_ID IN (" text="'1'"/>
+  </SqlMethod>
+
+  <SqlMethod name="insert" type="preparedStatement" return="rowCount" static="false" connection="true">
+    <Sql><![CDATA[
+        INSERT INTO M_Movement 
+        (AD_Org_ID, C_Doctype_ID, DocumentNo, EM_Epcg_Doctype, Name, MovementDate, EM_Epcg_Disfrom, EM_Epcg_Disto, EM_Epcg_Vehicleno, EM_Epcg_Waybillno, Description, Move_FromTo_Locator, Processing, Posted, IsActive, AD_OrgTrx_ID, C_Project_ID, C_Costcenter_ID, A_Asset_ID, C_Activity_ID, C_Campaign_ID, User1_ID, User2_ID, M_Movement_ID, Processed, AD_Client_ID, created, createdby, updated, updatedBy)
+        VALUES ((?), (?), (?), (?), (?), TO_DATE(?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), now(), ?, now(), ?)
+    ]]></Sql>
+    <Parameter name="adOrgId"></Parameter> <Parameter name="cDoctypeId"></Parameter> <Parameter name="documentno"></Parameter> <Parameter name="emEpcgDoctype"></Parameter> <Parameter name="name"></Parameter> <Parameter name="movementdate"></Parameter> <Parameter name="emEpcgDisfrom"></Parameter> <Parameter name="emEpcgDisto"></Parameter> <Parameter name="emEpcgVehicleno"></Parameter> <Parameter name="emEpcgWaybillno"></Parameter> <Parameter name="description"></Parameter> <Parameter name="moveFromtoLocator"></Parameter> <Parameter name="processing"></Parameter> <Parameter name="posted"></Parameter> <Parameter name="isactive"></Parameter> <Parameter name="adOrgtrxId"></Parameter> <Parameter name="cProjectId"></Parameter> <Parameter name="cCostcenterId"></Parameter> <Parameter name="aAssetId"></Parameter> <Parameter name="cActivityId"></Parameter> <Parameter name="cCampaignId"></Parameter> <Parameter name="user1Id"></Parameter> <Parameter name="user2Id"></Parameter> <Parameter name="mMovementId"></Parameter> <Parameter name="processed"></Parameter> <Parameter name="adClientId"></Parameter> 
+    <Parameter name="createdby"></Parameter>
+    <Parameter name="updatedby"></Parameter>
+  </SqlMethod>
+
+  <SqlMethod name="delete" type="preparedStatement" return="rowCount">
+    <Sql><![CDATA[
+        DELETE FROM M_Movement
+        WHERE M_Movement.M_Movement_ID = ? 
+        
+        AND M_Movement.AD_Client_ID IN ('1') 
+        AND M_Movement.AD_Org_ID IN ('1') 
+    ]]></Sql>
+    <Parameter name="param1"></Parameter>
+    
+        <Parameter name="adUserClient" type="replace" optional="true" after="M_Movement.AD_Client_ID IN (" text="'1'"/>
+        <Parameter name="adOrgClient" type="replace" optional="true" after="M_Movement.AD_Org_ID IN (" text="'1'"/>
+  </SqlMethod>
+
+  <SqlMethod name="selectOrg" type="preparedStatement" return="string">
+    <SqlMethodComment>Select for relation</SqlMethodComment>
+    <Sql><![CDATA[ 
+        SELECT AD_ORG_ID
+          FROM M_Movement
+         WHERE M_Movement.M_Movement_ID = ? 
+    ]]></Sql>
+    <Parameter name="id"></Parameter>
+  </SqlMethod>
+  
+  <SqlMethod name="getCurrentDBTimestamp" type="preparedStatement" return="string">
+    <Sql><![CDATA[ 
+        SELECT to_char(Updated, 'YYYYMMDDHH24MISS') as Updated_Time_Stamp
+          FROM M_Movement
+         WHERE M_Movement.M_Movement_ID = ? 
+    ]]></Sql>
+    <Parameter name="id"></Parameter>
+  </SqlMethod>
+</SqlClass>

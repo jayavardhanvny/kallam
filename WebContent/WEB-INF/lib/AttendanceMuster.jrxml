@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="AttendanceMuster" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<property name="ireport.zoom" value="1.6105100000000008"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<queryString>
+		<![CDATA[select emp.documentno,emp.employeename,temp.ap,temp.da,temp.pa,temp.date,temp.pr
+from (
+(select line.rchr_employee_id as empId , 1 as AP,0 as DA, 0 as PA, head.fromdate As Date,
+null AS PR  from rchr_attendance_to_line line
+join rchr_attendance_timeoff head on head.rchr_attendance_timeoff_id=line.rchr_attendance_timeoff_id
+-- Where rchr_employee_id= temp.empId
+ )
+
+union
+(select line.rchr_employee_id as empId ,0 as AP, 0 as DA, 1 as PA, head.fromdate As Date,
+null AS PR  from rchr_attend_prod_line line
+join rchr_attendance_prood head on head.rchr_attendance_prood_id=line.rchr_attendance_prood_id
+-- Where rchr_employee_id= '3C718FB332F143F5B80222D459C6FB3D'
+)
+union
+(select demo.rchr_employee_id as empId ,0 as AP,1 as DA, 0 as PA,attdate As Date,
+
+Errorlog AS PR from rchr_dailyattenddemo demo
+
+-- Where rchr_employee_id= '3C718FB332F143F5B80222D459C6FB3D'
+)) temp
+
+ JOIN rchr_employee emp ON emp.rchr_employee_id=temp.empId
+where --temp.ap=0 and temp.da=0 and temp.pa=1
+-- and rchr_employee_id= '3C718FB332F143F5B80222D459C6FB3D'
+--and
+temp.date ='2017-09-01' --and '2017-09-30'
+and emp.documentno='2037']]>
+	</queryString>
+	<field name="documentno" class="java.lang.String"/>
+	<field name="employeename" class="java.lang.String"/>
+	<field name="ap" class="java.lang.Integer"/>
+	<field name="da" class="java.lang.Integer"/>
+	<field name="pa" class="java.lang.Integer"/>
+	<field name="date" class="java.sql.Timestamp"/>
+	<field name="pr" class="java.lang.String"/>
+	<group name="GroupByEmployee">
+		<groupExpression><![CDATA[$F{documentno}]]></groupExpression>
+		<groupHeader>
+			<band height="23">
+				<textField>
+					<reportElement x="174" y="0" width="100" height="20"/>
+					<textElement/>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{employeename}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="12" y="0" width="100" height="20"/>
+					<textElement/>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{documentno}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="480" y="3" width="56" height="20"/>
+					<textElement/>
+					<textFieldExpression class="java.sql.Timestamp"><![CDATA[$F{date}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="22" splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band height="35" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="26" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="100" height="20"/>
+				<textElement/>
+				<text><![CDATA[documentno]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="174" y="0" width="100" height="20"/>
+				<textElement/>
+				<text><![CDATA[employeename]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="274" y="3" width="100" height="20"/>
+				<textElement/>
+				<text><![CDATA[ap]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="421" y="4" width="59" height="20"/>
+				<textElement/>
+				<text><![CDATA[pa]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="374" y="4" width="47" height="20"/>
+				<textElement/>
+				<text><![CDATA[da]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="480" y="3" width="56" height="20"/>
+				<textElement/>
+				<text><![CDATA[date]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="536" y="0" width="266" height="20"/>
+				<textElement/>
+				<text><![CDATA[pr]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<textField>
+				<reportElement x="374" y="0" width="47" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{da}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="421" y="0" width="59" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{pa}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="274" y="0" width="100" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{ap}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="536" y="0" width="266" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{pr}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

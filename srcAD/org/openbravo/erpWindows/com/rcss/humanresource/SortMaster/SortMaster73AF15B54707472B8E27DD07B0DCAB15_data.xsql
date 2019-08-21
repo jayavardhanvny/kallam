@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SqlClass id="class" name="SortMaster73AF15B54707472B8E27DD07B0DCAB15Data" package="org.openbravo.erpWindows.com.rcss.humanresource.SortMaster">
+  <SqlClassComment>WAD Generated class</SqlClassComment>
+
+  <SqlMethod name="selectEdit" type="preparedStatement" return="multiple">
+    <SqlMethodComment>Select for edit</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT to_char(RCHR_Qualitystandard.Created, ?) as created, 
+        (SELECT NAME FROM AD_USER u WHERE AD_USER_ID = RCHR_Qualitystandard.CreatedBy) as CreatedByR, 
+        to_char(RCHR_Qualitystandard.Updated, ?) as updated, 
+        to_char(RCHR_Qualitystandard.Updated, 'YYYYMMDDHH24MISS') as Updated_Time_Stamp,  
+        RCHR_Qualitystandard.UpdatedBy, 
+        (SELECT NAME FROM AD_USER u WHERE AD_USER_ID = RCHR_Qualitystandard.UpdatedBy) as UpdatedByR,
+        RCHR_Qualitystandard.Rchr_Orderstatus_ID, 
+RCHR_Qualitystandard.AD_Org_ID, 
+COALESCE(RCHR_Qualitystandard.Isactive, 'N') AS Isactive, 
+RCHR_Qualitystandard.Rchr_Inspclothtype_ID, 
+(CASE WHEN RCHR_Qualitystandard.Rchr_Inspclothtype_ID IS NULL THEN '' ELSE  (COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table1.Name), ''))),'') ) END) AS Rchr_Inspclothtype_IDR, 
+RCHR_Qualitystandard.Orderno, 
+RCHR_Qualitystandard.Mofno, 
+RCHR_Qualitystandard.Qualityno, 
+RCHR_Qualitystandard.M_Product_ID, 
+(CASE WHEN RCHR_Qualitystandard.M_Product_ID IS NULL THEN '' ELSE  (COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table2.Value), ''))),'')  || ' - ' || COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR((CASE WHEN tableTRL2.Name IS NULL THEN TO_CHAR(table2.Name) ELSE TO_CHAR(tableTRL2.Name) END)), ''))),'')  || ' - ' || COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table2.EM_Rcgi_Ksmlbarcode), ''))),'') ) END) AS M_Product_IDR, 
+RCHR_Qualitystandard.Warpcount, 
+RCHR_Qualitystandard.Rchr_Warpyarntype_ID, 
+(CASE WHEN RCHR_Qualitystandard.Rchr_Warpyarntype_ID IS NULL THEN '' ELSE  (COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table3.Name), ''))),'') ) END) AS Rchr_Warpyarntype_IDR, 
+RCHR_Qualitystandard.Epcg_Variant_ID, 
+(CASE WHEN RCHR_Qualitystandard.Epcg_Variant_ID IS NULL THEN '' ELSE  (COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table4.Name), ''))),'')  || ' - ' || COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table4.Rate), ''))),'') ) END) AS Epcg_Variant_IDR, 
+RCHR_Qualitystandard.Weft_Product, 
+(CASE WHEN RCHR_Qualitystandard.Weft_Product IS NULL THEN '' ELSE  (COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table5.Value), ''))),'')  || ' - ' || COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR((CASE WHEN tableTRL5.Name IS NULL THEN TO_CHAR(table5.Name) ELSE TO_CHAR(tableTRL5.Name) END)), ''))),'')  || ' - ' || COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table5.EM_Rcgi_Ksmlbarcode), ''))),'') ) END) AS Weft_ProductR, 
+RCHR_Qualitystandard.Weftcount, 
+RCHR_Qualitystandard.Rchr_Skillgrade_ID, 
+RCHR_Qualitystandard.Warpyarntype, 
+(CASE WHEN RCHR_Qualitystandard.Warpyarntype IS NULL THEN '' ELSE  ( COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table6.Name), ''))),'') ) END) AS WarpyarntypeR, 
+RCHR_Qualitystandard.Weftvariant, 
+(CASE WHEN RCHR_Qualitystandard.Weftvariant IS NULL THEN '' ELSE  ( COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table7.Name), ''))),'') ) END) AS WeftvariantR, 
+RCHR_Qualitystandard.Epi, 
+RCHR_Qualitystandard.Epitolerence, 
+RCHR_Qualitystandard.Ppi, 
+RCHR_Qualitystandard.Ppitolerence, 
+RCHR_Qualitystandard.Orderquantity, 
+RCHR_Qualitystandard.Rchr_Inspgreigewidth_ID, 
+(CASE WHEN RCHR_Qualitystandard.Rchr_Inspgreigewidth_ID IS NULL THEN '' ELSE  (COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table8.Name), ''))),'') ) END) AS Rchr_Inspgreigewidth_IDR, 
+RCHR_Qualitystandard.Gwtolerence, 
+RCHR_Qualitystandard.Atotal, 
+RCHR_Qualitystandard.Totalends, 
+RCHR_Qualitystandard.Aonetotal, 
+RCHR_Qualitystandard.Btotal, 
+RCHR_Qualitystandard.Reed, 
+RCHR_Qualitystandard.Reedspace, 
+RCHR_Qualitystandard.Sltotal, 
+RCHR_Qualitystandard.Rchr_Inspweave_ID, 
+(CASE WHEN RCHR_Qualitystandard.Rchr_Inspweave_ID IS NULL THEN '' ELSE  (COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table9.Name), ''))),'') ) END) AS Rchr_Inspweave_IDR, 
+RCHR_Qualitystandard.Warpcrimp, 
+RCHR_Qualitystandard.Weftcrimp, 
+RCHR_Qualitystandard.Sizepickup, 
+RCHR_Qualitystandard.Warpglm, 
+RCHR_Qualitystandard.Weftglm, 
+RCHR_Qualitystandard.Glm, 
+RCHR_Qualitystandard.Towrapmtrs, 
+RCHR_Qualitystandard.Warpyarnreq, 
+RCHR_Qualitystandard.Weftyarnreq, 
+RCHR_Qualitystandard.Widthcms, 
+RCHR_Qualitystandard.Widthmtrs, 
+RCHR_Qualitystandard.Gsm, 
+RCHR_Qualitystandard.Coverfactor, 
+RCHR_Qualitystandard.Qstandard, 
+RCHR_Qualitystandard.Partyconstruction, 
+RCHR_Qualitystandard.Remainingquantity, 
+RCHR_Qualitystandard.Orderdate, 
+RCHR_Qualitystandard.Deliverydate, 
+RCHR_Qualitystandard.Rchr_Warpweftclolor_ID, 
+(CASE WHEN RCHR_Qualitystandard.Rchr_Warpweftclolor_ID IS NULL THEN '' ELSE  (COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table10.Code), ''))),'') ) END) AS Rchr_Warpweftclolor_IDR, 
+RCHR_Qualitystandard.Weftcolor, 
+(CASE WHEN RCHR_Qualitystandard.Weftcolor IS NULL THEN '' ELSE  ( COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table11.Code), ''))),'') ) END) AS WeftcolorR, 
+RCHR_Qualitystandard.Updateremqty, 
+RCHR_Qualitystandard.Avgglm, 
+RCHR_Qualitystandard.Description, 
+RCHR_Qualitystandard.Nooframes, 
+RCHR_Qualitystandard.Selvweave, 
+RCHR_Qualitystandard.Selvedents, 
+RCHR_Qualitystandard.Selveends, 
+RCHR_Qualitystandard.Selvedge, 
+RCHR_Qualitystandard.Fulllengthper, 
+RCHR_Qualitystandard.Fulllengthmtr, 
+RCHR_Qualitystandard.Shortlengthper, 
+RCHR_Qualitystandard.Shortlengthmtr, 
+RCHR_Qualitystandard.Baleorrole, 
+RCHR_Qualitystandard.Balesize, 
+RCHR_Qualitystandard.Warptearingstrngth, 
+RCHR_Qualitystandard.Wefttearingstrngth, 
+RCHR_Qualitystandard.Tearingtestmethod, 
+RCHR_Qualitystandard.Warptensiblestrngth, 
+RCHR_Qualitystandard.Wefttensiblestrngth, 
+RCHR_Qualitystandard.Tensibletestmethod, 
+RCHR_Qualitystandard.Hsncode, 
+RCHR_Qualitystandard.Speed, 
+RCHR_Qualitystandard.Efficiency, 
+RCHR_Qualitystandard.Sizing, 
+RCHR_Qualitystandard.Valueloss, 
+RCHR_Qualitystandard.Typeofsort, 
+(CASE WHEN RCHR_Qualitystandard.Typeofsort IS NULL THEN '' ELSE  ( COALESCE(TO_CHAR(list1.name),'') ) END) AS TypeofsortR, 
+RCHR_Qualitystandard.Onloomepi, 
+RCHR_Qualitystandard.Rchr_Qualitystandard_ID, 
+RCHR_Qualitystandard.AD_Client_ID, 
+ 
+        ? AS LANGUAGE 
+        FROM RCHR_Qualitystandard left join (select Rchr_Inspclothtype_ID, Name from Rchr_Inspclothtype) table1 on (RCHR_Qualitystandard.Rchr_Inspclothtype_ID = table1.Rchr_Inspclothtype_ID) left join (select M_Product_ID, Value, Name, EM_Rcgi_Ksmlbarcode from M_Product) table2 on (RCHR_Qualitystandard.M_Product_ID = table2.M_Product_ID) left join (select M_Product_ID,AD_Language, Name from M_Product_TRL) tableTRL2 on (table2.M_Product_ID = tableTRL2.M_Product_ID and tableTRL2.AD_Language = ?)  left join (select Rchr_Warpyarntype_ID, Name from Rchr_Warpyarntype) table3 on (RCHR_Qualitystandard.Rchr_Warpyarntype_ID = table3.Rchr_Warpyarntype_ID) left join (select Epcg_Variant_ID, Name, Rate from Epcg_Variant) table4 on (RCHR_Qualitystandard.Epcg_Variant_ID = table4.Epcg_Variant_ID) left join (select M_Product_ID, Value, Name, EM_Rcgi_Ksmlbarcode from M_Product) table5 on (RCHR_Qualitystandard.Weft_Product = table5.M_Product_ID) left join (select M_Product_ID,AD_Language, Name from M_Product_TRL) tableTRL5 on (table5.M_Product_ID = tableTRL5.M_Product_ID and tableTRL5.AD_Language = ?)  left join (select Rchr_Warpyarntype_ID, Name from RCHR_Warpyarntype) table6 on (RCHR_Qualitystandard.Warpyarntype =  table6.Rchr_Warpyarntype_ID) left join (select Epcg_Variant_ID, Name from Epcg_Variant) table7 on (RCHR_Qualitystandard.Weftvariant =  table7.Epcg_Variant_ID) left join (select Rchr_Inspgreigewidth_ID, Name from Rchr_Inspgreigewidth) table8 on (RCHR_Qualitystandard.Rchr_Inspgreigewidth_ID = table8.Rchr_Inspgreigewidth_ID) left join (select Rchr_Inspweave_ID, Name from Rchr_Inspweave) table9 on (RCHR_Qualitystandard.Rchr_Inspweave_ID = table9.Rchr_Inspweave_ID) left join (select Rchr_Warpweftclolor_ID, Code from Rchr_Warpweftclolor) table10 on (RCHR_Qualitystandard.Rchr_Warpweftclolor_ID = table10.Rchr_Warpweftclolor_ID) left join (select Rchr_Warpweftclolor_ID, Code from RCHR_Warpweftclolor) table11 on (RCHR_Qualitystandard.Weftcolor =  table11.Rchr_Warpweftclolor_ID) left join ad_ref_list_v list1 on (RCHR_Qualitystandard.Typeofsort = list1.value and list1.ad_reference_id = '7BB7843C30F346CEA858FD85BE5860B8' and list1.ad_language = ?) 
+        WHERE 2=2 
+
+        AND 1=1 
+        AND RCHR_Qualitystandard.Rchr_Qualitystandard_ID = ? 
+        AND RCHR_Qualitystandard.AD_Client_ID IN ('1') 
+           AND RCHR_Qualitystandard.AD_Org_ID IN ('1') 
+    ]]></Sql>
+    <Parameter name="dateTimeFormat"></Parameter>
+    <Parameter name="dateTimeFormat"></Parameter>
+    
+    <Parameter name="paramLanguage"></Parameter>
+<Parameter name="paramLanguage"/>
+<Parameter name="paramLanguage"/>
+<Parameter name="paramLanguage"/>
+
+
+    <Parameter name="key"></Parameter>
+        <Parameter name="adUserClient" type="replace" optional="true" after="RCHR_Qualitystandard.AD_Client_ID IN (" text="'1'"/>
+        <Parameter name="adOrgClient" type="replace" optional="true" after="RCHR_Qualitystandard.AD_Org_ID IN (" text="'1'"/>
+
+    <Field name="adUserClient" value="void"></Field>
+    <Field name="adOrgClient" value="void"></Field>
+    <Field name="createdby" value="void"></Field>
+    
+    <Field name="trBgcolor" value="void"></Field>
+    <Field name="totalCount" value="void"></Field>
+    <Field name="dateTimeFormat" value=""></Field>
+  </SqlMethod>
+  
+  
+
+  <SqlMethod name="set" type="constant" return="multiple">
+      <SqlMethodComment>Create a registry</SqlMethodComment>
+      <Sql></Sql>
+
+<Parameter name="ppitolerence"></Parameter><Parameter name="rchrWarpyarntypeId"></Parameter><Parameter name="gsm"></Parameter><Parameter name="mofno"></Parameter><Parameter name="aonetotal"></Parameter><Parameter name="nooframes"></Parameter><Parameter name="wefttensiblestrngth"></Parameter><Parameter name="weftcount"></Parameter><Parameter name="deliverydate"></Parameter><Parameter name="btotal"></Parameter><Parameter name="warpyarnreq"></Parameter><Parameter name="epitolerence"></Parameter><Parameter name="sizing"></Parameter><Parameter name="gwtolerence"></Parameter><Parameter name="towrapmtrs"></Parameter><Parameter name="weftcrimp"></Parameter><Parameter name="efficiency"></Parameter><Parameter name="rchrOrderstatusId"></Parameter><Parameter name="weftglm"></Parameter><Parameter name="warpcrimp"></Parameter><Parameter name="typeofsort"></Parameter><Parameter name="qualityno"></Parameter><Parameter name="rchrInspclothtypeId"></Parameter><Parameter name="sizepickup"></Parameter><Parameter name="speed"></Parameter><Parameter name="warpyarntype"></Parameter><Parameter name="shortlengthper"></Parameter><Parameter name="orderno"></Parameter><Parameter name="weftyarnreq"></Parameter><Parameter name="sltotal"></Parameter><Parameter name="onloomepi"></Parameter><Parameter name="adClientId"></Parameter><Parameter name="atotal"></Parameter><Parameter name="tensibletestmethod"></Parameter><Parameter name="balesize"></Parameter><Parameter name="updatedby"></Parameter><Parameter name="updatedbyr"></Parameter><Parameter name="reed"></Parameter><Parameter name="rchrWarpweftclolorId"></Parameter><Parameter name="isactive"></Parameter><Parameter name="baleorrole"></Parameter><Parameter name="tearingtestmethod"></Parameter><Parameter name="warptensiblestrngth"></Parameter><Parameter name="weftProduct"></Parameter><Parameter name="weftProductr"></Parameter><Parameter name="weftcolor"></Parameter><Parameter name="avgglm"></Parameter><Parameter name="epcgVariantId"></Parameter><Parameter name="remainingquantity"></Parameter><Parameter name="partyconstruction"></Parameter><Parameter name="shortlengthmtr"></Parameter><Parameter name="rchrInspweaveId"></Parameter><Parameter name="createdby"></Parameter><Parameter name="createdbyr"></Parameter><Parameter name="reedspace"></Parameter><Parameter name="wefttearingstrngth"></Parameter><Parameter name="selveends"></Parameter><Parameter name="weftvariant"></Parameter><Parameter name="qstandard"></Parameter><Parameter name="glm"></Parameter><Parameter name="widthcms"></Parameter><Parameter name="fulllengthmtr"></Parameter><Parameter name="hsncode"></Parameter><Parameter name="selvedge"></Parameter><Parameter name="totalends"></Parameter><Parameter name="adOrgId"></Parameter><Parameter name="rchrQualitystandardId"></Parameter><Parameter name="rchrInspgreigewidthId"></Parameter><Parameter name="warpcount"></Parameter><Parameter name="warptearingstrngth"></Parameter><Parameter name="selvedents"></Parameter><Parameter name="warpglm"></Parameter><Parameter name="epi"></Parameter><Parameter name="valueloss"></Parameter><Parameter name="coverfactor"></Parameter><Parameter name="mProductId"></Parameter><Parameter name="mProductIdr"></Parameter><Parameter name="orderquantity"></Parameter><Parameter name="selvweave"></Parameter><Parameter name="rchrSkillgradeId"></Parameter><Parameter name="updateremqty"></Parameter><Parameter name="orderdate"></Parameter><Parameter name="description"></Parameter><Parameter name="fulllengthper"></Parameter><Parameter name="ppi"></Parameter><Parameter name="widthmtrs"></Parameter>
+   </SqlMethod>
+
+
+
+
+
+
+   <SqlMethod name="selectDef905194ED19664BAF8EF7E9B5D0083061_0" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>Select for auxiliar field</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT  ( COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table2.Name), ''))), '') ) as Updatedby FROM AD_User left join (select AD_User_ID, Name from AD_User) table2 on (AD_User.AD_User_ID = table2.AD_User_ID) WHERE AD_User.isActive='Y' AND AD_User.AD_User_ID = ?  
+    ]]></Sql>
+<Parameter name="UpdatedbyR"/>
+  </SqlMethod>
+
+   <SqlMethod name="selectDefA48E9BCD9D3245FC81102B7A5C623553_1" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>Select for auxiliar field</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT  ( COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table2.Value), ''))), '')  || ' - ' || COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR((CASE WHEN tableTRL2.Name IS NULL THEN TO_CHAR(table2.Name) ELSE TO_CHAR(tableTRL2.Name) END)), ''))), '')  || ' - ' || COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table2.EM_Rcgi_Ksmlbarcode), ''))), '') ) as Weft_Product FROM M_Product left join (select M_Product_ID, Value, Name, EM_Rcgi_Ksmlbarcode from M_Product) table2 on (M_Product.M_Product_ID = table2.M_Product_ID)left join (select M_Product_ID,AD_Language, Name from M_Product_TRL) tableTRL2 on (table2.M_Product_ID = tableTRL2.M_Product_ID and tableTRL2.AD_Language = ?)  WHERE M_Product.isActive='Y' AND M_Product.M_Product_ID = ?  
+    ]]></Sql>
+<Parameter name="paramLanguage"/>
+<Parameter name="Weft_ProductR"/>
+  </SqlMethod>
+
+   <SqlMethod name="selectDefB5E9587A01DC4914894F4586F02C3822_2" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>Select for auxiliar field</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT  ( COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table2.Name), ''))), '') ) as Createdby FROM AD_User left join (select AD_User_ID, Name from AD_User) table2 on (AD_User.AD_User_ID = table2.AD_User_ID) WHERE AD_User.isActive='Y' AND AD_User.AD_User_ID = ?  
+    ]]></Sql>
+<Parameter name="CreatedbyR"/>
+  </SqlMethod>
+
+   <SqlMethod name="selectDefE47AECC9E0024212AC3D2B5A7CCDEA8D_3" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>Select for auxiliar field</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT  ( COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table2.Value), ''))), '')  || ' - ' || COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR((CASE WHEN tableTRL2.Name IS NULL THEN TO_CHAR(table2.Name) ELSE TO_CHAR(tableTRL2.Name) END)), ''))), '')  || ' - ' || COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table2.EM_Rcgi_Ksmlbarcode), ''))), '') ) as M_Product_ID FROM M_Product left join (select M_Product_ID, Value, Name, EM_Rcgi_Ksmlbarcode from M_Product) table2 on (M_Product.M_Product_ID = table2.M_Product_ID)left join (select M_Product_ID,AD_Language, Name from M_Product_TRL) tableTRL2 on (table2.M_Product_ID = tableTRL2.M_Product_ID and tableTRL2.AD_Language = ?)  WHERE M_Product.isActive='Y' AND M_Product.M_Product_ID = ?  
+    ]]></Sql>
+<Parameter name="paramLanguage"/>
+<Parameter name="M_Product_IDR"/>
+  </SqlMethod>
+
+
+
+
+
+
+
+
+
+
+  <SqlMethod name="update" type="preparedStatement" return="rowCount" static="false" connection="true">
+    <Sql><![CDATA[
+        UPDATE RCHR_Qualitystandard
+        SET Rchr_Orderstatus_ID = (?) , AD_Org_ID = (?) , Isactive = (?) , Rchr_Inspclothtype_ID = (?) , Orderno = (?) , Mofno = (?) , Qualityno = (?) , M_Product_ID = (?) , Warpcount = TO_NUMBER(?) , Rchr_Warpyarntype_ID = (?) , Epcg_Variant_ID = (?) , Weft_Product = (?) , Weftcount = TO_NUMBER(?) , Rchr_Skillgrade_ID = (?) , Warpyarntype = (?) , Weftvariant = (?) , Epi = TO_NUMBER(?) , Epitolerence = TO_NUMBER(?) , Ppi = TO_NUMBER(?) , Ppitolerence = TO_NUMBER(?) , Orderquantity = TO_NUMBER(?) , Rchr_Inspgreigewidth_ID = (?) , Gwtolerence = TO_NUMBER(?) , Atotal = TO_NUMBER(?) , Totalends = TO_NUMBER(?) , Aonetotal = TO_NUMBER(?) , Btotal = TO_NUMBER(?) , Reed = (?) , Reedspace = TO_NUMBER(?) , Sltotal = TO_NUMBER(?) , Rchr_Inspweave_ID = (?) , Warpcrimp = TO_NUMBER(?) , Weftcrimp = TO_NUMBER(?) , Sizepickup = TO_NUMBER(?) , Warpglm = TO_NUMBER(?) , Weftglm = TO_NUMBER(?) , Glm = TO_NUMBER(?) , Towrapmtrs = TO_NUMBER(?) , Warpyarnreq = TO_NUMBER(?) , Weftyarnreq = TO_NUMBER(?) , Widthcms = TO_NUMBER(?) , Widthmtrs = TO_NUMBER(?) , Gsm = TO_NUMBER(?) , Coverfactor = TO_NUMBER(?) , Qstandard = (?) , Partyconstruction = (?) , Remainingquantity = TO_NUMBER(?) , Orderdate = TO_DATE(?) , Deliverydate = TO_DATE(?) , Rchr_Warpweftclolor_ID = (?) , Weftcolor = (?) , Updateremqty = (?) , Avgglm = TO_NUMBER(?) , Description = (?) , Nooframes = TO_NUMBER(?) , Selvweave = (?) , Selvedents = TO_NUMBER(?) , Selveends = TO_NUMBER(?) , Selvedge = TO_NUMBER(?) , Fulllengthper = TO_NUMBER(?) , Fulllengthmtr = TO_NUMBER(?) , Shortlengthper = TO_NUMBER(?) , Shortlengthmtr = TO_NUMBER(?) , Baleorrole = TO_NUMBER(?) , Balesize = TO_NUMBER(?) , Warptearingstrngth = TO_NUMBER(?) , Wefttearingstrngth = TO_NUMBER(?) , Tearingtestmethod = (?) , Warptensiblestrngth = TO_NUMBER(?) , Wefttensiblestrngth = TO_NUMBER(?) , Tensibletestmethod = (?) , Hsncode = TO_NUMBER(?) , Speed = TO_NUMBER(?) , Efficiency = TO_NUMBER(?) , Sizing = TO_NUMBER(?) , Valueloss = TO_NUMBER(?) , Typeofsort = (?) , Onloomepi = TO_NUMBER(?) , Rchr_Qualitystandard_ID = (?) , AD_Client_ID = (?) , updated = now(), updatedby = ? 
+        WHERE RCHR_Qualitystandard.Rchr_Qualitystandard_ID = ? 
+        
+        AND RCHR_Qualitystandard.AD_Client_ID IN ('1') 
+        AND RCHR_Qualitystandard.AD_Org_ID IN ('1') 
+    ]]></Sql>
+    <Parameter name="rchrOrderstatusId"></Parameter> <Parameter name="adOrgId"></Parameter> <Parameter name="isactive"></Parameter> <Parameter name="rchrInspclothtypeId"></Parameter> <Parameter name="orderno"></Parameter> <Parameter name="mofno"></Parameter> <Parameter name="qualityno"></Parameter> <Parameter name="mProductId"></Parameter> <Parameter name="warpcount"></Parameter> <Parameter name="rchrWarpyarntypeId"></Parameter> <Parameter name="epcgVariantId"></Parameter> <Parameter name="weftProduct"></Parameter> <Parameter name="weftcount"></Parameter> <Parameter name="rchrSkillgradeId"></Parameter> <Parameter name="warpyarntype"></Parameter> <Parameter name="weftvariant"></Parameter> <Parameter name="epi"></Parameter> <Parameter name="epitolerence"></Parameter> <Parameter name="ppi"></Parameter> <Parameter name="ppitolerence"></Parameter> <Parameter name="orderquantity"></Parameter> <Parameter name="rchrInspgreigewidthId"></Parameter> <Parameter name="gwtolerence"></Parameter> <Parameter name="atotal"></Parameter> <Parameter name="totalends"></Parameter> <Parameter name="aonetotal"></Parameter> <Parameter name="btotal"></Parameter> <Parameter name="reed"></Parameter> <Parameter name="reedspace"></Parameter> <Parameter name="sltotal"></Parameter> <Parameter name="rchrInspweaveId"></Parameter> <Parameter name="warpcrimp"></Parameter> <Parameter name="weftcrimp"></Parameter> <Parameter name="sizepickup"></Parameter> <Parameter name="warpglm"></Parameter> <Parameter name="weftglm"></Parameter> <Parameter name="glm"></Parameter> <Parameter name="towrapmtrs"></Parameter> <Parameter name="warpyarnreq"></Parameter> <Parameter name="weftyarnreq"></Parameter> <Parameter name="widthcms"></Parameter> <Parameter name="widthmtrs"></Parameter> <Parameter name="gsm"></Parameter> <Parameter name="coverfactor"></Parameter> <Parameter name="qstandard"></Parameter> <Parameter name="partyconstruction"></Parameter> <Parameter name="remainingquantity"></Parameter> <Parameter name="orderdate"></Parameter> <Parameter name="deliverydate"></Parameter> <Parameter name="rchrWarpweftclolorId"></Parameter> <Parameter name="weftcolor"></Parameter> <Parameter name="updateremqty"></Parameter> <Parameter name="avgglm"></Parameter> <Parameter name="description"></Parameter> <Parameter name="nooframes"></Parameter> <Parameter name="selvweave"></Parameter> <Parameter name="selvedents"></Parameter> <Parameter name="selveends"></Parameter> <Parameter name="selvedge"></Parameter> <Parameter name="fulllengthper"></Parameter> <Parameter name="fulllengthmtr"></Parameter> <Parameter name="shortlengthper"></Parameter> <Parameter name="shortlengthmtr"></Parameter> <Parameter name="baleorrole"></Parameter> <Parameter name="balesize"></Parameter> <Parameter name="warptearingstrngth"></Parameter> <Parameter name="wefttearingstrngth"></Parameter> <Parameter name="tearingtestmethod"></Parameter> <Parameter name="warptensiblestrngth"></Parameter> <Parameter name="wefttensiblestrngth"></Parameter> <Parameter name="tensibletestmethod"></Parameter> <Parameter name="hsncode"></Parameter> <Parameter name="speed"></Parameter> <Parameter name="efficiency"></Parameter> <Parameter name="sizing"></Parameter> <Parameter name="valueloss"></Parameter> <Parameter name="typeofsort"></Parameter> <Parameter name="onloomepi"></Parameter> <Parameter name="rchrQualitystandardId"></Parameter> <Parameter name="adClientId"></Parameter> 
+    <Parameter name="updatedby"></Parameter>
+    <Parameter id="paramKey" name="rchrQualitystandardId"></Parameter>
+    
+    
+        <Parameter name="adUserClient" type="replace" optional="true" after="RCHR_Qualitystandard.AD_Client_ID IN (" text="'1'"/>
+        <Parameter name="adOrgClient" type="replace" optional="true" after="RCHR_Qualitystandard.AD_Org_ID IN (" text="'1'"/>
+  </SqlMethod>
+
+  <SqlMethod name="insert" type="preparedStatement" return="rowCount" static="false" connection="true">
+    <Sql><![CDATA[
+        INSERT INTO RCHR_Qualitystandard 
+        (Rchr_Orderstatus_ID, AD_Org_ID, Isactive, Rchr_Inspclothtype_ID, Orderno, Mofno, Qualityno, M_Product_ID, Warpcount, Rchr_Warpyarntype_ID, Epcg_Variant_ID, Weft_Product, Weftcount, Rchr_Skillgrade_ID, Warpyarntype, Weftvariant, Epi, Epitolerence, Ppi, Ppitolerence, Orderquantity, Rchr_Inspgreigewidth_ID, Gwtolerence, Atotal, Totalends, Aonetotal, Btotal, Reed, Reedspace, Sltotal, Rchr_Inspweave_ID, Warpcrimp, Weftcrimp, Sizepickup, Warpglm, Weftglm, Glm, Towrapmtrs, Warpyarnreq, Weftyarnreq, Widthcms, Widthmtrs, Gsm, Coverfactor, Qstandard, Partyconstruction, Remainingquantity, Orderdate, Deliverydate, Rchr_Warpweftclolor_ID, Weftcolor, Updateremqty, Avgglm, Description, Nooframes, Selvweave, Selvedents, Selveends, Selvedge, Fulllengthper, Fulllengthmtr, Shortlengthper, Shortlengthmtr, Baleorrole, Balesize, Warptearingstrngth, Wefttearingstrngth, Tearingtestmethod, Warptensiblestrngth, Wefttensiblestrngth, Tensibletestmethod, Hsncode, Speed, Efficiency, Sizing, Valueloss, Typeofsort, Onloomepi, Rchr_Qualitystandard_ID, AD_Client_ID, created, createdby, updated, updatedBy)
+        VALUES ((?), (?), (?), (?), (?), (?), (?), (?), TO_NUMBER(?), (?), (?), (?), TO_NUMBER(?), (?), (?), (?), TO_NUMBER(?), TO_NUMBER(?), TO_NUMBER(?), TO_NUMBER(?), TO_NUMBER(?), (?), TO_NUMBER(?), TO_NUMBER(?), TO_NUMBER(?), TO_NUMBER(?), TO_NUMBER(?), (?), TO_NUMBER(?), TO_NUMBER(?), (?), TO_NUMBER(?), TO_NUMBER(?), TO_NUMBER(?), TO_NUMBER(?), TO_NUMBER(?), TO_NUMBER(?), TO_NUMBER(?), TO_NUMBER(?), TO_NUMBER(?), TO_NUMBER(?), TO_NUMBER(?), TO_NUMBER(?), TO_NUMBER(?), (?), (?), TO_NUMBER(?), TO_DATE(?), TO_DATE(?), (?), (?), (?), TO_NUMBER(?), (?), TO_NUMBER(?), (?), TO_NUMBER(?), TO_NUMBER(?), TO_NUMBER(?), TO_NUMBER(?), TO_NUMBER(?), TO_NUMBER(?), TO_NUMBER(?), TO_NUMBER(?), TO_NUMBER(?), TO_NUMBER(?), TO_NUMBER(?), (?), TO_NUMBER(?), TO_NUMBER(?), (?), TO_NUMBER(?), TO_NUMBER(?), TO_NUMBER(?), TO_NUMBER(?), TO_NUMBER(?), (?), TO_NUMBER(?), (?), (?), now(), ?, now(), ?)
+    ]]></Sql>
+    <Parameter name="rchrOrderstatusId"></Parameter> <Parameter name="adOrgId"></Parameter> <Parameter name="isactive"></Parameter> <Parameter name="rchrInspclothtypeId"></Parameter> <Parameter name="orderno"></Parameter> <Parameter name="mofno"></Parameter> <Parameter name="qualityno"></Parameter> <Parameter name="mProductId"></Parameter> <Parameter name="warpcount"></Parameter> <Parameter name="rchrWarpyarntypeId"></Parameter> <Parameter name="epcgVariantId"></Parameter> <Parameter name="weftProduct"></Parameter> <Parameter name="weftcount"></Parameter> <Parameter name="rchrSkillgradeId"></Parameter> <Parameter name="warpyarntype"></Parameter> <Parameter name="weftvariant"></Parameter> <Parameter name="epi"></Parameter> <Parameter name="epitolerence"></Parameter> <Parameter name="ppi"></Parameter> <Parameter name="ppitolerence"></Parameter> <Parameter name="orderquantity"></Parameter> <Parameter name="rchrInspgreigewidthId"></Parameter> <Parameter name="gwtolerence"></Parameter> <Parameter name="atotal"></Parameter> <Parameter name="totalends"></Parameter> <Parameter name="aonetotal"></Parameter> <Parameter name="btotal"></Parameter> <Parameter name="reed"></Parameter> <Parameter name="reedspace"></Parameter> <Parameter name="sltotal"></Parameter> <Parameter name="rchrInspweaveId"></Parameter> <Parameter name="warpcrimp"></Parameter> <Parameter name="weftcrimp"></Parameter> <Parameter name="sizepickup"></Parameter> <Parameter name="warpglm"></Parameter> <Parameter name="weftglm"></Parameter> <Parameter name="glm"></Parameter> <Parameter name="towrapmtrs"></Parameter> <Parameter name="warpyarnreq"></Parameter> <Parameter name="weftyarnreq"></Parameter> <Parameter name="widthcms"></Parameter> <Parameter name="widthmtrs"></Parameter> <Parameter name="gsm"></Parameter> <Parameter name="coverfactor"></Parameter> <Parameter name="qstandard"></Parameter> <Parameter name="partyconstruction"></Parameter> <Parameter name="remainingquantity"></Parameter> <Parameter name="orderdate"></Parameter> <Parameter name="deliverydate"></Parameter> <Parameter name="rchrWarpweftclolorId"></Parameter> <Parameter name="weftcolor"></Parameter> <Parameter name="updateremqty"></Parameter> <Parameter name="avgglm"></Parameter> <Parameter name="description"></Parameter> <Parameter name="nooframes"></Parameter> <Parameter name="selvweave"></Parameter> <Parameter name="selvedents"></Parameter> <Parameter name="selveends"></Parameter> <Parameter name="selvedge"></Parameter> <Parameter name="fulllengthper"></Parameter> <Parameter name="fulllengthmtr"></Parameter> <Parameter name="shortlengthper"></Parameter> <Parameter name="shortlengthmtr"></Parameter> <Parameter name="baleorrole"></Parameter> <Parameter name="balesize"></Parameter> <Parameter name="warptearingstrngth"></Parameter> <Parameter name="wefttearingstrngth"></Parameter> <Parameter name="tearingtestmethod"></Parameter> <Parameter name="warptensiblestrngth"></Parameter> <Parameter name="wefttensiblestrngth"></Parameter> <Parameter name="tensibletestmethod"></Parameter> <Parameter name="hsncode"></Parameter> <Parameter name="speed"></Parameter> <Parameter name="efficiency"></Parameter> <Parameter name="sizing"></Parameter> <Parameter name="valueloss"></Parameter> <Parameter name="typeofsort"></Parameter> <Parameter name="onloomepi"></Parameter> <Parameter name="rchrQualitystandardId"></Parameter> <Parameter name="adClientId"></Parameter> 
+    <Parameter name="createdby"></Parameter>
+    <Parameter name="updatedby"></Parameter>
+  </SqlMethod>
+
+  <SqlMethod name="delete" type="preparedStatement" return="rowCount">
+    <Sql><![CDATA[
+        DELETE FROM RCHR_Qualitystandard
+        WHERE RCHR_Qualitystandard.Rchr_Qualitystandard_ID = ? 
+        
+        AND RCHR_Qualitystandard.AD_Client_ID IN ('1') 
+        AND RCHR_Qualitystandard.AD_Org_ID IN ('1') 
+    ]]></Sql>
+    <Parameter name="param1"></Parameter>
+    
+        <Parameter name="adUserClient" type="replace" optional="true" after="RCHR_Qualitystandard.AD_Client_ID IN (" text="'1'"/>
+        <Parameter name="adOrgClient" type="replace" optional="true" after="RCHR_Qualitystandard.AD_Org_ID IN (" text="'1'"/>
+  </SqlMethod>
+
+  <SqlMethod name="selectOrg" type="preparedStatement" return="string">
+    <SqlMethodComment>Select for relation</SqlMethodComment>
+    <Sql><![CDATA[ 
+        SELECT AD_ORG_ID
+          FROM RCHR_Qualitystandard
+         WHERE RCHR_Qualitystandard.Rchr_Qualitystandard_ID = ? 
+    ]]></Sql>
+    <Parameter name="id"></Parameter>
+  </SqlMethod>
+  
+  <SqlMethod name="getCurrentDBTimestamp" type="preparedStatement" return="string">
+    <Sql><![CDATA[ 
+        SELECT to_char(Updated, 'YYYYMMDDHH24MISS') as Updated_Time_Stamp
+          FROM RCHR_Qualitystandard
+         WHERE RCHR_Qualitystandard.Rchr_Qualitystandard_ID = ? 
+    ]]></Sql>
+    <Parameter name="id"></Parameter>
+  </SqlMethod>
+</SqlClass>

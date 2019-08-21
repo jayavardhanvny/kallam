@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SqlClass id="class" name="TestData" package="org.openbravo.erpWindows.PeriodicQualityControlData">
+  <SqlClassComment>WAD Generated class</SqlClassComment>
+
+  <SqlMethod name="selectEdit" type="preparedStatement" return="multiple">
+    <SqlMethodComment>Select for edit</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT to_char(MA_PC_Case.Created, ?) as created, 
+        (SELECT NAME FROM AD_USER u WHERE AD_USER_ID = MA_PC_Case.CreatedBy) as CreatedByR, 
+        to_char(MA_PC_Case.Updated, ?) as updated, 
+        to_char(MA_PC_Case.Updated, 'YYYYMMDDHH24MISS') as Updated_Time_Stamp,  
+        MA_PC_Case.UpdatedBy, 
+        (SELECT NAME FROM AD_USER u WHERE AD_USER_ID = MA_PC_Case.UpdatedBy) as UpdatedByR,
+        MA_PC_Case.AD_Org_ID, 
+(CASE WHEN MA_PC_Case.AD_Org_ID IS NULL THEN '' ELSE  (COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table1.Name), ''))),'') ) END) AS AD_Org_IDR, 
+COALESCE(MA_PC_Case.IsActive, 'N') AS IsActive, 
+MA_PC_Case.Name, 
+MA_PC_Case.MA_Periodic_Control_ID, 
+(CASE WHEN MA_PC_Case.MA_Periodic_Control_ID IS NULL THEN '' ELSE  (COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table2.Name), ''))),'') ) END) AS MA_Periodic_Control_IDR, 
+MA_PC_Case.StartDate, 
+MA_PC_Case.EndDate, 
+MA_PC_Case.M_Product_ID, 
+(CASE WHEN MA_PC_Case.M_Product_ID IS NULL THEN '' ELSE  (COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table3.Value), ''))),'')  || ' - ' || COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR((CASE WHEN tableTRL3.Name IS NULL THEN TO_CHAR(table3.Name) ELSE TO_CHAR(tableTRL3.Name) END)), ''))),'')  || ' - ' || COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table3.EM_Rcgi_Ksmlbarcode), ''))),'') ) END) AS M_Product_IDR, 
+MA_PC_Case.M_AttributeSetInstance_ID, 
+(CASE WHEN MA_PC_Case.M_AttributeSetInstance_ID IS NULL THEN '' ELSE  (COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table4.Description), ''))),'') ) END) AS M_AttributeSetInstance_IDR, 
+MA_PC_Case.Launched, 
+MA_PC_Case.AD_Client_ID, 
+MA_PC_Case.MA_Pc_Case_ID, 
+ 
+        ? AS LANGUAGE 
+        FROM MA_PC_Case left join (select AD_Org_ID, Name from AD_Org) table1 on (MA_PC_Case.AD_Org_ID = table1.AD_Org_ID) left join (select MA_Periodic_Control_ID, Name from MA_Periodic_Control) table2 on (MA_PC_Case.MA_Periodic_Control_ID = table2.MA_Periodic_Control_ID) left join (select M_Product_ID, Value, Name, EM_Rcgi_Ksmlbarcode from M_Product) table3 on (MA_PC_Case.M_Product_ID = table3.M_Product_ID) left join (select M_Product_ID,AD_Language, Name from M_Product_TRL) tableTRL3 on (table3.M_Product_ID = tableTRL3.M_Product_ID and tableTRL3.AD_Language = ?)  left join (select M_AttributeSetInstance_ID, Description from M_AttributeSetInstance) table4 on (MA_PC_Case.M_AttributeSetInstance_ID = table4.M_AttributeSetInstance_ID)
+        WHERE 2=2 
+
+        AND 1=1 
+        AND MA_PC_Case.MA_Pc_Case_ID = ? 
+        AND MA_PC_Case.AD_Client_ID IN ('1') 
+           AND MA_PC_Case.AD_Org_ID IN ('1') 
+    ]]></Sql>
+    <Parameter name="dateTimeFormat"></Parameter>
+    <Parameter name="dateTimeFormat"></Parameter>
+    
+    <Parameter name="paramLanguage"></Parameter>
+<Parameter name="paramLanguage"/>
+
+
+    <Parameter name="key"></Parameter>
+        <Parameter name="adUserClient" type="replace" optional="true" after="MA_PC_Case.AD_Client_ID IN (" text="'1'"/>
+        <Parameter name="adOrgClient" type="replace" optional="true" after="MA_PC_Case.AD_Org_ID IN (" text="'1'"/>
+
+    <Field name="adUserClient" value="void"></Field>
+    <Field name="adOrgClient" value="void"></Field>
+    <Field name="createdby" value="void"></Field>
+    
+    <Field name="trBgcolor" value="void"></Field>
+    <Field name="totalCount" value="void"></Field>
+    <Field name="dateTimeFormat" value=""></Field>
+  </SqlMethod>
+  
+  
+
+  <SqlMethod name="set" type="constant" return="multiple">
+      <SqlMethodComment>Create a registry</SqlMethodComment>
+      <Sql></Sql>
+
+<Parameter name="maPcCaseId"></Parameter><Parameter name="adClientId"></Parameter><Parameter name="adOrgId"></Parameter><Parameter name="isactive"></Parameter><Parameter name="createdby"></Parameter><Parameter name="createdbyr"></Parameter><Parameter name="updatedby"></Parameter><Parameter name="updatedbyr"></Parameter><Parameter name="maPeriodicControlId"></Parameter><Parameter name="mProductId"></Parameter><Parameter name="mProductIdr"></Parameter><Parameter name="mAttributesetinstanceId"></Parameter><Parameter name="mAttributesetinstanceIdr"></Parameter><Parameter name="name"></Parameter><Parameter name="startdate"></Parameter><Parameter name="enddate"></Parameter><Parameter name="launched"></Parameter>
+   </SqlMethod>
+
+
+   <SqlMethod name="selectAux55C64821BB34410DBB653100E922895D" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>Select for auxiliar field</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT ATTRSETVALUETYPE FROM M_PRODUCT WHERE M_PRODUCT_ID=? 
+    ]]></Sql>
+
+<Parameter name="M_Product_ID"/>
+  </SqlMethod>
+
+   <SqlMethod name="selectAuxF9791769E32D4523B39311E64E38C55F" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>Select for auxiliar field</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT M_ATTRIBUTESET_ID FROM M_PRODUCT WHERE M_PRODUCT_ID=? 
+    ]]></Sql>
+
+<Parameter name="M_Product_ID"/>
+  </SqlMethod>
+
+
+
+
+
+   <SqlMethod name="selectDef802344_0" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>Select for auxiliar field</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT  ( COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table2.Name), ''))), '') ) as Createdby FROM AD_User left join (select AD_User_ID, Name from AD_User) table2 on (AD_User.AD_User_ID = table2.AD_User_ID) WHERE AD_User.isActive='Y' AND AD_User.AD_User_ID = ?  
+    ]]></Sql>
+<Parameter name="CreatedbyR"/>
+  </SqlMethod>
+
+   <SqlMethod name="selectDef802346_1" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>Select for auxiliar field</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT  ( COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table2.Name), ''))), '') ) as Updatedby FROM AD_User left join (select AD_User_ID, Name from AD_User) table2 on (AD_User.AD_User_ID = table2.AD_User_ID) WHERE AD_User.isActive='Y' AND AD_User.AD_User_ID = ?  
+    ]]></Sql>
+<Parameter name="UpdatedbyR"/>
+  </SqlMethod>
+
+   <SqlMethod name="selectDef802348_2" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>Select for auxiliar field</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT  ( COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table2.Value), ''))), '')  || ' - ' || COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR((CASE WHEN tableTRL2.Name IS NULL THEN TO_CHAR(table2.Name) ELSE TO_CHAR(tableTRL2.Name) END)), ''))), '')  || ' - ' || COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table2.EM_Rcgi_Ksmlbarcode), ''))), '') ) as M_Product_ID FROM M_Product left join (select M_Product_ID, Value, Name, EM_Rcgi_Ksmlbarcode from M_Product) table2 on (M_Product.M_Product_ID = table2.M_Product_ID)left join (select M_Product_ID,AD_Language, Name from M_Product_TRL) tableTRL2 on (table2.M_Product_ID = tableTRL2.M_Product_ID and tableTRL2.AD_Language = ?)  WHERE M_Product.isActive='Y' AND M_Product.M_Product_ID = ?  
+    ]]></Sql>
+<Parameter name="paramLanguage"/>
+<Parameter name="M_Product_IDR"/>
+  </SqlMethod>
+
+   <SqlMethod name="selectDef802349_3" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>Select for auxiliar field</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT  ( COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table2.Description), ''))), '') ) as M_AttributeSetInstance_ID FROM M_AttributeSetInstance left join (select M_AttributeSetInstance_ID, Description from M_AttributeSetInstance) table2 on (M_AttributeSetInstance.M_AttributeSetInstance_ID = table2.M_AttributeSetInstance_ID) WHERE M_AttributeSetInstance.isActive='Y' AND M_AttributeSetInstance.M_AttributeSetInstance_ID = ?  
+    ]]></Sql>
+<Parameter name="M_AttributeSetInstance_IDR"/>
+  </SqlMethod>
+
+
+
+
+
+
+
+
+
+
+  <SqlMethod name="update" type="preparedStatement" return="rowCount" static="false" connection="true">
+    <Sql><![CDATA[
+        UPDATE MA_PC_Case
+        SET AD_Org_ID = (?) , IsActive = (?) , Name = (?) , MA_Periodic_Control_ID = (?) , StartDate = TO_DATE(?) , EndDate = TO_DATE(?) , M_Product_ID = (?) , M_AttributeSetInstance_ID = (?) , Launched = (?) , AD_Client_ID = (?) , MA_Pc_Case_ID = (?) , updated = now(), updatedby = ? 
+        WHERE MA_PC_Case.MA_Pc_Case_ID = ? 
+        
+        AND MA_PC_Case.AD_Client_ID IN ('1') 
+        AND MA_PC_Case.AD_Org_ID IN ('1') 
+    ]]></Sql>
+    <Parameter name="adOrgId"></Parameter> <Parameter name="isactive"></Parameter> <Parameter name="name"></Parameter> <Parameter name="maPeriodicControlId"></Parameter> <Parameter name="startdate"></Parameter> <Parameter name="enddate"></Parameter> <Parameter name="mProductId"></Parameter> <Parameter name="mAttributesetinstanceId"></Parameter> <Parameter name="launched"></Parameter> <Parameter name="adClientId"></Parameter> <Parameter name="maPcCaseId"></Parameter> 
+    <Parameter name="updatedby"></Parameter>
+    <Parameter id="paramKey" name="maPcCaseId"></Parameter>
+    
+    
+        <Parameter name="adUserClient" type="replace" optional="true" after="MA_PC_Case.AD_Client_ID IN (" text="'1'"/>
+        <Parameter name="adOrgClient" type="replace" optional="true" after="MA_PC_Case.AD_Org_ID IN (" text="'1'"/>
+  </SqlMethod>
+
+  <SqlMethod name="insert" type="preparedStatement" return="rowCount" static="false" connection="true">
+    <Sql><![CDATA[
+        INSERT INTO MA_PC_Case 
+        (AD_Org_ID, IsActive, Name, MA_Periodic_Control_ID, StartDate, EndDate, M_Product_ID, M_AttributeSetInstance_ID, Launched, AD_Client_ID, MA_Pc_Case_ID, created, createdby, updated, updatedBy)
+        VALUES ((?), (?), (?), (?), TO_DATE(?), TO_DATE(?), (?), (?), (?), (?), (?), now(), ?, now(), ?)
+    ]]></Sql>
+    <Parameter name="adOrgId"></Parameter> <Parameter name="isactive"></Parameter> <Parameter name="name"></Parameter> <Parameter name="maPeriodicControlId"></Parameter> <Parameter name="startdate"></Parameter> <Parameter name="enddate"></Parameter> <Parameter name="mProductId"></Parameter> <Parameter name="mAttributesetinstanceId"></Parameter> <Parameter name="launched"></Parameter> <Parameter name="adClientId"></Parameter> <Parameter name="maPcCaseId"></Parameter> 
+    <Parameter name="createdby"></Parameter>
+    <Parameter name="updatedby"></Parameter>
+  </SqlMethod>
+
+  <SqlMethod name="delete" type="preparedStatement" return="rowCount">
+    <Sql><![CDATA[
+        DELETE FROM MA_PC_Case
+        WHERE MA_PC_Case.MA_Pc_Case_ID = ? 
+        
+        AND MA_PC_Case.AD_Client_ID IN ('1') 
+        AND MA_PC_Case.AD_Org_ID IN ('1') 
+    ]]></Sql>
+    <Parameter name="param1"></Parameter>
+    
+        <Parameter name="adUserClient" type="replace" optional="true" after="MA_PC_Case.AD_Client_ID IN (" text="'1'"/>
+        <Parameter name="adOrgClient" type="replace" optional="true" after="MA_PC_Case.AD_Org_ID IN (" text="'1'"/>
+  </SqlMethod>
+
+  <SqlMethod name="selectOrg" type="preparedStatement" return="string">
+    <SqlMethodComment>Select for relation</SqlMethodComment>
+    <Sql><![CDATA[ 
+        SELECT AD_ORG_ID
+          FROM MA_PC_Case
+         WHERE MA_PC_Case.MA_Pc_Case_ID = ? 
+    ]]></Sql>
+    <Parameter name="id"></Parameter>
+  </SqlMethod>
+  
+  <SqlMethod name="getCurrentDBTimestamp" type="preparedStatement" return="string">
+    <Sql><![CDATA[ 
+        SELECT to_char(Updated, 'YYYYMMDDHH24MISS') as Updated_Time_Stamp
+          FROM MA_PC_Case
+         WHERE MA_PC_Case.MA_Pc_Case_ID = ? 
+    ]]></Sql>
+    <Parameter name="id"></Parameter>
+  </SqlMethod>
+</SqlClass>

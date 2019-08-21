@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SqlClass id="class" name="PurchaseRequisition5BA770354FF547648D8CB6843977184BData" package="org.openbravo.erpWindows.com.redcarpet.rcssob.PurchaseRequisition">
+  <SqlClassComment>WAD Generated class</SqlClassComment>
+
+  <SqlMethod name="selectEdit" type="preparedStatement" return="multiple">
+    <SqlMethodComment>Select for edit</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT to_char(RCOB_Prrequisition.Created, ?) as created, 
+        (SELECT NAME FROM AD_USER u WHERE AD_USER_ID = RCOB_Prrequisition.CreatedBy) as CreatedByR, 
+        to_char(RCOB_Prrequisition.Updated, ?) as updated, 
+        to_char(RCOB_Prrequisition.Updated, 'YYYYMMDDHH24MISS') as Updated_Time_Stamp,  
+        RCOB_Prrequisition.UpdatedBy, 
+        (SELECT NAME FROM AD_USER u WHERE AD_USER_ID = RCOB_Prrequisition.UpdatedBy) as UpdatedByR,
+        RCOB_Prrequisition.AD_Org_ID, 
+(CASE WHEN RCOB_Prrequisition.AD_Org_ID IS NULL THEN '' ELSE  (COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table1.Name), ''))),'') ) END) AS AD_Org_IDR, 
+COALESCE(RCOB_Prrequisition.Isactive, 'N') AS Isactive, 
+RCOB_Prrequisition.Documentno, 
+RCOB_Prrequisition.M_Requisition_ID, 
+(CASE WHEN RCOB_Prrequisition.M_Requisition_ID IS NULL THEN '' ELSE  (COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table2.DocumentNo), ''))),'') ) END) AS M_Requisition_IDR, 
+RCOB_Prrequisition.AD_User_ID, 
+(CASE WHEN RCOB_Prrequisition.AD_User_ID IS NULL THEN '' ELSE  (COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table3.Name), ''))),'') ) END) AS AD_User_IDR, 
+RCOB_Prrequisition.C_Bpartner_ID, 
+RCOB_Prrequisition.Requisitiondate, 
+RCOB_Prrequisition.Needbydate, 
+RCOB_Prrequisition.Description, 
+RCOB_Prrequisition.M_Pricelist_ID, 
+RCOB_Prrequisition.C_Currency_ID, 
+COALESCE(RCOB_Prrequisition.Createpo, 'N') AS Createpo, 
+RCOB_Prrequisition.Docstatus, 
+COALESCE(RCOB_Prrequisition.Processed, 'N') AS Processed, 
+RCOB_Prrequisition.Processing, 
+COALESCE(RCOB_Prrequisition.Complete, 'N') AS Complete, 
+RCOB_Prrequisition.Doaction, 
+COALESCE(RCOB_Prrequisition.Flagquot, 'N') AS Flagquot, 
+RCOB_Prrequisition.Rcob_Prrequisition_ID, 
+RCOB_Prrequisition.AD_Client_ID, 
+ 
+        ? AS LANGUAGE 
+        FROM RCOB_Prrequisition left join (select AD_Org_ID, Name from AD_Org) table1 on (RCOB_Prrequisition.AD_Org_ID = table1.AD_Org_ID) left join (select M_Requisition_ID, DocumentNo from M_Requisition) table2 on (RCOB_Prrequisition.M_Requisition_ID = table2.M_Requisition_ID) left join (select AD_User_ID, Name from AD_User) table3 on (RCOB_Prrequisition.AD_User_ID = table3.AD_User_ID)
+        WHERE 2=2 
+
+        AND 1=1 
+        AND RCOB_Prrequisition.Rcob_Prrequisition_ID = ? 
+        AND RCOB_Prrequisition.AD_Client_ID IN ('1') 
+           AND RCOB_Prrequisition.AD_Org_ID IN ('1') 
+    ]]></Sql>
+    <Parameter name="dateTimeFormat"></Parameter>
+    <Parameter name="dateTimeFormat"></Parameter>
+    
+    <Parameter name="paramLanguage"></Parameter>
+
+
+    <Parameter name="key"></Parameter>
+        <Parameter name="adUserClient" type="replace" optional="true" after="RCOB_Prrequisition.AD_Client_ID IN (" text="'1'"/>
+        <Parameter name="adOrgClient" type="replace" optional="true" after="RCOB_Prrequisition.AD_Org_ID IN (" text="'1'"/>
+
+    <Field name="adUserClient" value="void"></Field>
+    <Field name="adOrgClient" value="void"></Field>
+    <Field name="createdby" value="void"></Field>
+    
+    <Field name="trBgcolor" value="void"></Field>
+    <Field name="totalCount" value="void"></Field>
+    <Field name="dateTimeFormat" value=""></Field>
+  </SqlMethod>
+  
+  
+
+  <SqlMethod name="set" type="constant" return="multiple">
+      <SqlMethodComment>Create a registry</SqlMethodComment>
+      <Sql></Sql>
+
+<Parameter name="doaction"></Parameter><Parameter name="createdby"></Parameter><Parameter name="createdbyr"></Parameter><Parameter name="flagquot"></Parameter><Parameter name="docstatus"></Parameter><Parameter name="adOrgId"></Parameter><Parameter name="complete"></Parameter><Parameter name="isactive"></Parameter><Parameter name="createpo"></Parameter><Parameter name="mRequisitionId"></Parameter><Parameter name="rcobPrrequisitionId"></Parameter><Parameter name="processed"></Parameter><Parameter name="processing"></Parameter><Parameter name="updatedby"></Parameter><Parameter name="updatedbyr"></Parameter><Parameter name="adClientId"></Parameter><Parameter name="cBpartnerId"></Parameter><Parameter name="cCurrencyId"></Parameter><Parameter name="mPricelistId"></Parameter><Parameter name="adUserId"></Parameter><Parameter name="needbydate"></Parameter><Parameter name="documentno"></Parameter><Parameter name="description"></Parameter><Parameter name="requisitiondate"></Parameter>
+   </SqlMethod>
+
+
+
+
+
+
+   <SqlMethod name="selectDef39AD791230174C8AA30231CCC4EA9BB5_0" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>Select for auxiliar field</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT  ( COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table2.Name), ''))), '') ) as Createdby FROM AD_User left join (select AD_User_ID, Name from AD_User) table2 on (AD_User.AD_User_ID = table2.AD_User_ID) WHERE AD_User.isActive='Y' AND AD_User.AD_User_ID = ?  
+    ]]></Sql>
+<Parameter name="CreatedbyR"/>
+  </SqlMethod>
+
+   <SqlMethod name="selectDefB60825E533CD470EA4194D3D092B5794_1" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>Select for auxiliar field</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT  ( COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table2.Name), ''))), '') ) as Updatedby FROM AD_User left join (select AD_User_ID, Name from AD_User) table2 on (AD_User.AD_User_ID = table2.AD_User_ID) WHERE AD_User.isActive='Y' AND AD_User.AD_User_ID = ?  
+    ]]></Sql>
+<Parameter name="UpdatedbyR"/>
+  </SqlMethod>
+
+
+
+
+
+
+
+
+
+
+  <SqlMethod name="update" type="preparedStatement" return="rowCount" static="false" connection="true">
+    <Sql><![CDATA[
+        UPDATE RCOB_Prrequisition
+        SET AD_Org_ID = (?) , Isactive = (?) , Documentno = (?) , M_Requisition_ID = (?) , AD_User_ID = (?) , C_Bpartner_ID = (?) , Requisitiondate = TO_DATE(?) , Needbydate = TO_DATE(?) , Description = (?) , M_Pricelist_ID = (?) , C_Currency_ID = (?) , Createpo = (?) , Docstatus = (?) , Processed = (?) , Processing = (?) , Complete = (?) , Doaction = (?) , Flagquot = (?) , Rcob_Prrequisition_ID = (?) , AD_Client_ID = (?) , updated = now(), updatedby = ? 
+        WHERE RCOB_Prrequisition.Rcob_Prrequisition_ID = ? 
+        
+        AND RCOB_Prrequisition.AD_Client_ID IN ('1') 
+        AND RCOB_Prrequisition.AD_Org_ID IN ('1') 
+    ]]></Sql>
+    <Parameter name="adOrgId"></Parameter> <Parameter name="isactive"></Parameter> <Parameter name="documentno"></Parameter> <Parameter name="mRequisitionId"></Parameter> <Parameter name="adUserId"></Parameter> <Parameter name="cBpartnerId"></Parameter> <Parameter name="requisitiondate"></Parameter> <Parameter name="needbydate"></Parameter> <Parameter name="description"></Parameter> <Parameter name="mPricelistId"></Parameter> <Parameter name="cCurrencyId"></Parameter> <Parameter name="createpo"></Parameter> <Parameter name="docstatus"></Parameter> <Parameter name="processed"></Parameter> <Parameter name="processing"></Parameter> <Parameter name="complete"></Parameter> <Parameter name="doaction"></Parameter> <Parameter name="flagquot"></Parameter> <Parameter name="rcobPrrequisitionId"></Parameter> <Parameter name="adClientId"></Parameter> 
+    <Parameter name="updatedby"></Parameter>
+    <Parameter id="paramKey" name="rcobPrrequisitionId"></Parameter>
+    
+    
+        <Parameter name="adUserClient" type="replace" optional="true" after="RCOB_Prrequisition.AD_Client_ID IN (" text="'1'"/>
+        <Parameter name="adOrgClient" type="replace" optional="true" after="RCOB_Prrequisition.AD_Org_ID IN (" text="'1'"/>
+  </SqlMethod>
+
+  <SqlMethod name="insert" type="preparedStatement" return="rowCount" static="false" connection="true">
+    <Sql><![CDATA[
+        INSERT INTO RCOB_Prrequisition 
+        (AD_Org_ID, Isactive, Documentno, M_Requisition_ID, AD_User_ID, C_Bpartner_ID, Requisitiondate, Needbydate, Description, M_Pricelist_ID, C_Currency_ID, Createpo, Docstatus, Processed, Processing, Complete, Doaction, Flagquot, Rcob_Prrequisition_ID, AD_Client_ID, created, createdby, updated, updatedBy)
+        VALUES ((?), (?), (?), (?), (?), (?), TO_DATE(?), TO_DATE(?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), now(), ?, now(), ?)
+    ]]></Sql>
+    <Parameter name="adOrgId"></Parameter> <Parameter name="isactive"></Parameter> <Parameter name="documentno"></Parameter> <Parameter name="mRequisitionId"></Parameter> <Parameter name="adUserId"></Parameter> <Parameter name="cBpartnerId"></Parameter> <Parameter name="requisitiondate"></Parameter> <Parameter name="needbydate"></Parameter> <Parameter name="description"></Parameter> <Parameter name="mPricelistId"></Parameter> <Parameter name="cCurrencyId"></Parameter> <Parameter name="createpo"></Parameter> <Parameter name="docstatus"></Parameter> <Parameter name="processed"></Parameter> <Parameter name="processing"></Parameter> <Parameter name="complete"></Parameter> <Parameter name="doaction"></Parameter> <Parameter name="flagquot"></Parameter> <Parameter name="rcobPrrequisitionId"></Parameter> <Parameter name="adClientId"></Parameter> 
+    <Parameter name="createdby"></Parameter>
+    <Parameter name="updatedby"></Parameter>
+  </SqlMethod>
+
+  <SqlMethod name="delete" type="preparedStatement" return="rowCount">
+    <Sql><![CDATA[
+        DELETE FROM RCOB_Prrequisition
+        WHERE RCOB_Prrequisition.Rcob_Prrequisition_ID = ? 
+        
+        AND RCOB_Prrequisition.AD_Client_ID IN ('1') 
+        AND RCOB_Prrequisition.AD_Org_ID IN ('1') 
+    ]]></Sql>
+    <Parameter name="param1"></Parameter>
+    
+        <Parameter name="adUserClient" type="replace" optional="true" after="RCOB_Prrequisition.AD_Client_ID IN (" text="'1'"/>
+        <Parameter name="adOrgClient" type="replace" optional="true" after="RCOB_Prrequisition.AD_Org_ID IN (" text="'1'"/>
+  </SqlMethod>
+
+  <SqlMethod name="selectOrg" type="preparedStatement" return="string">
+    <SqlMethodComment>Select for relation</SqlMethodComment>
+    <Sql><![CDATA[ 
+        SELECT AD_ORG_ID
+          FROM RCOB_Prrequisition
+         WHERE RCOB_Prrequisition.Rcob_Prrequisition_ID = ? 
+    ]]></Sql>
+    <Parameter name="id"></Parameter>
+  </SqlMethod>
+  
+  <SqlMethod name="getCurrentDBTimestamp" type="preparedStatement" return="string">
+    <Sql><![CDATA[ 
+        SELECT to_char(Updated, 'YYYYMMDDHH24MISS') as Updated_Time_Stamp
+          FROM RCOB_Prrequisition
+         WHERE RCOB_Prrequisition.Rcob_Prrequisition_ID = ? 
+    ]]></Sql>
+    <Parameter name="id"></Parameter>
+  </SqlMethod>
+</SqlClass>

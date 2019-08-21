@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SqlClass id="class" name="ProjectPhaseData" package="org.openbravo.erpWindows.MultiphaseProject">
+  <SqlClassComment>WAD Generated class</SqlClassComment>
+
+  <SqlMethod name="selectEdit" type="preparedStatement" return="multiple">
+    <SqlMethodComment>Select for edit</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT to_char(C_ProjectPhase.Created, ?) as created, 
+        (SELECT NAME FROM AD_USER u WHERE AD_USER_ID = C_ProjectPhase.CreatedBy) as CreatedByR, 
+        to_char(C_ProjectPhase.Updated, ?) as updated, 
+        to_char(C_ProjectPhase.Updated, 'YYYYMMDDHH24MISS') as Updated_Time_Stamp,  
+        C_ProjectPhase.UpdatedBy, 
+        (SELECT NAME FROM AD_USER u WHERE AD_USER_ID = C_ProjectPhase.UpdatedBy) as UpdatedByR,
+        C_ProjectPhase.AD_Org_ID, 
+(CASE WHEN C_ProjectPhase.AD_Org_ID IS NULL THEN '' ELSE  (COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table1.Name), ''))),'') ) END) AS AD_Org_IDR, 
+C_ProjectPhase.SeqNo, 
+C_ProjectPhase.Name, 
+C_ProjectPhase.M_Product_ID, 
+(CASE WHEN C_ProjectPhase.M_Product_ID IS NULL THEN '' ELSE  (COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table2.Value), ''))),'')  || ' - ' || COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR((CASE WHEN tableTRL2.Name IS NULL THEN TO_CHAR(table2.Name) ELSE TO_CHAR(tableTRL2.Name) END)), ''))),'')  || ' - ' || COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table2.EM_Rcgi_Ksmlbarcode), ''))),'') ) END) AS M_Product_IDR, 
+C_ProjectPhase.Qty, 
+C_ProjectPhase.PriceActual, 
+C_ProjectPhase.StartDate, 
+C_ProjectPhase.Datecontract, 
+C_ProjectPhase.EndDate, 
+COALESCE(C_ProjectPhase.IsComplete, 'N') AS IsComplete, 
+COALESCE(C_ProjectPhase.IsCommitCeiling, 'N') AS IsCommitCeiling, 
+C_ProjectPhase.CommittedAmt, 
+C_ProjectPhase.Description, 
+C_ProjectPhase.C_Phase_ID, 
+(CASE WHEN C_ProjectPhase.C_Phase_ID IS NULL THEN '' ELSE  (COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table3.Name), ''))),'')  || ' - ' || COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table4.Name), ''))),'') ) END) AS C_Phase_IDR, 
+C_ProjectPhase.C_Order_ID, 
+(CASE WHEN C_ProjectPhase.C_Order_ID IS NULL THEN '' ELSE  (COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table5.DocumentNo), ''))),'')  || ' - ' || COALESCE(TO_CHAR(TO_CHAR(table5.DateOrdered, 'DD-MM-YYYY')),'')  || ' - ' || COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table5.GrandTotal), ''))),'') ) END) AS C_Order_IDR, 
+C_ProjectPhase.GenerateOrder, 
+C_ProjectPhase.C_Project_ID, 
+C_ProjectPhase.C_ProjectPhase_ID, 
+C_ProjectPhase.AD_Client_ID, 
+COALESCE(C_ProjectPhase.IsActive, 'N') AS IsActive, 
+C_ProjectPhase.Help, 
+ 
+        ? AS LANGUAGE 
+        FROM C_ProjectPhase left join (select AD_Org_ID, Name from AD_Org) table1 on (C_ProjectPhase.AD_Org_ID = table1.AD_Org_ID) left join (select M_Product_ID, Value, Name, EM_Rcgi_Ksmlbarcode from M_Product) table2 on (C_ProjectPhase.M_Product_ID = table2.M_Product_ID) left join (select M_Product_ID,AD_Language, Name from M_Product_TRL) tableTRL2 on (table2.M_Product_ID = tableTRL2.M_Product_ID and tableTRL2.AD_Language = ?)  left join (select C_Phase_ID, Name, C_ProjectType_ID from C_Phase) table3 on (C_ProjectPhase.C_Phase_ID = table3.C_Phase_ID) left join (select C_ProjectType_ID, Name from C_ProjectType) table4 on (table3.C_ProjectType_ID = table4.C_ProjectType_ID) left join (select C_Order_ID, DocumentNo, DateOrdered, GrandTotal from C_Order) table5 on (C_ProjectPhase.C_Order_ID = table5.C_Order_ID)
+        WHERE 2=2 
+
+        AND 1=1 
+        AND C_ProjectPhase.C_ProjectPhase_ID = ? 
+        AND C_ProjectPhase.AD_Client_ID IN ('1') 
+           AND C_ProjectPhase.AD_Org_ID IN ('1') 
+    ]]></Sql>
+    <Parameter name="dateTimeFormat"></Parameter>
+    <Parameter name="dateTimeFormat"></Parameter>
+    
+    <Parameter name="paramLanguage"></Parameter>
+<Parameter name="paramLanguage"/>
+
+    <Parameter name="cProjectId" optional="true" after="AND 1=1 " id="paramKeyParent"> AND C_ProjectPhase.C_Project_ID = ? </Parameter>
+    <Parameter name="key"></Parameter>
+        <Parameter name="adUserClient" type="replace" optional="true" after="C_ProjectPhase.AD_Client_ID IN (" text="'1'"/>
+        <Parameter name="adOrgClient" type="replace" optional="true" after="C_ProjectPhase.AD_Org_ID IN (" text="'1'"/>
+
+    <Field name="adUserClient" value="void"></Field>
+    <Field name="adOrgClient" value="void"></Field>
+    <Field name="createdby" value="void"></Field>
+    
+    <Field name="trBgcolor" value="void"></Field>
+    <Field name="totalCount" value="void"></Field>
+    <Field name="dateTimeFormat" value=""></Field>
+  </SqlMethod>
+  
+  
+
+  <SqlMethod name="set" type="constant" return="multiple">
+      <SqlMethodComment>Create a registry</SqlMethodComment>
+      <Sql></Sql>
+    <Parameter name="cProjectId" id="paramKeyParent"></Parameter>
+<Parameter name="datecontract"></Parameter><Parameter name="updatedby"></Parameter><Parameter name="updatedbyr"></Parameter><Parameter name="cOrderId"></Parameter><Parameter name="cOrderIdr"></Parameter><Parameter name="priceactual"></Parameter><Parameter name="enddate"></Parameter><Parameter name="description"></Parameter><Parameter name="iscomplete"></Parameter><Parameter name="adClientId"></Parameter><Parameter name="createdby"></Parameter><Parameter name="createdbyr"></Parameter><Parameter name="generateorder"></Parameter><Parameter name="cPhaseId"></Parameter><Parameter name="isactive"></Parameter><Parameter name="mProductId"></Parameter><Parameter name="mProductIdr"></Parameter><Parameter name="startdate"></Parameter><Parameter name="adOrgId"></Parameter><Parameter name="qty"></Parameter><Parameter name="name"></Parameter><Parameter name="iscommitceiling"></Parameter><Parameter name="seqno"></Parameter><Parameter name="cProjectphaseId"></Parameter><Parameter name="help"></Parameter><Parameter name="committedamt"></Parameter>
+   </SqlMethod>
+
+
+   <SqlMethod name="selectAux800048" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>Select for auxiliar field</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT DOCSTATUS FROM C_ORDER WHERE C_ORDER_ID = ? 
+    ]]></Sql>
+
+<Parameter name="C_Order_ID"/>
+  </SqlMethod>
+
+
+
+
+
+   <SqlMethod name="selectDef8710_0" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>Select for auxiliar field</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT  ( COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table2.Name), ''))), '') ) as UpdatedBy FROM AD_User left join (select AD_User_ID, Name from AD_User) table2 on (AD_User.AD_User_ID = table2.AD_User_ID) WHERE AD_User.isActive='Y' AND AD_User.AD_User_ID = ?  
+    ]]></Sql>
+<Parameter name="UpdatedByR"/>
+  </SqlMethod>
+
+   <SqlMethod name="selectDef8711_1" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>Select for auxiliar field</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT  ( COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table2.DocumentNo), ''))), '')  || ' - ' || COALESCE(TO_CHAR(TO_CHAR(table2.DateOrdered, 'DD-MM-YYYY')), '')  || ' - ' || COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table2.GrandTotal), ''))), '') ) as C_Order_ID FROM C_Order left join (select C_Order_ID, DocumentNo, DateOrdered, GrandTotal from C_Order) table2 on (C_Order.C_Order_ID = table2.C_Order_ID) WHERE C_Order.isActive='Y' AND C_Order.C_Order_ID = ?  
+    ]]></Sql>
+<Parameter name="C_Order_IDR"/>
+  </SqlMethod>
+
+   <SqlMethod name="selectDef8719_2" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>Select for auxiliar field</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT  ( COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table2.Name), ''))), '') ) as CreatedBy FROM AD_User left join (select AD_User_ID, Name from AD_User) table2 on (AD_User.AD_User_ID = table2.AD_User_ID) WHERE AD_User.isActive='Y' AND AD_User.AD_User_ID = ?  
+    ]]></Sql>
+<Parameter name="CreatedByR"/>
+  </SqlMethod>
+
+   <SqlMethod name="selectDef8723_3" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>Select for auxiliar field</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT  ( COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table2.Value), ''))), '')  || ' - ' || COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR((CASE WHEN tableTRL2.Name IS NULL THEN TO_CHAR(table2.Name) ELSE TO_CHAR(tableTRL2.Name) END)), ''))), '')  || ' - ' || COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table2.EM_Rcgi_Ksmlbarcode), ''))), '') ) as M_Product_ID FROM M_Product left join (select M_Product_ID, Value, Name, EM_Rcgi_Ksmlbarcode from M_Product) table2 on (M_Product.M_Product_ID = table2.M_Product_ID)left join (select M_Product_ID,AD_Language, Name from M_Product_TRL) tableTRL2 on (table2.M_Product_ID = tableTRL2.M_Product_ID and tableTRL2.AD_Language = ?)  WHERE M_Product.isActive='Y' AND M_Product.M_Product_ID = ?  
+    ]]></Sql>
+<Parameter name="paramLanguage"/>
+<Parameter name="M_Product_IDR"/>
+  </SqlMethod>
+
+   <SqlMethod name="selectDef8971" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>Select for auxiliar field</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT COALESCE(MAX(SeqNo),0)+10 AS DefaultValue FROM C_ProjectPhase WHERE C_Project_ID=? 
+    ]]></Sql>
+
+<Parameter name="C_Project_ID"/>
+  </SqlMethod>
+
+
+
+  <SqlMethod name="selectParentID" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>return the parent ID</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT C_ProjectPhase.C_Project_ID AS NAME
+        FROM C_ProjectPhase
+        WHERE C_ProjectPhase.C_ProjectPhase_ID = ?
+    ]]></Sql>
+    <Parameter name="key"></Parameter>
+  </SqlMethod>
+
+   <SqlMethod name="selectParent" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>Select for parent field</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT (TO_CHAR(COALESCE(TO_CHAR(table1.Value), '')) || ' - ' || TO_CHAR(COALESCE(TO_CHAR(table1.Name), ''))) AS NAME FROM C_Project left join (select C_Project_ID, Value, Name from C_Project) table1 on (C_Project.C_Project_ID = table1.C_Project_ID) WHERE C_Project.C_Project_ID = ?  
+    ]]></Sql>
+<Parameter name="cProjectId"/>
+
+  </SqlMethod>
+
+
+
+
+   <SqlMethod name="selectParentTrl" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>Select for parent field</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT (TO_CHAR(COALESCE(TO_CHAR(table1.Value), '')) || ' - ' || TO_CHAR(COALESCE(TO_CHAR(table1.Name), ''))) AS NAME FROM C_Project left join (select C_Project_ID, Value, Name from C_Project) table1 on (C_Project.C_Project_ID = table1.C_Project_ID) WHERE C_Project.C_Project_ID = ?  
+    ]]></Sql>
+<Parameter name="cProjectId"/>
+
+  </SqlMethod>
+
+
+
+
+
+
+
+
+  <SqlMethod name="update" type="preparedStatement" return="rowCount" static="false" connection="true">
+    <Sql><![CDATA[
+        UPDATE C_ProjectPhase
+        SET AD_Org_ID = (?) , SeqNo = TO_NUMBER(?) , Name = (?) , M_Product_ID = (?) , Qty = TO_NUMBER(?) , PriceActual = TO_NUMBER(?) , StartDate = TO_DATE(?) , Datecontract = TO_DATE(?) , EndDate = TO_DATE(?) , IsComplete = (?) , IsCommitCeiling = (?) , CommittedAmt = TO_NUMBER(?) , Description = (?) , C_Phase_ID = (?) , C_Order_ID = (?) , GenerateOrder = (?) , C_Project_ID = (?) , C_ProjectPhase_ID = (?) , AD_Client_ID = (?) , IsActive = (?) , Help = (?) , updated = now(), updatedby = ? 
+        WHERE C_ProjectPhase.C_ProjectPhase_ID = ? 
+                 AND C_ProjectPhase.C_Project_ID = ? 
+        AND C_ProjectPhase.AD_Client_ID IN ('1') 
+        AND C_ProjectPhase.AD_Org_ID IN ('1') 
+    ]]></Sql>
+    <Parameter name="adOrgId"></Parameter> <Parameter name="seqno"></Parameter> <Parameter name="name"></Parameter> <Parameter name="mProductId"></Parameter> <Parameter name="qty"></Parameter> <Parameter name="priceactual"></Parameter> <Parameter name="startdate"></Parameter> <Parameter name="datecontract"></Parameter> <Parameter name="enddate"></Parameter> <Parameter name="iscomplete"></Parameter> <Parameter name="iscommitceiling"></Parameter> <Parameter name="committedamt"></Parameter> <Parameter name="description"></Parameter> <Parameter name="cPhaseId"></Parameter> <Parameter name="cOrderId"></Parameter> <Parameter name="generateorder"></Parameter> <Parameter name="cProjectId"></Parameter> <Parameter name="cProjectphaseId"></Parameter> <Parameter name="adClientId"></Parameter> <Parameter name="isactive"></Parameter> <Parameter name="help"></Parameter> 
+    <Parameter name="updatedby"></Parameter>
+    <Parameter id="paramKey" name="cProjectphaseId"></Parameter>
+    
+    <Parameter name="cProjectId" id="paramKeyParent"></Parameter>
+        <Parameter name="adUserClient" type="replace" optional="true" after="C_ProjectPhase.AD_Client_ID IN (" text="'1'"/>
+        <Parameter name="adOrgClient" type="replace" optional="true" after="C_ProjectPhase.AD_Org_ID IN (" text="'1'"/>
+  </SqlMethod>
+
+  <SqlMethod name="insert" type="preparedStatement" return="rowCount" static="false" connection="true">
+    <Sql><![CDATA[
+        INSERT INTO C_ProjectPhase 
+        (AD_Org_ID, SeqNo, Name, M_Product_ID, Qty, PriceActual, StartDate, Datecontract, EndDate, IsComplete, IsCommitCeiling, CommittedAmt, Description, C_Phase_ID, C_Order_ID, GenerateOrder, C_Project_ID, C_ProjectPhase_ID, AD_Client_ID, IsActive, Help, created, createdby, updated, updatedBy)
+        VALUES ((?), TO_NUMBER(?), (?), (?), TO_NUMBER(?), TO_NUMBER(?), TO_DATE(?), TO_DATE(?), TO_DATE(?), (?), (?), TO_NUMBER(?), (?), (?), (?), (?), (?), (?), (?), (?), (?), now(), ?, now(), ?)
+    ]]></Sql>
+    <Parameter name="adOrgId"></Parameter> <Parameter name="seqno"></Parameter> <Parameter name="name"></Parameter> <Parameter name="mProductId"></Parameter> <Parameter name="qty"></Parameter> <Parameter name="priceactual"></Parameter> <Parameter name="startdate"></Parameter> <Parameter name="datecontract"></Parameter> <Parameter name="enddate"></Parameter> <Parameter name="iscomplete"></Parameter> <Parameter name="iscommitceiling"></Parameter> <Parameter name="committedamt"></Parameter> <Parameter name="description"></Parameter> <Parameter name="cPhaseId"></Parameter> <Parameter name="cOrderId"></Parameter> <Parameter name="generateorder"></Parameter> <Parameter name="cProjectId"></Parameter> <Parameter name="cProjectphaseId"></Parameter> <Parameter name="adClientId"></Parameter> <Parameter name="isactive"></Parameter> <Parameter name="help"></Parameter> 
+    <Parameter name="createdby"></Parameter>
+    <Parameter name="updatedby"></Parameter>
+  </SqlMethod>
+
+  <SqlMethod name="delete" type="preparedStatement" return="rowCount">
+    <Sql><![CDATA[
+        DELETE FROM C_ProjectPhase
+        WHERE C_ProjectPhase.C_ProjectPhase_ID = ? 
+                 AND C_ProjectPhase.C_Project_ID = ? 
+        AND C_ProjectPhase.AD_Client_ID IN ('1') 
+        AND C_ProjectPhase.AD_Org_ID IN ('1') 
+    ]]></Sql>
+    <Parameter name="param1"></Parameter>
+        <Parameter name="cProjectId" id="paramKeyParent"></Parameter>
+        <Parameter name="adUserClient" type="replace" optional="true" after="C_ProjectPhase.AD_Client_ID IN (" text="'1'"/>
+        <Parameter name="adOrgClient" type="replace" optional="true" after="C_ProjectPhase.AD_Org_ID IN (" text="'1'"/>
+  </SqlMethod>
+
+  <SqlMethod name="selectOrg" type="preparedStatement" return="string">
+    <SqlMethodComment>Select for relation</SqlMethodComment>
+    <Sql><![CDATA[ 
+        SELECT AD_ORG_ID
+          FROM C_ProjectPhase
+         WHERE C_ProjectPhase.C_ProjectPhase_ID = ? 
+    ]]></Sql>
+    <Parameter name="id"></Parameter>
+  </SqlMethod>
+  
+  <SqlMethod name="getCurrentDBTimestamp" type="preparedStatement" return="string">
+    <Sql><![CDATA[ 
+        SELECT to_char(Updated, 'YYYYMMDDHH24MISS') as Updated_Time_Stamp
+          FROM C_ProjectPhase
+         WHERE C_ProjectPhase.C_ProjectPhase_ID = ? 
+    ]]></Sql>
+    <Parameter name="id"></Parameter>
+  </SqlMethod>
+</SqlClass>

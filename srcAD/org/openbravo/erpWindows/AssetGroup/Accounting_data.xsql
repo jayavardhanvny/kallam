@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SqlClass id="class" name="AccountingData" package="org.openbravo.erpWindows.AssetGroup">
+  <SqlClassComment>WAD Generated class</SqlClassComment>
+
+  <SqlMethod name="selectEdit" type="preparedStatement" return="multiple">
+    <SqlMethodComment>Select for edit</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT to_char(A_Asset_Group_Acct.Created, ?) as created, 
+        (SELECT NAME FROM AD_USER u WHERE AD_USER_ID = A_Asset_Group_Acct.CreatedBy) as CreatedByR, 
+        to_char(A_Asset_Group_Acct.Updated, ?) as updated, 
+        to_char(A_Asset_Group_Acct.Updated, 'YYYYMMDDHH24MISS') as Updated_Time_Stamp,  
+        A_Asset_Group_Acct.UpdatedBy, 
+        (SELECT NAME FROM AD_USER u WHERE AD_USER_ID = A_Asset_Group_Acct.UpdatedBy) as UpdatedByR,
+        A_Asset_Group_Acct.C_AcctSchema_ID, 
+(CASE WHEN A_Asset_Group_Acct.C_AcctSchema_ID IS NULL THEN '' ELSE  (COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table1.Name), ''))),'') ) END) AS C_AcctSchema_IDR, 
+A_Asset_Group_Acct.A_Accumdepreciation_Acct, 
+A_Asset_Group_Acct.A_Depreciation_Acct, 
+A_Asset_Group_Acct.Processing, 
+COALESCE(A_Asset_Group_Acct.IsActive, 'N') AS IsActive, 
+A_Asset_Group_Acct.A_Disposal_Gain, 
+A_Asset_Group_Acct.A_Disposal_Loss, 
+A_Asset_Group_Acct.AD_Org_ID, 
+A_Asset_Group_Acct.A_Asset_Group_ID, 
+A_Asset_Group_Acct.AD_Client_ID, 
+A_Asset_Group_Acct.A_Asset_Group_Acct_ID, 
+ 
+        ? AS LANGUAGE 
+        FROM A_Asset_Group_Acct left join (select C_AcctSchema_ID, Name from C_AcctSchema) table1 on (A_Asset_Group_Acct.C_AcctSchema_ID = table1.C_AcctSchema_ID)
+        WHERE 2=2 
+
+        AND 1=1 
+        AND A_Asset_Group_Acct.A_Asset_Group_Acct_ID = ? 
+        AND A_Asset_Group_Acct.AD_Client_ID IN ('1') 
+           AND A_Asset_Group_Acct.AD_Org_ID IN ('1') 
+    ]]></Sql>
+    <Parameter name="dateTimeFormat"></Parameter>
+    <Parameter name="dateTimeFormat"></Parameter>
+    
+    <Parameter name="paramLanguage"></Parameter>
+
+    <Parameter name="aAssetGroupId" optional="true" after="AND 1=1 " id="paramKeyParent"> AND A_Asset_Group_Acct.A_Asset_Group_ID = ? </Parameter>
+    <Parameter name="key"></Parameter>
+        <Parameter name="adUserClient" type="replace" optional="true" after="A_Asset_Group_Acct.AD_Client_ID IN (" text="'1'"/>
+        <Parameter name="adOrgClient" type="replace" optional="true" after="A_Asset_Group_Acct.AD_Org_ID IN (" text="'1'"/>
+
+    <Field name="adUserClient" value="void"></Field>
+    <Field name="adOrgClient" value="void"></Field>
+    <Field name="createdby" value="void"></Field>
+    
+    <Field name="trBgcolor" value="void"></Field>
+    <Field name="totalCount" value="void"></Field>
+    <Field name="dateTimeFormat" value=""></Field>
+  </SqlMethod>
+  
+  
+
+  <SqlMethod name="set" type="constant" return="multiple">
+      <SqlMethodComment>Create a registry</SqlMethodComment>
+      <Sql></Sql>
+    <Parameter name="aAssetGroupId" id="paramKeyParent"></Parameter>
+<Parameter name="aAssetGroupAcctId"></Parameter><Parameter name="cAcctschemaId"></Parameter><Parameter name="adClientId"></Parameter><Parameter name="adOrgId"></Parameter><Parameter name="isactive"></Parameter><Parameter name="createdby"></Parameter><Parameter name="createdbyr"></Parameter><Parameter name="updatedby"></Parameter><Parameter name="updatedbyr"></Parameter><Parameter name="aDepreciationAcct"></Parameter><Parameter name="aAccumdepreciationAcct"></Parameter><Parameter name="aDisposalLoss"></Parameter><Parameter name="aDisposalGain"></Parameter><Parameter name="processing"></Parameter>
+   </SqlMethod>
+
+
+
+
+
+
+   <SqlMethod name="selectDef802808_0" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>Select for auxiliar field</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT  ( COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table2.Name), ''))), '') ) as Createdby FROM AD_User left join (select AD_User_ID, Name from AD_User) table2 on (AD_User.AD_User_ID = table2.AD_User_ID) WHERE AD_User.isActive='Y' AND AD_User.AD_User_ID = ?  
+    ]]></Sql>
+<Parameter name="CreatedbyR"/>
+  </SqlMethod>
+
+   <SqlMethod name="selectDef802810_1" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>Select for auxiliar field</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT  ( COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table2.Name), ''))), '') ) as Updatedby FROM AD_User left join (select AD_User_ID, Name from AD_User) table2 on (AD_User.AD_User_ID = table2.AD_User_ID) WHERE AD_User.isActive='Y' AND AD_User.AD_User_ID = ?  
+    ]]></Sql>
+<Parameter name="UpdatedbyR"/>
+  </SqlMethod>
+
+
+
+  <SqlMethod name="selectParentID" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>return the parent ID</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT A_Asset_Group_Acct.A_Asset_Group_ID AS NAME
+        FROM A_Asset_Group_Acct
+        WHERE A_Asset_Group_Acct.A_Asset_Group_Acct_ID = ?
+    ]]></Sql>
+    <Parameter name="key"></Parameter>
+  </SqlMethod>
+
+   <SqlMethod name="selectParent" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>Select for parent field</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT (TO_CHAR(COALESCE(TO_CHAR(table1.Name), ''))) AS NAME FROM A_Asset_Group left join (select A_Asset_Group_ID, Name from A_Asset_Group) table1 on (A_Asset_Group.A_Asset_Group_ID = table1.A_Asset_Group_ID) WHERE A_Asset_Group.A_Asset_Group_ID = ?  
+    ]]></Sql>
+<Parameter name="aAssetGroupId"/>
+
+  </SqlMethod>
+
+
+
+
+   <SqlMethod name="selectParentTrl" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>Select for parent field</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT (TO_CHAR(COALESCE(TO_CHAR(table1.Name), ''))) AS NAME FROM A_Asset_Group left join (select A_Asset_Group_ID, Name from A_Asset_Group) table1 on (A_Asset_Group.A_Asset_Group_ID = table1.A_Asset_Group_ID) WHERE A_Asset_Group.A_Asset_Group_ID = ?  
+    ]]></Sql>
+<Parameter name="aAssetGroupId"/>
+
+  </SqlMethod>
+
+
+
+
+
+
+
+
+  <SqlMethod name="update" type="preparedStatement" return="rowCount" static="false" connection="true">
+    <Sql><![CDATA[
+        UPDATE A_Asset_Group_Acct
+        SET C_AcctSchema_ID = (?) , A_Accumdepreciation_Acct = (?) , A_Depreciation_Acct = (?) , Processing = (?) , IsActive = (?) , A_Disposal_Gain = (?) , A_Disposal_Loss = (?) , AD_Org_ID = (?) , A_Asset_Group_ID = (?) , AD_Client_ID = (?) , A_Asset_Group_Acct_ID = (?) , updated = now(), updatedby = ? 
+        WHERE A_Asset_Group_Acct.A_Asset_Group_Acct_ID = ? 
+                 AND A_Asset_Group_Acct.A_Asset_Group_ID = ? 
+        AND A_Asset_Group_Acct.AD_Client_ID IN ('1') 
+        AND A_Asset_Group_Acct.AD_Org_ID IN ('1') 
+    ]]></Sql>
+    <Parameter name="cAcctschemaId"></Parameter> <Parameter name="aAccumdepreciationAcct"></Parameter> <Parameter name="aDepreciationAcct"></Parameter> <Parameter name="processing"></Parameter> <Parameter name="isactive"></Parameter> <Parameter name="aDisposalGain"></Parameter> <Parameter name="aDisposalLoss"></Parameter> <Parameter name="adOrgId"></Parameter> <Parameter name="aAssetGroupId"></Parameter> <Parameter name="adClientId"></Parameter> <Parameter name="aAssetGroupAcctId"></Parameter> 
+    <Parameter name="updatedby"></Parameter>
+    <Parameter id="paramKey" name="aAssetGroupAcctId"></Parameter>
+    
+    <Parameter name="aAssetGroupId" id="paramKeyParent"></Parameter>
+        <Parameter name="adUserClient" type="replace" optional="true" after="A_Asset_Group_Acct.AD_Client_ID IN (" text="'1'"/>
+        <Parameter name="adOrgClient" type="replace" optional="true" after="A_Asset_Group_Acct.AD_Org_ID IN (" text="'1'"/>
+  </SqlMethod>
+
+  <SqlMethod name="insert" type="preparedStatement" return="rowCount" static="false" connection="true">
+    <Sql><![CDATA[
+        INSERT INTO A_Asset_Group_Acct 
+        (C_AcctSchema_ID, A_Accumdepreciation_Acct, A_Depreciation_Acct, Processing, IsActive, A_Disposal_Gain, A_Disposal_Loss, AD_Org_ID, A_Asset_Group_ID, AD_Client_ID, A_Asset_Group_Acct_ID, created, createdby, updated, updatedBy)
+        VALUES ((?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), now(), ?, now(), ?)
+    ]]></Sql>
+    <Parameter name="cAcctschemaId"></Parameter> <Parameter name="aAccumdepreciationAcct"></Parameter> <Parameter name="aDepreciationAcct"></Parameter> <Parameter name="processing"></Parameter> <Parameter name="isactive"></Parameter> <Parameter name="aDisposalGain"></Parameter> <Parameter name="aDisposalLoss"></Parameter> <Parameter name="adOrgId"></Parameter> <Parameter name="aAssetGroupId"></Parameter> <Parameter name="adClientId"></Parameter> <Parameter name="aAssetGroupAcctId"></Parameter> 
+    <Parameter name="createdby"></Parameter>
+    <Parameter name="updatedby"></Parameter>
+  </SqlMethod>
+
+  <SqlMethod name="delete" type="preparedStatement" return="rowCount">
+    <Sql><![CDATA[
+        DELETE FROM A_Asset_Group_Acct
+        WHERE A_Asset_Group_Acct.A_Asset_Group_Acct_ID = ? 
+                 AND A_Asset_Group_Acct.A_Asset_Group_ID = ? 
+        AND A_Asset_Group_Acct.AD_Client_ID IN ('1') 
+        AND A_Asset_Group_Acct.AD_Org_ID IN ('1') 
+    ]]></Sql>
+    <Parameter name="param1"></Parameter>
+        <Parameter name="aAssetGroupId" id="paramKeyParent"></Parameter>
+        <Parameter name="adUserClient" type="replace" optional="true" after="A_Asset_Group_Acct.AD_Client_ID IN (" text="'1'"/>
+        <Parameter name="adOrgClient" type="replace" optional="true" after="A_Asset_Group_Acct.AD_Org_ID IN (" text="'1'"/>
+  </SqlMethod>
+
+  <SqlMethod name="selectOrg" type="preparedStatement" return="string">
+    <SqlMethodComment>Select for relation</SqlMethodComment>
+    <Sql><![CDATA[ 
+        SELECT AD_ORG_ID
+          FROM A_Asset_Group_Acct
+         WHERE A_Asset_Group_Acct.A_Asset_Group_Acct_ID = ? 
+    ]]></Sql>
+    <Parameter name="id"></Parameter>
+  </SqlMethod>
+  
+  <SqlMethod name="getCurrentDBTimestamp" type="preparedStatement" return="string">
+    <Sql><![CDATA[ 
+        SELECT to_char(Updated, 'YYYYMMDDHH24MISS') as Updated_Time_Stamp
+          FROM A_Asset_Group_Acct
+         WHERE A_Asset_Group_Acct.A_Asset_Group_Acct_ID = ? 
+    ]]></Sql>
+    <Parameter name="id"></Parameter>
+  </SqlMethod>
+</SqlClass>

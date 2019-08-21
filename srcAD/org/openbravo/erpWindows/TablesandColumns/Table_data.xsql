@@ -1,0 +1,271 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SqlClass id="class" name="TableData" package="org.openbravo.erpWindows.TablesandColumns">
+  <SqlClassComment>WAD Generated class</SqlClassComment>
+
+  <SqlMethod name="selectEdit" type="preparedStatement" return="multiple">
+    <SqlMethodComment>Select for edit</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT to_char(AD_Table.Created, ?) as created, 
+        (SELECT NAME FROM AD_USER u WHERE AD_USER_ID = AD_Table.CreatedBy) as CreatedByR, 
+        to_char(AD_Table.Updated, ?) as updated, 
+        to_char(AD_Table.Updated, 'YYYYMMDDHH24MISS') as Updated_Time_Stamp,  
+        AD_Table.UpdatedBy, 
+        (SELECT NAME FROM AD_USER u WHERE AD_USER_ID = AD_Table.UpdatedBy) as UpdatedByR,
+        AD_Table.AD_Package_ID, 
+(CASE WHEN AD_Table.AD_Package_ID IS NULL THEN '' ELSE  (COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table1.Name), ''))),'') ) END) AS AD_Package_IDR, 
+AD_Table.Name, 
+AD_Table.DataOriginType, 
+(CASE WHEN AD_Table.DataOriginType IS NULL THEN '' ELSE  ( COALESCE(TO_CHAR(list1.name),'') ) END) AS DataOriginTypeR, 
+AD_Table.TableName, 
+AD_Table.Classname, 
+AD_Table.Obserds_Datasource_ID, 
+AD_Table.AccessLevel, 
+(CASE WHEN AD_Table.AccessLevel IS NULL THEN '' ELSE  ( COALESCE(TO_CHAR(list2.name),'') ) END) AS AccessLevelR, 
+AD_Table.Description, 
+AD_Table.Help, 
+AD_Table.AD_Window_ID, 
+(CASE WHEN AD_Table.AD_Window_ID IS NULL THEN '' ELSE  (COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR((CASE WHEN tableTRL2.Name IS NULL THEN TO_CHAR(table2.Name) ELSE TO_CHAR(tableTRL2.Name) END)), ''))),'') ) END) AS AD_Window_IDR, 
+AD_Table.PO_Window_ID, 
+(CASE WHEN AD_Table.PO_Window_ID IS NULL THEN '' ELSE  ( COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR((CASE WHEN tableTRL3.Name IS NULL THEN TO_CHAR(table3.Name) ELSE TO_CHAR(tableTRL3.Name) END)), ''))),'') ) END) AS PO_Window_IDR, 
+COALESCE(AD_Table.IsView, 'N') AS IsView, 
+COALESCE(AD_Table.IsDeleteable, 'N') AS IsDeleteable, 
+COALESCE(AD_Table.IsHighVolume, 'N') AS IsHighVolume, 
+COALESCE(AD_Table.IsFullyAudited, 'N') AS IsFullyAudited, 
+COALESCE(AD_Table.IsAuditInserts, 'N') AS IsAuditInserts, 
+AD_Table.Acctdate_Column_ID, 
+(CASE WHEN AD_Table.Acctdate_Column_ID IS NULL THEN '' ELSE  ( COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table4.ColumnName), ''))),'') ) END) AS Acctdate_Column_IDR, 
+AD_Table.ImportTable, 
+AD_Table.Acctclassname, 
+AD_Table.Treetype, 
+(CASE WHEN AD_Table.Treetype IS NULL THEN '' ELSE  ( COALESCE(TO_CHAR(list3.name),'') ) END) AS TreetypeR, 
+AD_Table.Developmentstatus, 
+(CASE WHEN AD_Table.Developmentstatus IS NULL THEN '' ELSE  ( COALESCE(TO_CHAR(list4.name),'') ) END) AS DevelopmentstatusR, 
+COALESCE(AD_Table.IsActive, 'N') AS IsActive, 
+COALESCE(AD_Table.IsChangeLog, 'N') AS IsChangeLog, 
+AD_Table.SQL_Record_Identifier, 
+COALESCE(AD_Table.IsDefaultAcct, 'N') AS IsDefaultAcct, 
+AD_Table.AD_Org_ID, 
+AD_Table.AD_Client_ID, 
+AD_Table.AD_Table_ID, 
+COALESCE(AD_Table.IsSecurityEnabled, 'N') AS IsSecurityEnabled, 
+ 
+        ? AS LANGUAGE 
+        FROM AD_Table left join (select AD_Package_ID, Name from AD_Package) table1 on (AD_Table.AD_Package_ID = table1.AD_Package_ID) left join ad_ref_list_v list1 on (AD_Table.DataOriginType = list1.value and list1.ad_reference_id = 'AE201981DDC0467FB59F64CA978C749F' and list1.ad_language = ?)  left join ad_ref_list_v list2 on (AD_Table.AccessLevel = list2.value and list2.ad_reference_id = '5' and list2.ad_language = ?)  left join (select AD_Window_ID, Name from AD_Window) table2 on (AD_Table.AD_Window_ID = table2.AD_Window_ID) left join (select AD_Window_ID,AD_Language, Name from AD_Window_TRL) tableTRL2 on (table2.AD_Window_ID = tableTRL2.AD_Window_ID and tableTRL2.AD_Language = ?)  left join (select AD_Window_ID, Name from AD_Window) table3 on (AD_Table.PO_Window_ID =  table3.AD_Window_ID) left join (select AD_Window_ID,AD_Language, Name from AD_Window_TRL) tableTRL3 on (table3.AD_Window_ID = tableTRL3.AD_Window_ID and tableTRL3.AD_Language = ?)  left join (select AD_Column_ID, ColumnName from AD_Column) table4 on (AD_Table.Acctdate_Column_ID =  table4.AD_Column_ID) left join ad_ref_list_v list3 on (AD_Table.Treetype = list3.value and list3.ad_reference_id = '120' and list3.ad_language = ?)  left join ad_ref_list_v list4 on (AD_Table.Developmentstatus = list4.value and list4.ad_reference_id = '800103' and list4.ad_language = ?) 
+        WHERE 2=2 
+
+        AND 1=1 
+        AND AD_Table.AD_Table_ID = ? 
+        AND AD_Table.AD_Client_ID IN ('1') 
+           AND AD_Table.AD_Org_ID IN ('1') 
+    ]]></Sql>
+    <Parameter name="dateTimeFormat"></Parameter>
+    <Parameter name="dateTimeFormat"></Parameter>
+    
+    <Parameter name="paramLanguage"></Parameter>
+<Parameter name="paramLanguage"/>
+<Parameter name="paramLanguage"/>
+<Parameter name="paramLanguage"/>
+<Parameter name="paramLanguage"/>
+<Parameter name="paramLanguage"/>
+<Parameter name="paramLanguage"/>
+
+
+    <Parameter name="key"></Parameter>
+        <Parameter name="adUserClient" type="replace" optional="true" after="AD_Table.AD_Client_ID IN (" text="'1'"/>
+        <Parameter name="adOrgClient" type="replace" optional="true" after="AD_Table.AD_Org_ID IN (" text="'1'"/>
+
+    <Field name="adUserClient" value="void"></Field>
+    <Field name="adOrgClient" value="void"></Field>
+    <Field name="createdby" value="void"></Field>
+    
+    <Field name="trBgcolor" value="void"></Field>
+    <Field name="totalCount" value="void"></Field>
+    <Field name="dateTimeFormat" value=""></Field>
+  </SqlMethod>
+  
+  
+  <SqlMethod name="select" type="preparedStatement" return="multiple">
+    <SqlMethodComment>Select for relation</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT to_char(AD_Table.Created, ?) as created, 
+        (SELECT NAME FROM AD_USER u WHERE AD_USER_ID = AD_Table.CreatedBy) as CreatedByR, 
+        to_char(AD_Table.Updated, ?) as updated, 
+        to_char(AD_Table.Updated, 'YYYYMMDDHH24MISS') as Updated_Time_Stamp,  
+        AD_Table.UpdatedBy, 
+        (SELECT NAME FROM AD_USER u WHERE AD_USER_ID = AD_Table.UpdatedBy) as UpdatedByR, 
+        AD_Table.AD_Package_ID, 
+(CASE WHEN AD_Table.AD_Package_ID IS NULL THEN '' ELSE  (COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table1.Name), ''))),'') ) END) AS AD_Package_IDR, 
+AD_Table.Name, 
+AD_Table.DataOriginType, 
+(CASE WHEN AD_Table.DataOriginType IS NULL THEN '' ELSE  ( COALESCE(TO_CHAR(list1.name),'') ) END) AS DataOriginTypeR, 
+AD_Table.TableName, 
+AD_Table.Classname, 
+AD_Table.Obserds_Datasource_ID, 
+AD_Table.AccessLevel, 
+(CASE WHEN AD_Table.AccessLevel IS NULL THEN '' ELSE  ( COALESCE(TO_CHAR(list2.name),'') ) END) AS AccessLevelR, 
+AD_Table.Description, 
+AD_Table.Help, 
+AD_Table.AD_Window_ID, 
+(CASE WHEN AD_Table.AD_Window_ID IS NULL THEN '' ELSE  (COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR((CASE WHEN tableTRL2.Name IS NULL THEN TO_CHAR(table2.Name) ELSE TO_CHAR(tableTRL2.Name) END)), ''))),'') ) END) AS AD_Window_IDR, 
+AD_Table.PO_Window_ID, 
+(CASE WHEN AD_Table.PO_Window_ID IS NULL THEN '' ELSE  ( COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR((CASE WHEN tableTRL3.Name IS NULL THEN TO_CHAR(table3.Name) ELSE TO_CHAR(tableTRL3.Name) END)), ''))),'') ) END) AS PO_Window_IDR, 
+COALESCE(AD_Table.IsView, 'N') AS IsView, 
+COALESCE(AD_Table.IsDeleteable, 'N') AS IsDeleteable, 
+COALESCE(AD_Table.IsHighVolume, 'N') AS IsHighVolume, 
+COALESCE(AD_Table.IsFullyAudited, 'N') AS IsFullyAudited, 
+COALESCE(AD_Table.IsAuditInserts, 'N') AS IsAuditInserts, 
+AD_Table.Acctdate_Column_ID, 
+(CASE WHEN AD_Table.Acctdate_Column_ID IS NULL THEN '' ELSE  ( COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table4.ColumnName), ''))),'') ) END) AS Acctdate_Column_IDR, 
+AD_Table.ImportTable, 
+AD_Table.Acctclassname, 
+AD_Table.Treetype, 
+(CASE WHEN AD_Table.Treetype IS NULL THEN '' ELSE  ( COALESCE(TO_CHAR(list3.name),'') ) END) AS TreetypeR, 
+AD_Table.Developmentstatus, 
+(CASE WHEN AD_Table.Developmentstatus IS NULL THEN '' ELSE  ( COALESCE(TO_CHAR(list4.name),'') ) END) AS DevelopmentstatusR, 
+COALESCE(AD_Table.IsActive, 'N') AS IsActive, 
+COALESCE(AD_Table.IsChangeLog, 'N') AS IsChangeLog, 
+AD_Table.SQL_Record_Identifier, 
+COALESCE(AD_Table.IsDefaultAcct, 'N') AS IsDefaultAcct, 
+AD_Table.AD_Org_ID, 
+AD_Table.AD_Client_ID, 
+AD_Table.AD_Table_ID, 
+COALESCE(AD_Table.IsSecurityEnabled, 'N') AS IsSecurityEnabled, 
+ 
+        '' AS TR_BGCOLOR, '' as total_count,
+        ? AS LANGUAGE, '' AS AD_USER_CLIENT, '' AS AD_ORG_CLIENT
+        FROM AD_Table left join (select AD_Package_ID, Name from AD_Package) table1 on (AD_Table.AD_Package_ID = table1.AD_Package_ID) left join ad_ref_list_v list1 on (AD_Table.DataOriginType = list1.value and list1.ad_reference_id = 'AE201981DDC0467FB59F64CA978C749F' and list1.ad_language = ?)  left join ad_ref_list_v list2 on (AD_Table.AccessLevel = list2.value and list2.ad_reference_id = '5' and list2.ad_language = ?)  left join (select AD_Window_ID, Name from AD_Window) table2 on (AD_Table.AD_Window_ID = table2.AD_Window_ID) left join (select AD_Window_ID,AD_Language, Name from AD_Window_TRL) tableTRL2 on (table2.AD_Window_ID = tableTRL2.AD_Window_ID and tableTRL2.AD_Language = ?)  left join (select AD_Window_ID, Name from AD_Window) table3 on (AD_Table.PO_Window_ID =  table3.AD_Window_ID) left join (select AD_Window_ID,AD_Language, Name from AD_Window_TRL) tableTRL3 on (table3.AD_Window_ID = tableTRL3.AD_Window_ID and tableTRL3.AD_Language = ?)  left join (select AD_Column_ID, ColumnName from AD_Column) table4 on (AD_Table.Acctdate_Column_ID =  table4.AD_Column_ID) left join ad_ref_list_v list3 on (AD_Table.Treetype = list3.value and list3.ad_reference_id = '120' and list3.ad_language = ?)  left join ad_ref_list_v list4 on (AD_Table.Developmentstatus = list4.value and list4.ad_reference_id = '800103' and list4.ad_language = ?) 
+        WHERE 2=2 
+        AND 1=1 
+        AND AD_Table.AD_Client_ID IN ('1') 
+        AND AD_Table.AD_Org_ID IN ('1') 
+
+        ORDER BY 1, 1
+
+    ]]></Sql>
+    <Parameter name="dateTimeFormat"></Parameter>
+    <Parameter name="dateTimeFormat"></Parameter>
+    
+    
+    <Parameter name="paramLanguage"></Parameter>
+    <Parameter name="paramLanguage"/>
+<Parameter name="paramLanguage"/>
+<Parameter name="paramLanguage"/>
+<Parameter name="paramLanguage"/>
+<Parameter name="paramLanguage"/>
+<Parameter name="paramLanguage"/>
+
+
+
+
+    <Parameter name="parTableName" optional="true" after="1=1 "><![CDATA[ AND C_IGNORE_ACCENT(AD_Table.TableName) LIKE C_IGNORE_ACCENT(?)]]></Parameter>
+
+
+    <Parameter name="parSessionDate" optional="true" type="none" after="1=1 "> AND 1 = 1</Parameter>
+    <Parameter name="parSessionUser" optional="true" type="none" after="1=1 "> AND 1 = 1</Parameter>
+
+    <Parameter name="adUserClient" type="replace" optional="true" after="AD_Table.AD_Client_ID IN (" text="'1'"/>
+    <Parameter name="adOrgClient" type="replace" optional="true" after="AD_Table.AD_Org_ID IN (" text="'1'"/>
+
+    <Parameter name="orderbyclause" optional="true" type="replace" after="ORDER BY " text="1"></Parameter>
+  </SqlMethod>
+  
+
+  <SqlMethod name="set" type="constant" return="multiple">
+      <SqlMethodComment>Create a registry</SqlMethodComment>
+      <Sql></Sql>
+
+<Parameter name="adTableId"></Parameter><Parameter name="name"></Parameter><Parameter name="description"></Parameter><Parameter name="help"></Parameter><Parameter name="adWindowId"></Parameter><Parameter name="tablename"></Parameter><Parameter name="isauditinserts"></Parameter><Parameter name="accesslevel"></Parameter><Parameter name="adClientId"></Parameter><Parameter name="adOrgId"></Parameter><Parameter name="ishighvolume"></Parameter><Parameter name="isactive"></Parameter><Parameter name="createdby"></Parameter><Parameter name="createdbyr"></Parameter><Parameter name="updatedby"></Parameter><Parameter name="updatedbyr"></Parameter><Parameter name="classname"></Parameter><Parameter name="isview"></Parameter><Parameter name="importtable"></Parameter><Parameter name="acctdateColumnId"></Parameter><Parameter name="acctclassname"></Parameter><Parameter name="issecurityenabled"></Parameter><Parameter name="isdeleteable"></Parameter><Parameter name="isfullyaudited"></Parameter><Parameter name="isdefaultacct"></Parameter><Parameter name="sqlRecordIdentifier"></Parameter><Parameter name="developmentstatus"></Parameter><Parameter name="ischangelog"></Parameter><Parameter name="adPackageId"></Parameter><Parameter name="obserdsDatasourceId"></Parameter><Parameter name="poWindowId"></Parameter><Parameter name="treetype"></Parameter><Parameter name="dataorigintype"></Parameter>
+   </SqlMethod>
+
+
+
+
+
+
+   <SqlMethod name="selectDef545_0" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>Select for auxiliar field</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT  ( COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table2.Name), ''))), '') ) as CreatedBy FROM AD_User left join (select AD_User_ID, Name from AD_User) table2 on (AD_User.AD_User_ID = table2.AD_User_ID) WHERE AD_User.isActive='Y' AND AD_User.AD_User_ID = ?  
+    ]]></Sql>
+<Parameter name="CreatedByR"/>
+  </SqlMethod>
+
+   <SqlMethod name="selectDef547_1" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>Select for auxiliar field</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT  ( COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table2.Name), ''))), '') ) as UpdatedBy FROM AD_User left join (select AD_User_ID, Name from AD_User) table2 on (AD_User.AD_User_ID = table2.AD_User_ID) WHERE AD_User.isActive='Y' AND AD_User.AD_User_ID = ?  
+    ]]></Sql>
+<Parameter name="UpdatedByR"/>
+  </SqlMethod>
+
+
+
+
+
+
+
+
+
+
+  <SqlMethod name="update" type="preparedStatement" return="rowCount" static="false" connection="true">
+    <Sql><![CDATA[
+        UPDATE AD_Table
+        SET AD_Package_ID = (?) , Name = (?) , DataOriginType = (?) , TableName = (?) , Classname = (?) , Obserds_Datasource_ID = (?) , AccessLevel = (?) , Description = (?) , Help = (?) , AD_Window_ID = (?) , PO_Window_ID = (?) , IsView = (?) , IsDeleteable = (?) , IsHighVolume = (?) , IsFullyAudited = (?) , IsAuditInserts = (?) , Acctdate_Column_ID = (?) , ImportTable = (?) , Acctclassname = (?) , Treetype = (?) , Developmentstatus = (?) , IsActive = (?) , IsChangeLog = (?) , SQL_Record_Identifier = (?) , IsDefaultAcct = (?) , AD_Org_ID = (?) , AD_Client_ID = (?) , AD_Table_ID = (?) , IsSecurityEnabled = (?) , updated = now(), updatedby = ? 
+        WHERE AD_Table.AD_Table_ID = ? 
+        
+        AND AD_Table.AD_Client_ID IN ('1') 
+        AND AD_Table.AD_Org_ID IN ('1') 
+    ]]></Sql>
+    <Parameter name="adPackageId"></Parameter> <Parameter name="name"></Parameter> <Parameter name="dataorigintype"></Parameter> <Parameter name="tablename"></Parameter> <Parameter name="classname"></Parameter> <Parameter name="obserdsDatasourceId"></Parameter> <Parameter name="accesslevel"></Parameter> <Parameter name="description"></Parameter> <Parameter name="help"></Parameter> <Parameter name="adWindowId"></Parameter> <Parameter name="poWindowId"></Parameter> <Parameter name="isview"></Parameter> <Parameter name="isdeleteable"></Parameter> <Parameter name="ishighvolume"></Parameter> <Parameter name="isfullyaudited"></Parameter> <Parameter name="isauditinserts"></Parameter> <Parameter name="acctdateColumnId"></Parameter> <Parameter name="importtable"></Parameter> <Parameter name="acctclassname"></Parameter> <Parameter name="treetype"></Parameter> <Parameter name="developmentstatus"></Parameter> <Parameter name="isactive"></Parameter> <Parameter name="ischangelog"></Parameter> <Parameter name="sqlRecordIdentifier"></Parameter> <Parameter name="isdefaultacct"></Parameter> <Parameter name="adOrgId"></Parameter> <Parameter name="adClientId"></Parameter> <Parameter name="adTableId"></Parameter> <Parameter name="issecurityenabled"></Parameter> 
+    <Parameter name="updatedby"></Parameter>
+    <Parameter id="paramKey" name="adTableId"></Parameter>
+    
+    
+        <Parameter name="adUserClient" type="replace" optional="true" after="AD_Table.AD_Client_ID IN (" text="'1'"/>
+        <Parameter name="adOrgClient" type="replace" optional="true" after="AD_Table.AD_Org_ID IN (" text="'1'"/>
+  </SqlMethod>
+
+  <SqlMethod name="insert" type="preparedStatement" return="rowCount" static="false" connection="true">
+    <Sql><![CDATA[
+        INSERT INTO AD_Table 
+        (AD_Package_ID, Name, DataOriginType, TableName, Classname, Obserds_Datasource_ID, AccessLevel, Description, Help, AD_Window_ID, PO_Window_ID, IsView, IsDeleteable, IsHighVolume, IsFullyAudited, IsAuditInserts, Acctdate_Column_ID, ImportTable, Acctclassname, Treetype, Developmentstatus, IsActive, IsChangeLog, SQL_Record_Identifier, IsDefaultAcct, AD_Org_ID, AD_Client_ID, AD_Table_ID, IsSecurityEnabled, created, createdby, updated, updatedBy)
+        VALUES ((?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), now(), ?, now(), ?)
+    ]]></Sql>
+    <Parameter name="adPackageId"></Parameter> <Parameter name="name"></Parameter> <Parameter name="dataorigintype"></Parameter> <Parameter name="tablename"></Parameter> <Parameter name="classname"></Parameter> <Parameter name="obserdsDatasourceId"></Parameter> <Parameter name="accesslevel"></Parameter> <Parameter name="description"></Parameter> <Parameter name="help"></Parameter> <Parameter name="adWindowId"></Parameter> <Parameter name="poWindowId"></Parameter> <Parameter name="isview"></Parameter> <Parameter name="isdeleteable"></Parameter> <Parameter name="ishighvolume"></Parameter> <Parameter name="isfullyaudited"></Parameter> <Parameter name="isauditinserts"></Parameter> <Parameter name="acctdateColumnId"></Parameter> <Parameter name="importtable"></Parameter> <Parameter name="acctclassname"></Parameter> <Parameter name="treetype"></Parameter> <Parameter name="developmentstatus"></Parameter> <Parameter name="isactive"></Parameter> <Parameter name="ischangelog"></Parameter> <Parameter name="sqlRecordIdentifier"></Parameter> <Parameter name="isdefaultacct"></Parameter> <Parameter name="adOrgId"></Parameter> <Parameter name="adClientId"></Parameter> <Parameter name="adTableId"></Parameter> <Parameter name="issecurityenabled"></Parameter> 
+    <Parameter name="createdby"></Parameter>
+    <Parameter name="updatedby"></Parameter>
+  </SqlMethod>
+
+  <SqlMethod name="delete" type="preparedStatement" return="rowCount">
+    <Sql><![CDATA[
+        DELETE FROM AD_Table
+        WHERE AD_Table.AD_Table_ID = ? 
+        
+        AND AD_Table.AD_Client_ID IN ('1') 
+        AND AD_Table.AD_Org_ID IN ('1') 
+    ]]></Sql>
+    <Parameter name="param1"></Parameter>
+    
+        <Parameter name="adUserClient" type="replace" optional="true" after="AD_Table.AD_Client_ID IN (" text="'1'"/>
+        <Parameter name="adOrgClient" type="replace" optional="true" after="AD_Table.AD_Org_ID IN (" text="'1'"/>
+  </SqlMethod>
+
+  <SqlMethod name="selectOrg" type="preparedStatement" return="string">
+    <SqlMethodComment>Select for relation</SqlMethodComment>
+    <Sql><![CDATA[ 
+        SELECT AD_ORG_ID
+          FROM AD_Table
+         WHERE AD_Table.AD_Table_ID = ? 
+    ]]></Sql>
+    <Parameter name="id"></Parameter>
+  </SqlMethod>
+  
+  <SqlMethod name="getCurrentDBTimestamp" type="preparedStatement" return="string">
+    <Sql><![CDATA[ 
+        SELECT to_char(Updated, 'YYYYMMDDHH24MISS') as Updated_Time_Stamp
+          FROM AD_Table
+         WHERE AD_Table.AD_Table_ID = ? 
+    ]]></Sql>
+    <Parameter name="id"></Parameter>
+  </SqlMethod>
+</SqlClass>

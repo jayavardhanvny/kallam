@@ -1,0 +1,256 @@
+<!--
+ *************************************************************************
+ * The contents of this file are subject to the Openbravo  Public  License
+ * Version  1.1  (the  "License"`),  being   the  Mozilla   Public  License
+ * Version 1.1  with a permitted attribution clause; you may not  use this
+ * file except in compliance with the License. You  may  obtain  a copy of
+ * the License at http://www.openbravo.com/legal/license.html 
+ * Software distributed under the License  is  distributed  on  an "AS IS"
+ * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+ * License for the specific  language  governing  rights  and  limitations
+ * under the License. 
+ * The Original Code is Openbravo ERP. 
+ * The Initial Developer of the Original Code is Openbravo SLU 
+ * All portions are Copyright (C) 2001-2011 Openbravo SLU 
+ * All Rights Reserved. 
+ * Contributor(s):  ______________________________________.
+ ************************************************************************
+-->
+<html>
+<head>
+<title>Preview Employee Form</title>
+<link rel="SHORTCUT ICON" href="../../../../../web/images/favicon.ico" type="image/x-icon"/>
+<link rel="stylesheet" type="text/css" href="../../../../../web/skins/Default/Openbravo_ERP_250.css" id="paramCSS"/>
+
+<script language="JavaScript" type="text/javascript" id="paramDirectory">
+var baseDirectory = "../../../../../web/";
+</script>
+<script language="JavaScript" type="text/javascript" id="paramLanguage">
+  var defaultLang = "en_US";
+</script>
+<script language="JavaScript" src="../../../../../web/js/utils.js" type="text/javascript"></script>
+<script language="JavaScript" src="../../../../../web/js/searchs.js" type="text/javascript"></script>
+<script language="JavaScript" src="../../../../../web/js/ajax.js" type="text/javascript"></script>
+<script language="JavaScript" src="../../../../../web/js/default/MessageBox.js" type="text/javascript"></script>
+<script language="JavaScript" src="../../../../../web/js/messages.js" type="text/javascript"></script>
+<script language="JavaScript" src="../utility/DynamicJS.js" type="text/javascript"></script>
+<script language="JavaScript" src="../../../../../web/js/jscalendar/calendar.js" type="text/javascript"></script>
+<script language="JavaScript" type="text/javascript">
+
+function callback(paramXMLParticular, XMLHttpRequestObj) {
+  var strText = "";
+  var id = "";
+  var imageId = "";
+  if (getReadyStateHandler(XMLHttpRequestObj)) {
+    try {
+      if (XMLHttpRequestObj.responseText) strText = XMLHttpRequestObj.responseText;
+    } catch (e) {
+    }
+    if (paramXMLParticular!=null && paramXMLParticular.length>0) {
+      id = paramXMLParticular[0];
+      imageId = paramXMLParticular[1];
+    }
+    layer(id, strText, true, false);
+    showHideLayer(id, imageId);
+  }
+  return true;
+}
+
+function showHideLayer(id, imageId) {
+  var obj = getReference(imageId);
+  var spanObj = getStyle(id);
+  if (obj!=null) {
+    if (obj.className == "datawarehouseopen") {
+      obj.className = "datawarehouseclose";
+      if (spanObj!=null) spanObj.display = "none";
+    } else {
+      obj.className = "datawarehouseopen";
+      if (spanObj!=null) spanObj.display = "";
+    }
+  }
+}
+
+
+function updateData(CommandValue, id) {
+  var frm = document.frmMain;
+  frm.inpProductTemplate.value = id;
+  frm.inpTypeDocument.value = id;
+  var dataLayer = readLayer("returnText" + id, true);
+  if (dataLayer==null || dataLayer=="") {
+    var paramXMLReq = new Array('returnText' + id, 'buttonTree' + id);
+    return submitXmlHttpRequest(callback, frm, CommandValue, "RptC_Bpartner.pdf", false, null, paramXMLReq);
+  } else {
+    showHideLayer("returnText" + id, "buttonTree" + id);
+  }
+}
+
+
+function resizeAreaBpartner() {
+  var mnu = document.getElementById("AreaBpartner");
+  var body = document.getElementsByTagName("BODY");
+  var mTopSeparator = document.getElementById("tdSeparator");
+  var mTopNavigation = document.getElementById("tdNavigation");
+
+  var h = body[0].clientHeight;
+  var name = window.navigator.appName;
+  mnu.style.height = h -(mTopSeparator.clientHeight + mTopNavigation.clientHeight) - 2;
+
+  mnu.style.display = "";
+}
+
+function openPaymentPlanTab(tabid, recordid, windowid, tabtitle, mappingname, keyparameter) {
+	getFrame('LayoutMDI').OB.Layout.ViewManager.openView('OBClassicWindow',  {
+	   tabId: tabid,
+	   recordId: recordid,
+	   windowId: windowid,
+	   command: 'DIRECT',
+	   tabTitle: tabtitle,
+	   mappingName: mappingname,
+	   keyParameter: keyparameter
+	});
+}
+
+</script>
+
+</head>
+
+
+
+<body leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onload="resizeAreaBpartner()" 
+onresize="resizeAreaBpartner()">
+<form id="form" method="post" action="/com.rcss.humanresource/ad_forms/EmployeeInformationPreview.html" name="frmMain" >
+<input type="hidden" name="Command">
+<input type="hidden" name="IsPopUpCall" value="1"></input>
+<input type="hidden" name="inpepcgCostenquiryId" value="" id="paramEpcgCostenquiryId"></input>
+<input type="hidden" name="inpProductTemplate"></input>
+<input type="hidden" name="inpTypeDocument"></input>
+<input type="hidden" name="inpIsInvoice"></input>
+<input type="hidden" name="inpTableReferenceId"></input>
+<input type="hidden" name="inpAdTableId"></input>
+<input type="hidden" name="inpIsSOtrx"></input>
+<input type="hidden" name="inpRecordId"></input>
+
+
+
+<div class="Popup_ContentPane_CircleLogo">
+      <div class="Popup_WindowLogo">
+        <img class="Popup_WindowLogo_Icon Popup_WindowLogo_Icon_businessPartner" src="../../../../../web/images/blank.gif" border="0"></img>
+      </div>
+    </div>
+    
+    
+<table width="100%" cellspacing="0" cellpadding="0" border="0">
+
+	 <tr>
+        <td id="tdNavigation">
+          <table cellspacing="0" cellpadding="0" class="Popup_ContentPane_NavBar">
+            <tr class="Popup_NavBar_bg"><td></td>
+              <td class="Popup_NavBar_separator_cell"></td>
+              <td class="Popup_NavBar_bg_logo_left"></td>
+              <td class="Popup_NavBar_bg_logo" width="1" 
+              onclick="openNewBrowser('http://www.openbravo.com', 'Openbravo');return false;">
+              <img src="../../../../../web/images/blank.gif" alt="Openbravo" title="Openbravo" 
+              border="0" id="openbravoLogo" class="Popup_NavBar_logo" /></td>
+              <td class="Popup_NavBar_bg_logo_right"></td>
+              <td class="Popup_NavBar_Popup_title_cell"><span>Business Partner Card</span></td>
+              <td class="Popup_NavBar_separator_cell"></td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+      
+      <tr>
+        <td id="tdSeparator">
+          <table cellspacing="0" cellpadding="0" class="Popup_ContentPane_SeparatorBar">
+            <tr>
+              <td class="Popup_SeparatorBar_bg"></td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+      <table width="100%" border="0">
+		<tr>
+		<td colspan="6">
+		  <table class="FieldGroup" cellspacing="0" cellpadding="0" border="0">
+		  <tbody>
+		    <tr class="FieldGroup_TopMargin"/>
+		    <tr>
+		      <td class="FieldGroupTitle_Left">
+		      <img class="FieldGroupTitle_Left_bg" border="0" src="../../../../../web/images/blank.gif"/></td>
+		      <td class="FieldGroupTitle">General Information</td>
+		      <td class="FieldGroupTitle_Right"><img class="FieldGroupTitle_Right_bg" border="0" src="../../../../../web/images/blank.gif"/></td>
+		      <td class="FieldGroupContent"/>
+		    </tr>
+		    <tr class="FieldGroup_BottomMargin"/>
+		  </tbody>
+		  </table>
+		</td>
+		</tr>
+		</table>
+      
+      
+     <table width="100%" cellspacing="0" cellpadding="0" border="0"> 
+      
+  <tr VALIGN="top">
+    <td width="4%">&nbsp;</td>
+	<div id="sectionDetail">
+    <td width="32%">
+      <table width="100%" cellspacing="0" cellpadding="0" border="1">
+        <tr>
+          <td width="32%" colspan="2" >
+          <span class="Label_ReadOnly_Text">Information Of Employee</span></td></tr>
+        <tr>
+          <td width="29%" >
+          <span class="LabelText">Employee PunchNo</span></td>
+          <td width="71%" id="fieldPunchno" class="LabelText">&nbsp;</td></tr>
+        <tr>
+          <td >
+          <span class="LabelText">Employee Name</span></td>
+          <td id="fieldEmployeename" class="LabelText">&nbsp;</td></tr>
+
+          <tr>
+              <td >
+                  <span class="LabelText">Department</span></td>
+              <td id="fieldDepartmentname" class="LabelText">&nbsp;</td></tr>
+          <tr>
+              <td >
+                  <span class="LabelText">Sub-Department</span></td>
+              <td id="fieldSubdepartmentname" class="LabelText">&nbsp;</td></tr>
+          <tr>
+              <td >
+                  <span class="LabelText">Designation</span></td>
+              <td id="fieldDesignation" class="LabelText">&nbsp;</td></tr>
+
+
+        <tr>
+          <td >
+          <span class="LabelText">Room No.</span></td>
+          <td id="fieldRoomno" class="LabelText">&nbsp;</td></tr>
+        <tr>
+          <td >
+          <span class="LabelText">WeeklyOff</span></td>
+          <td id="fieldWeekoff" class="LabelText">&nbsp;</td></tr>
+        <tr>
+          <td >
+          <span class="LabelText">Gender</span></td>
+          <td id="fieldGender" class="LabelText">&nbsp;</td></tr>
+        <tr>
+          <td >
+          <span class="LabelText">Joining Date</span></td>
+          <td id="fieldJoindate" class="LabelText">&nbsp;</td></tr>
+        <tr>
+          <td >
+          <span class="LabelText">Current Service Days</span></td>
+          <td id="fieldCurrentservicedays" class="LabelText">&nbsp;</td></tr>
+
+       
+      </table>
+    </td>
+    </div>
+ </tr>
+ </table>
+</table>
+         
+</form>
+</body>
+</html>

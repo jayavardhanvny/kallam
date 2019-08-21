@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="VehicleDetailsRpt" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="C_INVOICE_ID" class="java.lang.String" isForPrompting="false"/>
+	<queryString>
+		<![CDATA[select * from epcg_details where c_invoice_id=$P{C_INVOICE_ID}]]>
+	</queryString>
+	<field name="epcg_details_id" class="java.lang.String"/>
+	<field name="ad_client_id" class="java.lang.String"/>
+	<field name="ad_org_id" class="java.lang.String"/>
+	<field name="isactive" class="java.lang.String"/>
+	<field name="created" class="java.sql.Timestamp"/>
+	<field name="createdby" class="java.lang.String"/>
+	<field name="updated" class="java.sql.Timestamp"/>
+	<field name="updatedby" class="java.lang.String"/>
+	<field name="c_invoice_id" class="java.lang.String"/>
+	<field name="containerno" class="java.lang.String"/>
+	<field name="vehicleno" class="java.lang.String"/>
+	<field name="ots" class="java.lang.String"/>
+	<field name="description" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="12" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="100" height="12"/>
+				<textElement>
+					<font fontName="Times New Roman" size="8" isBold="true" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[Container No]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="105" y="0" width="100" height="12"/>
+				<textElement>
+					<font fontName="Times New Roman" size="8" isBold="true" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[Vehicle No]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="210" y="0" width="100" height="12"/>
+				<textElement>
+					<font fontName="Times New Roman" size="8" isBold="true" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[OTS]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="12" splitType="Stretch">
+			<textField isBlankWhenNull="true">
+				<reportElement x="0" y="0" width="100" height="12"/>
+				<textElement>
+					<font fontName="Times New Roman" size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{containerno}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="105" y="0" width="100" height="12"/>
+				<textElement>
+					<font fontName="Times New Roman" size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{vehicleno}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="210" y="0" width="100" height="12"/>
+				<textElement>
+					<font fontName="Times New Roman" size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{ots}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

@@ -1,0 +1,1008 @@
+Buildfile: build.xml
+
+set.code.rev:
+
+code.rev:
+
+init:
+
+core.lib:
+
+init:
+
+compile:
+
+build.jar:
+
+build:
+
+copy.core.lib:
+
+database.lib:
+
+init:
+
+compile:
+
+build.jar:
+
+jar:
+
+generate.entities.quick:
+
+init:
+
+compile.src.gen:
+    [javac] Compiling 4 source files to D:\production\build\classes
+     [copy] Copying 654 files to D:\production\build\classes
+
+generate.entities.quick:
+     [java] 0    [main] ERROR org.openbravo.base.model.RefTable  - Domain type of reference 4EE6B7DEF28143B98C47078C56F39CD1 is not a TableDomainType but a org.openbravo.userinterface.selector.model.domaintype.SelectorDomainType@3e4151
+     [java] 250  [main] ERROR org.openbravo.base.model.RefSearch  - Domain type of reference 4EE6B7DEF28143B98C47078C56F39CD1 is not a TableDomainType but a org.openbravo.userinterface.selector.model.domaintype.SelectorDomainType@3e4151
+     [java] 417  [main] INFO  org.openbravo.base.gen.GenerateEntitiesTask  - Model has not changed since last run, not re-generating entities
+
+export.database:
+
+export.database.structure:
+Initializing in-memory model...
+
+Building runtime model
+
+Model read in-memory, generating mapping...
+
+Dal layer initialized
+
+Database connection: jdbc:postgresql://localhost:5432/production. User: tad
+
+Reading tables...
+
+Reading views...
+
+Reading sequences...
+
+Reading triggers...
+
+Reading functions...
+
+Sorting foreign keys, indexes and checks...
+
+Starting function and trigger standardization.
+
+Loading data from XML files
+
+Loading and applying configuration scripts
+
+Applying data part of configuration script: org.openbravo.v3
+
+Couldn't find configuration script for template: org.openbravo.v3 (file: D:\production\modules\org.openbravo.v3\src-db\database\configScript.xml)
+
+Applying data part of configuration script: com.redcarpet.lotmanagement.template
+
+Loading configuration script: D:\production\modules\com.redcarpet.lotmanagement.template\src-db\database\configScript.xml
+
+Applying data part of configuration script: com.redcarpet.freight.template
+
+Loading configuration script: D:\production\modules\com.redcarpet.freight.template\src-db\database\configScript.xml
+
+Applying data part of configuration script: com.redcarpet.goodsissue.template
+
+Loading configuration script: D:\production\modules\com.redcarpet.goodsissue.template\src-db\database\configScript.xml
+
+Applying data part of configuration script: com.redcarpet.production.template
+
+Loading configuration script: D:\production\modules\com.redcarpet.production.template\src-db\database\configScript.xml
+
+[exportdatabase] Warning: old value in row not equal to expected one. Table:[AD_COLUMN] PK[: 2173] Old Value found: AA2052554CCE4E098120E8293E1F16F1 Old value expected 22F546D49D3A48E1B2B4F50446A8DE58
+[exportdatabase] Warning: old value in row not equal to expected one. Table:[AD_COLUMN] PK[: 2202] Old Value found: 18 Old value expected 95E2A8B50A254B2AAE6774B8C2F28120
+[exportdatabase] Warning: old value in row not equal to expected one. Table:[AD_COLUMN] PK[: 2202] Old Value found: 98BCC2287E7E481C97E5612DD59E8224 Old value expected 263693E51C7847BF90C897ADB830E2BB
+[exportdatabase] Warning: old value in row not equal to expected one. Table:[AD_COLUMN] PK[: 803552] Old Value found: 19 Old value expected 30
+[exportdatabase] Warning: old value in row not equal to expected one. Table:[AD_COLUMN] PK[: 803552] Old Value found: null Old value expected 800011
+[exportdatabase] Warning: old value in row not equal to expected one. Table:[AD_COLUMN] PK[: 803552] Old Value found: 182C3BBD507F4392876CECA66E4EBB11 Old value expected null
+[exportdatabase] Warning: old value in row not equal to expected one. Table:[AD_COLUMN] PK[: 5AAEDDBF68DE410A837457F22E842630] Old Value found: D9A97A1F0A73424DB808280948D3EB87 Old value expected null
+[exportdatabase] Warning: old value in row not equal to expected one. Table:[AD_FIELD] PK[: 1081] Old Value found: Y Old value expected N
+[exportdatabase] Warning: old value in row not equal to expected one. Table:[AD_FIELD] PK[: 2938] Old Value found: Y Old value expected N
+[exportdatabase] Warning: old value in row not equal to expected one. Table:[AD_FIELD] PK[: 3336] Old Value found: Y Old value expected N
+[exportdatabase] Warning: old value in row not equal to expected one. Table:[AD_FIELD] PK[: 3357] Old Value found: Y Old value expected N
+[exportdatabase] Warning: old value in row not equal to expected one. Table:[AD_FIELD] PK[: 3363] Old Value found: Y Old value expected N
+[exportdatabase] Warning: old value in row not equal to expected one. Table:[AD_FIELD] PK[: 3424] Old Value found: Y Old value expected N
+[exportdatabase] Warning: old value in row not equal to expected one. Table:[AD_FIELD] PK[: 3481] Old Value found: Goods Receipt Date Old value expected Movement Date
+[exportdatabase] Warning: old value in row not equal to expected one. Table:[AD_FIELD] PK[: 3481] Old Value found: N Old value expected Y
+[exportdatabase] Warning: old value in row not equal to expected one. Table:[AD_FIELD] PK[: 3496] Old Value found: Y Old value expected N
+[exportdatabase] Warning: old value in row not equal to expected one. Table:[AD_FIELD] PK[: 800955] Old Value found: Y Old value expected N
+[exportdatabase] Warning: old value in row not equal to expected one. Table:[AD_FIELD] PK[: 803815] Old Value found: Y Old value expected N
+[exportdatabase] Warning: old value in row not equal to expected one. Table:[AD_FIELD] PK[: 1004400001] Old Value found: N Old value expected Y
+[exportdatabase] Warning: old value in row not equal to expected one. Table:[AD_FIELD] PK[: 1004400088] Old Value found: N Old value expected Y
+[exportdatabase] Warning: old value in row not equal to expected one. Table:[AD_FIELD] PK[: 122C3F5D5EB74A048E3F156FA54D78CE] Old Value found: Y Old value expected N
+[exportdatabase] Warning: old value in row not equal to expected one. Table:[AD_FIELD] PK[: 1E1229553254470F9FE019113E2077E4] Old Value found: 65 Old value expected 230
+[exportdatabase] Warning: old value in row not equal to expected one. Table:[AD_FIELD] PK[: 4F242F9E1CCF4E788BE3DDA310F71BF0] Old Value found: 205 Old value expected 170
+[exportdatabase] Warning: old value in row not equal to expected one. Table:[AD_FIELD] PK[: 7C541AC0C758FDD7E040007F01016B4D] Old Value found: Y Old value expected N
+[exportdatabase] Warning: old value in row not equal to expected one. Table:[AD_FIELD] PK[: 7C541AC0C765FDD7E040007F01016B4D] Old Value found: N Old value expected Y
+[exportdatabase] Warning: old value in row not equal to expected one. Table:[AD_FIELD] PK[: DB96768D3AD24C57BD72593449C05937] Old Value found: 65 Old value expected 230
+[exportdatabase] Warning: old value in row not equal to expected one. Table:[AD_FIELD] PK[: E70AD811B21243149E81B9124D5207DD] Old Value found: 205 Old value expected 170
+Applying data part of configuration script: com.redcarpet.epcg.template
+
+Loading configuration script: D:\production\modules\com.redcarpet.epcg.template\src-db\database\configScript.xml
+
+Applying data part of configuration script: com.redcarpet.meterreading.template
+
+Loading configuration script: D:\production\modules\com.redcarpet.meterreading.template\src-db\database\configScript.xml
+
+[exportdatabase] We didn't found the row that we wanted to change. Table:[AD_ELEMENT] PK[: DDF7345181D54BF3A170DFC02CFC1D04]
+[exportdatabase] We didn't found the row that we wanted to change. Table:[AD_FIELD] PK[: 9258BD915DE84069BC9A924AAE7C6029]
+Applying data part of configuration script: com.redcarpet.quality.template
+
+Loading configuration script: D:\production\modules\com.redcarpet.quality.template\src-db\database\configScript.xml
+
+[exportdatabase] Warning: old value in row not equal to expected one. Table:[OBUISEL_SELECTOR_FIELD] PK[: 616F97738AFD4595B74A6A60C8D4B5C4] Old Value found: Commercial Name Old value expected Name
+[exportdatabase] Warning: old value in row not equal to expected one. Table:[OBUISEL_SELECTOR_FIELD] PK[: EA8804B0011F4CDC822A91C1D07DBC8A] Old Value found: Commercial Name Old value expected Name
+Applying data part of configuration script: com.redcarpet.rcssob.template
+
+Couldn't find configuration script for template: com.redcarpet.rcssob.template (file: D:\production\modules\com.redcarpet.rcssob.template\src-db\database\configScript.xml)
+
+Applying data part of configuration script: com.redcarpet.payroll.template
+
+Loading configuration script: D:\production\modules\com.redcarpet.payroll.template\src-db\database\configScript.xml
+
+Applying data part of configuration script: com.rcss.humanresource.template
+
+Loading configuration script: D:\production\modules\com.rcss.humanresource.template\src-db\database\configScript.xml
+
+Reversing model part of configuration script: D:\production\modules\com.rcss.humanresource.template\src-db\database\configScript.xml
+
+Reversing model part of configuration script: D:\production\modules\com.redcarpet.payroll.template\src-db\database\configScript.xml
+
+Couldn't find configuration script for template: com.redcarpet.rcssob.template (file: D:\production\modules\com.redcarpet.rcssob.template\src-db\database\configScript.xml)
+
+Reversing model part of configuration script: D:\production\modules\com.redcarpet.quality.template\src-db\database\configScript.xml
+
+Reversing model part of configuration script: D:\production\modules\com.redcarpet.meterreading.template\src-db\database\configScript.xml
+
+Reversing model part of configuration script: D:\production\modules\com.redcarpet.epcg.template\src-db\database\configScript.xml
+
+Reversing model part of configuration script: D:\production\modules\com.redcarpet.goodsissue.template\src-db\database\configScript.xml
+
+Reversing model part of configuration script: D:\production\modules\com.redcarpet.freight.template\src-db\database\configScript.xml
+
+Reversing model part of configuration script: D:\production\modules\com.redcarpet.lotmanagement.template\src-db\database\configScript.xml
+
+Couldn't find configuration script for template: org.openbravo.v3 (file: D:\production\modules\org.openbravo.v3\src-db\database\configScript.xml)
+
+Exporting module: RedCarpet Production and Planning
+
+Checking translation consistency
+
+Translation consistency check finished succesfully
+
+Database [name=PostgreSql server; 802 tables; 0 sequences; 45 views; 290 functions; 324 triggers]
+
+Validating Module...
+
+Path: D:\production\modules\com.redcarpet.production\src-db\database\model
+
+Exporting module: Human Resource Management 
+
+Checking translation consistency
+
+Found differences in RCHR_TOTALMTR_DELETION
+
+********************************************************
+
+declare 
+v_cutoldvalue [NUMERIC][numeric+]
+;
+begin
+[
+]
+
+********************************************************
+
+Found differences in RCHR_TOTMTR_UPDATION
+
+********************************************************
+
+        if(v_slvalue>30 OR v_slvalue<0)
+	THEN RAISE EXCEPTION '%',[ +]'[DATA_EXCEPTION][@SL value should be in 0-30 mtr.@+]
+';
+	END IF;	
+[ +]'[DATA_EXCEPTION][@B value should be above 30 mtr.@+]        IF((v_slvalue>0 OR v_bvalue >0) AND (v_Rchr_inspectiontype_ID is null)) THEN
+        RAISE EXCEPTION '%',[ +]'[DATA_EXCE][@+]P[TION][lease Enter Remark @+]
+';
+        END IF;
+[ ][	+]RAISE EXCEPTION '%',[ +]'[DATA_][@+]E[XCEP][xceed +]T[ION][otal mtr Value@+]	if(v_slvalue>30 OR v_slvalue<0)
+	THEN RAISE EXCEPTION '%',[ +]'[DATA_EXCEPTION][@SL value should be in 0-30 mtr.@+]
+';
+	END IF;	
+[ +]'[DATA_EXCEPTION][@B value should be above 30 mtr.@+]        IF((v_slvalue>0 OR v_bvalue >0) AND (v_Rchr_inspectiontype_ID is null)) THEN
+        RAISE EXCEPTION '%',[ +]'[DATA_EXCE][@+]P[TION][lease Enter Remark @+]
+';
+        END IF;
+[ ][	+]RAISE EXCEPTION '%',[ +]'[DATA_EXC][@+]E[P][xceed +]T[ION][otal mtr Value@+]        RETURN NULL;
+        [IF TG_OP = 'DELETE' THEN RETURN OLD; ELSE RETURN NEW; ]END[ IF; 
+END 
+]
+
+********************************************************
+
+Found differences in RCHR_APPROVE_DELETION
+
+********************************************************
+
+declare 
+v_countvalue [NUMERIC][numeric+]
+;
+begin
+[ +]'[D][@Leaves +]A[TA_EXCEPTION';
+ END IF;
+ ][l+]re[tu][ady App+]r[n ]o[l][ve+]d[..!@'+];
+ END [if;
+ ]IF[ TG_OP = 'DELETE' THEN RETURN OLD];[ ELSE][
++] [RETURN][return+] [NEW][old+];[
++] END [IF][if+];[ ]
+[][ +]END[ 
+]
+
+********************************************************
+
+Found differences in RCHR_SORTMSTR_UPDATION
+
+********************************************************
+
+        RETURN NULL;
+        [IF TG_OP = 'DELETE' THEN RETURN OLD; ELSE RETURN NEW; ]END[ IF; 
+END 
+]
+
+********************************************************
+
+Found differences in RCHR_INSPSHEET_DELETE
+
+********************************************************
+
+        update rchr_qualitystandard set remainingquantity=remainingquantity+(v_a_a1old) where rchr_qualitystandard_id=OLD.rchr_qualitystandard_id ;
+        [IF TG_OP = 'DELETE' TH]EN[D+] [RETURN OLD][IF+];[
++] [ELSE RETURN][return+] [NEW][old+];[
++] [END][end+] [IF][if+];[ ]
+[END] [
+][end+]
+
+********************************************************
+
+Found differences in RCHR_LOANSCHEDULE_DELETION
+
+********************************************************
+
+declare 
+v_countvalue [NUMERIC][numeric+]
+;
+begin
+[ +]'[D][@Loan / +]A[TA_EXCEPTION';
+][dvance+] [END] [IF;
+ ][Al+]re[t][ady Sched+]u[rn o]l[e+]d[..!@'+];
+ END [if;
+ ]IF[ TG_OP = 'DELETE' THEN RETURN OLD];[ ELSE][
++] [RETURN][return+] [NEW][old+];[
++] END [IF][if+];[ ]
+[][ +]END[ 
+]
+
+********************************************************
+
+Found differences in RCHR_DIRWARP_DOCCHECK
+
+********************************************************
+
+	if(v_creels_count <> v_noofcreels OR v_beam_count<>v_noofbeems*v_noofcreels)
+	THEN RAISE EXCEPTION '%',[ +]
+v_Message;
+	--THEN RAISE 
+[NO_DA][EXCEP+]T[A_F][I+]O[U]N[ '%', '@Previous +]D[ocument is not completed yet..!!@'+]	-- v_Message := '@OrderDocumentno@' || ' ' || v_DocumentNo || ' ' || '@line@' || old.line || '. ';
+	-- RAISE[ EXCEPTION '%',+]
+ v_Message;
+        return new;
+[IF TG_OP = 'DELETE' THEN RETURN OLD; ELSE RETURN NEW; END IF; 
+]END[ 
+]
+
+********************************************************
+
+Found differences in RCHR_ATTENDANCE_DELETION
+
+********************************************************
+
+declare 
+v_countvalue [NUMERIC][numeric+]
+;
+begin
+[ +]'[D][@+]A[T][ttendance +]A[_EXCEPTION';
+ END IF;
+ ][L+]re[tu][ady P+]r[n ]o[l][cesse+]d[....!@'+];
+ END [if;
+ ]IF[ TG_OP = 'DELETE' THEN RETURN OLD];[ ELSE][
++] [RETURN][return+] [NEW][old+];[
++] END [IF][if+];[ ]
+[][ +]END[ 
+]
+
+********************************************************
+
+Found differences in RCHR_JOBCARD_UPDATE_DCMNTSEQ
+
+********************************************************
+
+	IF(v_clothtype_id='436DBA61E1F04BACB00506D89C3408E7') THEN
+-- 		RAISE [EXCEPTIO+]N[ '%','IN CL+]O[_DA]T[A_FOUND][H TYPE '+]
+ ;
+		UPDATE ad_sequence set currentNext=incrementno+currentNext where ad_sequence_id='8C0EFAA5C2C247E6B34D25A9AE2F3109';
+[IF TG_OP = 'DELETE' THEN RETURN OLD; ELSE RETURN NEW; ]END[ IF; 
+END 
+]
+
+********************************************************
+
+Warning: Some of the functions and triggers which are being exported have been detected to change if they are inserted in a PostgreSQL database again. If you are working on an Oracle-only environment, you should not worry about this. If you are working with PostgreSQL, you should check that the functions and triggers are inserted in a correct way when applying the exported module. The affected objects are: 
+
+Trigger [name=RCHR_TOTALMTR_DELETION;  ]
+
+Trigger [name=RCHR_TOTMTR_UPDATION;  ]
+
+Trigger [name=RCHR_APPROVE_DELETION;  ]
+
+Trigger [name=RCHR_SORTMSTR_UPDATION;  ]
+
+Trigger [name=RCHR_INSPSHEET_DELETE;  ]
+
+Trigger [name=RCHR_LOANSCHEDULE_DELETION;  ]
+
+Trigger [name=RCHR_DIRWARP_DOCCHECK;  ]
+
+Trigger [name=RCHR_ATTENDANCE_DELETION;  ]
+
+Trigger [name=RCHR_JOBCARD_UPDATE_DCMNTSEQ;  ]
+
+Database [name=PostgreSql server; 802 tables; 0 sequences; 45 views; 290 functions; 324 triggers]
+
+Validating Module...
+
+
+
+
++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+Warnings for Validation type: INCORRECT_UNIQUE_NAME
+
++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+Table  RCHR_ATTENDANCE_TIMEOFF has unique constraint key named UNQ_ATTENDATIMEOFF_DATE_SHIFT, which does not starts by module's DBPrefix.
+
+Table  RCHR_INSPECTIONSHEET has unique constraint key named UNIQUE_PIECENO, which does not starts by module's DBPrefix.
+
+
+
+
++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+Warnings for Validation type: NOT_PART_OF_FOREIGN_KEY
+
++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+Foreign Key Column RCHR_BEAM_LINES.Rchr_Sizing_Beam_ID is not part of a foreign key constraint.
+
+Foreign Key Column RCHR_DAILYATTENDDEMO.Rcpr_Shift_ID is not part of a foreign key constraint.
+
+Foreign Key Column RCHR_DESIGNATION.Rchr_Salarystructure_ID is not part of a foreign key constraint.
+
+Foreign Key Column RCHR_EMP_LOAN.Rchr_Saladvance_ID is not part of a foreign key constraint.
+
+Foreign Key Column RCHR_MEMO_SHIFT.C_Doctype_ID is not part of a foreign key constraint.
+
+Foreign Key Column RCHR_OVERTIMEPROCESS_LINE.Rchr_Attend_Temp_ID is not part of a foreign key constraint.
+
+Foreign Key Column RCHR_OVERTIMEPROCESS_LINE.Rchr_Dailyattenddemo_ID is not part of a foreign key constraint.
+
+Foreign Key Column RCHR_ROLLNOMONTHLIST.C_Period_ID is not part of a foreign key constraint.
+
+
+
+
++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+Warnings for Validation type: INCORRECT_FK_NAME
+
++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+Table  RCHR_DAILYATTEND has foreign key named RRCHR_DAILYATTEND_ORG, which does not starts by module's DBPrefix.
+
+Table  RCHR_ELECTRICREADING has foreign key named RCMR_ELECR_METER, which does not starts by module's DBPrefix.
+
+Path: D:\production\modules\com.rcss.humanresource\src-db\database\model
+
+Exporting module: RedCarpet Production and Planning Template
+
+Checking translation consistency
+
+Translation consistency check finished succesfully
+
+Database [name=PostgreSql server; 802 tables; 0 sequences; 45 views; 290 functions; 324 triggers]
+
+Validating Module...
+
+Path: D:\production\modules\com.redcarpet.production.template\src-db\database\model
+
+Exporting module: RedCarpet Payroll Module
+
+Checking translation consistency
+
+Found differences in RCPL_EMPSALSETUPLINES_TRG
+
+********************************************************
+
+declare 
+	salary [NUMERIC][numeric+]
+:=0;
+	v_grandtotal 
+[NUMERIC][numeric+]:=0;
+	serinc [NUMERIC][numeric+]
+:=0;
+	v_isoperator character varying(1):='N';
+[%',EXCEPTION ']You Should Check Only One checkbox either Serive or Performance Increment';[	+]		ELSE IF(new.isserviceincr='N' and new.isperformanceincr='N') THEN
+			RAISE [EXCEPTION '%',]
+EXCEPTION 'You Should Check either Serive or Performance Increment';
+		
+[EXCEPTION '%',]	
+	end if;[IF TG_OP = 'DELETE' THEN RETURN OLD; ELSE RETURN NEW; ]END[ IF; 
+END 
+]
+
+********************************************************
+
+Found differences in RCPL_EMPSALSETUPLINES_TRG1
+
+********************************************************
+
+  raise exception 'Delete not possible ,you should increment/decrement to set actual wage/salary';  
+  end if;[IF TG_OP = 'DELETE' THEN RETURN OLD; ELSE RETURN NEW; ]END[ IF; 
+END 
+]
+
+********************************************************
+
+Found differences in RCPL_PRODINCENTIVE_TRG1
+
+********************************************************
+
+	IF(new.nooflooms>12) then 
+	[ ][	+]RAISE EXCEPTION '%',[ +]'[@NUMBER OF LOOMS SHOUL+]D[A][ NO+]T[A_][ B+]E[XC][ GR+]E[P][ATER +]T[IO][HA+]N[ 12@+]
+';
+      
+[ END IF;
+ end if;
++] IF TG_OP = 'DELETE' THEN RETURN OLD; ELSE RETURN NEW; END IF; [END] [ end+]
+
+********************************************************
+
+Found differences in RCPL_EMPPMANUAL_SAME_REC
+
+********************************************************
+
+	IF(v_count>0) then 
+	[ ][	+]RAISE EXCEPTION '%',[ +]'[@ PRESENT IS THERE IN +]DA[ILY A+]T[TEND+]A[_EX][N+]CE[P][ ON +]T[H+]I[ON][S DATE @+]
+';
+        END IF;
+[ ][	+]RAISE EXCEPTION '%',[ +]'[DA][@ +]T[A_][H+]E[XC][R+]E[PT][ +]I[S ALREADY +]ON[ THIS DATE @+]';
+       [ END IF;
+ end if;
++] IF TG_OP = 'DELETE' THEN RETURN OLD; ELSE RETURN NEW; END IF; [END] [ end+]
+
+********************************************************
+
+Warning: Some of the functions and triggers which are being exported have been detected to change if they are inserted in a PostgreSQL database again. If you are working on an Oracle-only environment, you should not worry about this. If you are working with PostgreSQL, you should check that the functions and triggers are inserted in a correct way when applying the exported module. The affected objects are: 
+
+Trigger [name=RCPL_EMPSALSETUPLINES_TRG;  ]
+
+Trigger [name=RCPL_EMPSALSETUPLINES_TRG1;  ]
+
+Trigger [name=RCPL_PRODINCENTIVE_TRG1;  ]
+
+Trigger [name=RCPL_EMPPMANUAL_SAME_REC;  ]
+
+Database [name=PostgreSql server; 802 tables; 0 sequences; 45 views; 290 functions; 324 triggers]
+
+Validating Module...
+
+
+
+
++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+Warnings for Validation type: INCORRECT_UNIQUE_NAME
+
++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+Table  RCPL_LOOMSPRODUCTION has unique constraint key named UNIUEDATESHIFTLOOM, which does not starts by module's DBPrefix.
+
+
+
+
++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+Warnings for Validation type: NOT_PART_OF_FOREIGN_KEY
+
++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+Foreign Key Column RCPL_LOOM.Rcpl_Loomtype_ID is not part of a foreign key constraint.
+
+
+
+
++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+Warnings for Validation type: INCORRECT_FK_NAME
+
++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+Table  RCPL_EMPPAYROLLPROCESS has foreign key named RRCPL_EMPPP_DESIG, which does not starts by module's DBPrefix.
+
+Path: D:\production\modules\com.redcarpet.payroll\src-db\database\model
+
+Exporting module: Redcarpet EPCG Module
+
+Checking translation consistency
+
+Found differences in EPCG_YARNCOSTTEMPLATE_DELETION
+
+********************************************************
+
+declare 
+v_count [NUMERIC][numeric+]
+;
+
+[ +]'[DA][@ +]T[A_EXCEPTION][his Record has more than one Lines...!@+] return old;
+ END if;[ +]END[ ]
+
+********************************************************
+
+Found differences in EPCG_PPCENQUIRY_SORTNO_NN
+
+********************************************************
+
+[	+]	IF(v_rchr_qualitystandard_id='' OR v_rchr_qualitystandard_id IS NULL) THEN
+	[ ][	+]RAISE EXCEPTION '%','[DATA_EXC][ Sort No should not be +]E[PTION][mpty +]
+' ;
+		--UPDATE ad_sequence set currentNext=incrementno+currentNext where ad_sequence_id='ACEA24C3EBB14ED4B9E5EC70E1B452D0';
+[	+]END[ ]
+
+********************************************************
+
+Found differences in EPCG_COSTENQUIRY_DELETION
+
+********************************************************
+
+		IF(v_status='CO' OR v_status='AP') THEN
+		[ ][	+]RAISE EXCEPTION '%',[ +]'[DATA_EX][@ Status is in +]C[EPTION][ompleted State so it cannot be deleted...!@+]
+';
+		END IF;
+[IF TG_OP = 'DELETE' THEN RETURN OLD; ELSE RETURN NEW; END IF; 
+]END[ 
+]
+
+********************************************************
+
+Found differences in EPCG_PPCENQUIRY_DELETION_CO
+
+********************************************************
+
+		IF(v_status='CO') THEN
+		[ ][	+]RAISE EXCEPTION '%',[ +]'[DATA_EX][@ Status is in +]C[EPTION][ompleted State so it cannot be deleted...!@+]
+';
+		END IF;
+[IF TG_OP = 'DELETE' THEN RETURN OLD; ELSE RETURN NEW; END IF; 
+]END[ 
+]
+
+********************************************************
+
+Warning: Some of the functions and triggers which are being exported have been detected to change if they are inserted in a PostgreSQL database again. If you are working on an Oracle-only environment, you should not worry about this. If you are working with PostgreSQL, you should check that the functions and triggers are inserted in a correct way when applying the exported module. The affected objects are: 
+
+Function [notation=EPCG_YARNCOSTTEMPLATE_DELETION(); ]
+
+Function [notation=EPCG_PPCENQUIRY_SORTNO_NN(); ]
+
+Trigger [name=EPCG_COSTENQUIRY_DELETION;  ]
+
+Trigger [name=EPCG_PPCENQUIRY_DELETION_CO;  ]
+
+Database [name=PostgreSql server; 802 tables; 0 sequences; 45 views; 290 functions; 324 triggers]
+
+Validating Module...
+
+
+
+
++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+Warnings for Validation type: INCORRECT_UNIQUE_NAME
+
++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+Table  EPCG_COSTENQUIRY has unique constraint key named UN_EPCG_COSTENQUIRY_DOCUMENTNO, which does not starts by module's DBPrefix.
+
+Table  EPCG_YARNCOSTTEMPLATELINES has unique constraint key named UN_PRODUCT_VARIANT_YARNTYPE, which does not starts by module's DBPrefix.
+
+
+
+
++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+Warnings for Validation type: NOT_PART_OF_FOREIGN_KEY
+
++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+Foreign Key Column EPCG_AGENT_BP.Bpartner is not part of a foreign key constraint.
+
+Foreign Key Column EPCG_BOOKMNGMNT.Agentname is not part of a foreign key constraint.
+
+Foreign Key Column EPCG_BOOKUSER.Agentname is not part of a foreign key constraint.
+
+Foreign Key Column EPCG_BP_AGENT.Bpartner is not part of a foreign key constraint.
+
+Foreign Key Column EPCG_COSTENQUIRY.Rchr_Orderstatus_ID is not part of a foreign key constraint.
+
+Foreign Key Column EPCG_COSTENQUIRY.Userid is not part of a foreign key constraint.
+
+Foreign Key Column EPCG_COSTENQUIRY.Rchr_Qualitystandard_ID is not part of a foreign key constraint.
+
+Foreign Key Column EPCG_PPCENQUIRY.Userid is not part of a foreign key constraint.
+
+Foreign Key Column EPCG_WAREHOUSEUSER.AD_User_ID is not part of a foreign key constraint.
+
+Foreign Key Column EPCG_YARNCOSTTEMPLATELINES.Epcg_Variant_ID is not part of a foreign key constraint.
+
+Foreign Key Column C_INVOICE.EM_Epcg_Epcgone is not part of a foreign key constraint.
+
+Foreign Key Column C_INVOICE.EM_Epcg_Agent is not part of a foreign key constraint.
+
+Foreign Key Column C_ORDER.EM_Epcg_Epcgone is not part of a foreign key constraint.
+
+Foreign Key Column C_ORDER.EM_Epcg_Commissionagent_ID is not part of a foreign key constraint.
+
+Foreign Key Column C_ORDER.EM_Epcg_Businessagent is not part of a foreign key constraint.
+
+Foreign Key Column M_MOVEMENT.EM_Epcg_Disfrom is not part of a foreign key constraint.
+
+Foreign Key Column M_MOVEMENT.EM_Epcg_Disto is not part of a foreign key constraint.
+
+Path: D:\production\modules\com.redcarpet.epcg\src-db\database\model
+
+Exporting module: RedCarpet Production and Planning
+
+Database [name=PostgreSql server; 802 tables; 0 sequences; 45 views; 290 functions; 324 triggers]
+
+Path: D:\production\modules\com.redcarpet.production\src-db\database\sourcedata
+
+Reversing data part of configuration script: D:\production\modules\com.rcss.humanresource.template\src-db\database\configScript.xml
+
+Reversing data part of configuration script: D:\production\modules\com.redcarpet.payroll.template\src-db\database\configScript.xml
+
+Couldn't find configuration script for template: com.redcarpet.rcssob.template (file: D:\production\modules\com.redcarpet.rcssob.template\src-db\database\configScript.xml)
+
+Reversing data part of configuration script: D:\production\modules\com.redcarpet.quality.template\src-db\database\configScript.xml
+
+Reversing data part of configuration script: D:\production\modules\com.redcarpet.meterreading.template\src-db\database\configScript.xml
+
+Reversing data part of configuration script: D:\production\modules\com.redcarpet.epcg.template\src-db\database\configScript.xml
+
+Reversing data part of configuration script: D:\production\modules\com.redcarpet.goodsissue.template\src-db\database\configScript.xml
+
+Reversing data part of configuration script: D:\production\modules\com.redcarpet.freight.template\src-db\database\configScript.xml
+
+Reversing data part of configuration script: D:\production\modules\com.redcarpet.lotmanagement.template\src-db\database\configScript.xml
+
+Couldn't find configuration script for template: org.openbravo.v3 (file: D:\production\modules\org.openbravo.v3\src-db\database\configScript.xml)
+
+Exported table: AD_Process to module RedCarpet Production and Planning
+
+Exported table: AD_Element to module RedCarpet Production and Planning
+
+Exported table: AD_Menu to module RedCarpet Production and Planning
+
+Exported table: AD_Reference to module RedCarpet Production and Planning
+
+Exported table: AD_Callout to module RedCarpet Production and Planning
+
+Exported table: AD_Module_Dbprefix to module RedCarpet Production and Planning
+
+Exported table: AD_Ref_List to module RedCarpet Production and Planning
+
+Exported table: AD_Model_Object to module RedCarpet Production and Planning
+
+Exported table: AD_Model_Object_Mapping to module RedCarpet Production and Planning
+
+Exported table: AD_Column to module RedCarpet Production and Planning
+
+Exported table: AD_Package to module RedCarpet Production and Planning
+
+Exported table: AD_Module to module RedCarpet Production and Planning
+
+Exported table: AD_Ref_Table to module RedCarpet Production and Planning
+
+Exported table: AD_Tab to module RedCarpet Production and Planning
+
+Exported table: AD_Field to module RedCarpet Production and Planning
+
+Exported table: AD_Module_Dependency to module RedCarpet Production and Planning
+
+Exported table: AD_Table to module RedCarpet Production and Planning
+
+Exported table: AD_TreeNode to module RedCarpet Production and Planning
+
+Exported table: AD_Val_Rule to module RedCarpet Production and Planning
+
+Exported table: AD_Window to module RedCarpet Production and Planning
+
+Exporting module: Human Resource Management 
+
+Database [name=PostgreSql server; 802 tables; 0 sequences; 45 views; 290 functions; 324 triggers]
+
+Path: D:\production\modules\com.rcss.humanresource\src-db\database\sourcedata
+
+Reversing data part of configuration script: D:\production\modules\com.rcss.humanresource.template\src-db\database\configScript.xml
+
+Reversing data part of configuration script: D:\production\modules\com.redcarpet.payroll.template\src-db\database\configScript.xml
+
+Couldn't find configuration script for template: com.redcarpet.rcssob.template (file: D:\production\modules\com.redcarpet.rcssob.template\src-db\database\configScript.xml)
+
+Reversing data part of configuration script: D:\production\modules\com.redcarpet.quality.template\src-db\database\configScript.xml
+
+Reversing data part of configuration script: D:\production\modules\com.redcarpet.meterreading.template\src-db\database\configScript.xml
+
+Reversing data part of configuration script: D:\production\modules\com.redcarpet.epcg.template\src-db\database\configScript.xml
+
+Reversing data part of configuration script: D:\production\modules\com.redcarpet.goodsissue.template\src-db\database\configScript.xml
+
+Reversing data part of configuration script: D:\production\modules\com.redcarpet.freight.template\src-db\database\configScript.xml
+
+Reversing data part of configuration script: D:\production\modules\com.redcarpet.lotmanagement.template\src-db\database\configScript.xml
+
+Couldn't find configuration script for template: org.openbravo.v3 (file: D:\production\modules\org.openbravo.v3\src-db\database\configScript.xml)
+
+Exported table: OBUISEL_Selector to module Human Resource Management 
+
+Exported table: AD_Process to module Human Resource Management 
+
+Exported table: AD_Element to module Human Resource Management 
+
+Exported table: AD_Menu to module Human Resource Management 
+
+Exported table: AD_Message to module Human Resource Management 
+
+Exported table: AD_Reference to module Human Resource Management 
+
+Exported table: AD_Callout to module Human Resource Management 
+
+Exported table: AD_Module_Dbprefix to module Human Resource Management 
+
+Exported table: AD_Ref_List to module Human Resource Management 
+
+Exported table: AD_Model_Object to module Human Resource Management 
+
+Exported table: AD_Model_Object_Mapping to module Human Resource Management 
+
+Exported table: AD_Column to module Human Resource Management 
+
+Exported table: AD_Package to module Human Resource Management 
+
+Exported table: AD_Ref_Search to module Human Resource Management 
+
+Exported table: AD_FieldGroup to module Human Resource Management 
+
+Exported table: AD_Ref_Search_Column to module Human Resource Management 
+
+Exported table: AD_Module to module Human Resource Management 
+
+Exported table: AD_Ref_Table to module Human Resource Management 
+
+Exported table: OBUISEL_Selector_Field to module Human Resource Management 
+
+Exported table: AD_Tab to module Human Resource Management 
+
+Exported table: AD_Field to module Human Resource Management 
+
+Exported table: AD_Module_Dependency to module Human Resource Management 
+
+Exported table: AD_Table to module Human Resource Management 
+
+Exported table: AD_TextInterfaces to module Human Resource Management 
+
+Exported table: AD_TreeNode to module Human Resource Management 
+
+Exported table: AD_Val_Rule to module Human Resource Management 
+
+Exported table: AD_Form to module Human Resource Management 
+
+Exported table: AD_Window to module Human Resource Management 
+
+Exporting module: RedCarpet Production and Planning Template
+
+Database [name=PostgreSql server; 802 tables; 0 sequences; 45 views; 290 functions; 324 triggers]
+
+Path: D:\production\modules\com.redcarpet.production.template\src-db\database\sourcedata
+
+Reversing data part of configuration script: D:\production\modules\com.rcss.humanresource.template\src-db\database\configScript.xml
+
+Reversing data part of configuration script: D:\production\modules\com.redcarpet.payroll.template\src-db\database\configScript.xml
+
+Couldn't find configuration script for template: com.redcarpet.rcssob.template (file: D:\production\modules\com.redcarpet.rcssob.template\src-db\database\configScript.xml)
+
+Reversing data part of configuration script: D:\production\modules\com.redcarpet.quality.template\src-db\database\configScript.xml
+
+Reversing data part of configuration script: D:\production\modules\com.redcarpet.meterreading.template\src-db\database\configScript.xml
+
+Reversing data part of configuration script: D:\production\modules\com.redcarpet.epcg.template\src-db\database\configScript.xml
+
+Reversing data part of configuration script: D:\production\modules\com.redcarpet.goodsissue.template\src-db\database\configScript.xml
+
+Reversing data part of configuration script: D:\production\modules\com.redcarpet.freight.template\src-db\database\configScript.xml
+
+Reversing data part of configuration script: D:\production\modules\com.redcarpet.lotmanagement.template\src-db\database\configScript.xml
+
+Couldn't find configuration script for template: org.openbravo.v3 (file: D:\production\modules\org.openbravo.v3\src-db\database\configScript.xml)
+
+Exported table: AD_Module to module RedCarpet Production and Planning Template
+
+Exported table: AD_Module_Dependency to module RedCarpet Production and Planning Template
+
+Exporting module: RedCarpet Payroll Module
+
+Database [name=PostgreSql server; 802 tables; 0 sequences; 45 views; 290 functions; 324 triggers]
+
+Path: D:\production\modules\com.redcarpet.payroll\src-db\database\sourcedata
+
+Reversing data part of configuration script: D:\production\modules\com.rcss.humanresource.template\src-db\database\configScript.xml
+
+Reversing data part of configuration script: D:\production\modules\com.redcarpet.payroll.template\src-db\database\configScript.xml
+
+Couldn't find configuration script for template: com.redcarpet.rcssob.template (file: D:\production\modules\com.redcarpet.rcssob.template\src-db\database\configScript.xml)
+
+Reversing data part of configuration script: D:\production\modules\com.redcarpet.quality.template\src-db\database\configScript.xml
+
+Reversing data part of configuration script: D:\production\modules\com.redcarpet.meterreading.template\src-db\database\configScript.xml
+
+Reversing data part of configuration script: D:\production\modules\com.redcarpet.epcg.template\src-db\database\configScript.xml
+
+Reversing data part of configuration script: D:\production\modules\com.redcarpet.goodsissue.template\src-db\database\configScript.xml
+
+Reversing data part of configuration script: D:\production\modules\com.redcarpet.freight.template\src-db\database\configScript.xml
+
+Reversing data part of configuration script: D:\production\modules\com.redcarpet.lotmanagement.template\src-db\database\configScript.xml
+
+Couldn't find configuration script for template: org.openbravo.v3 (file: D:\production\modules\org.openbravo.v3\src-db\database\configScript.xml)
+
+Exported table: AD_Process to module RedCarpet Payroll Module
+
+Exported table: AD_Element to module RedCarpet Payroll Module
+
+Exported table: AD_Menu to module RedCarpet Payroll Module
+
+Exported table: AD_Reference to module RedCarpet Payroll Module
+
+Exported table: AD_Callout to module RedCarpet Payroll Module
+
+Exported table: AD_Module_Dbprefix to module RedCarpet Payroll Module
+
+Exported table: AD_Ref_List to module RedCarpet Payroll Module
+
+Exported table: AD_Model_Object to module RedCarpet Payroll Module
+
+Exported table: AD_Model_Object_Mapping to module RedCarpet Payroll Module
+
+Exported table: AD_Column to module RedCarpet Payroll Module
+
+Exported table: AD_Package to module RedCarpet Payroll Module
+
+Exported table: AD_Module to module RedCarpet Payroll Module
+
+Exported table: AD_Tab to module RedCarpet Payroll Module
+
+Exported table: AD_Field to module RedCarpet Payroll Module
+
+Exported table: AD_Module_Dependency to module RedCarpet Payroll Module
+
+Exported table: AD_Table to module RedCarpet Payroll Module
+
+Exported table: AD_TextInterfaces to module RedCarpet Payroll Module
+
+Exported table: AD_TreeNode to module RedCarpet Payroll Module
+
+Exported table: AD_Val_Rule to module RedCarpet Payroll Module
+
+Exported table: AD_Window to module RedCarpet Payroll Module
+
+Exporting module: Redcarpet EPCG Module
+
+Database [name=PostgreSql server; 802 tables; 0 sequences; 45 views; 290 functions; 324 triggers]
+
+Path: D:\production\modules\com.redcarpet.epcg\src-db\database\sourcedata
+
+Reversing data part of configuration script: D:\production\modules\com.rcss.humanresource.template\src-db\database\configScript.xml
+
+Reversing data part of configuration script: D:\production\modules\com.redcarpet.payroll.template\src-db\database\configScript.xml
+
+Couldn't find configuration script for template: com.redcarpet.rcssob.template (file: D:\production\modules\com.redcarpet.rcssob.template\src-db\database\configScript.xml)
+
+Reversing data part of configuration script: D:\production\modules\com.redcarpet.quality.template\src-db\database\configScript.xml
+
+Reversing data part of configuration script: D:\production\modules\com.redcarpet.meterreading.template\src-db\database\configScript.xml
+
+Reversing data part of configuration script: D:\production\modules\com.redcarpet.epcg.template\src-db\database\configScript.xml
+
+Reversing data part of configuration script: D:\production\modules\com.redcarpet.goodsissue.template\src-db\database\configScript.xml
+
+Reversing data part of configuration script: D:\production\modules\com.redcarpet.freight.template\src-db\database\configScript.xml
+
+Reversing data part of configuration script: D:\production\modules\com.redcarpet.lotmanagement.template\src-db\database\configScript.xml
+
+Couldn't find configuration script for template: org.openbravo.v3 (file: D:\production\modules\org.openbravo.v3\src-db\database\configScript.xml)
+
+Exported table: OBUISEL_Selector to module Redcarpet EPCG Module
+
+Exported table: AD_Process to module Redcarpet EPCG Module
+
+Exported table: AD_Element to module Redcarpet EPCG Module
+
+Exported table: AD_Menu to module Redcarpet EPCG Module
+
+Exported table: AD_Reference to module Redcarpet EPCG Module
+
+Exported table: AD_Callout to module Redcarpet EPCG Module
+
+Exported table: AD_Module_Dbprefix to module Redcarpet EPCG Module
+
+Exported table: AD_Ref_List to module Redcarpet EPCG Module
+
+Exported table: AD_Model_Object to module Redcarpet EPCG Module
+
+Exported table: AD_Model_Object_Mapping to module Redcarpet EPCG Module
+
+Exported table: AD_Column to module Redcarpet EPCG Module
+
+Exported table: AD_Package to module Redcarpet EPCG Module
+
+Exported table: AD_Ref_Search to module Redcarpet EPCG Module
+
+Exported table: AD_FieldGroup to module Redcarpet EPCG Module
+
+Exported table: AD_Ref_Search_Column to module Redcarpet EPCG Module
+
+Exported table: AD_Module to module Redcarpet EPCG Module
+
+Exported table: AD_Ref_Table to module Redcarpet EPCG Module
+
+Exported table: OBUISEL_Selector_Field to module Redcarpet EPCG Module
+
+Exported table: AD_Tab to module Redcarpet EPCG Module
+
+Exported table: AD_Field to module Redcarpet EPCG Module
+
+Exported table: AD_Module_Dependency to module Redcarpet EPCG Module
+
+Exported table: AD_Table to module Redcarpet EPCG Module
+
+Exported table: OBCLKER_UIDefinition to module Redcarpet EPCG Module
+
+Exported table: AD_TextInterfaces to module Redcarpet EPCG Module
+
+Exported table: AD_TreeNode to module Redcarpet EPCG Module
+
+Exported table: AD_Val_Rule to module Redcarpet EPCG Module
+
+Exported table: AD_Window to module Redcarpet EPCG Module
+
+Writing checksum info
+
+
+update.dbupdate.timestamp:
+      [sql] Executing commands
+      [sql] 1 of 1 SQL statements executed successfully
+
+BUILD SUCCESSFUL
+Total time: 1 minute 47 seconds

@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SqlClass id="class" name="PPCEnquiryBF0E644336F04D50B57D31564B507401Data" package="org.openbravo.erpWindows.com.redcarpet.epcg.PPCEnquiry">
+  <SqlClassComment>WAD Generated class</SqlClassComment>
+
+  <SqlMethod name="selectEdit" type="preparedStatement" return="multiple">
+    <SqlMethodComment>Select for edit</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT to_char(epcg_ppcenquiry.Created, ?) as created, 
+        (SELECT NAME FROM AD_USER u WHERE AD_USER_ID = epcg_ppcenquiry.CreatedBy) as CreatedByR, 
+        to_char(epcg_ppcenquiry.Updated, ?) as updated, 
+        to_char(epcg_ppcenquiry.Updated, 'YYYYMMDDHH24MISS') as Updated_Time_Stamp,  
+        epcg_ppcenquiry.UpdatedBy, 
+        (SELECT NAME FROM AD_USER u WHERE AD_USER_ID = epcg_ppcenquiry.UpdatedBy) as UpdatedByR,
+        epcg_ppcenquiry.AD_Org_ID, 
+epcg_ppcenquiry.Epcg_Costenquiry_ID, 
+(CASE WHEN epcg_ppcenquiry.Epcg_Costenquiry_ID IS NULL THEN '' ELSE  (COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table1.Documentno), ''))),'')  || ' - ' || COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table2.Name), ''))),'') ) END) AS Epcg_Costenquiry_IDR, 
+epcg_ppcenquiry.Documentno, 
+epcg_ppcenquiry.Userid, 
+(CASE WHEN epcg_ppcenquiry.Userid IS NULL THEN '' ELSE  ( COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table3.Name), ''))),'') ) END) AS UseridR, 
+epcg_ppcenquiry.Enquirydate, 
+epcg_ppcenquiry.Tc, 
+epcg_ppcenquiry.Widthinches, 
+epcg_ppcenquiry.Salescommission, 
+epcg_ppcenquiry.Creditperiodper30, 
+epcg_ppcenquiry.Yarncostmts, 
+epcg_ppcenquiry.Contributionrsploom, 
+epcg_ppcenquiry.Totalvariablecostmts, 
+epcg_ppcenquiry.Exmillpricerspermts, 
+epcg_ppcenquiry.Commission, 
+epcg_ppcenquiry.Oncontract, 
+epcg_ppcenquiry.Rchr_Qualitystandard_ID, 
+(CASE WHEN epcg_ppcenquiry.Rchr_Qualitystandard_ID IS NULL THEN '' ELSE  (COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table4.Qualityno), ''))),'')  || ' - ' || COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table4.Partyconstruction), ''))),'') ) END) AS Rchr_Qualitystandard_IDR, 
+epcg_ppcenquiry.Qstandard, 
+epcg_ppcenquiry.Process, 
+epcg_ppcenquiry.Status, 
+epcg_ppcenquiry.Orderquantity, 
+epcg_ppcenquiry.Deliverdate, 
+epcg_ppcenquiry.M_Product_ID, 
+(CASE WHEN epcg_ppcenquiry.M_Product_ID IS NULL THEN '' ELSE  (COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table5.Value), ''))),'')  || ' - ' || COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR((CASE WHEN tableTRL5.Name IS NULL THEN TO_CHAR(table5.Name) ELSE TO_CHAR(tableTRL5.Name) END)), ''))),'')  || ' - ' || COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table5.EM_Rcgi_Ksmlbarcode), ''))),'') ) END) AS M_Product_IDR, 
+epcg_ppcenquiry.Rchr_Employee_ID, 
+epcg_ppcenquiry.Remarks, 
+epcg_ppcenquiry.Yarnavailibility, 
+epcg_ppcenquiry.Reedavailibility, 
+epcg_ppcenquiry.Camavailibility, 
+epcg_ppcenquiry.Minwarplength, 
+COALESCE(epcg_ppcenquiry.Isactive, 'N') AS Isactive, 
+epcg_ppcenquiry.AD_Client_ID, 
+epcg_ppcenquiry.Epcg_Ppcenquiry_ID, 
+ 
+        ? AS LANGUAGE 
+        FROM epcg_ppcenquiry left join (select Epcg_Costenquiry_ID, Documentno, Userid from Epcg_Costenquiry) table1 on (epcg_ppcenquiry.Epcg_Costenquiry_ID = table1.Epcg_Costenquiry_ID) left join (select AD_User_ID, Name from AD_User) table2 on (table1.Userid =  table2.AD_User_ID) left join (select AD_User_ID, Name from AD_User) table3 on (epcg_ppcenquiry.Userid =  table3.AD_User_ID) left join (select Rchr_Qualitystandard_ID, Qualityno, Partyconstruction from Rchr_Qualitystandard) table4 on (epcg_ppcenquiry.Rchr_Qualitystandard_ID = table4.Rchr_Qualitystandard_ID) left join (select M_Product_ID, Value, Name, EM_Rcgi_Ksmlbarcode from M_Product) table5 on (epcg_ppcenquiry.M_Product_ID = table5.M_Product_ID) left join (select M_Product_ID,AD_Language, Name from M_Product_TRL) tableTRL5 on (table5.M_Product_ID = tableTRL5.M_Product_ID and tableTRL5.AD_Language = ?) 
+        WHERE 2=2 
+
+        AND 1=1 
+        AND epcg_ppcenquiry.Epcg_Ppcenquiry_ID = ? 
+        AND epcg_ppcenquiry.AD_Client_ID IN ('1') 
+           AND epcg_ppcenquiry.AD_Org_ID IN ('1') 
+    ]]></Sql>
+    <Parameter name="dateTimeFormat"></Parameter>
+    <Parameter name="dateTimeFormat"></Parameter>
+    
+    <Parameter name="paramLanguage"></Parameter>
+<Parameter name="paramLanguage"/>
+
+
+    <Parameter name="key"></Parameter>
+        <Parameter name="adUserClient" type="replace" optional="true" after="epcg_ppcenquiry.AD_Client_ID IN (" text="'1'"/>
+        <Parameter name="adOrgClient" type="replace" optional="true" after="epcg_ppcenquiry.AD_Org_ID IN (" text="'1'"/>
+
+    <Field name="adUserClient" value="void"></Field>
+    <Field name="adOrgClient" value="void"></Field>
+    <Field name="createdby" value="void"></Field>
+    
+    <Field name="trBgcolor" value="void"></Field>
+    <Field name="totalCount" value="void"></Field>
+    <Field name="dateTimeFormat" value=""></Field>
+  </SqlMethod>
+  
+  
+
+  <SqlMethod name="set" type="constant" return="multiple">
+      <SqlMethodComment>Create a registry</SqlMethodComment>
+      <Sql></Sql>
+
+<Parameter name="status"></Parameter><Parameter name="createdby"></Parameter><Parameter name="createdbyr"></Parameter><Parameter name="totalvariablecostmts"></Parameter><Parameter name="enquirydate"></Parameter><Parameter name="adOrgId"></Parameter><Parameter name="rchrQualitystandardId"></Parameter><Parameter name="qstandard"></Parameter><Parameter name="epcgPpcenquiryId"></Parameter><Parameter name="reedavailibility"></Parameter><Parameter name="salescommission"></Parameter><Parameter name="minwarplength"></Parameter><Parameter name="epcgCostenquiryId"></Parameter><Parameter name="yarnavailibility"></Parameter><Parameter name="documentno"></Parameter><Parameter name="orderquantity"></Parameter><Parameter name="contributionrsploom"></Parameter><Parameter name="rchrEmployeeId"></Parameter><Parameter name="creditperiodper30"></Parameter><Parameter name="widthinches"></Parameter><Parameter name="remarks"></Parameter><Parameter name="tc"></Parameter><Parameter name="process"></Parameter><Parameter name="oncontract"></Parameter><Parameter name="isactive"></Parameter><Parameter name="adClientId"></Parameter><Parameter name="deliverdate"></Parameter><Parameter name="exmillpricerspermts"></Parameter><Parameter name="mProductId"></Parameter><Parameter name="mProductIdr"></Parameter><Parameter name="camavailibility"></Parameter><Parameter name="updatedby"></Parameter><Parameter name="updatedbyr"></Parameter><Parameter name="yarncostmts"></Parameter><Parameter name="commission"></Parameter><Parameter name="userid"></Parameter>
+   </SqlMethod>
+
+
+
+
+
+
+   <SqlMethod name="selectDef0AEACE04E0934845B6FA822C81F299A2_0" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>Select for auxiliar field</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT  ( COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table2.Name), ''))), '') ) as Createdby FROM AD_User left join (select AD_User_ID, Name from AD_User) table2 on (AD_User.AD_User_ID = table2.AD_User_ID) WHERE AD_User.isActive='Y' AND AD_User.AD_User_ID = ?  
+    ]]></Sql>
+<Parameter name="CreatedbyR"/>
+  </SqlMethod>
+
+   <SqlMethod name="selectDefB87A25791F7A4118ACA9F76E1AD63639_1" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>Select for auxiliar field</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT  ( COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table2.Value), ''))), '')  || ' - ' || COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR((CASE WHEN tableTRL2.Name IS NULL THEN TO_CHAR(table2.Name) ELSE TO_CHAR(tableTRL2.Name) END)), ''))), '')  || ' - ' || COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table2.EM_Rcgi_Ksmlbarcode), ''))), '') ) as M_Product_ID FROM M_Product left join (select M_Product_ID, Value, Name, EM_Rcgi_Ksmlbarcode from M_Product) table2 on (M_Product.M_Product_ID = table2.M_Product_ID)left join (select M_Product_ID,AD_Language, Name from M_Product_TRL) tableTRL2 on (table2.M_Product_ID = tableTRL2.M_Product_ID and tableTRL2.AD_Language = ?)  WHERE M_Product.isActive='Y' AND M_Product.M_Product_ID = ?  
+    ]]></Sql>
+<Parameter name="paramLanguage"/>
+<Parameter name="M_Product_IDR"/>
+  </SqlMethod>
+
+   <SqlMethod name="selectDefBA19BC4AE8E34A7EB74F9C6F00B5F203_2" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>Select for auxiliar field</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT  ( COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table2.Name), ''))), '') ) as Updatedby FROM AD_User left join (select AD_User_ID, Name from AD_User) table2 on (AD_User.AD_User_ID = table2.AD_User_ID) WHERE AD_User.isActive='Y' AND AD_User.AD_User_ID = ?  
+    ]]></Sql>
+<Parameter name="UpdatedbyR"/>
+  </SqlMethod>
+
+
+
+
+
+
+
+
+
+
+  <SqlMethod name="update" type="preparedStatement" return="rowCount" static="false" connection="true">
+    <Sql><![CDATA[
+        UPDATE epcg_ppcenquiry
+        SET AD_Org_ID = (?) , Epcg_Costenquiry_ID = (?) , Documentno = (?) , Userid = (?) , Enquirydate = TO_DATE(?) , Tc = TO_NUMBER(?) , Widthinches = TO_NUMBER(?) , Salescommission = TO_NUMBER(?) , Creditperiodper30 = TO_NUMBER(?) , Yarncostmts = TO_NUMBER(?) , Contributionrsploom = TO_NUMBER(?) , Totalvariablecostmts = TO_NUMBER(?) , Exmillpricerspermts = TO_NUMBER(?) , Commission = TO_NUMBER(?) , Oncontract = (?) , Rchr_Qualitystandard_ID = (?) , Qstandard = (?) , Process = (?) , Status = (?) , Orderquantity = TO_NUMBER(?) , Deliverdate = TO_DATE(?) , M_Product_ID = (?) , Rchr_Employee_ID = (?) , Remarks = (?) , Yarnavailibility = (?) , Reedavailibility = (?) , Camavailibility = (?) , Minwarplength = TO_NUMBER(?) , Isactive = (?) , AD_Client_ID = (?) , Epcg_Ppcenquiry_ID = (?) , updated = now(), updatedby = ? 
+        WHERE epcg_ppcenquiry.Epcg_Ppcenquiry_ID = ? 
+        
+        AND epcg_ppcenquiry.AD_Client_ID IN ('1') 
+        AND epcg_ppcenquiry.AD_Org_ID IN ('1') 
+    ]]></Sql>
+    <Parameter name="adOrgId"></Parameter> <Parameter name="epcgCostenquiryId"></Parameter> <Parameter name="documentno"></Parameter> <Parameter name="userid"></Parameter> <Parameter name="enquirydate"></Parameter> <Parameter name="tc"></Parameter> <Parameter name="widthinches"></Parameter> <Parameter name="salescommission"></Parameter> <Parameter name="creditperiodper30"></Parameter> <Parameter name="yarncostmts"></Parameter> <Parameter name="contributionrsploom"></Parameter> <Parameter name="totalvariablecostmts"></Parameter> <Parameter name="exmillpricerspermts"></Parameter> <Parameter name="commission"></Parameter> <Parameter name="oncontract"></Parameter> <Parameter name="rchrQualitystandardId"></Parameter> <Parameter name="qstandard"></Parameter> <Parameter name="process"></Parameter> <Parameter name="status"></Parameter> <Parameter name="orderquantity"></Parameter> <Parameter name="deliverdate"></Parameter> <Parameter name="mProductId"></Parameter> <Parameter name="rchrEmployeeId"></Parameter> <Parameter name="remarks"></Parameter> <Parameter name="yarnavailibility"></Parameter> <Parameter name="reedavailibility"></Parameter> <Parameter name="camavailibility"></Parameter> <Parameter name="minwarplength"></Parameter> <Parameter name="isactive"></Parameter> <Parameter name="adClientId"></Parameter> <Parameter name="epcgPpcenquiryId"></Parameter> 
+    <Parameter name="updatedby"></Parameter>
+    <Parameter id="paramKey" name="epcgPpcenquiryId"></Parameter>
+    
+    
+        <Parameter name="adUserClient" type="replace" optional="true" after="epcg_ppcenquiry.AD_Client_ID IN (" text="'1'"/>
+        <Parameter name="adOrgClient" type="replace" optional="true" after="epcg_ppcenquiry.AD_Org_ID IN (" text="'1'"/>
+  </SqlMethod>
+
+  <SqlMethod name="insert" type="preparedStatement" return="rowCount" static="false" connection="true">
+    <Sql><![CDATA[
+        INSERT INTO epcg_ppcenquiry 
+        (AD_Org_ID, Epcg_Costenquiry_ID, Documentno, Userid, Enquirydate, Tc, Widthinches, Salescommission, Creditperiodper30, Yarncostmts, Contributionrsploom, Totalvariablecostmts, Exmillpricerspermts, Commission, Oncontract, Rchr_Qualitystandard_ID, Qstandard, Process, Status, Orderquantity, Deliverdate, M_Product_ID, Rchr_Employee_ID, Remarks, Yarnavailibility, Reedavailibility, Camavailibility, Minwarplength, Isactive, AD_Client_ID, Epcg_Ppcenquiry_ID, created, createdby, updated, updatedBy)
+        VALUES ((?), (?), (?), (?), TO_DATE(?), TO_NUMBER(?), TO_NUMBER(?), TO_NUMBER(?), TO_NUMBER(?), TO_NUMBER(?), TO_NUMBER(?), TO_NUMBER(?), TO_NUMBER(?), TO_NUMBER(?), (?), (?), (?), (?), (?), TO_NUMBER(?), TO_DATE(?), (?), (?), (?), (?), (?), (?), TO_NUMBER(?), (?), (?), (?), now(), ?, now(), ?)
+    ]]></Sql>
+    <Parameter name="adOrgId"></Parameter> <Parameter name="epcgCostenquiryId"></Parameter> <Parameter name="documentno"></Parameter> <Parameter name="userid"></Parameter> <Parameter name="enquirydate"></Parameter> <Parameter name="tc"></Parameter> <Parameter name="widthinches"></Parameter> <Parameter name="salescommission"></Parameter> <Parameter name="creditperiodper30"></Parameter> <Parameter name="yarncostmts"></Parameter> <Parameter name="contributionrsploom"></Parameter> <Parameter name="totalvariablecostmts"></Parameter> <Parameter name="exmillpricerspermts"></Parameter> <Parameter name="commission"></Parameter> <Parameter name="oncontract"></Parameter> <Parameter name="rchrQualitystandardId"></Parameter> <Parameter name="qstandard"></Parameter> <Parameter name="process"></Parameter> <Parameter name="status"></Parameter> <Parameter name="orderquantity"></Parameter> <Parameter name="deliverdate"></Parameter> <Parameter name="mProductId"></Parameter> <Parameter name="rchrEmployeeId"></Parameter> <Parameter name="remarks"></Parameter> <Parameter name="yarnavailibility"></Parameter> <Parameter name="reedavailibility"></Parameter> <Parameter name="camavailibility"></Parameter> <Parameter name="minwarplength"></Parameter> <Parameter name="isactive"></Parameter> <Parameter name="adClientId"></Parameter> <Parameter name="epcgPpcenquiryId"></Parameter> 
+    <Parameter name="createdby"></Parameter>
+    <Parameter name="updatedby"></Parameter>
+  </SqlMethod>
+
+  <SqlMethod name="delete" type="preparedStatement" return="rowCount">
+    <Sql><![CDATA[
+        DELETE FROM epcg_ppcenquiry
+        WHERE epcg_ppcenquiry.Epcg_Ppcenquiry_ID = ? 
+        
+        AND epcg_ppcenquiry.AD_Client_ID IN ('1') 
+        AND epcg_ppcenquiry.AD_Org_ID IN ('1') 
+    ]]></Sql>
+    <Parameter name="param1"></Parameter>
+    
+        <Parameter name="adUserClient" type="replace" optional="true" after="epcg_ppcenquiry.AD_Client_ID IN (" text="'1'"/>
+        <Parameter name="adOrgClient" type="replace" optional="true" after="epcg_ppcenquiry.AD_Org_ID IN (" text="'1'"/>
+  </SqlMethod>
+
+  <SqlMethod name="selectOrg" type="preparedStatement" return="string">
+    <SqlMethodComment>Select for relation</SqlMethodComment>
+    <Sql><![CDATA[ 
+        SELECT AD_ORG_ID
+          FROM epcg_ppcenquiry
+         WHERE epcg_ppcenquiry.Epcg_Ppcenquiry_ID = ? 
+    ]]></Sql>
+    <Parameter name="id"></Parameter>
+  </SqlMethod>
+  
+  <SqlMethod name="getCurrentDBTimestamp" type="preparedStatement" return="string">
+    <Sql><![CDATA[ 
+        SELECT to_char(Updated, 'YYYYMMDDHH24MISS') as Updated_Time_Stamp
+          FROM epcg_ppcenquiry
+         WHERE epcg_ppcenquiry.Epcg_Ppcenquiry_ID = ? 
+    ]]></Sql>
+    <Parameter name="id"></Parameter>
+  </SqlMethod>
+</SqlClass>

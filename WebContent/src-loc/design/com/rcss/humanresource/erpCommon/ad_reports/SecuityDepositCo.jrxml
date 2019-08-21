@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="SecuityDeposit" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<property name="ireport.zoom" value="0.9313819845887326"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<style name="Crosstab Data Text" hAlign="Center"/>
+	<parameter name="FromD" class="java.util.Date">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="ToDate" class="java.util.Date">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="EmpName" class="java.lang.String">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="aux_empname" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[$P{EmpName}.equals("") ? " " : " AND RCHR_EMPLOYEE.RCHR_EMPLOYEE_ID = '" + $P{EmpName} + "'"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="Emp_Type" class="java.lang.String">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="aux_emptype" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[$P{Emp_Type}.equals("") ? " " : " AND RCHR_EMPLOYEE.EMPLOYEETYPE = '" + $P{Emp_Type} + "'"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="Dept_ID" class="java.lang.String">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="aux_dept" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[$P{Dept_ID}.equals("") ? " " : " AND RCHR_EMPLOYEE.RCHR_EMP_DEPT_ID = '" + $P{Dept_ID} + "'"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="SubDept_ID" class="java.lang.String">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="aux_subdept" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[$P{SubDept_ID}.equals("") ? " " : " AND RCHR_EMPLOYEE.RCHR_SUBDEPARTMENT_ID = '" + $P{SubDept_ID} + "'"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="Designation_ID" class="java.lang.String">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="aux_designation" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[$P{Designation_ID}.equals("") ? " " : " AND RCHR_EMPLOYEE.RCHR_DESIGNATION_ID = '" +$P{Designation_ID} + "'"]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[select rchr_employee.documentno as punchno,rchr_employee.employeename ,
+attd.startdate,sec.depositamount,sec.ispaid
+
+
+from rcpl_securitydeposit sec
+join rchr_attd_process attd on attd.rchr_attd_process_id=sec.rchr_attd_process_id
+join rchr_employee on rchr_employee.rchr_employee_id=sec.rchr_employee_id
+where  sec.ispaid='Y'
+and (select sum(depositamount)  from rcpl_securitydeposit
+join rchr_attd_process on rchr_attd_process.rchr_attd_process_id=rcpl_securitydeposit.rchr_attd_process_id
+
+where rchr_employee_id=sec.rchr_employee_id and rcpl_securitydeposit.ispaid='Y'
+and rchr_attd_process.startdate <= $P{ToDate}
+group by rchr_employee_id )>=12000
+$P!{aux_empname}
+$P!{aux_dept}
+$P!{aux_subdept}
+$P!{aux_emptype}
+$P!{aux_subdept}
+$P!{aux_designation}
+order by attd.startdate,rchr_employee.punchno]]>
+	</queryString>
+	<field name="punchno" class="java.lang.String"/>
+	<field name="employeename" class="java.lang.String"/>
+	<field name="startdate" class="java.sql.Timestamp"/>
+	<field name="depositamount" class="java.math.BigDecimal"/>
+	<field name="ispaid" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch"/>
+	</title>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="115" splitType="Stretch">
+			<crosstab>
+				<reportElement x="0" y="7" width="802" height="105"/>
+				<rowGroup name="punchno" width="70" totalPosition="End">
+					<bucket>
+						<bucketExpression class="java.lang.String"><![CDATA[$F{punchno}]]></bucketExpression>
+					</bucket>
+					<crosstabRowHeader>
+						<cellContents backcolor="#F0F8FF" mode="Opaque">
+							<box>
+								<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+							</box>
+							<textField>
+								<reportElement style="Crosstab Data Text" x="0" y="0" width="70" height="25"/>
+								<textElement verticalAlignment="Middle">
+									<font isBold="true"/>
+								</textElement>
+								<textFieldExpression class="java.lang.String"><![CDATA[$V{punchno}]]></textFieldExpression>
+							</textField>
+						</cellContents>
+					</crosstabRowHeader>
+					<crosstabTotalRowHeader>
+						<cellContents backcolor="#BFE1FF" mode="Opaque">
+							<box>
+								<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+							</box>
+							<staticText>
+								<reportElement x="0" y="0" width="70" height="25"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle"/>
+								<text><![CDATA[Total punchno]]></text>
+							</staticText>
+						</cellContents>
+					</crosstabTotalRowHeader>
+				</rowGroup>
+				<columnGroup name="startdate" height="30" totalPosition="End">
+					<bucket>
+						<bucketExpression class="java.sql.Timestamp"><![CDATA[$F{startdate}]]></bucketExpression>
+					</bucket>
+					<crosstabColumnHeader>
+						<cellContents backcolor="#F0F8FF" mode="Opaque">
+							<box>
+								<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+							</box>
+							<textField pattern="MMM-yy" isBlankWhenNull="true">
+								<reportElement style="Crosstab Data Text" x="0" y="0" width="34" height="30"/>
+								<textElement verticalAlignment="Middle">
+									<font size="8" isBold="true"/>
+								</textElement>
+								<textFieldExpression class="java.sql.Timestamp"><![CDATA[$V{startdate}]]></textFieldExpression>
+							</textField>
+						</cellContents>
+					</crosstabColumnHeader>
+					<crosstabTotalColumnHeader>
+						<cellContents backcolor="#BFE1FF" mode="Opaque">
+							<box>
+								<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+							</box>
+							<staticText>
+								<reportElement x="0" y="0" width="50" height="30"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle"/>
+								<text><![CDATA[Total startdate]]></text>
+							</staticText>
+						</cellContents>
+					</crosstabTotalColumnHeader>
+				</columnGroup>
+				<measure name="depositamountMeasure" class="java.math.BigDecimal" calculation="Sum">
+					<measureExpression><![CDATA[$F{depositamount}]]></measureExpression>
+				</measure>
+				<crosstabCell width="35" height="25">
+					<cellContents>
+						<box>
+							<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						</box>
+						<textField>
+							<reportElement style="Crosstab Data Text" x="0" y="0" width="34" height="25"/>
+							<textElement verticalAlignment="Middle">
+								<font size="9" isBold="false"/>
+							</textElement>
+							<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{depositamountMeasure}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell width="35" height="25" rowTotalGroup="punchno">
+					<cellContents backcolor="#BFE1FF" mode="Opaque">
+						<box>
+							<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						</box>
+						<textField>
+							<reportElement style="Crosstab Data Text" x="0" y="0" width="34" height="25"/>
+							<textElement verticalAlignment="Middle">
+								<font size="8" isBold="true"/>
+							</textElement>
+							<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{depositamountMeasure}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell width="50" columnTotalGroup="startdate">
+					<cellContents backcolor="#BFE1FF" mode="Opaque">
+						<box>
+							<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						</box>
+						<textField isBlankWhenNull="true">
+							<reportElement style="Crosstab Data Text" x="0" y="0" width="50" height="25"/>
+							<textElement verticalAlignment="Middle">
+								<font isBold="true"/>
+							</textElement>
+							<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{depositamountMeasure}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell width="50" rowTotalGroup="punchno" columnTotalGroup="startdate">
+					<cellContents backcolor="#BFE1FF" mode="Opaque">
+						<box>
+							<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						</box>
+						<textField>
+							<reportElement style="Crosstab Data Text" x="0" y="0" width="50" height="25"/>
+							<textElement verticalAlignment="Middle">
+								<font isBold="true"/>
+							</textElement>
+							<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{depositamountMeasure}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+			</crosstab>
+		</band>
+	</summary>
+</jasperReport>

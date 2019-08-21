@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SqlClass id="class" name="OnDutyInformationC1FA90817E524541998249CF392089F5Data" package="org.openbravo.erpWindows.com.rcss.humanresource.OnDutyInformation">
+  <SqlClassComment>WAD Generated class</SqlClassComment>
+
+  <SqlMethod name="selectEdit" type="preparedStatement" return="multiple">
+    <SqlMethodComment>Select for edit</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT to_char(Rchr_Onduty.Created, ?) as created, 
+        (SELECT NAME FROM AD_USER u WHERE AD_USER_ID = Rchr_Onduty.CreatedBy) as CreatedByR, 
+        to_char(Rchr_Onduty.Updated, ?) as updated, 
+        to_char(Rchr_Onduty.Updated, 'YYYYMMDDHH24MISS') as Updated_Time_Stamp,  
+        Rchr_Onduty.UpdatedBy, 
+        (SELECT NAME FROM AD_USER u WHERE AD_USER_ID = Rchr_Onduty.UpdatedBy) as UpdatedByR,
+        Rchr_Onduty.AD_Org_ID, 
+(CASE WHEN Rchr_Onduty.AD_Org_ID IS NULL THEN '' ELSE  (COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table1.Name), ''))),'') ) END) AS AD_Org_IDR, 
+COALESCE(Rchr_Onduty.Isactive, 'N') AS Isactive, 
+Rchr_Onduty.Rchr_Employee_ID, 
+(CASE WHEN Rchr_Onduty.Rchr_Employee_ID IS NULL THEN '' ELSE  (COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table2.Punchno), ''))),'')  || ' - ' || COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table2.Employeename), ''))),'') ) END) AS Rchr_Employee_IDR, 
+Rchr_Onduty.Process, 
+Rchr_Onduty.Approve, 
+Rchr_Onduty.Fromdate, 
+Rchr_Onduty.Todate, 
+Rchr_Onduty.Total, 
+Rchr_Onduty.Totalonduty, 
+Rchr_Onduty.Totalweekoff, 
+Rchr_Onduty.AD_Client_ID, 
+Rchr_Onduty.Rchr_Onduty_ID, 
+ 
+        ? AS LANGUAGE 
+        FROM Rchr_Onduty left join (select AD_Org_ID, Name from AD_Org) table1 on (Rchr_Onduty.AD_Org_ID = table1.AD_Org_ID) left join (select Rchr_Employee_ID, Punchno, Employeename from Rchr_Employee) table2 on (Rchr_Onduty.Rchr_Employee_ID = table2.Rchr_Employee_ID)
+        WHERE 2=2 
+
+        AND 1=1 
+        AND Rchr_Onduty.Rchr_Onduty_ID = ? 
+        AND Rchr_Onduty.AD_Client_ID IN ('1') 
+           AND Rchr_Onduty.AD_Org_ID IN ('1') 
+    ]]></Sql>
+    <Parameter name="dateTimeFormat"></Parameter>
+    <Parameter name="dateTimeFormat"></Parameter>
+    
+    <Parameter name="paramLanguage"></Parameter>
+
+
+    <Parameter name="key"></Parameter>
+        <Parameter name="adUserClient" type="replace" optional="true" after="Rchr_Onduty.AD_Client_ID IN (" text="'1'"/>
+        <Parameter name="adOrgClient" type="replace" optional="true" after="Rchr_Onduty.AD_Org_ID IN (" text="'1'"/>
+
+    <Field name="adUserClient" value="void"></Field>
+    <Field name="adOrgClient" value="void"></Field>
+    <Field name="createdby" value="void"></Field>
+    
+    <Field name="trBgcolor" value="void"></Field>
+    <Field name="totalCount" value="void"></Field>
+    <Field name="dateTimeFormat" value=""></Field>
+  </SqlMethod>
+  
+  
+
+  <SqlMethod name="set" type="constant" return="multiple">
+      <SqlMethodComment>Create a registry</SqlMethodComment>
+      <Sql></Sql>
+
+<Parameter name="adOrgId"></Parameter><Parameter name="fromdate"></Parameter><Parameter name="updatedby"></Parameter><Parameter name="updatedbyr"></Parameter><Parameter name="todate"></Parameter><Parameter name="approve"></Parameter><Parameter name="totalweekoff"></Parameter><Parameter name="process"></Parameter><Parameter name="totalonduty"></Parameter><Parameter name="adClientId"></Parameter><Parameter name="rchrEmployeeId"></Parameter><Parameter name="isactive"></Parameter><Parameter name="total"></Parameter><Parameter name="rchrOndutyId"></Parameter><Parameter name="createdby"></Parameter><Parameter name="createdbyr"></Parameter>
+   </SqlMethod>
+
+
+
+
+
+
+   <SqlMethod name="selectDef2E23B0C01FC54340804C6900AA6C02C4_0" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>Select for auxiliar field</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT  ( COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table2.Name), ''))), '') ) as Updatedby FROM AD_User left join (select AD_User_ID, Name from AD_User) table2 on (AD_User.AD_User_ID = table2.AD_User_ID) WHERE AD_User.isActive='Y' AND AD_User.AD_User_ID = ?  
+    ]]></Sql>
+<Parameter name="UpdatedbyR"/>
+  </SqlMethod>
+
+   <SqlMethod name="selectDefFC509F9C89D74FE0A7F9F557C1BC68EF_1" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>Select for auxiliar field</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT  ( COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table2.Name), ''))), '') ) as Createdby FROM AD_User left join (select AD_User_ID, Name from AD_User) table2 on (AD_User.AD_User_ID = table2.AD_User_ID) WHERE AD_User.isActive='Y' AND AD_User.AD_User_ID = ?  
+    ]]></Sql>
+<Parameter name="CreatedbyR"/>
+  </SqlMethod>
+
+
+
+
+
+
+
+
+
+
+  <SqlMethod name="update" type="preparedStatement" return="rowCount" static="false" connection="true">
+    <Sql><![CDATA[
+        UPDATE Rchr_Onduty
+        SET AD_Org_ID = (?) , Isactive = (?) , Rchr_Employee_ID = (?) , Process = (?) , Approve = (?) , Fromdate = TO_DATE(?) , Todate = TO_DATE(?) , Total = TO_NUMBER(?) , Totalonduty = TO_NUMBER(?) , Totalweekoff = TO_NUMBER(?) , AD_Client_ID = (?) , Rchr_Onduty_ID = (?) , updated = now(), updatedby = ? 
+        WHERE Rchr_Onduty.Rchr_Onduty_ID = ? 
+        
+        AND Rchr_Onduty.AD_Client_ID IN ('1') 
+        AND Rchr_Onduty.AD_Org_ID IN ('1') 
+    ]]></Sql>
+    <Parameter name="adOrgId"></Parameter> <Parameter name="isactive"></Parameter> <Parameter name="rchrEmployeeId"></Parameter> <Parameter name="process"></Parameter> <Parameter name="approve"></Parameter> <Parameter name="fromdate"></Parameter> <Parameter name="todate"></Parameter> <Parameter name="total"></Parameter> <Parameter name="totalonduty"></Parameter> <Parameter name="totalweekoff"></Parameter> <Parameter name="adClientId"></Parameter> <Parameter name="rchrOndutyId"></Parameter> 
+    <Parameter name="updatedby"></Parameter>
+    <Parameter id="paramKey" name="rchrOndutyId"></Parameter>
+    
+    
+        <Parameter name="adUserClient" type="replace" optional="true" after="Rchr_Onduty.AD_Client_ID IN (" text="'1'"/>
+        <Parameter name="adOrgClient" type="replace" optional="true" after="Rchr_Onduty.AD_Org_ID IN (" text="'1'"/>
+  </SqlMethod>
+
+  <SqlMethod name="insert" type="preparedStatement" return="rowCount" static="false" connection="true">
+    <Sql><![CDATA[
+        INSERT INTO Rchr_Onduty 
+        (AD_Org_ID, Isactive, Rchr_Employee_ID, Process, Approve, Fromdate, Todate, Total, Totalonduty, Totalweekoff, AD_Client_ID, Rchr_Onduty_ID, created, createdby, updated, updatedBy)
+        VALUES ((?), (?), (?), (?), (?), TO_DATE(?), TO_DATE(?), TO_NUMBER(?), TO_NUMBER(?), TO_NUMBER(?), (?), (?), now(), ?, now(), ?)
+    ]]></Sql>
+    <Parameter name="adOrgId"></Parameter> <Parameter name="isactive"></Parameter> <Parameter name="rchrEmployeeId"></Parameter> <Parameter name="process"></Parameter> <Parameter name="approve"></Parameter> <Parameter name="fromdate"></Parameter> <Parameter name="todate"></Parameter> <Parameter name="total"></Parameter> <Parameter name="totalonduty"></Parameter> <Parameter name="totalweekoff"></Parameter> <Parameter name="adClientId"></Parameter> <Parameter name="rchrOndutyId"></Parameter> 
+    <Parameter name="createdby"></Parameter>
+    <Parameter name="updatedby"></Parameter>
+  </SqlMethod>
+
+  <SqlMethod name="delete" type="preparedStatement" return="rowCount">
+    <Sql><![CDATA[
+        DELETE FROM Rchr_Onduty
+        WHERE Rchr_Onduty.Rchr_Onduty_ID = ? 
+        
+        AND Rchr_Onduty.AD_Client_ID IN ('1') 
+        AND Rchr_Onduty.AD_Org_ID IN ('1') 
+    ]]></Sql>
+    <Parameter name="param1"></Parameter>
+    
+        <Parameter name="adUserClient" type="replace" optional="true" after="Rchr_Onduty.AD_Client_ID IN (" text="'1'"/>
+        <Parameter name="adOrgClient" type="replace" optional="true" after="Rchr_Onduty.AD_Org_ID IN (" text="'1'"/>
+  </SqlMethod>
+
+  <SqlMethod name="selectOrg" type="preparedStatement" return="string">
+    <SqlMethodComment>Select for relation</SqlMethodComment>
+    <Sql><![CDATA[ 
+        SELECT AD_ORG_ID
+          FROM Rchr_Onduty
+         WHERE Rchr_Onduty.Rchr_Onduty_ID = ? 
+    ]]></Sql>
+    <Parameter name="id"></Parameter>
+  </SqlMethod>
+  
+  <SqlMethod name="getCurrentDBTimestamp" type="preparedStatement" return="string">
+    <Sql><![CDATA[ 
+        SELECT to_char(Updated, 'YYYYMMDDHH24MISS') as Updated_Time_Stamp
+          FROM Rchr_Onduty
+         WHERE Rchr_Onduty.Rchr_Onduty_ID = ? 
+    ]]></Sql>
+    <Parameter name="id"></Parameter>
+  </SqlMethod>
+</SqlClass>

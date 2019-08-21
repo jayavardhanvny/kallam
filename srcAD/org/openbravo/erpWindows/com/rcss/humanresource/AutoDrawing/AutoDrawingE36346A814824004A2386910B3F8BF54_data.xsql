@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SqlClass id="class" name="AutoDrawingE36346A814824004A2386910B3F8BF54Data" package="org.openbravo.erpWindows.com.rcss.humanresource.AutoDrawing">
+  <SqlClassComment>WAD Generated class</SqlClassComment>
+
+  <SqlMethod name="selectEdit" type="preparedStatement" return="multiple">
+    <SqlMethodComment>Select for edit</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT to_char(Rchr_Autodrawing.Created, ?) as created, 
+        (SELECT NAME FROM AD_USER u WHERE AD_USER_ID = Rchr_Autodrawing.CreatedBy) as CreatedByR, 
+        to_char(Rchr_Autodrawing.Updated, ?) as updated, 
+        to_char(Rchr_Autodrawing.Updated, 'YYYYMMDDHH24MISS') as Updated_Time_Stamp,  
+        Rchr_Autodrawing.UpdatedBy, 
+        (SELECT NAME FROM AD_USER u WHERE AD_USER_ID = Rchr_Autodrawing.UpdatedBy) as UpdatedByR,
+        Rchr_Autodrawing.AD_Org_ID, 
+COALESCE(Rchr_Autodrawing.Isactive, 'N') AS Isactive, 
+Rchr_Autodrawing.Rchr_Sizing_Beam_ID, 
+(CASE WHEN Rchr_Autodrawing.Rchr_Sizing_Beam_ID IS NULL THEN '' ELSE  (COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table1.Line), ''))),'')  || ' - ' || COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table2.Value), ''))),'')  || ' - ' || COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table2.Tareweight), ''))),'')  || ' - ' || COALESCE(TO_CHAR(list1.name),'') ) END) AS Rchr_Sizing_Beam_IDR, 
+Rchr_Autodrawing.Sizingstartdate, 
+Rchr_Autodrawing.Autostartdate, 
+Rchr_Autodrawing.Rchr_Beam_ID, 
+(CASE WHEN Rchr_Autodrawing.Rchr_Beam_ID IS NULL THEN '' ELSE  (COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table3.Value), ''))),'')  || ' - ' || COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table3.Tareweight), ''))),'')  || ' - ' || COALESCE(TO_CHAR(list2.name),'') ) END) AS Rchr_Beam_IDR, 
+Rchr_Autodrawing.Rchr_Directwarp_ID, 
+(CASE WHEN Rchr_Autodrawing.Rchr_Directwarp_ID IS NULL THEN '' ELSE  (COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table4.Documentno), ''))),'') ) END) AS Rchr_Directwarp_IDR, 
+Rchr_Autodrawing.Rchr_Qualitystandard_ID, 
+(CASE WHEN Rchr_Autodrawing.Rchr_Qualitystandard_ID IS NULL THEN '' ELSE  (COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table5.Qualityno), ''))),'')  || ' - ' || COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table5.Partyconstruction), ''))),'') ) END) AS Rchr_Qualitystandard_IDR, 
+Rchr_Autodrawing.Rchr_Jobcard_ID, 
+(CASE WHEN Rchr_Autodrawing.Rchr_Jobcard_ID IS NULL THEN '' ELSE  (COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table6.Documentno), ''))),'') ) END) AS Rchr_Jobcard_IDR, 
+Rchr_Autodrawing.Beamlength, 
+Rchr_Autodrawing.Gross_Weight, 
+Rchr_Autodrawing.Tare_Weight, 
+Rchr_Autodrawing.Netweight, 
+Rchr_Autodrawing.Autoenddate, 
+Rchr_Autodrawing.Status, 
+(CASE WHEN Rchr_Autodrawing.Status IS NULL THEN '' ELSE  ( COALESCE(TO_CHAR(list3.name),'') ) END) AS StatusR, 
+Rchr_Autodrawing.Process, 
+TO_CHAR(Rchr_Autodrawing.Fromtime, 'HH24:MI:SS') AS Fromtime, 
+TO_CHAR(Rchr_Autodrawing.Totime, 'HH24:MI:SS') AS Totime, 
+Rchr_Autodrawing.Reducedbeamlength, 
+Rchr_Autodrawing.Rchr_Autodrawing_ID, 
+Rchr_Autodrawing.AD_Client_ID, 
+ 
+        ? AS LANGUAGE 
+        FROM Rchr_Autodrawing left join (select Rchr_Sizing_Beam_ID, Line, Rchr_Beam_ID from Rchr_Sizing_Beam) table1 on (Rchr_Autodrawing.Rchr_Sizing_Beam_ID = table1.Rchr_Sizing_Beam_ID) left join (select Rchr_Beam_ID, Value, Tareweight, Frindgetype from Rchr_Beam) table2 on (table1.Rchr_Beam_ID = table2.Rchr_Beam_ID) left join ad_ref_list_v list1 on (table2.Frindgetype = list1.value and list1.ad_reference_id = '789FB34329ED4D21BB969920F8C308EC' and list1.ad_language = ?)  left join (select Rchr_Beam_ID, Value, Tareweight, Frindgetype from Rchr_Beam) table3 on (Rchr_Autodrawing.Rchr_Beam_ID = table3.Rchr_Beam_ID) left join ad_ref_list_v list2 on (table3.Frindgetype = list2.value and list2.ad_reference_id = '789FB34329ED4D21BB969920F8C308EC' and list2.ad_language = ?)  left join (select Rchr_Directwarp_ID, Documentno from Rchr_Directwarp) table4 on (Rchr_Autodrawing.Rchr_Directwarp_ID = table4.Rchr_Directwarp_ID) left join (select Rchr_Qualitystandard_ID, Qualityno, Partyconstruction from Rchr_Qualitystandard) table5 on (Rchr_Autodrawing.Rchr_Qualitystandard_ID = table5.Rchr_Qualitystandard_ID) left join (select Rchr_Jobcard_ID, Documentno from Rchr_Jobcard) table6 on (Rchr_Autodrawing.Rchr_Jobcard_ID = table6.Rchr_Jobcard_ID) left join ad_ref_list_v list3 on (Rchr_Autodrawing.Status = list3.value and list3.ad_reference_id = '3B8CB20CCC9D41338FC8DCFEFDDB4832' and list3.ad_language = ?) 
+        WHERE 2=2 
+
+        AND 1=1 
+        AND Rchr_Autodrawing.Rchr_Autodrawing_ID = ? 
+        AND Rchr_Autodrawing.AD_Client_ID IN ('1') 
+           AND Rchr_Autodrawing.AD_Org_ID IN ('1') 
+    ]]></Sql>
+    <Parameter name="dateTimeFormat"></Parameter>
+    <Parameter name="dateTimeFormat"></Parameter>
+    
+    <Parameter name="paramLanguage"></Parameter>
+<Parameter name="paramLanguage"/>
+<Parameter name="paramLanguage"/>
+<Parameter name="paramLanguage"/>
+
+
+    <Parameter name="key"></Parameter>
+        <Parameter name="adUserClient" type="replace" optional="true" after="Rchr_Autodrawing.AD_Client_ID IN (" text="'1'"/>
+        <Parameter name="adOrgClient" type="replace" optional="true" after="Rchr_Autodrawing.AD_Org_ID IN (" text="'1'"/>
+
+    <Field name="adUserClient" value="void"></Field>
+    <Field name="adOrgClient" value="void"></Field>
+    <Field name="createdby" value="void"></Field>
+    
+    <Field name="trBgcolor" value="void"></Field>
+    <Field name="totalCount" value="void"></Field>
+    <Field name="dateTimeFormat" value=""></Field>
+  </SqlMethod>
+  
+  
+
+  <SqlMethod name="set" type="constant" return="multiple">
+      <SqlMethodComment>Create a registry</SqlMethodComment>
+      <Sql></Sql>
+
+<Parameter name="tareWeight"></Parameter><Parameter name="createdby"></Parameter><Parameter name="createdbyr"></Parameter><Parameter name="rchrBeamId"></Parameter><Parameter name="beamlength"></Parameter><Parameter name="sizingstartdate"></Parameter><Parameter name="rchrAutodrawingId"></Parameter><Parameter name="rchrQualitystandardId"></Parameter><Parameter name="grossWeight"></Parameter><Parameter name="netweight"></Parameter><Parameter name="reducedbeamlength"></Parameter><Parameter name="isactive"></Parameter><Parameter name="totime"></Parameter><Parameter name="process"></Parameter><Parameter name="status"></Parameter><Parameter name="rchrDirectwarpId"></Parameter><Parameter name="autostartdate"></Parameter><Parameter name="fromtime"></Parameter><Parameter name="updatedby"></Parameter><Parameter name="updatedbyr"></Parameter><Parameter name="autoenddate"></Parameter><Parameter name="rchrJobcardId"></Parameter><Parameter name="rchrSizingBeamId"></Parameter><Parameter name="adClientId"></Parameter><Parameter name="adOrgId"></Parameter>
+   </SqlMethod>
+
+
+
+
+
+
+   <SqlMethod name="selectDef079CC5DB2A15481AA565D2444EB5E9A3_0" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>Select for auxiliar field</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT  ( COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table2.Name), ''))), '') ) as Createdby FROM AD_User left join (select AD_User_ID, Name from AD_User) table2 on (AD_User.AD_User_ID = table2.AD_User_ID) WHERE AD_User.isActive='Y' AND AD_User.AD_User_ID = ?  
+    ]]></Sql>
+<Parameter name="CreatedbyR"/>
+  </SqlMethod>
+
+   <SqlMethod name="selectDefA64ECD9EF7AB47CFBB0075DB3F30ED97_1" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>Select for auxiliar field</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT  ( COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table2.Name), ''))), '') ) as Updatedby FROM AD_User left join (select AD_User_ID, Name from AD_User) table2 on (AD_User.AD_User_ID = table2.AD_User_ID) WHERE AD_User.isActive='Y' AND AD_User.AD_User_ID = ?  
+    ]]></Sql>
+<Parameter name="UpdatedbyR"/>
+  </SqlMethod>
+
+
+
+
+
+
+
+
+
+
+  <SqlMethod name="update" type="preparedStatement" return="rowCount" static="false" connection="true">
+    <Sql><![CDATA[
+        UPDATE Rchr_Autodrawing
+        SET AD_Org_ID = (?) , Isactive = (?) , Rchr_Sizing_Beam_ID = (?) , Sizingstartdate = TO_DATE(?) , Autostartdate = TO_DATE(?) , Rchr_Beam_ID = (?) , Rchr_Directwarp_ID = (?) , Rchr_Qualitystandard_ID = (?) , Rchr_Jobcard_ID = (?) , Beamlength = TO_NUMBER(?) , Gross_Weight = TO_NUMBER(?) , Tare_Weight = TO_NUMBER(?) , Netweight = TO_NUMBER(?) , Autoenddate = TO_DATE(?) , Status = (?) , Process = (?) , Fromtime = TO_TIMESTAMP(?,'HH24:MI:SS') , Totime = TO_TIMESTAMP(?,'HH24:MI:SS') , Reducedbeamlength = TO_NUMBER(?) , Rchr_Autodrawing_ID = (?) , AD_Client_ID = (?) , updated = now(), updatedby = ? 
+        WHERE Rchr_Autodrawing.Rchr_Autodrawing_ID = ? 
+        
+        AND Rchr_Autodrawing.AD_Client_ID IN ('1') 
+        AND Rchr_Autodrawing.AD_Org_ID IN ('1') 
+    ]]></Sql>
+    <Parameter name="adOrgId"></Parameter> <Parameter name="isactive"></Parameter> <Parameter name="rchrSizingBeamId"></Parameter> <Parameter name="sizingstartdate"></Parameter> <Parameter name="autostartdate"></Parameter> <Parameter name="rchrBeamId"></Parameter> <Parameter name="rchrDirectwarpId"></Parameter> <Parameter name="rchrQualitystandardId"></Parameter> <Parameter name="rchrJobcardId"></Parameter> <Parameter name="beamlength"></Parameter> <Parameter name="grossWeight"></Parameter> <Parameter name="tareWeight"></Parameter> <Parameter name="netweight"></Parameter> <Parameter name="autoenddate"></Parameter> <Parameter name="status"></Parameter> <Parameter name="process"></Parameter> <Parameter name="fromtime"></Parameter> <Parameter name="totime"></Parameter> <Parameter name="reducedbeamlength"></Parameter> <Parameter name="rchrAutodrawingId"></Parameter> <Parameter name="adClientId"></Parameter> 
+    <Parameter name="updatedby"></Parameter>
+    <Parameter id="paramKey" name="rchrAutodrawingId"></Parameter>
+    
+    
+        <Parameter name="adUserClient" type="replace" optional="true" after="Rchr_Autodrawing.AD_Client_ID IN (" text="'1'"/>
+        <Parameter name="adOrgClient" type="replace" optional="true" after="Rchr_Autodrawing.AD_Org_ID IN (" text="'1'"/>
+  </SqlMethod>
+
+  <SqlMethod name="insert" type="preparedStatement" return="rowCount" static="false" connection="true">
+    <Sql><![CDATA[
+        INSERT INTO Rchr_Autodrawing 
+        (AD_Org_ID, Isactive, Rchr_Sizing_Beam_ID, Sizingstartdate, Autostartdate, Rchr_Beam_ID, Rchr_Directwarp_ID, Rchr_Qualitystandard_ID, Rchr_Jobcard_ID, Beamlength, Gross_Weight, Tare_Weight, Netweight, Autoenddate, Status, Process, Fromtime, Totime, Reducedbeamlength, Rchr_Autodrawing_ID, AD_Client_ID, created, createdby, updated, updatedBy)
+        VALUES ((?), (?), (?), TO_DATE(?), TO_DATE(?), (?), (?), (?), (?), TO_NUMBER(?), TO_NUMBER(?), TO_NUMBER(?), TO_NUMBER(?), TO_DATE(?), (?), (?), TO_TIMESTAMP(?, 'HH24:MI:SS'), TO_TIMESTAMP(?, 'HH24:MI:SS'), TO_NUMBER(?), (?), (?), now(), ?, now(), ?)
+    ]]></Sql>
+    <Parameter name="adOrgId"></Parameter> <Parameter name="isactive"></Parameter> <Parameter name="rchrSizingBeamId"></Parameter> <Parameter name="sizingstartdate"></Parameter> <Parameter name="autostartdate"></Parameter> <Parameter name="rchrBeamId"></Parameter> <Parameter name="rchrDirectwarpId"></Parameter> <Parameter name="rchrQualitystandardId"></Parameter> <Parameter name="rchrJobcardId"></Parameter> <Parameter name="beamlength"></Parameter> <Parameter name="grossWeight"></Parameter> <Parameter name="tareWeight"></Parameter> <Parameter name="netweight"></Parameter> <Parameter name="autoenddate"></Parameter> <Parameter name="status"></Parameter> <Parameter name="process"></Parameter> <Parameter name="fromtime"></Parameter> <Parameter name="totime"></Parameter> <Parameter name="reducedbeamlength"></Parameter> <Parameter name="rchrAutodrawingId"></Parameter> <Parameter name="adClientId"></Parameter> 
+    <Parameter name="createdby"></Parameter>
+    <Parameter name="updatedby"></Parameter>
+  </SqlMethod>
+
+  <SqlMethod name="delete" type="preparedStatement" return="rowCount">
+    <Sql><![CDATA[
+        DELETE FROM Rchr_Autodrawing
+        WHERE Rchr_Autodrawing.Rchr_Autodrawing_ID = ? 
+        
+        AND Rchr_Autodrawing.AD_Client_ID IN ('1') 
+        AND Rchr_Autodrawing.AD_Org_ID IN ('1') 
+    ]]></Sql>
+    <Parameter name="param1"></Parameter>
+    
+        <Parameter name="adUserClient" type="replace" optional="true" after="Rchr_Autodrawing.AD_Client_ID IN (" text="'1'"/>
+        <Parameter name="adOrgClient" type="replace" optional="true" after="Rchr_Autodrawing.AD_Org_ID IN (" text="'1'"/>
+  </SqlMethod>
+
+  <SqlMethod name="selectOrg" type="preparedStatement" return="string">
+    <SqlMethodComment>Select for relation</SqlMethodComment>
+    <Sql><![CDATA[ 
+        SELECT AD_ORG_ID
+          FROM Rchr_Autodrawing
+         WHERE Rchr_Autodrawing.Rchr_Autodrawing_ID = ? 
+    ]]></Sql>
+    <Parameter name="id"></Parameter>
+  </SqlMethod>
+  
+  <SqlMethod name="getCurrentDBTimestamp" type="preparedStatement" return="string">
+    <Sql><![CDATA[ 
+        SELECT to_char(Updated, 'YYYYMMDDHH24MISS') as Updated_Time_Stamp
+          FROM Rchr_Autodrawing
+         WHERE Rchr_Autodrawing.Rchr_Autodrawing_ID = ? 
+    ]]></Sql>
+    <Parameter name="id"></Parameter>
+  </SqlMethod>
+</SqlClass>

@@ -1,0 +1,265 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SqlClass id="class" name="HeaderData" package="org.openbravo.erpWindows.SalesQuotation">
+  <SqlClassComment>WAD Generated class</SqlClassComment>
+
+  <SqlMethod name="selectEdit" type="preparedStatement" return="multiple">
+    <SqlMethodComment>Select for edit</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT to_char(C_Order.Created, ?) as created, 
+        (SELECT NAME FROM AD_USER u WHERE AD_USER_ID = C_Order.CreatedBy) as CreatedByR, 
+        to_char(C_Order.Updated, ?) as updated, 
+        to_char(C_Order.Updated, 'YYYYMMDDHH24MISS') as Updated_Time_Stamp,  
+        C_Order.UpdatedBy, 
+        (SELECT NAME FROM AD_USER u WHERE AD_USER_ID = C_Order.UpdatedBy) as UpdatedByR,
+        C_Order.AD_Org_ID, 
+(CASE WHEN C_Order.AD_Org_ID IS NULL THEN '' ELSE  (COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table1.Name), ''))),'') ) END) AS AD_Org_IDR, 
+C_Order.C_DocTypeTarget_ID, 
+(CASE WHEN C_Order.C_DocTypeTarget_ID IS NULL THEN '' ELSE  ( COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR((CASE WHEN tableTRL2.Name IS NULL THEN TO_CHAR(table2.Name) ELSE TO_CHAR(tableTRL2.Name) END)), ''))),'') ) END) AS C_DocTypeTarget_IDR, 
+C_Order.DocumentNo, 
+C_Order.C_Return_Reason_ID, 
+C_Order.DateOrdered, 
+C_Order.C_BPartner_ID, 
+(CASE WHEN C_Order.C_BPartner_ID IS NULL THEN '' ELSE  (COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table3.Name), ''))),'') ) END) AS C_BPartner_IDR, 
+C_Order.C_BPartner_Location_ID, 
+(CASE WHEN C_Order.C_BPartner_Location_ID IS NULL THEN '' ELSE  (COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table4.Name), ''))),'') ) END) AS C_BPartner_Location_IDR, 
+C_Order.RM_PickFromShipment, 
+C_Order.M_PriceList_ID, 
+(CASE WHEN C_Order.M_PriceList_ID IS NULL THEN '' ELSE  (COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table5.Name), ''))),'') ) END) AS M_PriceList_IDR, 
+C_Order.RM_ReceiveMaterials, 
+C_Order.DatePromised, 
+C_Order.validuntil, 
+C_Order.FIN_Paymentmethod_ID, 
+(CASE WHEN C_Order.FIN_Paymentmethod_ID IS NULL THEN '' ELSE  (COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table6.Name), ''))),'') ) END) AS FIN_Paymentmethod_IDR, 
+C_Order.RM_CreateInvoice, 
+C_Order.C_PaymentTerm_ID, 
+(CASE WHEN C_Order.C_PaymentTerm_ID IS NULL THEN '' ELSE  (COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR((CASE WHEN tableTRL7.Name IS NULL THEN TO_CHAR(table7.Name) ELSE TO_CHAR(tableTRL7.Name) END)), ''))),'') ) END) AS C_PaymentTerm_IDR, 
+C_Order.M_Warehouse_ID, 
+(CASE WHEN C_Order.M_Warehouse_ID IS NULL THEN '' ELSE  ( COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table8.Name), ''))),'') ) END) AS M_Warehouse_IDR, 
+C_Order.C_Reject_Reason_ID, 
+(CASE WHEN C_Order.C_Reject_Reason_ID IS NULL THEN '' ELSE  (COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table9.Name), ''))),'') ) END) AS C_Reject_Reason_IDR, 
+C_Order.C_Project_ID, 
+(CASE WHEN C_Order.C_Project_ID IS NULL THEN '' ELSE  (COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table10.Value), ''))),'')  || ' - ' || COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table10.Name), ''))),'') ) END) AS C_Project_IDR, 
+C_Order.InvoiceRule, 
+C_Order.DocStatus, 
+C_Order.GrandTotal, 
+C_Order.TotalLines, 
+C_Order.C_Currency_ID, 
+C_Order.AD_User_ID, 
+C_Order.C_DocType_ID, 
+C_Order.POReference, 
+C_Order.SalesRep_ID, 
+(CASE WHEN C_Order.SalesRep_ID IS NULL THEN '' ELSE  ( COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table11.Name), ''))),'') ) END) AS SalesRep_IDR, 
+C_Order.Description, 
+C_Order.BillTo_ID, 
+C_Order.Delivery_Location_ID, 
+C_Order.CopyFrom, 
+C_Order.CopyFromPO, 
+C_Order.DocAction, 
+list1.name as DocAction_BTN, 
+C_Order.DeliveryViaRule, 
+C_Order.M_Shipper_ID, 
+C_Order.DeliveryRule, 
+C_Order.FreightCostRule, 
+C_Order.FreightAmt, 
+COALESCE(C_Order.IsDiscountPrinted, 'N') AS IsDiscountPrinted, 
+C_Order.PriorityRule, 
+C_Order.ChargeAmt, 
+C_Order.C_Charge_ID, 
+C_Order.Convertquotation, 
+C_Order.Calculate_Promotions, 
+C_Order.C_Activity_ID, 
+C_Order.C_Campaign_ID, 
+C_Order.AD_OrgTrx_ID, 
+C_Order.User1_ID, 
+C_Order.User2_ID, 
+C_Order.Deliverynotes, 
+C_Order.DropShip_BPartner_ID, 
+COALESCE(C_Order.IsSelfService, 'N') AS IsSelfService, 
+C_Order.PaymentRule, 
+C_Order.C_Incoterms_ID, 
+C_Order.DatePrinted, 
+C_Order.AD_Client_ID, 
+C_Order.DropShip_User_ID, 
+COALESCE(C_Order.IsDelivered, 'N') AS IsDelivered, 
+C_Order.Generatetemplate, 
+COALESCE(C_Order.IsSelected, 'N') AS IsSelected, 
+C_Order.Processing, 
+C_Order.Incotermsdescription, 
+COALESCE(C_Order.Processed, 'N') AS Processed, 
+COALESCE(C_Order.IsTaxIncluded, 'N') AS IsTaxIncluded, 
+C_Order.DropShip_Location_ID, 
+C_Order.Posted, 
+COALESCE(C_Order.IsSOTrx, 'N') AS IsSOTrx, 
+COALESCE(C_Order.IsInvoiced, 'N') AS IsInvoiced, 
+COALESCE(C_Order.IsPrinted, 'N') AS IsPrinted, 
+COALESCE(C_Order.IsActive, 'N') AS IsActive, 
+C_Order.DateAcct, 
+C_Order.C_Order_ID, 
+ 
+        ? AS LANGUAGE 
+        FROM C_Order left join (select AD_Org_ID, Name from AD_Org) table1 on (C_Order.AD_Org_ID = table1.AD_Org_ID) left join (select C_DocType_ID, Name from C_DocType) table2 on (C_Order.C_DocTypeTarget_ID =  table2.C_DocType_ID) left join (select C_DocType_ID,AD_Language, Name from C_DocType_TRL) tableTRL2 on (table2.C_DocType_ID = tableTRL2.C_DocType_ID and tableTRL2.AD_Language = ?)  left join (select C_BPartner_ID, Name from C_BPartner) table3 on (C_Order.C_BPartner_ID = table3.C_BPartner_ID) left join (select C_BPartner_Location_ID, Name from C_BPartner_Location) table4 on (C_Order.C_BPartner_Location_ID = table4.C_BPartner_Location_ID) left join (select M_PriceList_ID, Name from M_PriceList) table5 on (C_Order.M_PriceList_ID = table5.M_PriceList_ID) left join (select FIN_Paymentmethod_ID, Name from FIN_Paymentmethod) table6 on (C_Order.FIN_Paymentmethod_ID = table6.FIN_Paymentmethod_ID) left join (select C_PaymentTerm_ID, Name from C_PaymentTerm) table7 on (C_Order.C_PaymentTerm_ID = table7.C_PaymentTerm_ID) left join (select C_PaymentTerm_ID,AD_Language, Name from C_PaymentTerm_TRL) tableTRL7 on (table7.C_PaymentTerm_ID = tableTRL7.C_PaymentTerm_ID and tableTRL7.AD_Language = ?)  left join (select M_Warehouse_ID, Name from M_Warehouse) table8 on (C_Order.M_Warehouse_ID =  table8.M_Warehouse_ID) left join (select C_Reject_Reason_ID, Name from C_Reject_Reason) table9 on (C_Order.C_Reject_Reason_ID = table9.C_Reject_Reason_ID) left join (select C_Project_ID, Value, Name from C_Project) table10 on (C_Order.C_Project_ID = table10.C_Project_ID) left join (select AD_User_ID, Name from AD_User) table11 on (C_Order.SalesRep_ID =  table11.AD_User_ID) left join ad_ref_list_v list1 on (list1.ad_reference_id = 'FF80818130217A35013021A672400035' and list1.ad_language = ?  AND (CASE C_Order.DocAction WHEN '--' THEN 'CL' ELSE TO_CHAR(C_Order.DocAction) END) = list1.value)
+        WHERE 2=2 
+ AND C_Order.IsSOTrx='Y'
+        AND 1=1 
+        AND C_Order.C_Order_ID = ? 
+        AND C_Order.AD_Client_ID IN ('1') 
+           AND C_Order.AD_Org_ID IN ('1') 
+    ]]></Sql>
+    <Parameter name="dateTimeFormat"></Parameter>
+    <Parameter name="dateTimeFormat"></Parameter>
+    
+    <Parameter name="paramLanguage"></Parameter>
+<Parameter name="paramLanguage"/>
+<Parameter name="paramLanguage"/>
+<Parameter name="paramLanguage"/>
+
+
+    <Parameter name="key"></Parameter>
+        <Parameter name="adUserClient" type="replace" optional="true" after="C_Order.AD_Client_ID IN (" text="'1'"/>
+        <Parameter name="adOrgClient" type="replace" optional="true" after="C_Order.AD_Org_ID IN (" text="'1'"/>
+
+    <Field name="adUserClient" value="void"></Field>
+    <Field name="adOrgClient" value="void"></Field>
+    <Field name="createdby" value="void"></Field>
+    
+    <Field name="trBgcolor" value="void"></Field>
+    <Field name="totalCount" value="void"></Field>
+    <Field name="dateTimeFormat" value=""></Field>
+  </SqlMethod>
+  
+  
+
+  <SqlMethod name="set" type="constant" return="multiple">
+      <SqlMethodComment>Create a registry</SqlMethodComment>
+      <Sql></Sql>
+
+<Parameter name="convertquotation"></Parameter><Parameter name="validuntil"></Parameter><Parameter name="cOrderId"></Parameter><Parameter name="adClientId"></Parameter><Parameter name="adOrgId"></Parameter><Parameter name="isactive"></Parameter><Parameter name="createdby"></Parameter><Parameter name="createdbyr"></Parameter><Parameter name="updatedby"></Parameter><Parameter name="updatedbyr"></Parameter><Parameter name="documentno"></Parameter><Parameter name="docstatus"></Parameter><Parameter name="docaction"></Parameter><Parameter name="docactionBtn"></Parameter><Parameter name="cDoctypeId"></Parameter><Parameter name="cDoctypetargetId"></Parameter><Parameter name="description"></Parameter><Parameter name="isdelivered"></Parameter><Parameter name="isinvoiced"></Parameter><Parameter name="isprinted"></Parameter><Parameter name="dateordered"></Parameter><Parameter name="datepromised"></Parameter><Parameter name="dateacct"></Parameter><Parameter name="salesrepId"></Parameter><Parameter name="cPaymenttermId"></Parameter><Parameter name="billtoId"></Parameter><Parameter name="cCurrencyId"></Parameter><Parameter name="invoicerule"></Parameter><Parameter name="freightamt"></Parameter><Parameter name="deliveryviarule"></Parameter><Parameter name="mShipperId"></Parameter><Parameter name="priorityrule"></Parameter><Parameter name="totallines"></Parameter><Parameter name="grandtotal"></Parameter><Parameter name="mWarehouseId"></Parameter><Parameter name="mPricelistId"></Parameter><Parameter name="processing"></Parameter><Parameter name="cCampaignId"></Parameter><Parameter name="cBpartnerId"></Parameter><Parameter name="cBpartnerIdr"></Parameter><Parameter name="adUserId"></Parameter><Parameter name="poreference"></Parameter><Parameter name="cChargeId"></Parameter><Parameter name="chargeamt"></Parameter><Parameter name="processed"></Parameter><Parameter name="cBpartnerLocationId"></Parameter><Parameter name="cProjectId"></Parameter><Parameter name="cProjectIdr"></Parameter><Parameter name="cActivityId"></Parameter><Parameter name="issotrx"></Parameter><Parameter name="dateprinted"></Parameter><Parameter name="deliveryrule"></Parameter><Parameter name="freightcostrule"></Parameter><Parameter name="paymentrule"></Parameter><Parameter name="isdiscountprinted"></Parameter><Parameter name="posted"></Parameter><Parameter name="istaxincluded"></Parameter><Parameter name="isselected"></Parameter><Parameter name="deliverynotes"></Parameter><Parameter name="cIncotermsId"></Parameter><Parameter name="incotermsdescription"></Parameter><Parameter name="generatetemplate"></Parameter><Parameter name="deliveryLocationId"></Parameter><Parameter name="copyfrompo"></Parameter><Parameter name="finPaymentmethodId"></Parameter><Parameter name="dropshipUserId"></Parameter><Parameter name="dropshipBpartnerId"></Parameter><Parameter name="copyfrom"></Parameter><Parameter name="dropshipLocationId"></Parameter><Parameter name="isselfservice"></Parameter><Parameter name="adOrgtrxId"></Parameter><Parameter name="user2Id"></Parameter><Parameter name="user1Id"></Parameter><Parameter name="calculatePromotions"></Parameter><Parameter name="rmPickfromshipment"></Parameter><Parameter name="rmReceivematerials"></Parameter><Parameter name="rmCreateinvoice"></Parameter><Parameter name="cReturnReasonId"></Parameter><Parameter name="cRejectReasonId"></Parameter>
+   </SqlMethod>
+
+
+
+
+
+
+   <SqlMethod name="selectDef2166_0" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>Select for auxiliar field</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT  ( COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table2.Name), ''))), '') ) as CreatedBy FROM AD_User left join (select AD_User_ID, Name from AD_User) table2 on (AD_User.AD_User_ID = table2.AD_User_ID) WHERE AD_User.isActive='Y' AND AD_User.AD_User_ID = ?  
+    ]]></Sql>
+<Parameter name="CreatedByR"/>
+  </SqlMethod>
+
+   <SqlMethod name="selectDef2168_1" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>Select for auxiliar field</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT  ( COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table2.Name), ''))), '') ) as UpdatedBy FROM AD_User left join (select AD_User_ID, Name from AD_User) table2 on (AD_User.AD_User_ID = table2.AD_User_ID) WHERE AD_User.isActive='Y' AND AD_User.AD_User_ID = ?  
+    ]]></Sql>
+<Parameter name="UpdatedByR"/>
+  </SqlMethod>
+
+   <SqlMethod name="selectDef2202" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>Select for auxiliar field</SqlMethodComment>
+    <Sql><![CDATA[
+        select m_warehouse_id from ad_org_warehouse  where ad_org_id = ? group by m_warehouse_id, priority having min(priority) = priority 
+    ]]></Sql>
+
+<Parameter name="ad_org_id"/>
+  </SqlMethod>
+
+   <SqlMethod name="selectDef2762_2" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>Select for auxiliar field</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT  ( COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table2.Name), ''))), '') ) as C_BPartner_ID FROM C_BPartner left join (select C_BPartner_ID, Name from C_BPartner) table2 on (C_BPartner.C_BPartner_ID = table2.C_BPartner_ID) WHERE C_BPartner.isActive='Y' AND C_BPartner.C_BPartner_ID = ?  
+    ]]></Sql>
+<Parameter name="C_BPartner_IDR"/>
+  </SqlMethod>
+
+   <SqlMethod name="selectDef3402_3" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>Select for auxiliar field</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT  ( COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table2.Value), ''))), '')  || ' - ' || COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table2.Name), ''))), '') ) as C_Project_ID FROM C_Project left join (select C_Project_ID, Value, Name from C_Project) table2 on (C_Project.C_Project_ID = table2.C_Project_ID) WHERE C_Project.isActive='Y' AND C_Project.C_Project_ID = ?  
+    ]]></Sql>
+<Parameter name="C_Project_IDR"/>
+  </SqlMethod>
+
+
+
+
+
+  <SqlMethod name="updateDocAction" type="preparedStatement" return="rowCount">
+    <Sql><![CDATA[
+        UPDATE C_Order
+        SET docaction = ? 
+        WHERE C_Order.C_Order_ID = ?
+    ]]></Sql>
+    <Parameter name="docaction"></Parameter>
+    <Parameter id="paramKey" name="cOrderId"></Parameter>
+  </SqlMethod>
+
+
+
+
+
+
+  <SqlMethod name="update" type="preparedStatement" return="rowCount" static="false" connection="true">
+    <Sql><![CDATA[
+        UPDATE C_Order
+        SET AD_Org_ID = (?) , C_DocTypeTarget_ID = (?) , DocumentNo = (?) , C_Return_Reason_ID = (?) , DateOrdered = TO_DATE(?) , C_BPartner_ID = (?) , C_BPartner_Location_ID = (?) , RM_PickFromShipment = (?) , M_PriceList_ID = (?) , RM_ReceiveMaterials = (?) , DatePromised = TO_DATE(?) , validuntil = TO_DATE(?) , FIN_Paymentmethod_ID = (?) , RM_CreateInvoice = (?) , C_PaymentTerm_ID = (?) , M_Warehouse_ID = (?) , C_Reject_Reason_ID = (?) , C_Project_ID = (?) , InvoiceRule = (?) , DocStatus = (?) , GrandTotal = TO_NUMBER(?) , TotalLines = TO_NUMBER(?) , C_Currency_ID = (?) , AD_User_ID = (?) , C_DocType_ID = (?) , POReference = (?) , SalesRep_ID = (?) , Description = (?) , BillTo_ID = (?) , Delivery_Location_ID = (?) , CopyFrom = (?) , CopyFromPO = (?) , DocAction = (?) , DeliveryViaRule = (?) , M_Shipper_ID = (?) , DeliveryRule = (?) , FreightCostRule = (?) , FreightAmt = TO_NUMBER(?) , IsDiscountPrinted = (?) , PriorityRule = (?) , ChargeAmt = TO_NUMBER(?) , C_Charge_ID = (?) , Convertquotation = (?) , Calculate_Promotions = (?) , C_Activity_ID = (?) , C_Campaign_ID = (?) , AD_OrgTrx_ID = (?) , User1_ID = (?) , User2_ID = (?) , Deliverynotes = (?) , DropShip_BPartner_ID = (?) , IsSelfService = (?) , PaymentRule = (?) , C_Incoterms_ID = (?) , DatePrinted = TO_DATE(?) , AD_Client_ID = (?) , DropShip_User_ID = (?) , IsDelivered = (?) , Generatetemplate = (?) , IsSelected = (?) , Processing = (?) , Incotermsdescription = (?) , Processed = (?) , IsTaxIncluded = (?) , DropShip_Location_ID = (?) , Posted = (?) , IsSOTrx = (?) , IsInvoiced = (?) , IsPrinted = (?) , IsActive = (?) , DateAcct = TO_DATE(?) , C_Order_ID = (?) , updated = now(), updatedby = ? 
+        WHERE C_Order.C_Order_ID = ? 
+        
+        AND C_Order.AD_Client_ID IN ('1') 
+        AND C_Order.AD_Org_ID IN ('1') 
+    ]]></Sql>
+    <Parameter name="adOrgId"></Parameter> <Parameter name="cDoctypetargetId"></Parameter> <Parameter name="documentno"></Parameter> <Parameter name="cReturnReasonId"></Parameter> <Parameter name="dateordered"></Parameter> <Parameter name="cBpartnerId"></Parameter> <Parameter name="cBpartnerLocationId"></Parameter> <Parameter name="rmPickfromshipment"></Parameter> <Parameter name="mPricelistId"></Parameter> <Parameter name="rmReceivematerials"></Parameter> <Parameter name="datepromised"></Parameter> <Parameter name="validuntil"></Parameter> <Parameter name="finPaymentmethodId"></Parameter> <Parameter name="rmCreateinvoice"></Parameter> <Parameter name="cPaymenttermId"></Parameter> <Parameter name="mWarehouseId"></Parameter> <Parameter name="cRejectReasonId"></Parameter> <Parameter name="cProjectId"></Parameter> <Parameter name="invoicerule"></Parameter> <Parameter name="docstatus"></Parameter> <Parameter name="grandtotal"></Parameter> <Parameter name="totallines"></Parameter> <Parameter name="cCurrencyId"></Parameter> <Parameter name="adUserId"></Parameter> <Parameter name="cDoctypeId"></Parameter> <Parameter name="poreference"></Parameter> <Parameter name="salesrepId"></Parameter> <Parameter name="description"></Parameter> <Parameter name="billtoId"></Parameter> <Parameter name="deliveryLocationId"></Parameter> <Parameter name="copyfrom"></Parameter> <Parameter name="copyfrompo"></Parameter> <Parameter name="docaction"></Parameter> <Parameter name="deliveryviarule"></Parameter> <Parameter name="mShipperId"></Parameter> <Parameter name="deliveryrule"></Parameter> <Parameter name="freightcostrule"></Parameter> <Parameter name="freightamt"></Parameter> <Parameter name="isdiscountprinted"></Parameter> <Parameter name="priorityrule"></Parameter> <Parameter name="chargeamt"></Parameter> <Parameter name="cChargeId"></Parameter> <Parameter name="convertquotation"></Parameter> <Parameter name="calculatePromotions"></Parameter> <Parameter name="cActivityId"></Parameter> <Parameter name="cCampaignId"></Parameter> <Parameter name="adOrgtrxId"></Parameter> <Parameter name="user1Id"></Parameter> <Parameter name="user2Id"></Parameter> <Parameter name="deliverynotes"></Parameter> <Parameter name="dropshipBpartnerId"></Parameter> <Parameter name="isselfservice"></Parameter> <Parameter name="paymentrule"></Parameter> <Parameter name="cIncotermsId"></Parameter> <Parameter name="dateprinted"></Parameter> <Parameter name="adClientId"></Parameter> <Parameter name="dropshipUserId"></Parameter> <Parameter name="isdelivered"></Parameter> <Parameter name="generatetemplate"></Parameter> <Parameter name="isselected"></Parameter> <Parameter name="processing"></Parameter> <Parameter name="incotermsdescription"></Parameter> <Parameter name="processed"></Parameter> <Parameter name="istaxincluded"></Parameter> <Parameter name="dropshipLocationId"></Parameter> <Parameter name="posted"></Parameter> <Parameter name="issotrx"></Parameter> <Parameter name="isinvoiced"></Parameter> <Parameter name="isprinted"></Parameter> <Parameter name="isactive"></Parameter> <Parameter name="dateacct"></Parameter> <Parameter name="cOrderId"></Parameter> 
+    <Parameter name="updatedby"></Parameter>
+    <Parameter id="paramKey" name="cOrderId"></Parameter>
+    
+    
+        <Parameter name="adUserClient" type="replace" optional="true" after="C_Order.AD_Client_ID IN (" text="'1'"/>
+        <Parameter name="adOrgClient" type="replace" optional="true" after="C_Order.AD_Org_ID IN (" text="'1'"/>
+  </SqlMethod>
+
+  <SqlMethod name="insert" type="preparedStatement" return="rowCount" static="false" connection="true">
+    <Sql><![CDATA[
+        INSERT INTO C_Order 
+        (AD_Org_ID, C_DocTypeTarget_ID, DocumentNo, C_Return_Reason_ID, DateOrdered, C_BPartner_ID, C_BPartner_Location_ID, RM_PickFromShipment, M_PriceList_ID, RM_ReceiveMaterials, DatePromised, validuntil, FIN_Paymentmethod_ID, RM_CreateInvoice, C_PaymentTerm_ID, M_Warehouse_ID, C_Reject_Reason_ID, C_Project_ID, InvoiceRule, DocStatus, GrandTotal, TotalLines, C_Currency_ID, AD_User_ID, C_DocType_ID, POReference, SalesRep_ID, Description, BillTo_ID, Delivery_Location_ID, CopyFrom, CopyFromPO, DocAction, DeliveryViaRule, M_Shipper_ID, DeliveryRule, FreightCostRule, FreightAmt, IsDiscountPrinted, PriorityRule, ChargeAmt, C_Charge_ID, Convertquotation, Calculate_Promotions, C_Activity_ID, C_Campaign_ID, AD_OrgTrx_ID, User1_ID, User2_ID, Deliverynotes, DropShip_BPartner_ID, IsSelfService, PaymentRule, C_Incoterms_ID, DatePrinted, AD_Client_ID, DropShip_User_ID, IsDelivered, Generatetemplate, IsSelected, Processing, Incotermsdescription, Processed, IsTaxIncluded, DropShip_Location_ID, Posted, IsSOTrx, IsInvoiced, IsPrinted, IsActive, DateAcct, C_Order_ID, created, createdby, updated, updatedBy)
+        VALUES ((?), (?), (?), (?), TO_DATE(?), (?), (?), (?), (?), (?), TO_DATE(?), TO_DATE(?), (?), (?), (?), (?), (?), (?), (?), (?), TO_NUMBER(?), TO_NUMBER(?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), TO_NUMBER(?), (?), (?), TO_NUMBER(?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), TO_DATE(?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), TO_DATE(?), (?), now(), ?, now(), ?)
+    ]]></Sql>
+    <Parameter name="adOrgId"></Parameter> <Parameter name="cDoctypetargetId"></Parameter> <Parameter name="documentno"></Parameter> <Parameter name="cReturnReasonId"></Parameter> <Parameter name="dateordered"></Parameter> <Parameter name="cBpartnerId"></Parameter> <Parameter name="cBpartnerLocationId"></Parameter> <Parameter name="rmPickfromshipment"></Parameter> <Parameter name="mPricelistId"></Parameter> <Parameter name="rmReceivematerials"></Parameter> <Parameter name="datepromised"></Parameter> <Parameter name="validuntil"></Parameter> <Parameter name="finPaymentmethodId"></Parameter> <Parameter name="rmCreateinvoice"></Parameter> <Parameter name="cPaymenttermId"></Parameter> <Parameter name="mWarehouseId"></Parameter> <Parameter name="cRejectReasonId"></Parameter> <Parameter name="cProjectId"></Parameter> <Parameter name="invoicerule"></Parameter> <Parameter name="docstatus"></Parameter> <Parameter name="grandtotal"></Parameter> <Parameter name="totallines"></Parameter> <Parameter name="cCurrencyId"></Parameter> <Parameter name="adUserId"></Parameter> <Parameter name="cDoctypeId"></Parameter> <Parameter name="poreference"></Parameter> <Parameter name="salesrepId"></Parameter> <Parameter name="description"></Parameter> <Parameter name="billtoId"></Parameter> <Parameter name="deliveryLocationId"></Parameter> <Parameter name="copyfrom"></Parameter> <Parameter name="copyfrompo"></Parameter> <Parameter name="docaction"></Parameter> <Parameter name="deliveryviarule"></Parameter> <Parameter name="mShipperId"></Parameter> <Parameter name="deliveryrule"></Parameter> <Parameter name="freightcostrule"></Parameter> <Parameter name="freightamt"></Parameter> <Parameter name="isdiscountprinted"></Parameter> <Parameter name="priorityrule"></Parameter> <Parameter name="chargeamt"></Parameter> <Parameter name="cChargeId"></Parameter> <Parameter name="convertquotation"></Parameter> <Parameter name="calculatePromotions"></Parameter> <Parameter name="cActivityId"></Parameter> <Parameter name="cCampaignId"></Parameter> <Parameter name="adOrgtrxId"></Parameter> <Parameter name="user1Id"></Parameter> <Parameter name="user2Id"></Parameter> <Parameter name="deliverynotes"></Parameter> <Parameter name="dropshipBpartnerId"></Parameter> <Parameter name="isselfservice"></Parameter> <Parameter name="paymentrule"></Parameter> <Parameter name="cIncotermsId"></Parameter> <Parameter name="dateprinted"></Parameter> <Parameter name="adClientId"></Parameter> <Parameter name="dropshipUserId"></Parameter> <Parameter name="isdelivered"></Parameter> <Parameter name="generatetemplate"></Parameter> <Parameter name="isselected"></Parameter> <Parameter name="processing"></Parameter> <Parameter name="incotermsdescription"></Parameter> <Parameter name="processed"></Parameter> <Parameter name="istaxincluded"></Parameter> <Parameter name="dropshipLocationId"></Parameter> <Parameter name="posted"></Parameter> <Parameter name="issotrx"></Parameter> <Parameter name="isinvoiced"></Parameter> <Parameter name="isprinted"></Parameter> <Parameter name="isactive"></Parameter> <Parameter name="dateacct"></Parameter> <Parameter name="cOrderId"></Parameter> 
+    <Parameter name="createdby"></Parameter>
+    <Parameter name="updatedby"></Parameter>
+  </SqlMethod>
+
+  <SqlMethod name="delete" type="preparedStatement" return="rowCount">
+    <Sql><![CDATA[
+        DELETE FROM C_Order
+        WHERE C_Order.C_Order_ID = ? 
+        
+        AND C_Order.AD_Client_ID IN ('1') 
+        AND C_Order.AD_Org_ID IN ('1') 
+    ]]></Sql>
+    <Parameter name="param1"></Parameter>
+    
+        <Parameter name="adUserClient" type="replace" optional="true" after="C_Order.AD_Client_ID IN (" text="'1'"/>
+        <Parameter name="adOrgClient" type="replace" optional="true" after="C_Order.AD_Org_ID IN (" text="'1'"/>
+  </SqlMethod>
+
+  <SqlMethod name="selectOrg" type="preparedStatement" return="string">
+    <SqlMethodComment>Select for relation</SqlMethodComment>
+    <Sql><![CDATA[ 
+        SELECT AD_ORG_ID
+          FROM C_Order
+         WHERE C_Order.C_Order_ID = ? 
+    ]]></Sql>
+    <Parameter name="id"></Parameter>
+  </SqlMethod>
+  
+  <SqlMethod name="getCurrentDBTimestamp" type="preparedStatement" return="string">
+    <Sql><![CDATA[ 
+        SELECT to_char(Updated, 'YYYYMMDDHH24MISS') as Updated_Time_Stamp
+          FROM C_Order
+         WHERE C_Order.C_Order_ID = ? 
+    ]]></Sql>
+    <Parameter name="id"></Parameter>
+  </SqlMethod>
+</SqlClass>

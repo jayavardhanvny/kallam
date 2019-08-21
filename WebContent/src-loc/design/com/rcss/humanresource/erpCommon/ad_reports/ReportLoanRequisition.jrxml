@@ -1,0 +1,451 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ReportLoanRequisition" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="30" rightMargin="30" topMargin="20" bottomMargin="20">
+	<property name="ireport.scriptlethandling" value="0"/>
+	<property name="ireport.encoding" value="UTF-8"/>
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<import value="net.sf.jasperreports.engine.*"/>
+	<import value="java.util.*"/>
+	<import value="net.sf.jasperreports.engine.data.*"/>
+	<parameter name="Permission_ID" class="java.lang.String">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[select rchr_emp_loan.departmentstore,rchr_emp_loan.messbill,rchr_emp_loan.requisitiondate, rchr_employee.documentno as empno,rchr_employee.employeename as empname,rchr_employee.punchno as punchno,
+rchr_emp_loan.pendingadvances as prevbalacne,
+rchr_emp_loan.startdate as requisitiondate,rchr_emp_loan.loanamt as amount,rchr_emp_loan.noofpresents as presents,
+rchr_emp_loanlines.duedate as duedate,rchr_emp_loanlines.loanamount as loanamount,rchr_emp_loanlines.paidamount as paidamount,rchr_emp_loanlines.pendingamount as pendingamount,rchr_emp_loanlines.paid as paid,rchr_emp_loan.pendingadvances as prvbalace,
+  (select name from rchr_emp_dept where rchr_emp_dept_id=rchr_employee.rchr_emp_dept_id )as department,
+  (select name from rchr_loan_type where rchr_loan_type_id=rchr_emp_loan.rchr_loan_type_id) as category,
+  (select name from rchr_designation where rchr_designation_id=rchr_employee.rchr_designation_id )as designation
+  from rchr_emp_loan
+  left join rchr_employee on rchr_employee.rchr_employee_id=rchr_emp_loan.rchr_employee_id
+  left join rchr_emp_loanlines on rchr_emp_loanlines.rchr_emp_loan_id=rchr_emp_loan.rchr_emp_loan_id
+  where rchr_emp_loan.rchr_emp_loan_id=$P{Permission_ID}
+order by rchr_emp_loanlines.line]]>
+	</queryString>
+	<field name="departmentstore" class="java.math.BigDecimal"/>
+	<field name="messbill" class="java.math.BigDecimal"/>
+	<field name="requisitiondate" class="java.sql.Timestamp"/>
+	<field name="empno" class="java.lang.String"/>
+	<field name="empname" class="java.lang.String"/>
+	<field name="punchno" class="java.lang.String"/>
+	<field name="prevbalacne" class="java.math.BigDecimal"/>
+	<field name="amount" class="java.math.BigDecimal"/>
+	<field name="presents" class="java.math.BigDecimal"/>
+	<field name="duedate" class="java.sql.Timestamp"/>
+	<field name="loanamount" class="java.math.BigDecimal"/>
+	<field name="paidamount" class="java.math.BigDecimal"/>
+	<field name="pendingamount" class="java.math.BigDecimal"/>
+	<field name="paid" class="java.lang.String"/>
+	<field name="prvbalace" class="java.math.BigDecimal"/>
+	<field name="department" class="java.lang.String"/>
+	<field name="category" class="java.lang.String"/>
+	<field name="designation" class="java.lang.String"/>
+	<background>
+		<band/>
+	</background>
+	<title>
+		<band height="126">
+			<staticText>
+				<reportElement key="staticText-9" x="255" y="4" width="133" height="17"/>
+				<textElement verticalAlignment="Middle" lineSpacing="Single">
+					<font size="12" isBold="true" isUnderline="false" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[Recovery Schedule]]></text>
+			</staticText>
+			<line>
+				<reportElement key="line-2" x="0" y="1" width="535" height="1"/>
+			</line>
+			<staticText>
+				<reportElement key="staticText-13" x="24" y="25" width="73" height="14"/>
+				<textElement verticalAlignment="Middle" lineSpacing="Single">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Punch No:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-14" x="318" y="26" width="85" height="14"/>
+				<textElement verticalAlignment="Middle" lineSpacing="Single">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Requisition Date]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-16" x="24" y="40" width="73" height="14"/>
+				<textElement verticalAlignment="Middle" lineSpacing="Single">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Employee Name]]></text>
+			</staticText>
+			<line>
+				<reportElement key="line-13" x="-1" y="1" width="1" height="125"/>
+			</line>
+			<line>
+				<reportElement key="line-14" x="535" y="1" width="1" height="125"/>
+			</line>
+			<staticText>
+				<reportElement key="staticText-15" x="24" y="53" width="73" height="14"/>
+				<textElement verticalAlignment="Middle" lineSpacing="Single">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Department]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="100" y="25" width="15" height="14"/>
+				<textElement lineSpacing="Single">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="100" y="39" width="15" height="14"/>
+				<textElement lineSpacing="Single">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="405" y="26" width="15" height="14"/>
+				<textElement lineSpacing="Single">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="100" y="53" width="15" height="14"/>
+				<textElement lineSpacing="Single">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="100" y="67" width="15" height="14"/>
+				<textElement lineSpacing="Single">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-15" x="24" y="67" width="73" height="14"/>
+				<textElement verticalAlignment="Middle" lineSpacing="Single">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Designation]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-14" x="318" y="40" width="85" height="14"/>
+				<textElement verticalAlignment="Middle" lineSpacing="Single">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Presents]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-14" x="318" y="54" width="85" height="14"/>
+				<textElement verticalAlignment="Middle" lineSpacing="Single">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Advance Required]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="405" y="39" width="15" height="14"/>
+				<textElement lineSpacing="Single">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="405" y="54" width="15" height="14"/>
+				<textElement lineSpacing="Single">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="117" y="39" width="100" height="14"/>
+				<textElement lineSpacing="Single"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{empname}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="117" y="54" width="100" height="14"/>
+				<textElement lineSpacing="Single"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{department}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="117" y="68" width="100" height="14"/>
+				<textElement lineSpacing="Single"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{designation}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="117" y="26" width="100" height="14"/>
+				<textElement lineSpacing="Single"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{punchno}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="424" y="54" width="100" height="14"/>
+				<textElement verticalAlignment="Middle" lineSpacing="Single"/>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{amount}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement key="staticText-15" x="24" y="81" width="73" height="13"/>
+				<textElement verticalAlignment="Middle">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Purpose]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="100" y="81" width="15" height="14"/>
+				<textElement lineSpacing="Single">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-14" x="318" y="68" width="85" height="14"/>
+				<textElement verticalAlignment="Middle" lineSpacing="Single">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Previous Balance]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="405" y="68" width="15" height="14"/>
+				<textElement lineSpacing="Single">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<line>
+				<reportElement key="line-1" x="0" y="125" width="535" height="1"/>
+			</line>
+			<textField isBlankWhenNull="true">
+				<reportElement x="424" y="40" width="100" height="14"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{presents}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement key="staticText-14" x="318" y="82" width="85" height="14"/>
+				<textElement verticalAlignment="Middle" lineSpacing="Single">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Department store]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-14" x="318" y="96" width="85" height="14"/>
+				<textElement verticalAlignment="Middle" lineSpacing="Single">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Mess Bill]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="405" y="82" width="15" height="14"/>
+				<textElement lineSpacing="Single">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="405" y="96" width="15" height="14"/>
+				<textElement lineSpacing="Single">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="424" y="26" width="100" height="14"/>
+				<textElement/>
+				<textFieldExpression class="java.sql.Timestamp"><![CDATA[$F{requisitiondate}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="424" y="82" width="100" height="14"/>
+				<textElement/>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{departmentstore}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="424" y="96" width="100" height="14"/>
+				<textElement/>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{messbill}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="177" y="4" width="75" height="17"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{category}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.00" isBlankWhenNull="true">
+				<reportElement x="424" y="68" width="100" height="14"/>
+				<textElement/>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{prevbalacne}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="34">
+			<staticText>
+				<reportElement key="staticText-15" x="15" y="19" width="73" height="13"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Due Date]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-15" x="137" y="19" width="73" height="13"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ Amount]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-15" x="264" y="19" width="73" height="13"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Paid Amount]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-15" x="378" y="19" width="73" height="13"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Pending Amount]]></text>
+			</staticText>
+			<line>
+				<reportElement key="line-1" x="0" y="16" width="535" height="1"/>
+			</line>
+			<line>
+				<reportElement key="line-1" x="0" y="33" width="535" height="1"/>
+			</line>
+			<staticText>
+				<reportElement key="staticText-14" x="216" y="1" width="102" height="14"/>
+				<textElement verticalAlignment="Middle" lineSpacing="Single">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Recovery Schedule]]></text>
+			</staticText>
+			<line>
+				<reportElement x="-1" y="-1" width="1" height="35"/>
+			</line>
+			<staticText>
+				<reportElement key="staticText-15" x="481" y="18" width="37" height="13"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Status]]></text>
+			</staticText>
+			<line>
+				<reportElement x="107" y="17" width="1" height="16"/>
+			</line>
+			<line>
+				<reportElement x="236" y="17" width="1" height="16"/>
+			</line>
+			<line>
+				<reportElement x="359" y="17" width="1" height="16"/>
+			</line>
+			<line>
+				<reportElement x="467" y="17" width="1" height="16"/>
+			</line>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="17">
+			<line>
+				<reportElement x="535" y="-35" width="1" height="35"/>
+			</line>
+			<line>
+				<reportElement x="535" y="-1" width="1" height="18"/>
+			</line>
+			<line>
+				<reportElement x="-1" y="-1" width="1" height="18"/>
+			</line>
+			<line>
+				<reportElement key="line-1" x="0" y="16" width="535" height="1"/>
+			</line>
+			<line>
+				<reportElement x="107" y="0" width="1" height="16"/>
+			</line>
+			<line>
+				<reportElement x="236" y="0" width="1" height="16"/>
+			</line>
+			<line>
+				<reportElement x="359" y="0" width="1" height="16"/>
+			</line>
+			<line>
+				<reportElement x="467" y="0" width="1" height="16"/>
+			</line>
+			<textField pattern="" isBlankWhenNull="true">
+				<reportElement x="479" y="0" width="41" height="15"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{paid}.equals("Y") ? "Paid" :"Un-Paid"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="264" y="0" width="73" height="15"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{paidamount}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="378" y="1" width="73" height="14"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{pendingamount}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="137" y="1" width="73" height="14"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{loanamount}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement x="15" y="0" width="73" height="14"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression class="java.sql.Timestamp"><![CDATA[$F{duedate}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band/>
+	</columnFooter>
+	<pageFooter>
+		<band/>
+	</pageFooter>
+	<summary>
+		<band height="44">
+			<line>
+				<reportElement key="line-1" x="0" y="43" width="535" height="1"/>
+			</line>
+			<staticText>
+				<reportElement x="163" y="19" width="79" height="12"/>
+				<textElement textAlignment="Center" lineSpacing="Single">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[TO Incharge]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-29" x="10" y="19" width="102" height="12"/>
+				<textElement verticalAlignment="Middle" lineSpacing="Single">
+					<font size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[Signature of Employee]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="443" y="18" width="76" height="12"/>
+				<textElement textAlignment="Center" lineSpacing="Single">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[W.T.D]]></text>
+			</staticText>
+			<line>
+				<reportElement x="-1" y="-1" width="1" height="44"/>
+			</line>
+			<line>
+				<reportElement x="535" y="0" width="1" height="44"/>
+			</line>
+			<staticText>
+				<reportElement x="298" y="19" width="76" height="12"/>
+				<textElement textAlignment="Center" lineSpacing="Single">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[H.O.D]]></text>
+			</staticText>
+		</band>
+	</summary>
+</jasperReport>

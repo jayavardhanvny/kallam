@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="reportforProduction" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" isIgnorePagination="true">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="OrgId" class="java.lang.String"/>
+	<parameter name="ToDate" class="java.util.Date"/>
+	<parameter name="FromDate" class="java.util.Date"/>
+	<parameter name="ReportType" class="java.lang.String" isForPrompting="false"/>
+	<queryString>
+		<![CDATA[select rcgi_materialissue.documentno,Rchr_Emp_Dept.name as deptname,rcgi_materialissue.movementdate,
+rcgi_milines.line,m_product.name as product, rcgi_milines.orderedqty as qty,rcgi_milines.openqty as stockqty,
+ m_locator.value as locatorname,rcpr_machine.name as machinename, rcgi_milines.unitprice,rcgi_milines.linenetamt,
+ ad_org.name as orgname
+
+from rcgi_materialissue
+
+                      left join rcgi_milines on rcgi_milines.rcgi_materialissue_id = rcgi_materialissue.rcgi_materialissue_id
+                      left join m_product on rcgi_milines.m_product_id = m_product.m_product_id
+
+                      left join m_locator on m_locator.m_locator_id = rcgi_milines.m_locator_id
+                      left join Rchr_Emp_Dept on Rchr_Emp_Dept.Rchr_Emp_Dept_id = rcgi_materialissue.Rchr_Emp_Dept_id
+                      left join rcpr_machine on rcpr_machine.rcpr_machine_id = rcgi_milines.rcpr_machine_id
+                      left join ad_org on ad_org.ad_org_id = rcgi_materialissue.ad_org_id
+
+ where rcgi_materialissue.ad_org_id =$P{OrgId} and  rcgi_materialissue.movementdate >=($P{FromDate})
+                               and rcgi_materialissue.movementdate <= ($P{ToDate})
+ order by to_number(rcgi_materialissue.documentno)]]>
+	</queryString>
+	<field name="documentno" class="java.lang.String"/>
+	<field name="deptname" class="java.lang.String"/>
+	<field name="movementdate" class="java.sql.Timestamp"/>
+	<field name="line" class="java.math.BigDecimal"/>
+	<field name="product" class="java.lang.String"/>
+	<field name="qty" class="java.math.BigDecimal"/>
+	<field name="stockqty" class="java.math.BigDecimal"/>
+	<field name="locatorname" class="java.lang.String"/>
+	<field name="machinename" class="java.lang.String"/>
+	<field name="unitprice" class="java.math.BigDecimal"/>
+	<field name="linenetamt" class="java.math.BigDecimal"/>
+	<field name="orgname" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band height="20" splitType="Stretch">
+			<textField>
+				<reportElement x="338" y="1" width="134" height="18"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{ReportType}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="20" splitType="Stretch">
+			<staticText>
+				<reportElement x="2" y="2" width="84" height="16"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Organization]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="89" y="2" width="79" height="16"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Document No.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="173" y="2" width="96" height="16"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Movement Date]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="277" y="2" width="99" height="16"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Department]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="380" y="2" width="121" height="16"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Product]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="503" y="1" width="62" height="16"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Quantity]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="726" y="2" width="75" height="16"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Storage Bin]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="1" width="802" height="1"/>
+			</line>
+			<line>
+				<reportElement x="0" y="19" width="803" height="1"/>
+			</line>
+			<line>
+				<reportElement x="0" y="1" width="1" height="19"/>
+			</line>
+			<line>
+				<reportElement x="88" y="1" width="1" height="19"/>
+			</line>
+			<line>
+				<reportElement x="169" y="1" width="1" height="19"/>
+			</line>
+			<line>
+				<reportElement x="273" y="1" width="1" height="19"/>
+			</line>
+			<line>
+				<reportElement x="379" y="1" width="1" height="19"/>
+			</line>
+			<line>
+				<reportElement x="642" y="1" width="1" height="19"/>
+			</line>
+			<line>
+				<reportElement x="724" y="1" width="1" height="19"/>
+			</line>
+			<line>
+				<reportElement x="802" y="1" width="1" height="19"/>
+			</line>
+			<line>
+				<reportElement x="500" y="1" width="1" height="19"/>
+			</line>
+			<line>
+				<reportElement x="570" y="1" width="1" height="19"/>
+			</line>
+			<staticText>
+				<reportElement x="574" y="2" width="64" height="15"/>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Unit Price]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="643" y="2" width="82" height="15"/>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Line Net Amount]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="22" splitType="Stretch">
+			<textField isBlankWhenNull="true">
+				<reportElement x="2" y="2" width="84" height="17"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{orgname}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="0" y="20" width="803" height="1"/>
+			</line>
+			<textField isBlankWhenNull="true">
+				<reportElement x="93" y="2" width="75" height="17"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{documentno}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="173" y="2" width="96" height="17"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression class="java.sql.Timestamp"><![CDATA[$F{movementdate}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="277" y="2" width="99" height="17"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{deptname}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="380" y="2" width="121" height="17"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{product}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="503" y="0" width="62" height="18"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{qty}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="726" y="1" width="75" height="18"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{locatorname}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="802" y="-1" width="1" height="22"/>
+			</line>
+			<line>
+				<reportElement x="724" y="-1" width="1" height="22"/>
+			</line>
+			<line>
+				<reportElement x="642" y="-1" width="1" height="22"/>
+			</line>
+			<line>
+				<reportElement x="379" y="-1" width="1" height="21"/>
+			</line>
+			<line>
+				<reportElement x="273" y="-1" width="1" height="22"/>
+			</line>
+			<line>
+				<reportElement x="169" y="-2" width="1" height="23"/>
+			</line>
+			<line>
+				<reportElement x="88" y="-1" width="1" height="21"/>
+			</line>
+			<line>
+				<reportElement x="0" y="0" width="1" height="20"/>
+			</line>
+			<line>
+				<reportElement x="500" y="-1" width="1" height="22"/>
+			</line>
+			<line>
+				<reportElement x="570" y="-1" width="1" height="22"/>
+			</line>
+			<textField isBlankWhenNull="true">
+				<reportElement x="574" y="2" width="64" height="16"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{unitprice}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="643" y="2" width="81" height="16"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{linenetamt}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

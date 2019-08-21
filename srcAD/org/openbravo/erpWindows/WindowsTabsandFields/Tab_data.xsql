@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SqlClass id="class" name="TabData" package="org.openbravo.erpWindows.WindowsTabsandFields">
+  <SqlClassComment>WAD Generated class</SqlClassComment>
+
+  <SqlMethod name="selectEdit" type="preparedStatement" return="multiple">
+    <SqlMethodComment>Select for edit</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT to_char(AD_Tab.Created, ?) as created, 
+        (SELECT NAME FROM AD_USER u WHERE AD_USER_ID = AD_Tab.CreatedBy) as CreatedByR, 
+        to_char(AD_Tab.Updated, ?) as updated, 
+        to_char(AD_Tab.Updated, 'YYYYMMDDHH24MISS') as Updated_Time_Stamp,  
+        AD_Tab.UpdatedBy, 
+        (SELECT NAME FROM AD_USER u WHERE AD_USER_ID = AD_Tab.UpdatedBy) as UpdatedByR,
+        AD_Tab.AD_Module_ID, 
+(CASE WHEN AD_Tab.AD_Module_ID IS NULL THEN '' ELSE  (COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table1.Name), ''))),'')  || ' - ' || COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table1.Version), ''))),'')  || ' - ' || COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table2.Name), ''))),'') ) END) AS AD_Module_IDR, 
+AD_Tab.Name, 
+AD_Tab.AD_Table_ID, 
+(CASE WHEN AD_Tab.AD_Table_ID IS NULL THEN '' ELSE  (COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table3.TableName), ''))),'') ) END) AS AD_Table_IDR, 
+AD_Tab.UIPattern, 
+(CASE WHEN AD_Tab.UIPattern IS NULL THEN '' ELSE  ( COALESCE(TO_CHAR(list1.name),'') ) END) AS UIPatternR, 
+AD_Tab.SeqNo, 
+AD_Tab.TabLevel, 
+AD_Tab.Help, 
+AD_Tab.Description, 
+AD_Tab.WhereClause, 
+AD_Tab.Hqlwhereclause, 
+AD_Tab.FilterClause, 
+AD_Tab.Hqlfilterclause, 
+AD_Tab.FilterName, 
+AD_Tab.OrderByClause, 
+AD_Tab.Hqlorderbyclause, 
+COALESCE(AD_Tab.IsInfoTab, 'N') AS IsInfoTab, 
+COALESCE(AD_Tab.IsTranslationTab, 'N') AS IsTranslationTab, 
+COALESCE(AD_Tab.IsSingleRow, 'N') AS IsSingleRow, 
+COALESCE(AD_Tab.HasTree, 'N') AS HasTree, 
+COALESCE(AD_Tab.ShowParentButtons, 'N') AS ShowParentButtons, 
+AD_Tab.AD_Process_ID, 
+(CASE WHEN AD_Tab.AD_Process_ID IS NULL THEN '' ELSE  (COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR((CASE WHEN tableTRL4.Name IS NULL THEN TO_CHAR(table4.Name) ELSE TO_CHAR(tableTRL4.Name) END)), ''))),'') ) END) AS AD_Process_IDR, 
+AD_Tab.EditReference, 
+(CASE WHEN AD_Tab.EditReference IS NULL THEN '' ELSE  ( COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR((CASE WHEN tableTRL5.Name IS NULL THEN TO_CHAR(table5.Name) ELSE TO_CHAR(tableTRL5.Name) END)), ''))),'') ) END) AS EditReferenceR, 
+COALESCE(AD_Tab.IsActive, 'N') AS IsActive, 
+AD_Tab.Displaylogic, 
+AD_Tab.ImportFields, 
+AD_Tab.Processing, 
+COALESCE(AD_Tab.EM_Obuiapp_Can_Add, 'N') AS EM_Obuiapp_Can_Add, 
+COALESCE(AD_Tab.EM_Obuiapp_Can_Delete, 'N') AS EM_Obuiapp_Can_Delete, 
+AD_Tab.EM_OBUIAPP_Selection, 
+COALESCE(AD_Tab.EM_Obuiapp_Show_Select, 'N') AS EM_Obuiapp_Show_Select, 
+AD_Tab.EM_Obuiapp_Newfn, 
+AD_Tab.EM_Obuiapp_Removefn, 
+AD_Tab.AD_Column_ID, 
+AD_Tab.AD_Client_ID, 
+AD_Tab.AD_Window_ID, 
+AD_Tab.Included_Tab_ID, 
+AD_Tab.AD_Tab_ID, 
+AD_Tab.AD_ColumnSortOrder_ID, 
+AD_Tab.AD_ColumnSortYesNo_ID, 
+COALESCE(AD_Tab.IsSortTab, 'N') AS IsSortTab, 
+AD_Tab.AD_Image_ID, 
+AD_Tab.AD_Org_ID, 
+AD_Tab.CommitWarning, 
+ 
+        ? AS LANGUAGE 
+        FROM AD_Tab left join (select AD_Module_ID, Name, Version, AD_Language from AD_Module) table1 on (AD_Tab.AD_Module_ID = table1.AD_Module_ID) left join (select AD_Language, Name from AD_Language) table2 on (table1.AD_Language =  table2.AD_Language) left join (select AD_Table_ID, TableName from AD_Table) table3 on (AD_Tab.AD_Table_ID = table3.AD_Table_ID) left join ad_ref_list_v list1 on (AD_Tab.UIPattern = list1.value and list1.ad_reference_id = 'D15C950D445D408E8CC8135E530C246B' and list1.ad_language = ?)  left join (select AD_Process_ID, Name from AD_Process) table4 on (AD_Tab.AD_Process_ID = table4.AD_Process_ID) left join (select AD_Process_ID,AD_Language, Name from AD_Process_TRL) tableTRL4 on (table4.AD_Process_ID = tableTRL4.AD_Process_ID and tableTRL4.AD_Language = ?)  left join (select AD_Form_ID, Name from AD_Form) table5 on (AD_Tab.EditReference =  table5.AD_Form_ID) left join (select AD_Form_ID,AD_Language, Name from AD_Form_TRL) tableTRL5 on (table5.AD_Form_ID = tableTRL5.AD_Form_ID and tableTRL5.AD_Language = ?) 
+        WHERE 2=2 
+
+        AND 1=1 
+        AND AD_Tab.AD_Tab_ID = ? 
+        AND AD_Tab.AD_Client_ID IN ('1') 
+           AND AD_Tab.AD_Org_ID IN ('1') 
+    ]]></Sql>
+    <Parameter name="dateTimeFormat"></Parameter>
+    <Parameter name="dateTimeFormat"></Parameter>
+    
+    <Parameter name="paramLanguage"></Parameter>
+<Parameter name="paramLanguage"/>
+<Parameter name="paramLanguage"/>
+<Parameter name="paramLanguage"/>
+
+    <Parameter name="adWindowId" optional="true" after="AND 1=1 " id="paramKeyParent"> AND AD_Tab.AD_Window_ID = ? </Parameter>
+    <Parameter name="key"></Parameter>
+        <Parameter name="adUserClient" type="replace" optional="true" after="AD_Tab.AD_Client_ID IN (" text="'1'"/>
+        <Parameter name="adOrgClient" type="replace" optional="true" after="AD_Tab.AD_Org_ID IN (" text="'1'"/>
+
+    <Field name="adUserClient" value="void"></Field>
+    <Field name="adOrgClient" value="void"></Field>
+    <Field name="createdby" value="void"></Field>
+    
+    <Field name="trBgcolor" value="void"></Field>
+    <Field name="totalCount" value="void"></Field>
+    <Field name="dateTimeFormat" value=""></Field>
+  </SqlMethod>
+  
+  
+
+  <SqlMethod name="set" type="constant" return="multiple">
+      <SqlMethodComment>Create a registry</SqlMethodComment>
+      <Sql></Sql>
+    <Parameter name="adWindowId" id="paramKeyParent"></Parameter>
+<Parameter name="hastree"></Parameter><Parameter name="adTabId"></Parameter><Parameter name="name"></Parameter><Parameter name="description"></Parameter><Parameter name="help"></Parameter><Parameter name="seqno"></Parameter><Parameter name="issinglerow"></Parameter><Parameter name="displaylogic"></Parameter><Parameter name="isinfotab"></Parameter><Parameter name="istranslationtab"></Parameter><Parameter name="isreadonly"></Parameter><Parameter name="adTableId"></Parameter><Parameter name="adColumnId"></Parameter><Parameter name="whereclause"></Parameter><Parameter name="orderbyclause"></Parameter><Parameter name="commitwarning"></Parameter><Parameter name="adProcessId"></Parameter><Parameter name="adClientId"></Parameter><Parameter name="emObuiappShowSelect"></Parameter><Parameter name="adOrgId"></Parameter><Parameter name="processing"></Parameter><Parameter name="adModuleId"></Parameter><Parameter name="isactive"></Parameter><Parameter name="createdby"></Parameter><Parameter name="createdbyr"></Parameter><Parameter name="updatedby"></Parameter><Parameter name="updatedbyr"></Parameter><Parameter name="emObuiappRemovefn"></Parameter><Parameter name="hqlwhereclause"></Parameter><Parameter name="adImageId"></Parameter><Parameter name="importfields"></Parameter><Parameter name="tablevel"></Parameter><Parameter name="uipattern"></Parameter><Parameter name="issorttab"></Parameter><Parameter name="adColumnsortyesnoId"></Parameter><Parameter name="adColumnsortorderId"></Parameter><Parameter name="emObuiappNewfn"></Parameter><Parameter name="filterclause"></Parameter><Parameter name="editreference"></Parameter><Parameter name="includedTabId"></Parameter><Parameter name="emObuiappCanDelete"></Parameter><Parameter name="filtername"></Parameter><Parameter name="showparentbuttons"></Parameter><Parameter name="hqlorderbyclause"></Parameter><Parameter name="hqlfilterclause"></Parameter><Parameter name="emObuiappCanAdd"></Parameter><Parameter name="emObuiappSelection"></Parameter>
+   </SqlMethod>
+
+
+
+
+
+
+   <SqlMethod name="selectDef165" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>Select for auxiliar field</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT COALESCE(MAX(SeqNo),0)+10 AS DefaultValue FROM AD_Tab WHERE AD_Window_ID=? 
+    ]]></Sql>
+
+<Parameter name="AD_Window_ID"/>
+  </SqlMethod>
+
+   <SqlMethod name="selectDef5661EC317B643D0FE040007F01004528" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>Select for auxiliar field</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT AD_MODULE_ID FROM AD_WINDOW WHERE AD_WINDOW_ID = ? 
+    ]]></Sql>
+
+<Parameter name="AD_Window_ID"/>
+  </SqlMethod>
+
+   <SqlMethod name="selectDef575_0" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>Select for auxiliar field</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT  ( COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table2.Name), ''))), '') ) as CreatedBy FROM AD_User left join (select AD_User_ID, Name from AD_User) table2 on (AD_User.AD_User_ID = table2.AD_User_ID) WHERE AD_User.isActive='Y' AND AD_User.AD_User_ID = ?  
+    ]]></Sql>
+<Parameter name="CreatedByR"/>
+  </SqlMethod>
+
+   <SqlMethod name="selectDef577_1" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>Select for auxiliar field</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT  ( COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table2.Name), ''))), '') ) as UpdatedBy FROM AD_User left join (select AD_User_ID, Name from AD_User) table2 on (AD_User.AD_User_ID = table2.AD_User_ID) WHERE AD_User.isActive='Y' AND AD_User.AD_User_ID = ?  
+    ]]></Sql>
+<Parameter name="UpdatedByR"/>
+  </SqlMethod>
+
+
+
+  <SqlMethod name="selectParentID" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>return the parent ID</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT AD_Tab.AD_Window_ID AS NAME
+        FROM AD_Tab
+        WHERE AD_Tab.AD_Tab_ID = ?
+    ]]></Sql>
+    <Parameter name="key"></Parameter>
+  </SqlMethod>
+
+   <SqlMethod name="selectParent" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>Select for parent field</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT (TO_CHAR(COALESCE(TO_CHAR((CASE WHEN tableTRL1.Name IS NULL THEN TO_CHAR(table1.Name) ELSE TO_CHAR(tableTRL1.Name) END)), ''))) AS NAME FROM AD_Window left join (select AD_Window_ID, Name from AD_Window) table1 on (AD_Window.AD_Window_ID = table1.AD_Window_ID) left join (select AD_Window_ID,AD_Language, Name from AD_Window_TRL) tableTRL1 on (table1.AD_Window_ID = tableTRL1.AD_Window_ID and tableTRL1.AD_Language = ?)  WHERE AD_Window.AD_Window_ID = ?  
+    ]]></Sql>
+<Parameter name="paramLanguage"/>
+<Parameter name="adWindowId"/>
+
+  </SqlMethod>
+
+
+
+
+   <SqlMethod name="selectParentTrl" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>Select for parent field</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT (TO_CHAR(COALESCE(TO_CHAR((CASE WHEN tableTRL1.Name IS NULL THEN TO_CHAR(table1.Name) ELSE TO_CHAR(tableTRL1.Name) END)), ''))) AS NAME FROM AD_Window left join (select AD_Window_ID, Name from AD_Window) table1 on (AD_Window.AD_Window_ID = table1.AD_Window_ID) left join (select AD_Window_ID,AD_Language, Name from AD_Window_TRL) tableTRL1 on (table1.AD_Window_ID = tableTRL1.AD_Window_ID and tableTRL1.AD_Language = ?)  WHERE AD_Window.AD_Window_ID = ?  
+    ]]></Sql>
+<Parameter name="paramLanguage"/>
+<Parameter name="adWindowId"/>
+
+  </SqlMethod>
+
+
+
+
+
+
+
+
+  <SqlMethod name="update" type="preparedStatement" return="rowCount" static="false" connection="true">
+    <Sql><![CDATA[
+        UPDATE AD_Tab
+        SET AD_Module_ID = (?) , Name = (?) , AD_Table_ID = (?) , UIPattern = (?) , SeqNo = TO_NUMBER(?) , TabLevel = TO_NUMBER(?) , Help = (?) , Description = (?) , WhereClause = (?) , Hqlwhereclause = (?) , FilterClause = (?) , Hqlfilterclause = (?) , FilterName = (?) , OrderByClause = (?) , Hqlorderbyclause = (?) , IsInfoTab = (?) , IsTranslationTab = (?) , IsSingleRow = (?) , HasTree = (?) , ShowParentButtons = (?) , AD_Process_ID = (?) , EditReference = (?) , IsActive = (?) , Displaylogic = (?) , ImportFields = (?) , Processing = (?) , EM_Obuiapp_Can_Add = (?) , EM_Obuiapp_Can_Delete = (?) , EM_OBUIAPP_Selection = (?) , EM_Obuiapp_Show_Select = (?) , EM_Obuiapp_Newfn = (?) , EM_Obuiapp_Removefn = (?) , AD_Column_ID = (?) , AD_Client_ID = (?) , AD_Window_ID = (?) , Included_Tab_ID = (?) , AD_Tab_ID = (?) , AD_ColumnSortOrder_ID = (?) , AD_ColumnSortYesNo_ID = (?) , IsSortTab = (?) , AD_Image_ID = (?) , AD_Org_ID = (?) , CommitWarning = (?) , updated = now(), updatedby = ? 
+        WHERE AD_Tab.AD_Tab_ID = ? 
+                 AND AD_Tab.AD_Window_ID = ? 
+        AND AD_Tab.AD_Client_ID IN ('1') 
+        AND AD_Tab.AD_Org_ID IN ('1') 
+    ]]></Sql>
+    <Parameter name="adModuleId"></Parameter> <Parameter name="name"></Parameter> <Parameter name="adTableId"></Parameter> <Parameter name="uipattern"></Parameter> <Parameter name="seqno"></Parameter> <Parameter name="tablevel"></Parameter> <Parameter name="help"></Parameter> <Parameter name="description"></Parameter> <Parameter name="whereclause"></Parameter> <Parameter name="hqlwhereclause"></Parameter> <Parameter name="filterclause"></Parameter> <Parameter name="hqlfilterclause"></Parameter> <Parameter name="filtername"></Parameter> <Parameter name="orderbyclause"></Parameter> <Parameter name="hqlorderbyclause"></Parameter> <Parameter name="isinfotab"></Parameter> <Parameter name="istranslationtab"></Parameter> <Parameter name="issinglerow"></Parameter> <Parameter name="hastree"></Parameter> <Parameter name="showparentbuttons"></Parameter> <Parameter name="adProcessId"></Parameter> <Parameter name="editreference"></Parameter> <Parameter name="isactive"></Parameter> <Parameter name="displaylogic"></Parameter> <Parameter name="importfields"></Parameter> <Parameter name="processing"></Parameter> <Parameter name="emObuiappCanAdd"></Parameter> <Parameter name="emObuiappCanDelete"></Parameter> <Parameter name="emObuiappSelection"></Parameter> <Parameter name="emObuiappShowSelect"></Parameter> <Parameter name="emObuiappNewfn"></Parameter> <Parameter name="emObuiappRemovefn"></Parameter> <Parameter name="adColumnId"></Parameter> <Parameter name="adClientId"></Parameter> <Parameter name="adWindowId"></Parameter> <Parameter name="includedTabId"></Parameter> <Parameter name="adTabId"></Parameter> <Parameter name="adColumnsortorderId"></Parameter> <Parameter name="adColumnsortyesnoId"></Parameter> <Parameter name="issorttab"></Parameter> <Parameter name="adImageId"></Parameter> <Parameter name="adOrgId"></Parameter> <Parameter name="commitwarning"></Parameter> 
+    <Parameter name="updatedby"></Parameter>
+    <Parameter id="paramKey" name="adTabId"></Parameter>
+    
+    <Parameter name="adWindowId" id="paramKeyParent"></Parameter>
+        <Parameter name="adUserClient" type="replace" optional="true" after="AD_Tab.AD_Client_ID IN (" text="'1'"/>
+        <Parameter name="adOrgClient" type="replace" optional="true" after="AD_Tab.AD_Org_ID IN (" text="'1'"/>
+  </SqlMethod>
+
+  <SqlMethod name="insert" type="preparedStatement" return="rowCount" static="false" connection="true">
+    <Sql><![CDATA[
+        INSERT INTO AD_Tab 
+        (AD_Module_ID, Name, AD_Table_ID, UIPattern, SeqNo, TabLevel, Help, Description, WhereClause, Hqlwhereclause, FilterClause, Hqlfilterclause, FilterName, OrderByClause, Hqlorderbyclause, IsInfoTab, IsTranslationTab, IsSingleRow, HasTree, ShowParentButtons, AD_Process_ID, EditReference, IsActive, Displaylogic, ImportFields, Processing, EM_Obuiapp_Can_Add, EM_Obuiapp_Can_Delete, EM_OBUIAPP_Selection, EM_Obuiapp_Show_Select, EM_Obuiapp_Newfn, EM_Obuiapp_Removefn, AD_Column_ID, AD_Client_ID, AD_Window_ID, Included_Tab_ID, AD_Tab_ID, AD_ColumnSortOrder_ID, AD_ColumnSortYesNo_ID, IsSortTab, AD_Image_ID, AD_Org_ID, CommitWarning, created, createdby, updated, updatedBy)
+        VALUES ((?), (?), (?), (?), TO_NUMBER(?), TO_NUMBER(?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), now(), ?, now(), ?)
+    ]]></Sql>
+    <Parameter name="adModuleId"></Parameter> <Parameter name="name"></Parameter> <Parameter name="adTableId"></Parameter> <Parameter name="uipattern"></Parameter> <Parameter name="seqno"></Parameter> <Parameter name="tablevel"></Parameter> <Parameter name="help"></Parameter> <Parameter name="description"></Parameter> <Parameter name="whereclause"></Parameter> <Parameter name="hqlwhereclause"></Parameter> <Parameter name="filterclause"></Parameter> <Parameter name="hqlfilterclause"></Parameter> <Parameter name="filtername"></Parameter> <Parameter name="orderbyclause"></Parameter> <Parameter name="hqlorderbyclause"></Parameter> <Parameter name="isinfotab"></Parameter> <Parameter name="istranslationtab"></Parameter> <Parameter name="issinglerow"></Parameter> <Parameter name="hastree"></Parameter> <Parameter name="showparentbuttons"></Parameter> <Parameter name="adProcessId"></Parameter> <Parameter name="editreference"></Parameter> <Parameter name="isactive"></Parameter> <Parameter name="displaylogic"></Parameter> <Parameter name="importfields"></Parameter> <Parameter name="processing"></Parameter> <Parameter name="emObuiappCanAdd"></Parameter> <Parameter name="emObuiappCanDelete"></Parameter> <Parameter name="emObuiappSelection"></Parameter> <Parameter name="emObuiappShowSelect"></Parameter> <Parameter name="emObuiappNewfn"></Parameter> <Parameter name="emObuiappRemovefn"></Parameter> <Parameter name="adColumnId"></Parameter> <Parameter name="adClientId"></Parameter> <Parameter name="adWindowId"></Parameter> <Parameter name="includedTabId"></Parameter> <Parameter name="adTabId"></Parameter> <Parameter name="adColumnsortorderId"></Parameter> <Parameter name="adColumnsortyesnoId"></Parameter> <Parameter name="issorttab"></Parameter> <Parameter name="adImageId"></Parameter> <Parameter name="adOrgId"></Parameter> <Parameter name="commitwarning"></Parameter> 
+    <Parameter name="createdby"></Parameter>
+    <Parameter name="updatedby"></Parameter>
+  </SqlMethod>
+
+  <SqlMethod name="delete" type="preparedStatement" return="rowCount">
+    <Sql><![CDATA[
+        DELETE FROM AD_Tab
+        WHERE AD_Tab.AD_Tab_ID = ? 
+                 AND AD_Tab.AD_Window_ID = ? 
+        AND AD_Tab.AD_Client_ID IN ('1') 
+        AND AD_Tab.AD_Org_ID IN ('1') 
+    ]]></Sql>
+    <Parameter name="param1"></Parameter>
+        <Parameter name="adWindowId" id="paramKeyParent"></Parameter>
+        <Parameter name="adUserClient" type="replace" optional="true" after="AD_Tab.AD_Client_ID IN (" text="'1'"/>
+        <Parameter name="adOrgClient" type="replace" optional="true" after="AD_Tab.AD_Org_ID IN (" text="'1'"/>
+  </SqlMethod>
+
+  <SqlMethod name="selectOrg" type="preparedStatement" return="string">
+    <SqlMethodComment>Select for relation</SqlMethodComment>
+    <Sql><![CDATA[ 
+        SELECT AD_ORG_ID
+          FROM AD_Tab
+         WHERE AD_Tab.AD_Tab_ID = ? 
+    ]]></Sql>
+    <Parameter name="id"></Parameter>
+  </SqlMethod>
+  
+  <SqlMethod name="getCurrentDBTimestamp" type="preparedStatement" return="string">
+    <Sql><![CDATA[ 
+        SELECT to_char(Updated, 'YYYYMMDDHH24MISS') as Updated_Time_Stamp
+          FROM AD_Tab
+         WHERE AD_Tab.AD_Tab_ID = ? 
+    ]]></Sql>
+    <Parameter name="id"></Parameter>
+  </SqlMethod>
+</SqlClass>

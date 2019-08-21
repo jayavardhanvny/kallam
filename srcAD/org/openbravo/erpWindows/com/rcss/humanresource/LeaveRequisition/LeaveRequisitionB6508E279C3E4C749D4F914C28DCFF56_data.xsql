@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SqlClass id="class" name="LeaveRequisitionB6508E279C3E4C749D4F914C28DCFF56Data" package="org.openbravo.erpWindows.com.rcss.humanresource.LeaveRequisition">
+  <SqlClassComment>WAD Generated class</SqlClassComment>
+
+  <SqlMethod name="selectEdit" type="preparedStatement" return="multiple">
+    <SqlMethodComment>Select for edit</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT to_char(RCHR_LeaveRequisition.Created, ?) as created, 
+        (SELECT NAME FROM AD_USER u WHERE AD_USER_ID = RCHR_LeaveRequisition.CreatedBy) as CreatedByR, 
+        to_char(RCHR_LeaveRequisition.Updated, ?) as updated, 
+        to_char(RCHR_LeaveRequisition.Updated, 'YYYYMMDDHH24MISS') as Updated_Time_Stamp,  
+        RCHR_LeaveRequisition.UpdatedBy, 
+        (SELECT NAME FROM AD_USER u WHERE AD_USER_ID = RCHR_LeaveRequisition.UpdatedBy) as UpdatedByR,
+        RCHR_LeaveRequisition.AD_Org_ID, 
+(CASE WHEN RCHR_LeaveRequisition.AD_Org_ID IS NULL THEN '' ELSE  (COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table1.Name), ''))),'') ) END) AS AD_Org_IDR, 
+COALESCE(RCHR_LeaveRequisition.Isactive, 'N') AS Isactive, 
+RCHR_LeaveRequisition.Rchr_Employee_ID, 
+(CASE WHEN RCHR_LeaveRequisition.Rchr_Employee_ID IS NULL THEN '' ELSE  (COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table2.Punchno), ''))),'')  || ' - ' || COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table2.Employeename), ''))),'') ) END) AS Rchr_Employee_IDR, 
+RCHR_LeaveRequisition.Requisitiondate, 
+RCHR_LeaveRequisition.Fromdate, 
+RCHR_LeaveRequisition.Todate, 
+RCHR_LeaveRequisition.Employeetype, 
+RCHR_LeaveRequisition.Rchr_Leavetype_ID, 
+RCHR_LeaveRequisition.Rchr_Emp_Dept_ID, 
+(CASE WHEN RCHR_LeaveRequisition.Rchr_Emp_Dept_ID IS NULL THEN '' ELSE  (COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table3.Name), ''))),'') ) END) AS Rchr_Emp_Dept_IDR, 
+RCHR_LeaveRequisition.Leaveopening, 
+RCHR_LeaveRequisition.Rchr_Subdepartment_ID, 
+(CASE WHEN RCHR_LeaveRequisition.Rchr_Subdepartment_ID IS NULL THEN '' ELSE  (COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table4.Name), ''))),'') ) END) AS Rchr_Subdepartment_IDR, 
+RCHR_LeaveRequisition.Rchr_Designation_ID, 
+(CASE WHEN RCHR_LeaveRequisition.Rchr_Designation_ID IS NULL THEN '' ELSE  (COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table5.Name), ''))),'') ) END) AS Rchr_Designation_IDR, 
+RCHR_LeaveRequisition.Reason, 
+RCHR_LeaveRequisition.Docstatus, 
+(CASE WHEN RCHR_LeaveRequisition.Docstatus IS NULL THEN '' ELSE  ( COALESCE(TO_CHAR(list1.name),'') ) END) AS DocstatusR, 
+RCHR_LeaveRequisition.Totalleaves, 
+RCHR_LeaveRequisition.Noofleaves, 
+RCHR_LeaveRequisition.Weekoffleaves, 
+RCHR_LeaveRequisition.El, 
+RCHR_LeaveRequisition.Cl, 
+RCHR_LeaveRequisition.Lopleaves, 
+RCHR_LeaveRequisition.Coffs, 
+RCHR_LeaveRequisition.Process, 
+RCHR_LeaveRequisition.Post, 
+RCHR_LeaveRequisition.Verified, 
+RCHR_LeaveRequisition.Approve, 
+RCHR_LeaveRequisition.Approvalstatus, 
+RCHR_LeaveRequisition.Balancesl, 
+RCHR_LeaveRequisition.Balancecl, 
+RCHR_LeaveRequisition.Balancecoffs, 
+RCHR_LeaveRequisition.Remarks, 
+RCHR_LeaveRequisition.Cancel, 
+RCHR_LeaveRequisition.AD_Client_ID, 
+RCHR_LeaveRequisition.Rchr_Leaverequisition_ID, 
+ 
+        ? AS LANGUAGE 
+        FROM RCHR_LeaveRequisition left join (select AD_Org_ID, Name from AD_Org) table1 on (RCHR_LeaveRequisition.AD_Org_ID = table1.AD_Org_ID) left join (select Rchr_Employee_ID, Punchno, Employeename from Rchr_Employee) table2 on (RCHR_LeaveRequisition.Rchr_Employee_ID = table2.Rchr_Employee_ID) left join (select Rchr_Emp_Dept_ID, Name from Rchr_Emp_Dept) table3 on (RCHR_LeaveRequisition.Rchr_Emp_Dept_ID = table3.Rchr_Emp_Dept_ID) left join (select Rchr_Subdepartment_ID, Name from Rchr_Subdepartment) table4 on (RCHR_LeaveRequisition.Rchr_Subdepartment_ID = table4.Rchr_Subdepartment_ID) left join (select Rchr_Designation_ID, Name from Rchr_Designation) table5 on (RCHR_LeaveRequisition.Rchr_Designation_ID = table5.Rchr_Designation_ID) left join ad_ref_list_v list1 on (RCHR_LeaveRequisition.Docstatus = list1.value and list1.ad_reference_id = '8A2CA8866C9C45E9862D396193CC55D6' and list1.ad_language = ?) 
+        WHERE 2=2 
+
+        AND 1=1 
+        AND RCHR_LeaveRequisition.Rchr_Leaverequisition_ID = ? 
+        AND RCHR_LeaveRequisition.AD_Client_ID IN ('1') 
+           AND RCHR_LeaveRequisition.AD_Org_ID IN ('1') 
+    ]]></Sql>
+    <Parameter name="dateTimeFormat"></Parameter>
+    <Parameter name="dateTimeFormat"></Parameter>
+    
+    <Parameter name="paramLanguage"></Parameter>
+<Parameter name="paramLanguage"/>
+
+
+    <Parameter name="key"></Parameter>
+        <Parameter name="adUserClient" type="replace" optional="true" after="RCHR_LeaveRequisition.AD_Client_ID IN (" text="'1'"/>
+        <Parameter name="adOrgClient" type="replace" optional="true" after="RCHR_LeaveRequisition.AD_Org_ID IN (" text="'1'"/>
+
+    <Field name="adUserClient" value="void"></Field>
+    <Field name="adOrgClient" value="void"></Field>
+    <Field name="createdby" value="void"></Field>
+    
+    <Field name="trBgcolor" value="void"></Field>
+    <Field name="totalCount" value="void"></Field>
+    <Field name="dateTimeFormat" value=""></Field>
+  </SqlMethod>
+  
+  
+
+  <SqlMethod name="set" type="constant" return="multiple">
+      <SqlMethodComment>Create a registry</SqlMethodComment>
+      <Sql></Sql>
+
+<Parameter name="rchrDesignationId"></Parameter><Parameter name="balancecoffs"></Parameter><Parameter name="cl"></Parameter><Parameter name="adOrgId"></Parameter><Parameter name="el"></Parameter><Parameter name="coffs"></Parameter><Parameter name="weekoffleaves"></Parameter><Parameter name="employeetype"></Parameter><Parameter name="updatedby"></Parameter><Parameter name="updatedbyr"></Parameter><Parameter name="rchrEmployeeId"></Parameter><Parameter name="fromdate"></Parameter><Parameter name="isactive"></Parameter><Parameter name="remarks"></Parameter><Parameter name="rchrLeaverequisitionId"></Parameter><Parameter name="rchrLeavetypeId"></Parameter><Parameter name="adClientId"></Parameter><Parameter name="rchrSubdepartmentId"></Parameter><Parameter name="docstatus"></Parameter><Parameter name="reason"></Parameter><Parameter name="verified"></Parameter><Parameter name="process"></Parameter><Parameter name="post"></Parameter><Parameter name="requisitiondate"></Parameter><Parameter name="balancecl"></Parameter><Parameter name="approvalstatus"></Parameter><Parameter name="balancesl"></Parameter><Parameter name="totalleaves"></Parameter><Parameter name="leaveopening"></Parameter><Parameter name="rchrEmpDeptId"></Parameter><Parameter name="approve"></Parameter><Parameter name="lopleaves"></Parameter><Parameter name="createdby"></Parameter><Parameter name="createdbyr"></Parameter><Parameter name="noofleaves"></Parameter><Parameter name="cancel"></Parameter><Parameter name="todate"></Parameter>
+   </SqlMethod>
+
+
+
+
+
+
+   <SqlMethod name="selectDef256828AFF94B4E269C8ABC7E6BD91187_0" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>Select for auxiliar field</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT  ( COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table2.Name), ''))), '') ) as Updatedby FROM AD_User left join (select AD_User_ID, Name from AD_User) table2 on (AD_User.AD_User_ID = table2.AD_User_ID) WHERE AD_User.isActive='Y' AND AD_User.AD_User_ID = ?  
+    ]]></Sql>
+<Parameter name="UpdatedbyR"/>
+  </SqlMethod>
+
+   <SqlMethod name="selectDefD709A66F53E74595932046A6970A6689_1" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>Select for auxiliar field</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT  ( COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table2.Name), ''))), '') ) as Createdby FROM AD_User left join (select AD_User_ID, Name from AD_User) table2 on (AD_User.AD_User_ID = table2.AD_User_ID) WHERE AD_User.isActive='Y' AND AD_User.AD_User_ID = ?  
+    ]]></Sql>
+<Parameter name="CreatedbyR"/>
+  </SqlMethod>
+
+
+
+
+
+
+
+
+
+
+  <SqlMethod name="update" type="preparedStatement" return="rowCount" static="false" connection="true">
+    <Sql><![CDATA[
+        UPDATE RCHR_LeaveRequisition
+        SET AD_Org_ID = (?) , Isactive = (?) , Rchr_Employee_ID = (?) , Requisitiondate = TO_DATE(?) , Fromdate = TO_DATE(?) , Todate = TO_DATE(?) , Employeetype = (?) , Rchr_Leavetype_ID = (?) , Rchr_Emp_Dept_ID = (?) , Leaveopening = TO_NUMBER(?) , Rchr_Subdepartment_ID = (?) , Rchr_Designation_ID = (?) , Reason = (?) , Docstatus = (?) , Totalleaves = TO_NUMBER(?) , Noofleaves = TO_NUMBER(?) , Weekoffleaves = TO_NUMBER(?) , El = TO_NUMBER(?) , Cl = TO_NUMBER(?) , Lopleaves = TO_NUMBER(?) , Coffs = TO_NUMBER(?) , Process = (?) , Post = (?) , Verified = (?) , Approve = (?) , Approvalstatus = (?) , Balancesl = TO_NUMBER(?) , Balancecl = TO_NUMBER(?) , Balancecoffs = TO_NUMBER(?) , Remarks = (?) , Cancel = (?) , AD_Client_ID = (?) , Rchr_Leaverequisition_ID = (?) , updated = now(), updatedby = ? 
+        WHERE RCHR_LeaveRequisition.Rchr_Leaverequisition_ID = ? 
+        
+        AND RCHR_LeaveRequisition.AD_Client_ID IN ('1') 
+        AND RCHR_LeaveRequisition.AD_Org_ID IN ('1') 
+    ]]></Sql>
+    <Parameter name="adOrgId"></Parameter> <Parameter name="isactive"></Parameter> <Parameter name="rchrEmployeeId"></Parameter> <Parameter name="requisitiondate"></Parameter> <Parameter name="fromdate"></Parameter> <Parameter name="todate"></Parameter> <Parameter name="employeetype"></Parameter> <Parameter name="rchrLeavetypeId"></Parameter> <Parameter name="rchrEmpDeptId"></Parameter> <Parameter name="leaveopening"></Parameter> <Parameter name="rchrSubdepartmentId"></Parameter> <Parameter name="rchrDesignationId"></Parameter> <Parameter name="reason"></Parameter> <Parameter name="docstatus"></Parameter> <Parameter name="totalleaves"></Parameter> <Parameter name="noofleaves"></Parameter> <Parameter name="weekoffleaves"></Parameter> <Parameter name="el"></Parameter> <Parameter name="cl"></Parameter> <Parameter name="lopleaves"></Parameter> <Parameter name="coffs"></Parameter> <Parameter name="process"></Parameter> <Parameter name="post"></Parameter> <Parameter name="verified"></Parameter> <Parameter name="approve"></Parameter> <Parameter name="approvalstatus"></Parameter> <Parameter name="balancesl"></Parameter> <Parameter name="balancecl"></Parameter> <Parameter name="balancecoffs"></Parameter> <Parameter name="remarks"></Parameter> <Parameter name="cancel"></Parameter> <Parameter name="adClientId"></Parameter> <Parameter name="rchrLeaverequisitionId"></Parameter> 
+    <Parameter name="updatedby"></Parameter>
+    <Parameter id="paramKey" name="rchrLeaverequisitionId"></Parameter>
+    
+    
+        <Parameter name="adUserClient" type="replace" optional="true" after="RCHR_LeaveRequisition.AD_Client_ID IN (" text="'1'"/>
+        <Parameter name="adOrgClient" type="replace" optional="true" after="RCHR_LeaveRequisition.AD_Org_ID IN (" text="'1'"/>
+  </SqlMethod>
+
+  <SqlMethod name="insert" type="preparedStatement" return="rowCount" static="false" connection="true">
+    <Sql><![CDATA[
+        INSERT INTO RCHR_LeaveRequisition 
+        (AD_Org_ID, Isactive, Rchr_Employee_ID, Requisitiondate, Fromdate, Todate, Employeetype, Rchr_Leavetype_ID, Rchr_Emp_Dept_ID, Leaveopening, Rchr_Subdepartment_ID, Rchr_Designation_ID, Reason, Docstatus, Totalleaves, Noofleaves, Weekoffleaves, El, Cl, Lopleaves, Coffs, Process, Post, Verified, Approve, Approvalstatus, Balancesl, Balancecl, Balancecoffs, Remarks, Cancel, AD_Client_ID, Rchr_Leaverequisition_ID, created, createdby, updated, updatedBy)
+        VALUES ((?), (?), (?), TO_DATE(?), TO_DATE(?), TO_DATE(?), (?), (?), (?), TO_NUMBER(?), (?), (?), (?), (?), TO_NUMBER(?), TO_NUMBER(?), TO_NUMBER(?), TO_NUMBER(?), TO_NUMBER(?), TO_NUMBER(?), TO_NUMBER(?), (?), (?), (?), (?), (?), TO_NUMBER(?), TO_NUMBER(?), TO_NUMBER(?), (?), (?), (?), (?), now(), ?, now(), ?)
+    ]]></Sql>
+    <Parameter name="adOrgId"></Parameter> <Parameter name="isactive"></Parameter> <Parameter name="rchrEmployeeId"></Parameter> <Parameter name="requisitiondate"></Parameter> <Parameter name="fromdate"></Parameter> <Parameter name="todate"></Parameter> <Parameter name="employeetype"></Parameter> <Parameter name="rchrLeavetypeId"></Parameter> <Parameter name="rchrEmpDeptId"></Parameter> <Parameter name="leaveopening"></Parameter> <Parameter name="rchrSubdepartmentId"></Parameter> <Parameter name="rchrDesignationId"></Parameter> <Parameter name="reason"></Parameter> <Parameter name="docstatus"></Parameter> <Parameter name="totalleaves"></Parameter> <Parameter name="noofleaves"></Parameter> <Parameter name="weekoffleaves"></Parameter> <Parameter name="el"></Parameter> <Parameter name="cl"></Parameter> <Parameter name="lopleaves"></Parameter> <Parameter name="coffs"></Parameter> <Parameter name="process"></Parameter> <Parameter name="post"></Parameter> <Parameter name="verified"></Parameter> <Parameter name="approve"></Parameter> <Parameter name="approvalstatus"></Parameter> <Parameter name="balancesl"></Parameter> <Parameter name="balancecl"></Parameter> <Parameter name="balancecoffs"></Parameter> <Parameter name="remarks"></Parameter> <Parameter name="cancel"></Parameter> <Parameter name="adClientId"></Parameter> <Parameter name="rchrLeaverequisitionId"></Parameter> 
+    <Parameter name="createdby"></Parameter>
+    <Parameter name="updatedby"></Parameter>
+  </SqlMethod>
+
+  <SqlMethod name="delete" type="preparedStatement" return="rowCount">
+    <Sql><![CDATA[
+        DELETE FROM RCHR_LeaveRequisition
+        WHERE RCHR_LeaveRequisition.Rchr_Leaverequisition_ID = ? 
+        
+        AND RCHR_LeaveRequisition.AD_Client_ID IN ('1') 
+        AND RCHR_LeaveRequisition.AD_Org_ID IN ('1') 
+    ]]></Sql>
+    <Parameter name="param1"></Parameter>
+    
+        <Parameter name="adUserClient" type="replace" optional="true" after="RCHR_LeaveRequisition.AD_Client_ID IN (" text="'1'"/>
+        <Parameter name="adOrgClient" type="replace" optional="true" after="RCHR_LeaveRequisition.AD_Org_ID IN (" text="'1'"/>
+  </SqlMethod>
+
+  <SqlMethod name="selectOrg" type="preparedStatement" return="string">
+    <SqlMethodComment>Select for relation</SqlMethodComment>
+    <Sql><![CDATA[ 
+        SELECT AD_ORG_ID
+          FROM RCHR_LeaveRequisition
+         WHERE RCHR_LeaveRequisition.Rchr_Leaverequisition_ID = ? 
+    ]]></Sql>
+    <Parameter name="id"></Parameter>
+  </SqlMethod>
+  
+  <SqlMethod name="getCurrentDBTimestamp" type="preparedStatement" return="string">
+    <Sql><![CDATA[ 
+        SELECT to_char(Updated, 'YYYYMMDDHH24MISS') as Updated_Time_Stamp
+          FROM RCHR_LeaveRequisition
+         WHERE RCHR_LeaveRequisition.Rchr_Leaverequisition_ID = ? 
+    ]]></Sql>
+    <Parameter name="id"></Parameter>
+  </SqlMethod>
+</SqlClass>

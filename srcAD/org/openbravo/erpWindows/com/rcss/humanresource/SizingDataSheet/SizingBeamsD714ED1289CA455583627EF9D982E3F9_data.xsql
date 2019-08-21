@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SqlClass id="class" name="SizingBeamsD714ED1289CA455583627EF9D982E3F9Data" package="org.openbravo.erpWindows.com.rcss.humanresource.SizingDataSheet">
+  <SqlClassComment>WAD Generated class</SqlClassComment>
+
+  <SqlMethod name="selectEdit" type="preparedStatement" return="multiple">
+    <SqlMethodComment>Select for edit</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT to_char(RCHR_Sizing_Beam.Created, ?) as created, 
+        (SELECT NAME FROM AD_USER u WHERE AD_USER_ID = RCHR_Sizing_Beam.CreatedBy) as CreatedByR, 
+        to_char(RCHR_Sizing_Beam.Updated, ?) as updated, 
+        to_char(RCHR_Sizing_Beam.Updated, 'YYYYMMDDHH24MISS') as Updated_Time_Stamp,  
+        RCHR_Sizing_Beam.UpdatedBy, 
+        (SELECT NAME FROM AD_USER u WHERE AD_USER_ID = RCHR_Sizing_Beam.UpdatedBy) as UpdatedByR,
+        RCHR_Sizing_Beam.AD_Org_ID, 
+COALESCE(RCHR_Sizing_Beam.Isactive, 'N') AS Isactive, 
+RCHR_Sizing_Beam.Rchr_Sizingsheet_ID, 
+RCHR_Sizing_Beam.Line, 
+RCHR_Sizing_Beam.Beamdate, 
+RCHR_Sizing_Beam.Rchr_Employee_ID, 
+(CASE WHEN RCHR_Sizing_Beam.Rchr_Employee_ID IS NULL THEN '' ELSE  (COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table1.Punchno), ''))),'')  || ' - ' || COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table1.Employeename), ''))),'') ) END) AS Rchr_Employee_IDR, 
+RCHR_Sizing_Beam.Rcpr_Shift_ID, 
+(CASE WHEN RCHR_Sizing_Beam.Rcpr_Shift_ID IS NULL THEN '' ELSE  (COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table2.Name), ''))),'') ) END) AS Rcpr_Shift_IDR, 
+TO_CHAR(RCHR_Sizing_Beam.Fromtime, 'HH24:MI:SS') AS Fromtime, 
+TO_CHAR(RCHR_Sizing_Beam.Totime, 'HH24:MI:SS') AS Totime, 
+RCHR_Sizing_Beam.Timedifference, 
+RCHR_Sizing_Beam.Rchr_Beam_ID, 
+(CASE WHEN RCHR_Sizing_Beam.Rchr_Beam_ID IS NULL THEN '' ELSE  (COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table3.Value), ''))),'')  || ' - ' || COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table3.Tareweight), ''))),'')  || ' - ' || COALESCE(TO_CHAR(list1.name),'') ) END) AS Rchr_Beam_IDR, 
+RCHR_Sizing_Beam.Beamlength, 
+RCHR_Sizing_Beam.Gross_Weight, 
+RCHR_Sizing_Beam.Tare_Weight, 
+RCHR_Sizing_Beam.Netweight, 
+RCHR_Sizing_Beam.Sizepickup, 
+RCHR_Sizing_Beam.Rcpl_Loomcategory_ID, 
+RCHR_Sizing_Beam.Shiftinmins, 
+RCHR_Sizing_Beam.Rchr_Detention_ID, 
+(CASE WHEN RCHR_Sizing_Beam.Rchr_Detention_ID IS NULL THEN '' ELSE  (COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table4.Name), ''))),'') ) END) AS Rchr_Detention_IDR, 
+TO_CHAR(RCHR_Sizing_Beam.Detfromtime, 'HH24:MI:SS') AS Detfromtime, 
+TO_CHAR(RCHR_Sizing_Beam.Dettotime, 'HH24:MI:SS') AS Dettotime, 
+RCHR_Sizing_Beam.Dettimedifference, 
+RCHR_Sizing_Beam.Unsizedweight, 
+RCHR_Sizing_Beam.Backsizer, 
+RCHR_Sizing_Beam.Mixer, 
+RCHR_Sizing_Beam.Helper, 
+COALESCE(RCHR_Sizing_Beam.Process, 'N') AS Process, 
+RCHR_Sizing_Beam.Complete, 
+RCHR_Sizing_Beam.AD_Client_ID, 
+RCHR_Sizing_Beam.Rchr_Sizing_Beam_ID, 
+ 
+        ? AS LANGUAGE 
+        FROM RCHR_Sizing_Beam left join (select Rchr_Employee_ID, Punchno, Employeename from Rchr_Employee) table1 on (RCHR_Sizing_Beam.Rchr_Employee_ID = table1.Rchr_Employee_ID) left join (select Rcpr_Shift_ID, Name from Rcpr_Shift) table2 on (RCHR_Sizing_Beam.Rcpr_Shift_ID = table2.Rcpr_Shift_ID) left join (select Rchr_Beam_ID, Value, Tareweight, Frindgetype from Rchr_Beam) table3 on (RCHR_Sizing_Beam.Rchr_Beam_ID = table3.Rchr_Beam_ID) left join ad_ref_list_v list1 on (table3.Frindgetype = list1.value and list1.ad_reference_id = '789FB34329ED4D21BB969920F8C308EC' and list1.ad_language = ?)  left join (select Rchr_Detention_ID, Name from Rchr_Detention) table4 on (RCHR_Sizing_Beam.Rchr_Detention_ID = table4.Rchr_Detention_ID)
+        WHERE 2=2 
+
+        AND 1=1 
+        AND RCHR_Sizing_Beam.Rchr_Sizing_Beam_ID = ? 
+        AND RCHR_Sizing_Beam.AD_Client_ID IN ('1') 
+           AND RCHR_Sizing_Beam.AD_Org_ID IN ('1') 
+    ]]></Sql>
+    <Parameter name="dateTimeFormat"></Parameter>
+    <Parameter name="dateTimeFormat"></Parameter>
+    
+    <Parameter name="paramLanguage"></Parameter>
+<Parameter name="paramLanguage"/>
+
+    <Parameter name="rchrSizingsheetId" optional="true" after="AND 1=1 " id="paramKeyParent"> AND RCHR_Sizing_Beam.Rchr_Sizingsheet_ID = ? </Parameter>
+    <Parameter name="key"></Parameter>
+        <Parameter name="adUserClient" type="replace" optional="true" after="RCHR_Sizing_Beam.AD_Client_ID IN (" text="'1'"/>
+        <Parameter name="adOrgClient" type="replace" optional="true" after="RCHR_Sizing_Beam.AD_Org_ID IN (" text="'1'"/>
+
+    <Field name="adUserClient" value="void"></Field>
+    <Field name="adOrgClient" value="void"></Field>
+    <Field name="createdby" value="void"></Field>
+    
+    <Field name="trBgcolor" value="void"></Field>
+    <Field name="totalCount" value="void"></Field>
+    <Field name="dateTimeFormat" value=""></Field>
+  </SqlMethod>
+  
+  
+
+  <SqlMethod name="set" type="constant" return="multiple">
+      <SqlMethodComment>Create a registry</SqlMethodComment>
+      <Sql></Sql>
+    <Parameter name="rchrSizingsheetId" id="paramKeyParent"></Parameter>
+<Parameter name="rcplLoomcategoryId"></Parameter><Parameter name="netweight"></Parameter><Parameter name="timedifference"></Parameter><Parameter name="detfromtime"></Parameter><Parameter name="line"></Parameter><Parameter name="grossWeight"></Parameter><Parameter name="rchrSizingBeamId"></Parameter><Parameter name="rchrDetentionId"></Parameter><Parameter name="rchrEmployeeId"></Parameter><Parameter name="adClientId"></Parameter><Parameter name="shiftinmins"></Parameter><Parameter name="createdby"></Parameter><Parameter name="createdbyr"></Parameter><Parameter name="dettotime"></Parameter><Parameter name="rchrBeamId"></Parameter><Parameter name="sizepickup"></Parameter><Parameter name="mixer"></Parameter><Parameter name="beamlength"></Parameter><Parameter name="dettimedifference"></Parameter><Parameter name="adOrgId"></Parameter><Parameter name="helper"></Parameter><Parameter name="backsizer"></Parameter><Parameter name="fromtime"></Parameter><Parameter name="isactive"></Parameter><Parameter name="complete"></Parameter><Parameter name="unsizedweight"></Parameter><Parameter name="beamdate"></Parameter><Parameter name="tareWeight"></Parameter><Parameter name="updatedby"></Parameter><Parameter name="updatedbyr"></Parameter><Parameter name="process"></Parameter><Parameter name="totime"></Parameter><Parameter name="rcprShiftId"></Parameter>
+   </SqlMethod>
+
+
+
+
+
+
+   <SqlMethod name="selectDef2571457E60BE4217B5646A8C4CCB7791" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>Select for auxiliar field</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT COALESCE(MAX(LINE),0)+1 AS DefaultValue FROM RCHR_SIZING_BEAM WHERE Rchr_Sizingsheet_ID=? 
+    ]]></Sql>
+
+<Parameter name="Rchr_Sizingsheet_ID"/>
+  </SqlMethod>
+
+   <SqlMethod name="selectDef5F1F52ED12094FE38F1DFF95107FA01A_0" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>Select for auxiliar field</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT  ( COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table2.Name), ''))), '') ) as Createdby FROM AD_User left join (select AD_User_ID, Name from AD_User) table2 on (AD_User.AD_User_ID = table2.AD_User_ID) WHERE AD_User.isActive='Y' AND AD_User.AD_User_ID = ?  
+    ]]></Sql>
+<Parameter name="CreatedbyR"/>
+  </SqlMethod>
+
+   <SqlMethod name="selectDefE54108371BD34063839FA940DAA26959_1" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>Select for auxiliar field</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT  ( COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table2.Name), ''))), '') ) as Updatedby FROM AD_User left join (select AD_User_ID, Name from AD_User) table2 on (AD_User.AD_User_ID = table2.AD_User_ID) WHERE AD_User.isActive='Y' AND AD_User.AD_User_ID = ?  
+    ]]></Sql>
+<Parameter name="UpdatedbyR"/>
+  </SqlMethod>
+
+
+
+  <SqlMethod name="selectParentID" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>return the parent ID</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT RCHR_Sizing_Beam.Rchr_Sizingsheet_ID AS NAME
+        FROM RCHR_Sizing_Beam
+        WHERE RCHR_Sizing_Beam.Rchr_Sizing_Beam_ID = ?
+    ]]></Sql>
+    <Parameter name="key"></Parameter>
+  </SqlMethod>
+
+   <SqlMethod name="selectParent" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>Select for parent field</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT (TO_CHAR(COALESCE(TO_CHAR((CASE WHEN tableTRL2.Name IS NULL THEN TO_CHAR(table2.Name) ELSE TO_CHAR(tableTRL2.Name) END)), '')) || ' - ' || TO_CHAR(COALESCE(TO_CHAR(table1.Documentno), ''))) AS NAME FROM RCHR_Sizingsheet left join (select Rchr_Sizingsheet_ID, C_Doctype_ID, Documentno from Rchr_Sizingsheet) table1 on (RCHR_Sizingsheet.Rchr_Sizingsheet_ID = table1.Rchr_Sizingsheet_ID) left join (select C_DocType_ID, Name from C_DocType) table2 on (table1.C_Doctype_ID =  table2.C_DocType_ID) left join (select C_DocType_ID,AD_Language, Name from C_DocType_TRL) tableTRL2 on (table2.C_DocType_ID = tableTRL2.C_DocType_ID and tableTRL2.AD_Language = ?)  WHERE RCHR_Sizingsheet.Rchr_Sizingsheet_ID = ?  
+    ]]></Sql>
+<Parameter name="paramLanguage"/>
+<Parameter name="rchrSizingsheetId"/>
+
+  </SqlMethod>
+
+
+
+
+   <SqlMethod name="selectParentTrl" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>Select for parent field</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT (TO_CHAR(COALESCE(TO_CHAR((CASE WHEN tableTRL2.Name IS NULL THEN TO_CHAR(table2.Name) ELSE TO_CHAR(tableTRL2.Name) END)), '')) || ' - ' || TO_CHAR(COALESCE(TO_CHAR(table1.Documentno), ''))) AS NAME FROM RCHR_Sizingsheet left join (select Rchr_Sizingsheet_ID, C_Doctype_ID, Documentno from Rchr_Sizingsheet) table1 on (RCHR_Sizingsheet.Rchr_Sizingsheet_ID = table1.Rchr_Sizingsheet_ID) left join (select C_DocType_ID, Name from C_DocType) table2 on (table1.C_Doctype_ID =  table2.C_DocType_ID) left join (select C_DocType_ID,AD_Language, Name from C_DocType_TRL) tableTRL2 on (table2.C_DocType_ID = tableTRL2.C_DocType_ID and tableTRL2.AD_Language = ?)  WHERE RCHR_Sizingsheet.Rchr_Sizingsheet_ID = ?  
+    ]]></Sql>
+<Parameter name="paramLanguage"/>
+<Parameter name="rchrSizingsheetId"/>
+
+  </SqlMethod>
+
+
+
+
+
+
+
+
+  <SqlMethod name="update" type="preparedStatement" return="rowCount" static="false" connection="true">
+    <Sql><![CDATA[
+        UPDATE RCHR_Sizing_Beam
+        SET AD_Org_ID = (?) , Isactive = (?) , Rchr_Sizingsheet_ID = (?) , Line = TO_NUMBER(?) , Beamdate = TO_DATE(?) , Rchr_Employee_ID = (?) , Rcpr_Shift_ID = (?) , Fromtime = TO_TIMESTAMP(?,'HH24:MI:SS') , Totime = TO_TIMESTAMP(?,'HH24:MI:SS') , Timedifference = (?) , Rchr_Beam_ID = (?) , Beamlength = TO_NUMBER(?) , Gross_Weight = TO_NUMBER(?) , Tare_Weight = TO_NUMBER(?) , Netweight = TO_NUMBER(?) , Sizepickup = TO_NUMBER(?) , Rcpl_Loomcategory_ID = (?) , Shiftinmins = TO_NUMBER(?) , Rchr_Detention_ID = (?) , Detfromtime = TO_TIMESTAMP(?,'HH24:MI:SS') , Dettotime = TO_TIMESTAMP(?,'HH24:MI:SS') , Dettimedifference = (?) , Unsizedweight = TO_NUMBER(?) , Backsizer = (?) , Mixer = (?) , Helper = (?) , Process = (?) , Complete = (?) , AD_Client_ID = (?) , Rchr_Sizing_Beam_ID = (?) , updated = now(), updatedby = ? 
+        WHERE RCHR_Sizing_Beam.Rchr_Sizing_Beam_ID = ? 
+                 AND RCHR_Sizing_Beam.Rchr_Sizingsheet_ID = ? 
+        AND RCHR_Sizing_Beam.AD_Client_ID IN ('1') 
+        AND RCHR_Sizing_Beam.AD_Org_ID IN ('1') 
+    ]]></Sql>
+    <Parameter name="adOrgId"></Parameter> <Parameter name="isactive"></Parameter> <Parameter name="rchrSizingsheetId"></Parameter> <Parameter name="line"></Parameter> <Parameter name="beamdate"></Parameter> <Parameter name="rchrEmployeeId"></Parameter> <Parameter name="rcprShiftId"></Parameter> <Parameter name="fromtime"></Parameter> <Parameter name="totime"></Parameter> <Parameter name="timedifference"></Parameter> <Parameter name="rchrBeamId"></Parameter> <Parameter name="beamlength"></Parameter> <Parameter name="grossWeight"></Parameter> <Parameter name="tareWeight"></Parameter> <Parameter name="netweight"></Parameter> <Parameter name="sizepickup"></Parameter> <Parameter name="rcplLoomcategoryId"></Parameter> <Parameter name="shiftinmins"></Parameter> <Parameter name="rchrDetentionId"></Parameter> <Parameter name="detfromtime"></Parameter> <Parameter name="dettotime"></Parameter> <Parameter name="dettimedifference"></Parameter> <Parameter name="unsizedweight"></Parameter> <Parameter name="backsizer"></Parameter> <Parameter name="mixer"></Parameter> <Parameter name="helper"></Parameter> <Parameter name="process"></Parameter> <Parameter name="complete"></Parameter> <Parameter name="adClientId"></Parameter> <Parameter name="rchrSizingBeamId"></Parameter> 
+    <Parameter name="updatedby"></Parameter>
+    <Parameter id="paramKey" name="rchrSizingBeamId"></Parameter>
+    
+    <Parameter name="rchrSizingsheetId" id="paramKeyParent"></Parameter>
+        <Parameter name="adUserClient" type="replace" optional="true" after="RCHR_Sizing_Beam.AD_Client_ID IN (" text="'1'"/>
+        <Parameter name="adOrgClient" type="replace" optional="true" after="RCHR_Sizing_Beam.AD_Org_ID IN (" text="'1'"/>
+  </SqlMethod>
+
+  <SqlMethod name="insert" type="preparedStatement" return="rowCount" static="false" connection="true">
+    <Sql><![CDATA[
+        INSERT INTO RCHR_Sizing_Beam 
+        (AD_Org_ID, Isactive, Rchr_Sizingsheet_ID, Line, Beamdate, Rchr_Employee_ID, Rcpr_Shift_ID, Fromtime, Totime, Timedifference, Rchr_Beam_ID, Beamlength, Gross_Weight, Tare_Weight, Netweight, Sizepickup, Rcpl_Loomcategory_ID, Shiftinmins, Rchr_Detention_ID, Detfromtime, Dettotime, Dettimedifference, Unsizedweight, Backsizer, Mixer, Helper, Process, Complete, AD_Client_ID, Rchr_Sizing_Beam_ID, created, createdby, updated, updatedBy)
+        VALUES ((?), (?), (?), TO_NUMBER(?), TO_DATE(?), (?), (?), TO_TIMESTAMP(?, 'HH24:MI:SS'), TO_TIMESTAMP(?, 'HH24:MI:SS'), (?), (?), TO_NUMBER(?), TO_NUMBER(?), TO_NUMBER(?), TO_NUMBER(?), TO_NUMBER(?), (?), TO_NUMBER(?), (?), TO_TIMESTAMP(?, 'HH24:MI:SS'), TO_TIMESTAMP(?, 'HH24:MI:SS'), (?), TO_NUMBER(?), (?), (?), (?), (?), (?), (?), (?), now(), ?, now(), ?)
+    ]]></Sql>
+    <Parameter name="adOrgId"></Parameter> <Parameter name="isactive"></Parameter> <Parameter name="rchrSizingsheetId"></Parameter> <Parameter name="line"></Parameter> <Parameter name="beamdate"></Parameter> <Parameter name="rchrEmployeeId"></Parameter> <Parameter name="rcprShiftId"></Parameter> <Parameter name="fromtime"></Parameter> <Parameter name="totime"></Parameter> <Parameter name="timedifference"></Parameter> <Parameter name="rchrBeamId"></Parameter> <Parameter name="beamlength"></Parameter> <Parameter name="grossWeight"></Parameter> <Parameter name="tareWeight"></Parameter> <Parameter name="netweight"></Parameter> <Parameter name="sizepickup"></Parameter> <Parameter name="rcplLoomcategoryId"></Parameter> <Parameter name="shiftinmins"></Parameter> <Parameter name="rchrDetentionId"></Parameter> <Parameter name="detfromtime"></Parameter> <Parameter name="dettotime"></Parameter> <Parameter name="dettimedifference"></Parameter> <Parameter name="unsizedweight"></Parameter> <Parameter name="backsizer"></Parameter> <Parameter name="mixer"></Parameter> <Parameter name="helper"></Parameter> <Parameter name="process"></Parameter> <Parameter name="complete"></Parameter> <Parameter name="adClientId"></Parameter> <Parameter name="rchrSizingBeamId"></Parameter> 
+    <Parameter name="createdby"></Parameter>
+    <Parameter name="updatedby"></Parameter>
+  </SqlMethod>
+
+  <SqlMethod name="delete" type="preparedStatement" return="rowCount">
+    <Sql><![CDATA[
+        DELETE FROM RCHR_Sizing_Beam
+        WHERE RCHR_Sizing_Beam.Rchr_Sizing_Beam_ID = ? 
+                 AND RCHR_Sizing_Beam.Rchr_Sizingsheet_ID = ? 
+        AND RCHR_Sizing_Beam.AD_Client_ID IN ('1') 
+        AND RCHR_Sizing_Beam.AD_Org_ID IN ('1') 
+    ]]></Sql>
+    <Parameter name="param1"></Parameter>
+        <Parameter name="rchrSizingsheetId" id="paramKeyParent"></Parameter>
+        <Parameter name="adUserClient" type="replace" optional="true" after="RCHR_Sizing_Beam.AD_Client_ID IN (" text="'1'"/>
+        <Parameter name="adOrgClient" type="replace" optional="true" after="RCHR_Sizing_Beam.AD_Org_ID IN (" text="'1'"/>
+  </SqlMethod>
+
+  <SqlMethod name="selectOrg" type="preparedStatement" return="string">
+    <SqlMethodComment>Select for relation</SqlMethodComment>
+    <Sql><![CDATA[ 
+        SELECT AD_ORG_ID
+          FROM RCHR_Sizing_Beam
+         WHERE RCHR_Sizing_Beam.Rchr_Sizing_Beam_ID = ? 
+    ]]></Sql>
+    <Parameter name="id"></Parameter>
+  </SqlMethod>
+  
+  <SqlMethod name="getCurrentDBTimestamp" type="preparedStatement" return="string">
+    <Sql><![CDATA[ 
+        SELECT to_char(Updated, 'YYYYMMDDHH24MISS') as Updated_Time_Stamp
+          FROM RCHR_Sizing_Beam
+         WHERE RCHR_Sizing_Beam.Rchr_Sizing_Beam_ID = ? 
+    ]]></Sql>
+    <Parameter name="id"></Parameter>
+  </SqlMethod>
+</SqlClass>

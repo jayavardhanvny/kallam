@@ -1,0 +1,405 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SqlClass id="class" name="LinesData" package="org.openbravo.erpWindows.SalesInvoice">
+  <SqlClassComment>WAD Generated class</SqlClassComment>
+
+  <SqlMethod name="selectEdit" type="preparedStatement" return="multiple">
+    <SqlMethodComment>Select for edit</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT to_char(C_InvoiceLine.Created, ?) as created, 
+        (SELECT NAME FROM AD_USER u WHERE AD_USER_ID = C_InvoiceLine.CreatedBy) as CreatedByR, 
+        to_char(C_InvoiceLine.Updated, ?) as updated, 
+        to_char(C_InvoiceLine.Updated, 'YYYYMMDDHH24MISS') as Updated_Time_Stamp,  
+        C_InvoiceLine.UpdatedBy, 
+        (SELECT NAME FROM AD_USER u WHERE AD_USER_ID = C_InvoiceLine.UpdatedBy) as UpdatedByR,
+        C_InvoiceLine.Line, 
+COALESCE(C_InvoiceLine.Financial_Invoice_Line, 'N') AS Financial_Invoice_Line, 
+C_InvoiceLine.M_Product_ID, 
+C_InvoiceLine.EM_Epcg_Prolistalias, 
+(CASE WHEN C_InvoiceLine.EM_Epcg_Prolistalias IS NULL THEN '' ELSE  ( COALESCE(TO_CHAR(list1.name),'') ) END) AS EM_Epcg_ProlistaliasR, 
+C_InvoiceLine.EM_Epcg_Productalias, 
+C_InvoiceLine.Account_ID, 
+(CASE WHEN C_InvoiceLine.Account_ID IS NULL THEN '' ELSE  ( COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table1.Name), ''))),'') ) END) AS Account_IDR, 
+C_InvoiceLine.Epcg_Packaging_ID, 
+(CASE WHEN C_InvoiceLine.Epcg_Packaging_ID IS NULL THEN '' ELSE  ( COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table2.Name), ''))),'') ) END) AS Epcg_Packaging_IDR, 
+C_InvoiceLine.EM_Epcg_Noofpackages, 
+C_InvoiceLine.QtyInvoiced, 
+C_InvoiceLine.C_UOM_ID, 
+(CASE WHEN C_InvoiceLine.C_UOM_ID IS NULL THEN '' ELSE  (COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR((CASE WHEN tableTRL3.Name IS NULL THEN TO_CHAR(table3.Name) ELSE TO_CHAR(tableTRL3.Name) END)), ''))),'') ) END) AS C_UOM_IDR, 
+C_InvoiceLine.PriceActual, 
+C_InvoiceLine.EM_Rcfr_Netunitrate, 
+C_InvoiceLine.Gross_Unit_Price, 
+C_InvoiceLine.LineNetAmt, 
+C_InvoiceLine.Line_Gross_Amount, 
+C_InvoiceLine.C_Tax_ID, 
+(CASE WHEN C_InvoiceLine.C_Tax_ID IS NULL THEN '' ELSE  ( COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR((CASE WHEN tableTRL4.Name IS NULL THEN TO_CHAR(table4.Name) ELSE TO_CHAR(tableTRL4.Name) END)), ''))),'') ) END) AS C_Tax_IDR, 
+C_InvoiceLine.EM_Rcfr_Netrate, 
+C_InvoiceLine.EM_Rcfr_Freight, 
+C_InvoiceLine.EM_Rcfr_Insurance, 
+C_InvoiceLine.EM_Epcg_Noofpacks, 
+C_InvoiceLine.Grosspricelist, 
+C_InvoiceLine.PriceList, 
+C_InvoiceLine.M_AttributeSetInstance_ID, 
+(CASE WHEN C_InvoiceLine.M_AttributeSetInstance_ID IS NULL THEN '' ELSE  (COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table5.Description), ''))),'') ) END) AS M_AttributeSetInstance_IDR, 
+C_InvoiceLine.Description, 
+C_InvoiceLine.C_OrderLine_ID, 
+(CASE WHEN C_InvoiceLine.C_OrderLine_ID IS NULL THEN '' ELSE  (COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table7.DocumentNo), ''))),'')  || ' - ' || COALESCE(TO_CHAR(TO_CHAR(table7.DateOrdered, 'DD-MM-YYYY')),'')  || ' - ' || COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table7.GrandTotal), ''))),'')  || ' - ' || COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table6.Line), ''))),'')  || ' - ' || COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table6.LineNetAmt), ''))),'') ) END) AS C_OrderLine_IDR, 
+C_InvoiceLine.M_InOutLine_ID, 
+(CASE WHEN C_InvoiceLine.M_InOutLine_ID IS NULL THEN '' ELSE  (COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table8.Line), ''))),'')  || ' - ' || COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table8.MovementQty), ''))),'')  || ' - ' || COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table9.DocumentNo), ''))),'')  || ' - ' || COALESCE(TO_CHAR(TO_CHAR(table9.MovementDate, 'DD-MM-YYYY')),'')  || ' - ' || COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR((CASE WHEN tableTRL10.Name IS NULL THEN TO_CHAR(table10.Name) ELSE TO_CHAR(tableTRL10.Name) END)), ''))),'') ) END) AS M_InOutLine_IDR, 
+COALESCE(C_InvoiceLine.Iseditlinenetamt, 'N') AS Iseditlinenetamt, 
+C_InvoiceLine.Taxbaseamt, 
+COALESCE(C_InvoiceLine.Excludeforwithholding, 'N') AS Excludeforwithholding, 
+C_InvoiceLine.M_Product_Uom_Id, 
+(CASE WHEN C_InvoiceLine.M_Product_Uom_Id IS NULL THEN '' ELSE  ( COALESCE(TO_CHAR(list2.name),'') ) END) AS M_Product_Uom_IdR, 
+COALESCE(C_InvoiceLine.IsDeferred, 'N') AS IsDeferred, 
+C_InvoiceLine.QuantityOrder, 
+C_InvoiceLine.PriceStd, 
+C_InvoiceLine.grosspricestd, 
+C_InvoiceLine.DefPlanType, 
+(CASE WHEN C_InvoiceLine.DefPlanType IS NULL THEN '' ELSE  ( COALESCE(TO_CHAR(list3.name),'') ) END) AS DefPlanTypeR, 
+C_InvoiceLine.Periodnumber, 
+C_InvoiceLine.C_Period_ID, 
+(CASE WHEN C_InvoiceLine.C_Period_ID IS NULL THEN '' ELSE  ( COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table12.Name), ''))),'') ) END) AS C_Period_IDR, 
+C_InvoiceLine.AD_Org_ID, 
+(CASE WHEN C_InvoiceLine.AD_Org_ID IS NULL THEN '' ELSE  (COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table13.Name), ''))),'') ) END) AS AD_Org_IDR, 
+C_InvoiceLine.C_Project_ID, 
+(CASE WHEN C_InvoiceLine.C_Project_ID IS NULL THEN '' ELSE  (COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table14.Value), ''))),'')  || ' - ' || COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table14.Name), ''))),'') ) END) AS C_Project_IDR, 
+C_InvoiceLine.C_Costcenter_ID, 
+C_InvoiceLine.A_Asset_ID, 
+C_InvoiceLine.User1_ID, 
+C_InvoiceLine.User2_ID, 
+C_InvoiceLine.Explode, 
+C_InvoiceLine.BOM_Parent_ID, 
+C_InvoiceLine.AD_Client_ID, 
+C_InvoiceLine.M_Offer_ID, 
+C_InvoiceLine.C_Projectline_ID, 
+COALESCE(C_InvoiceLine.IsDescription, 'N') AS IsDescription, 
+C_InvoiceLine.TaxAmt, 
+C_InvoiceLine.S_ResourceAssignment_ID, 
+C_InvoiceLine.C_Invoice_Discount_ID, 
+C_InvoiceLine.PriceLimit, 
+COALESCE(C_InvoiceLine.IsActive, 'N') AS IsActive, 
+C_InvoiceLine.ChargeAmt, 
+C_InvoiceLine.C_InvoiceLine_ID, 
+C_InvoiceLine.C_Charge_ID, 
+C_InvoiceLine.C_Invoice_ID, 
+C_InvoiceLine.C_Bpartner_ID, 
+(CASE WHEN C_InvoiceLine.C_Bpartner_ID IS NULL THEN '' ELSE  (COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table15.Name), ''))),'') ) END) AS C_Bpartner_IDR, 
+ 
+        ? AS LANGUAGE 
+        FROM C_InvoiceLine left join ad_ref_list_v list1 on (C_InvoiceLine.EM_Epcg_Prolistalias = list1.value and list1.ad_reference_id = '50F1BCA501DF41C095D92E2AC4EB6AA4' and list1.ad_language = ?)  left join (select C_Glitem_ID, Name from C_Glitem) table1 on (C_InvoiceLine.Account_ID =  table1.C_Glitem_ID) left join (select Epcg_Packaging_ID, Name from EPCG_Packaging) table2 on (C_InvoiceLine.Epcg_Packaging_ID =  table2.Epcg_Packaging_ID) left join (select C_UOM_ID, Name from C_UOM) table3 on (C_InvoiceLine.C_UOM_ID = table3.C_UOM_ID) left join (select C_UOM_ID,AD_Language, Name from C_UOM_TRL) tableTRL3 on (table3.C_UOM_ID = tableTRL3.C_UOM_ID and tableTRL3.AD_Language = ?)  left join (select C_Tax_ID, Name from C_Tax) table4 on (C_InvoiceLine.C_Tax_ID =  table4.C_Tax_ID) left join (select C_Tax_ID,AD_Language, Name from C_Tax_TRL) tableTRL4 on (table4.C_Tax_ID = tableTRL4.C_Tax_ID and tableTRL4.AD_Language = ?)  left join (select M_AttributeSetInstance_ID, Description from M_AttributeSetInstance) table5 on (C_InvoiceLine.M_AttributeSetInstance_ID = table5.M_AttributeSetInstance_ID) left join (select C_OrderLine_ID, C_Order_ID, Line, LineNetAmt from C_OrderLine) table6 on (C_InvoiceLine.C_OrderLine_ID = table6.C_OrderLine_ID) left join (select C_Order_ID, DocumentNo, DateOrdered, GrandTotal from C_Order) table7 on (table6.C_Order_ID = table7.C_Order_ID) left join (select M_InOutLine_ID, Line, MovementQty, M_InOut_ID, M_Product_ID from M_InOutLine) table8 on (C_InvoiceLine.M_InOutLine_ID = table8.M_InOutLine_ID) left join (select M_InOut_ID, DocumentNo, MovementDate from M_InOut) table9 on (table8.M_InOut_ID = table9.M_InOut_ID) left join (select M_Product_ID, Name from M_Product) table10 on (table8.M_Product_ID =  table10.M_Product_ID) left join (select M_Product_ID,AD_Language, Name from M_Product_TRL) tableTRL10 on (table10.M_Product_ID = tableTRL10.M_Product_ID and tableTRL10.AD_Language = ?)  left join (select M_Product_Uom_Id, C_UOM_ID from M_Product_UOM) table11 on (C_InvoiceLine.M_Product_Uom_Id =  table11.M_Product_Uom_Id) left join ad_ref_list_v list2 on (table11.C_UOM_ID = list2.value and list2.ad_reference_id = '' and list2.ad_language = ?)  left join ad_ref_list_v list3 on (C_InvoiceLine.DefPlanType = list3.value and list3.ad_reference_id = '73625A8F22EF4CD7808603156BA606D7' and list3.ad_language = ?)  left join (select C_Period_ID, Name from C_Period) table12 on (C_InvoiceLine.C_Period_ID =  table12.C_Period_ID) left join (select AD_Org_ID, Name from AD_Org) table13 on (C_InvoiceLine.AD_Org_ID = table13.AD_Org_ID) left join (select C_Project_ID, Value, Name from C_Project) table14 on (C_InvoiceLine.C_Project_ID = table14.C_Project_ID) left join (select C_BPartner_ID, Name from C_BPartner) table15 on (C_InvoiceLine.C_Bpartner_ID = table15.C_BPartner_ID)
+        WHERE 2=2 
+
+        AND 1=1 
+        AND C_InvoiceLine.C_InvoiceLine_ID = ? 
+        AND C_InvoiceLine.AD_Client_ID IN ('1') 
+           AND C_InvoiceLine.AD_Org_ID IN ('1') 
+    ]]></Sql>
+    <Parameter name="dateTimeFormat"></Parameter>
+    <Parameter name="dateTimeFormat"></Parameter>
+    
+    <Parameter name="paramLanguage"></Parameter>
+<Parameter name="paramLanguage"/>
+<Parameter name="paramLanguage"/>
+<Parameter name="paramLanguage"/>
+<Parameter name="paramLanguage"/>
+<Parameter name="paramLanguage"/>
+<Parameter name="paramLanguage"/>
+
+    <Parameter name="cInvoiceId" optional="true" after="AND 1=1 " id="paramKeyParent"> AND C_InvoiceLine.C_Invoice_ID = ? </Parameter>
+    <Parameter name="key"></Parameter>
+        <Parameter name="adUserClient" type="replace" optional="true" after="C_InvoiceLine.AD_Client_ID IN (" text="'1'"/>
+        <Parameter name="adOrgClient" type="replace" optional="true" after="C_InvoiceLine.AD_Org_ID IN (" text="'1'"/>
+
+    <Field name="adUserClient" value="void"></Field>
+    <Field name="adOrgClient" value="void"></Field>
+    <Field name="createdby" value="void"></Field>
+    
+    <Field name="trBgcolor" value="void"></Field>
+    <Field name="totalCount" value="void"></Field>
+    <Field name="dateTimeFormat" value=""></Field>
+  </SqlMethod>
+  
+  
+
+  <SqlMethod name="set" type="constant" return="multiple">
+      <SqlMethodComment>Create a registry</SqlMethodComment>
+      <Sql></Sql>
+    <Parameter name="cInvoiceId" id="paramKeyParent"></Parameter>
+<Parameter name="emRcfrInsurance"></Parameter><Parameter name="emEpcgProductalias"></Parameter><Parameter name="excludeforwithholding"></Parameter><Parameter name="cBpartnerId"></Parameter><Parameter name="cBpartnerIdr"></Parameter><Parameter name="cPeriodId"></Parameter><Parameter name="financialInvoiceLine"></Parameter><Parameter name="defplantype"></Parameter><Parameter name="cInvoicelineId"></Parameter><Parameter name="adClientId"></Parameter><Parameter name="adOrgId"></Parameter><Parameter name="isactive"></Parameter><Parameter name="created"></Parameter><Parameter name="createdby"></Parameter><Parameter name="createdbyr"></Parameter><Parameter name="updatedby"></Parameter><Parameter name="updatedbyr"></Parameter><Parameter name="cOrderlineId"></Parameter><Parameter name="cOrderlineIdr"></Parameter><Parameter name="line"></Parameter><Parameter name="description"></Parameter><Parameter name="mProductId"></Parameter><Parameter name="qtyinvoiced"></Parameter><Parameter name="pricelist"></Parameter><Parameter name="priceactual"></Parameter><Parameter name="linenetamt"></Parameter><Parameter name="cChargeId"></Parameter><Parameter name="chargeamt"></Parameter><Parameter name="cUomId"></Parameter><Parameter name="cTaxId"></Parameter><Parameter name="user1Id"></Parameter><Parameter name="emEpcgNoofpacks"></Parameter><Parameter name="mInoutlineId"></Parameter><Parameter name="mInoutlineIdr"></Parameter><Parameter name="pricelimit"></Parameter><Parameter name="grosspricelist"></Parameter><Parameter name="emEpcgNoofpackages"></Parameter><Parameter name="emRcfrNetrate"></Parameter><Parameter name="epcgPackagingId"></Parameter><Parameter name="periodnumber"></Parameter><Parameter name="user2Id"></Parameter><Parameter name="emRcfrNetunitrate"></Parameter><Parameter name="emRcfrFreight"></Parameter><Parameter name="sResourceassignmentId"></Parameter><Parameter name="grossUnitPrice"></Parameter><Parameter name="iseditlinenetamt"></Parameter><Parameter name="taxbaseamt"></Parameter><Parameter name="quantityorder"></Parameter><Parameter name="mProductUomId"></Parameter><Parameter name="cInvoiceDiscountId"></Parameter><Parameter name="cProjectlineId"></Parameter><Parameter name="mOfferId"></Parameter><Parameter name="pricestd"></Parameter><Parameter name="taxamt"></Parameter><Parameter name="mAttributesetinstanceId"></Parameter><Parameter name="mAttributesetinstanceIdr"></Parameter><Parameter name="aAssetId"></Parameter><Parameter name="grosspricestd"></Parameter><Parameter name="isdescription"></Parameter><Parameter name="isdeferred"></Parameter><Parameter name="emEpcgProlistalias"></Parameter><Parameter name="lineGrossAmount"></Parameter><Parameter name="explode"></Parameter><Parameter name="bomParentId"></Parameter><Parameter name="cProjectId"></Parameter><Parameter name="cProjectIdr"></Parameter><Parameter name="cCostcenterId"></Parameter><Parameter name="accountId"></Parameter>
+   </SqlMethod>
+
+
+   <SqlMethod name="selectAux800004" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>Select for auxiliar field</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT (CASE COUNT(*) WHEN 0 THEN 0 ELSE 1 END) AS TOTAL FROM M_PRODUCT_UOM WHERE M_PRODUCT_ID=? 
+    ]]></Sql>
+
+<Parameter name="M_Product_ID"/>
+  </SqlMethod>
+
+   <SqlMethod name="selectAux1F06154C94734F81A968E51738CC7B62" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>Select for auxiliar field</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT CASE WHEN COUNT(C_TAX_ID)>0 THEN 'Y' ELSE 'N' END AS ISUSED FROM C_TAX WHERE C_TAX_ISMEMBER(?, C_TAX_ID)=1 AND BASEAMOUNT IN ('TBA', 'TBATAX') 
+    ]]></Sql>
+
+<Parameter name="C_TAX_ID"/>
+  </SqlMethod>
+
+   <SqlMethod name="selectAux231D1034C3D2450C969AEFCA7B680A8E" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>Select for auxiliar field</SqlMethodComment>
+    <Sql><![CDATA[
+         SELECT AD_ORG_ID
+FROM C_INVOICE
+WHERE C_INVOICE_ID = ? 
+    ]]></Sql>
+
+<Parameter name="C_INVOICE_ID"/>
+  </SqlMethod>
+
+   <SqlMethod name="selectAux3EE2062DF62F4E948FD9786D21AF2D0C" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>Select for auxiliar field</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT isBOM FROM M_PRODUCT WHERE M_PRODUCT_ID = ? 
+    ]]></Sql>
+
+<Parameter name="M_PRODUCT_ID"/>
+  </SqlMethod>
+
+   <SqlMethod name="selectAux467629226B744AD5A9D5CEBD284C29E4" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>Select for auxiliar field</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT IsStocked FROM M_PRODUCT WHERE M_PRODUCT_ID = ? 
+    ]]></Sql>
+
+<Parameter name="M_PRODUCT_ID"/>
+  </SqlMethod>
+
+   <SqlMethod name="selectAux4D9613116EAA46A585AEDB75237D5140" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>Select for auxiliar field</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT PROCESSED FROM C_INVOICE WHERE C_INVOICE_ID = ? 
+    ]]></Sql>
+
+<Parameter name="C_INVOICE_ID"/>
+  </SqlMethod>
+
+   <SqlMethod name="selectAux51568B79156646C8966F49F82EE51CB7" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>Select for auxiliar field</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT ATTRSETVALUETYPE FROM M_PRODUCT WHERE M_PRODUCT_ID=? 
+    ]]></Sql>
+
+<Parameter name="M_Product_ID"/>
+  </SqlMethod>
+
+   <SqlMethod name="selectAux571778C5E2AD4A13BDD7DD15A4DA470E" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>Select for auxiliar field</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT POSTED FROM C_INVOICE WHERE C_INVOICE_ID = ? 
+    ]]></Sql>
+
+<Parameter name="C_INVOICE_ID"/>
+  </SqlMethod>
+
+   <SqlMethod name="selectAux637CCFE37ADD45B5810D3490DF33CF2E" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>Select for auxiliar field</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT M_ATTRIBUTESET_ID FROM M_PRODUCT WHERE M_PRODUCT_ID=? 
+    ]]></Sql>
+
+<Parameter name="M_Product_ID"/>
+  </SqlMethod>
+
+   <SqlMethod name="selectAuxB727417F9385474AB816BA585B1DAD74" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>Select for auxiliar field</SqlMethodComment>
+    <Sql><![CDATA[
+        select max(dt.docbasetype) from c_invoice inv join c_doctype dt on (inv.c_doctypetarget_id = dt.c_doctype_id)
+where inv.c_invoice_id = ? 
+    ]]></Sql>
+
+<Parameter name="c_invoice_id"/>
+  </SqlMethod>
+
+   <SqlMethod name="selectAuxE852BFC21B4C468C9E3F22901A6ED75C" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>Select for auxiliar field</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT istaxincluded from m_pricelist where m_pricelist_id = ? 
+    ]]></Sql>
+
+<Parameter name="M_PRICELIST_ID"/>
+  </SqlMethod>
+
+
+
+
+
+   <SqlMethod name="selectDef1655799099FD4E7A9EB982F98A5C8066_0" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>Select for auxiliar field</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT  ( COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table2.Name), ''))), '') ) as C_Bpartner_ID FROM C_BPartner left join (select C_BPartner_ID, Name from C_BPartner) table2 on (C_BPartner.C_BPartner_ID = table2.C_BPartner_ID) WHERE C_BPartner.isActive='Y' AND C_BPartner.C_BPartner_ID = ?  
+    ]]></Sql>
+<Parameter name="C_Bpartner_IDR"/>
+  </SqlMethod>
+
+   <SqlMethod name="selectDef3833_1" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>Select for auxiliar field</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT  ( COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table2.Name), ''))), '') ) as CreatedBy FROM AD_User left join (select AD_User_ID, Name from AD_User) table2 on (AD_User.AD_User_ID = table2.AD_User_ID) WHERE AD_User.isActive='Y' AND AD_User.AD_User_ID = ?  
+    ]]></Sql>
+<Parameter name="CreatedByR"/>
+  </SqlMethod>
+
+   <SqlMethod name="selectDef3835_2" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>Select for auxiliar field</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT  ( COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table2.Name), ''))), '') ) as UpdatedBy FROM AD_User left join (select AD_User_ID, Name from AD_User) table2 on (AD_User.AD_User_ID = table2.AD_User_ID) WHERE AD_User.isActive='Y' AND AD_User.AD_User_ID = ?  
+    ]]></Sql>
+<Parameter name="UpdatedByR"/>
+  </SqlMethod>
+
+   <SqlMethod name="selectDef3837_3" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>Select for auxiliar field</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT  ( COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table3.DocumentNo), ''))), '')  || ' - ' || COALESCE(TO_CHAR(TO_CHAR(table3.DateOrdered, 'DD-MM-YYYY')), '')  || ' - ' || COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table3.GrandTotal), ''))), '')  || ' - ' || COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table2.Line), ''))), '')  || ' - ' || COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table2.LineNetAmt), ''))), '') ) as C_OrderLine_ID FROM C_OrderLine left join (select C_OrderLine_ID, C_Order_ID, Line, LineNetAmt from C_OrderLine) table2 on (C_OrderLine.C_OrderLine_ID = table2.C_OrderLine_ID)left join (select C_Order_ID, DocumentNo, DateOrdered, GrandTotal from C_Order) table3 on (table2.C_Order_ID = table3.C_Order_ID) WHERE C_OrderLine.isActive='Y' AND C_OrderLine.C_OrderLine_ID = ?  
+    ]]></Sql>
+<Parameter name="C_OrderLine_IDR"/>
+  </SqlMethod>
+
+   <SqlMethod name="selectDef3838" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>Select for auxiliar field</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT COALESCE(MAX(Line),0)+10 AS DefaultValue FROM C_InvoiceLine WHERE C_Invoice_ID=? 
+    ]]></Sql>
+
+<Parameter name="C_Invoice_ID"/>
+  </SqlMethod>
+
+   <SqlMethod name="selectDef4251_4" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>Select for auxiliar field</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT  ( COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table2.Line), ''))), '')  || ' - ' || COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table2.MovementQty), ''))), '')  || ' - ' || COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table3.DocumentNo), ''))), '')  || ' - ' || COALESCE(TO_CHAR(TO_CHAR(table3.MovementDate, 'DD-MM-YYYY')), '')  || ' - ' || COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR((CASE WHEN tableTRL4.Name IS NULL THEN TO_CHAR(table4.Name) ELSE TO_CHAR(tableTRL4.Name) END)), ''))), '') ) as M_InOutLine_ID FROM M_InOutLine left join (select M_InOutLine_ID, Line, MovementQty, M_InOut_ID, M_Product_ID from M_InOutLine) table2 on (M_InOutLine.M_InOutLine_ID = table2.M_InOutLine_ID)left join (select M_InOut_ID, DocumentNo, MovementDate from M_InOut) table3 on (table2.M_InOut_ID = table3.M_InOut_ID)left join (select M_Product_ID, Name from M_Product) table4 on (table2.M_Product_ID =  table4.M_Product_ID)left join (select M_Product_ID,AD_Language, Name from M_Product_TRL) tableTRL4 on (table4.M_Product_ID = tableTRL4.M_Product_ID and tableTRL4.AD_Language = ?)  WHERE M_InOutLine.isActive='Y' AND M_InOutLine.M_InOutLine_ID = ?  
+    ]]></Sql>
+<Parameter name="paramLanguage"/>
+<Parameter name="M_InOutLine_IDR"/>
+  </SqlMethod>
+
+   <SqlMethod name="selectDef8553_5" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>Select for auxiliar field</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT  ( COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table2.Description), ''))), '') ) as M_AttributeSetInstance_ID FROM M_AttributeSetInstance left join (select M_AttributeSetInstance_ID, Description from M_AttributeSetInstance) table2 on (M_AttributeSetInstance.M_AttributeSetInstance_ID = table2.M_AttributeSetInstance_ID) WHERE M_AttributeSetInstance.isActive='Y' AND M_AttributeSetInstance.M_AttributeSetInstance_ID = ?  
+    ]]></Sql>
+<Parameter name="M_AttributeSetInstance_IDR"/>
+  </SqlMethod>
+
+   <SqlMethod name="selectDefE9065F7B304E419787AD6EB080A54143_6" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>Select for auxiliar field</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT  ( COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table2.Value), ''))), '')  || ' - ' || COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table2.Name), ''))), '') ) as C_Project_ID FROM C_Project left join (select C_Project_ID, Value, Name from C_Project) table2 on (C_Project.C_Project_ID = table2.C_Project_ID) WHERE C_Project.isActive='Y' AND C_Project.C_Project_ID = ?  
+    ]]></Sql>
+<Parameter name="C_Project_IDR"/>
+  </SqlMethod>
+
+
+
+  <SqlMethod name="selectParentID" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>return the parent ID</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT C_InvoiceLine.C_Invoice_ID AS NAME
+        FROM C_InvoiceLine
+        WHERE C_InvoiceLine.C_InvoiceLine_ID = ?
+    ]]></Sql>
+    <Parameter name="key"></Parameter>
+  </SqlMethod>
+
+   <SqlMethod name="selectParent" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>Select for parent field</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT (TO_CHAR(COALESCE(TO_CHAR(table1.DocumentNo), '')) || ' - ' || TO_CHAR(table1.DateInvoiced, 'DD-MM-YYYY') || ' - ' || TO_CHAR(COALESCE(TO_CHAR(table1.GrandTotal), ''))) AS NAME FROM C_Invoice left join (select C_Invoice_ID, DocumentNo, DateInvoiced, GrandTotal from C_Invoice) table1 on (C_Invoice.C_Invoice_ID = table1.C_Invoice_ID) WHERE C_Invoice.C_Invoice_ID = ?  
+    ]]></Sql>
+<Parameter name="cInvoiceId"/>
+
+  </SqlMethod>
+
+
+
+
+   <SqlMethod name="selectParentTrl" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>Select for parent field</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT (TO_CHAR(COALESCE(TO_CHAR(table1.DocumentNo), '')) || ' - ' || TO_CHAR(table1.DateInvoiced, 'DD-MM-YYYY') || ' - ' || TO_CHAR(COALESCE(TO_CHAR(table1.GrandTotal), ''))) AS NAME FROM C_Invoice left join (select C_Invoice_ID, DocumentNo, DateInvoiced, GrandTotal from C_Invoice) table1 on (C_Invoice.C_Invoice_ID = table1.C_Invoice_ID) WHERE C_Invoice.C_Invoice_ID = ?  
+    ]]></Sql>
+<Parameter name="cInvoiceId"/>
+
+  </SqlMethod>
+
+
+
+
+
+
+
+
+  <SqlMethod name="update" type="preparedStatement" return="rowCount" static="false" connection="true">
+    <Sql><![CDATA[
+        UPDATE C_InvoiceLine
+        SET Line = TO_NUMBER(?) , Financial_Invoice_Line = (?) , M_Product_ID = (?) , EM_Epcg_Prolistalias = (?) , EM_Epcg_Productalias = (?) , Account_ID = (?) , Epcg_Packaging_ID = (?) , EM_Epcg_Noofpackages = TO_NUMBER(?) , QtyInvoiced = TO_NUMBER(?) , C_UOM_ID = (?) , PriceActual = TO_NUMBER(?) , EM_Rcfr_Netunitrate = TO_NUMBER(?) , Gross_Unit_Price = TO_NUMBER(?) , LineNetAmt = TO_NUMBER(?) , Line_Gross_Amount = TO_NUMBER(?) , C_Tax_ID = (?) , EM_Rcfr_Netrate = TO_NUMBER(?) , EM_Rcfr_Freight = TO_NUMBER(?) , EM_Rcfr_Insurance = TO_NUMBER(?) , EM_Epcg_Noofpacks = TO_NUMBER(?) , PriceList = TO_NUMBER(?) , Grosspricelist = TO_NUMBER(?) , M_AttributeSetInstance_ID = (?) , Description = (?) , C_OrderLine_ID = (?) , M_InOutLine_ID = (?) , Iseditlinenetamt = (?) , Taxbaseamt = TO_NUMBER(?) , Excludeforwithholding = (?) , M_Product_Uom_Id = (?) , IsDeferred = (?) , QuantityOrder = TO_NUMBER(?) , PriceStd = TO_NUMBER(?) , grosspricestd = TO_NUMBER(?) , DefPlanType = (?) , Periodnumber = TO_NUMBER(?) , C_Period_ID = (?) , AD_Org_ID = (?) , C_Project_ID = (?) , C_Costcenter_ID = (?) , A_Asset_ID = (?) , User1_ID = (?) , User2_ID = (?) , Explode = (?) , BOM_Parent_ID = (?) , AD_Client_ID = (?) , IsDescription = (?) , TaxAmt = TO_NUMBER(?) , S_ResourceAssignment_ID = (?) , C_Invoice_Discount_ID = (?) , PriceLimit = TO_NUMBER(?) , IsActive = (?) , ChargeAmt = TO_NUMBER(?) , C_InvoiceLine_ID = (?) , M_Offer_ID = (?) , C_Charge_ID = (?) , C_Invoice_ID = (?) , C_Projectline_ID = (?) , C_Bpartner_ID = (?) , updated = now(), updatedby = ? 
+        WHERE C_InvoiceLine.C_InvoiceLine_ID = ? 
+                 AND C_InvoiceLine.C_Invoice_ID = ? 
+        AND C_InvoiceLine.AD_Client_ID IN ('1') 
+        AND C_InvoiceLine.AD_Org_ID IN ('1') 
+    ]]></Sql>
+    <Parameter name="line"></Parameter> <Parameter name="financialInvoiceLine"></Parameter> <Parameter name="mProductId"></Parameter> <Parameter name="emEpcgProlistalias"></Parameter> <Parameter name="emEpcgProductalias"></Parameter> <Parameter name="accountId"></Parameter> <Parameter name="epcgPackagingId"></Parameter> <Parameter name="emEpcgNoofpackages"></Parameter> <Parameter name="qtyinvoiced"></Parameter> <Parameter name="cUomId"></Parameter> <Parameter name="priceactual"></Parameter> <Parameter name="emRcfrNetunitrate"></Parameter> <Parameter name="grossUnitPrice"></Parameter> <Parameter name="linenetamt"></Parameter> <Parameter name="lineGrossAmount"></Parameter> <Parameter name="cTaxId"></Parameter> <Parameter name="emRcfrNetrate"></Parameter> <Parameter name="emRcfrFreight"></Parameter> <Parameter name="emRcfrInsurance"></Parameter> <Parameter name="emEpcgNoofpacks"></Parameter> <Parameter name="pricelist"></Parameter> <Parameter name="grosspricelist"></Parameter> <Parameter name="mAttributesetinstanceId"></Parameter> <Parameter name="description"></Parameter> <Parameter name="cOrderlineId"></Parameter> <Parameter name="mInoutlineId"></Parameter> <Parameter name="iseditlinenetamt"></Parameter> <Parameter name="taxbaseamt"></Parameter> <Parameter name="excludeforwithholding"></Parameter> <Parameter name="mProductUomId"></Parameter> <Parameter name="isdeferred"></Parameter> <Parameter name="quantityorder"></Parameter> <Parameter name="pricestd"></Parameter> <Parameter name="grosspricestd"></Parameter> <Parameter name="defplantype"></Parameter> <Parameter name="periodnumber"></Parameter> <Parameter name="cPeriodId"></Parameter> <Parameter name="adOrgId"></Parameter> <Parameter name="cProjectId"></Parameter> <Parameter name="cCostcenterId"></Parameter> <Parameter name="aAssetId"></Parameter> <Parameter name="user1Id"></Parameter> <Parameter name="user2Id"></Parameter> <Parameter name="explode"></Parameter> <Parameter name="bomParentId"></Parameter> <Parameter name="adClientId"></Parameter> <Parameter name="isdescription"></Parameter> <Parameter name="taxamt"></Parameter> <Parameter name="sResourceassignmentId"></Parameter> <Parameter name="cInvoiceDiscountId"></Parameter> <Parameter name="pricelimit"></Parameter> <Parameter name="isactive"></Parameter> <Parameter name="chargeamt"></Parameter> <Parameter name="cInvoicelineId"></Parameter> <Parameter name="mOfferId"></Parameter> <Parameter name="cChargeId"></Parameter> <Parameter name="cInvoiceId"></Parameter> <Parameter name="cProjectlineId"></Parameter> <Parameter name="cBpartnerId"></Parameter> 
+    <Parameter name="updatedby"></Parameter>
+    <Parameter id="paramKey" name="cInvoicelineId"></Parameter>
+    
+    <Parameter name="cInvoiceId" id="paramKeyParent"></Parameter>
+        <Parameter name="adUserClient" type="replace" optional="true" after="C_InvoiceLine.AD_Client_ID IN (" text="'1'"/>
+        <Parameter name="adOrgClient" type="replace" optional="true" after="C_InvoiceLine.AD_Org_ID IN (" text="'1'"/>
+  </SqlMethod>
+
+  <SqlMethod name="insert" type="preparedStatement" return="rowCount" static="false" connection="true">
+    <Sql><![CDATA[
+        INSERT INTO C_InvoiceLine 
+        (Line, Financial_Invoice_Line, M_Product_ID, EM_Epcg_Prolistalias, EM_Epcg_Productalias, Account_ID, Epcg_Packaging_ID, EM_Epcg_Noofpackages, QtyInvoiced, C_UOM_ID, PriceActual, EM_Rcfr_Netunitrate, Gross_Unit_Price, LineNetAmt, Line_Gross_Amount, C_Tax_ID, EM_Rcfr_Netrate, EM_Rcfr_Freight, EM_Rcfr_Insurance, EM_Epcg_Noofpacks, Grosspricelist, PriceList, M_AttributeSetInstance_ID, Description, C_OrderLine_ID, M_InOutLine_ID, Iseditlinenetamt, Taxbaseamt, Excludeforwithholding, M_Product_Uom_Id, IsDeferred, QuantityOrder, PriceStd, grosspricestd, DefPlanType, Periodnumber, C_Period_ID, AD_Org_ID, C_Project_ID, C_Costcenter_ID, A_Asset_ID, User1_ID, User2_ID, Explode, BOM_Parent_ID, AD_Client_ID, M_Offer_ID, C_Projectline_ID, IsDescription, TaxAmt, S_ResourceAssignment_ID, C_Invoice_Discount_ID, PriceLimit, IsActive, ChargeAmt, C_InvoiceLine_ID, C_Charge_ID, C_Invoice_ID, C_Bpartner_ID, created, createdby, updated, updatedBy)
+        VALUES (TO_NUMBER(?), (?), (?), (?), (?), (?), (?), TO_NUMBER(?), TO_NUMBER(?), (?), TO_NUMBER(?), TO_NUMBER(?), TO_NUMBER(?), TO_NUMBER(?), TO_NUMBER(?), (?), TO_NUMBER(?), TO_NUMBER(?), TO_NUMBER(?), TO_NUMBER(?), TO_NUMBER(?), TO_NUMBER(?), (?), (?), (?), (?), (?), TO_NUMBER(?), (?), (?), (?), TO_NUMBER(?), TO_NUMBER(?), TO_NUMBER(?), (?), TO_NUMBER(?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), TO_NUMBER(?), (?), (?), TO_NUMBER(?), (?), TO_NUMBER(?), (?), (?), (?), (?), now(), ?, now(), ?)
+    ]]></Sql>
+    <Parameter name="line"></Parameter> <Parameter name="financialInvoiceLine"></Parameter> <Parameter name="mProductId"></Parameter> <Parameter name="emEpcgProlistalias"></Parameter> <Parameter name="emEpcgProductalias"></Parameter> <Parameter name="accountId"></Parameter> <Parameter name="epcgPackagingId"></Parameter> <Parameter name="emEpcgNoofpackages"></Parameter> <Parameter name="qtyinvoiced"></Parameter> <Parameter name="cUomId"></Parameter> <Parameter name="priceactual"></Parameter> <Parameter name="emRcfrNetunitrate"></Parameter> <Parameter name="grossUnitPrice"></Parameter> <Parameter name="linenetamt"></Parameter> <Parameter name="lineGrossAmount"></Parameter> <Parameter name="cTaxId"></Parameter> <Parameter name="emRcfrNetrate"></Parameter> <Parameter name="emRcfrFreight"></Parameter> <Parameter name="emRcfrInsurance"></Parameter> <Parameter name="emEpcgNoofpacks"></Parameter> <Parameter name="grosspricelist"></Parameter> <Parameter name="pricelist"></Parameter> <Parameter name="mAttributesetinstanceId"></Parameter> <Parameter name="description"></Parameter> <Parameter name="cOrderlineId"></Parameter> <Parameter name="mInoutlineId"></Parameter> <Parameter name="iseditlinenetamt"></Parameter> <Parameter name="taxbaseamt"></Parameter> <Parameter name="excludeforwithholding"></Parameter> <Parameter name="mProductUomId"></Parameter> <Parameter name="isdeferred"></Parameter> <Parameter name="quantityorder"></Parameter> <Parameter name="pricestd"></Parameter> <Parameter name="grosspricestd"></Parameter> <Parameter name="defplantype"></Parameter> <Parameter name="periodnumber"></Parameter> <Parameter name="cPeriodId"></Parameter> <Parameter name="adOrgId"></Parameter> <Parameter name="cProjectId"></Parameter> <Parameter name="cCostcenterId"></Parameter> <Parameter name="aAssetId"></Parameter> <Parameter name="user1Id"></Parameter> <Parameter name="user2Id"></Parameter> <Parameter name="explode"></Parameter> <Parameter name="bomParentId"></Parameter> <Parameter name="adClientId"></Parameter> <Parameter name="mOfferId"></Parameter> <Parameter name="cProjectlineId"></Parameter> <Parameter name="isdescription"></Parameter> <Parameter name="taxamt"></Parameter> <Parameter name="sResourceassignmentId"></Parameter> <Parameter name="cInvoiceDiscountId"></Parameter> <Parameter name="pricelimit"></Parameter> <Parameter name="isactive"></Parameter> <Parameter name="chargeamt"></Parameter> <Parameter name="cInvoicelineId"></Parameter> <Parameter name="cChargeId"></Parameter> <Parameter name="cInvoiceId"></Parameter> <Parameter name="cBpartnerId"></Parameter> 
+    <Parameter name="createdby"></Parameter>
+    <Parameter name="updatedby"></Parameter>
+  </SqlMethod>
+
+  <SqlMethod name="delete" type="preparedStatement" return="rowCount">
+    <Sql><![CDATA[
+        DELETE FROM C_InvoiceLine
+        WHERE C_InvoiceLine.C_InvoiceLine_ID = ? 
+                 AND C_InvoiceLine.C_Invoice_ID = ? 
+        AND C_InvoiceLine.AD_Client_ID IN ('1') 
+        AND C_InvoiceLine.AD_Org_ID IN ('1') 
+    ]]></Sql>
+    <Parameter name="param1"></Parameter>
+        <Parameter name="cInvoiceId" id="paramKeyParent"></Parameter>
+        <Parameter name="adUserClient" type="replace" optional="true" after="C_InvoiceLine.AD_Client_ID IN (" text="'1'"/>
+        <Parameter name="adOrgClient" type="replace" optional="true" after="C_InvoiceLine.AD_Org_ID IN (" text="'1'"/>
+  </SqlMethod>
+
+  <SqlMethod name="selectOrg" type="preparedStatement" return="string">
+    <SqlMethodComment>Select for relation</SqlMethodComment>
+    <Sql><![CDATA[ 
+        SELECT AD_ORG_ID
+          FROM C_InvoiceLine
+         WHERE C_InvoiceLine.C_InvoiceLine_ID = ? 
+    ]]></Sql>
+    <Parameter name="id"></Parameter>
+  </SqlMethod>
+  
+  <SqlMethod name="getCurrentDBTimestamp" type="preparedStatement" return="string">
+    <Sql><![CDATA[ 
+        SELECT to_char(Updated, 'YYYYMMDDHH24MISS') as Updated_Time_Stamp
+          FROM C_InvoiceLine
+         WHERE C_InvoiceLine.C_InvoiceLine_ID = ? 
+    ]]></Sql>
+    <Parameter name="id"></Parameter>
+  </SqlMethod>
+</SqlClass>

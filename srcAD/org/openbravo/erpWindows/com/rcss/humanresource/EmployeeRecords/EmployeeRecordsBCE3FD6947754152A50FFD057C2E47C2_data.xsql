@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SqlClass id="class" name="EmployeeRecordsBCE3FD6947754152A50FFD057C2E47C2Data" package="org.openbravo.erpWindows.com.rcss.humanresource.EmployeeRecords">
+  <SqlClassComment>WAD Generated class</SqlClassComment>
+
+  <SqlMethod name="selectEdit" type="preparedStatement" return="multiple">
+    <SqlMethodComment>Select for edit</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT to_char(Rchr_Employee.Created, ?) as created, 
+        (SELECT NAME FROM AD_USER u WHERE AD_USER_ID = Rchr_Employee.CreatedBy) as CreatedByR, 
+        to_char(Rchr_Employee.Updated, ?) as updated, 
+        to_char(Rchr_Employee.Updated, 'YYYYMMDDHH24MISS') as Updated_Time_Stamp,  
+        Rchr_Employee.UpdatedBy, 
+        (SELECT NAME FROM AD_USER u WHERE AD_USER_ID = Rchr_Employee.UpdatedBy) as UpdatedByR,
+        Rchr_Employee.AD_Org_ID, 
+(CASE WHEN Rchr_Employee.AD_Org_ID IS NULL THEN '' ELSE  (COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table1.Name), ''))),'') ) END) AS AD_Org_IDR, 
+Rchr_Employee.Employeestatus, 
+(CASE WHEN Rchr_Employee.Employeestatus IS NULL THEN '' ELSE  ( COALESCE(TO_CHAR(list1.name),'') ) END) AS EmployeestatusR, 
+Rchr_Employee.Salarystatus, 
+(CASE WHEN Rchr_Employee.Salarystatus IS NULL THEN '' ELSE  ( COALESCE(TO_CHAR(list2.name),'') ) END) AS SalarystatusR, 
+COALESCE(Rchr_Employee.Isactive, 'N') AS Isactive, 
+COALESCE(Rchr_Employee.Withheld, 'N') AS Withheld, 
+Rchr_Employee.Employeename, 
+Rchr_Employee.Punchno, 
+Rchr_Employee.Firstname, 
+Rchr_Employee.Lastname, 
+Rchr_Employee.Surname, 
+Rchr_Employee.Gender, 
+(CASE WHEN Rchr_Employee.Gender IS NULL THEN '' ELSE  ( COALESCE(TO_CHAR(list3.name),'') ) END) AS GenderR, 
+Rchr_Employee.Maritalstatus, 
+(CASE WHEN Rchr_Employee.Maritalstatus IS NULL THEN '' ELSE  ( COALESCE(TO_CHAR(list4.name),'') ) END) AS MaritalstatusR, 
+Rchr_Employee.Rchr_Emp_Dept_ID, 
+(CASE WHEN Rchr_Employee.Rchr_Emp_Dept_ID IS NULL THEN '' ELSE  (COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table2.Name), ''))),'') ) END) AS Rchr_Emp_Dept_IDR, 
+Rchr_Employee.Landlineno, 
+Rchr_Employee.Rchr_Subdepartment_ID, 
+(CASE WHEN Rchr_Employee.Rchr_Subdepartment_ID IS NULL THEN '' ELSE  (COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table3.Name), ''))),'') ) END) AS Rchr_Subdepartment_IDR, 
+Rchr_Employee.Rchr_Designation_ID, 
+(CASE WHEN Rchr_Employee.Rchr_Designation_ID IS NULL THEN '' ELSE  (COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table4.Name), ''))),'') ) END) AS Rchr_Designation_IDR, 
+Rchr_Employee.Emergencyphoneno, 
+Rchr_Employee.Supervisorname, 
+(CASE WHEN Rchr_Employee.Supervisorname IS NULL THEN '' ELSE  ( COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table5.Employeename), ''))),'') ) END) AS SupervisornameR, 
+Rchr_Employee.Rchr_Shiftgroup_ID, 
+(CASE WHEN Rchr_Employee.Rchr_Shiftgroup_ID IS NULL THEN '' ELSE  (COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table6.Name), ''))),'') ) END) AS Rchr_Shiftgroup_IDR, 
+Rchr_Employee.Rchr_Mrelay_ID, 
+(CASE WHEN Rchr_Employee.Rchr_Mrelay_ID IS NULL THEN '' ELSE  (COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table7.Name), ''))),'') ) END) AS Rchr_Mrelay_IDR, 
+Rchr_Employee.Jdate, 
+Rchr_Employee.Jobtype, 
+Rchr_Employee.Employeetype, 
+(CASE WHEN Rchr_Employee.Employeetype IS NULL THEN '' ELSE  ( COALESCE(TO_CHAR(list5.name),'') ) END) AS EmployeetypeR, 
+Rchr_Employee.Dob, 
+COALESCE(Rchr_Employee.Shift, 'N') AS Shift, 
+COALESCE(Rchr_Employee.Weekoffapplicable, 'N') AS Weekoffapplicable, 
+Rchr_Employee.Rchr_Agentmaster_ID, 
+Rchr_Employee.Weeklyoff, 
+(CASE WHEN Rchr_Employee.Weeklyoff IS NULL THEN '' ELSE  ( COALESCE(TO_CHAR(list6.name),'') ) END) AS WeeklyoffR, 
+COALESCE(Rchr_Employee.Isallotment, 'N') AS Isallotment, 
+Rchr_Employee.AD_Image_ID, 
+Rchr_Employee.Rchr_Room_ID, 
+(CASE WHEN Rchr_Employee.Rchr_Room_ID IS NULL THEN '' ELSE  (COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table8.Roomno), ''))),'')  || ' - ' || COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table8.Maxnoofemployees), ''))),'') ) END) AS Rchr_Room_IDR, 
+Rchr_Employee.Preattddays, 
+Rchr_Employee.Actualservicedays, 
+COALESCE(Rchr_Employee.Ispfapplicable, 'N') AS Ispfapplicable, 
+Rchr_Employee.Panno, 
+Rchr_Employee.Pftype, 
+(CASE WHEN Rchr_Employee.Pftype IS NULL THEN '' ELSE  ( COALESCE(TO_CHAR(list7.name),'') ) END) AS PftypeR, 
+Rchr_Employee.Epfno, 
+COALESCE(Rchr_Employee.Isesiapplicable, 'N') AS Isesiapplicable, 
+Rchr_Employee.Esino, 
+COALESCE(Rchr_Employee.Isbank, 'N') AS Isbank, 
+Rchr_Employee.Adharno, 
+Rchr_Employee.Accountno, 
+Rchr_Employee.Rotation, 
+COALESCE(Rchr_Employee.Isleaveapplicable, 'N') AS Isleaveapplicable, 
+COALESCE(Rchr_Employee.Iscoffapplicable, 'N') AS Iscoffapplicable, 
+COALESCE(Rchr_Employee.Isodapplicable, 'N') AS Isodapplicable, 
+COALESCE(Rchr_Employee.Licapplicable, 'N') AS Licapplicable, 
+Rchr_Employee.Vpfamount, 
+COALESCE(Rchr_Employee.Halfdayapplicable, 'N') AS Halfdayapplicable, 
+Rchr_Employee.Rchr_Mobalizer_ID, 
+(CASE WHEN Rchr_Employee.Rchr_Mobalizer_ID IS NULL THEN '' ELSE  (COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table9.Name), ''))),'') ) END) AS Rchr_Mobalizer_IDR, 
+Rchr_Employee.Observicedays, 
+Rchr_Employee.Email, 
+Rchr_Employee.Phoneno, 
+COALESCE(Rchr_Employee.Vpf, 'N') AS Vpf, 
+Rchr_Employee.Rchr_Leavetemplate_ID, 
+(CASE WHEN Rchr_Employee.Rchr_Leavetemplate_ID IS NULL THEN '' ELSE  (COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table10.Name), ''))),'') ) END) AS Rchr_Leavetemplate_IDR, 
+Rchr_Employee.AD_User_ID, 
+(CASE WHEN Rchr_Employee.AD_User_ID IS NULL THEN '' ELSE  (COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table11.Name), ''))),'') ) END) AS AD_User_IDR, 
+Rchr_Employee.Leavedepartment, 
+(CASE WHEN Rchr_Employee.Leavedepartment IS NULL THEN '' ELSE  ( COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table12.Name), ''))),'') ) END) AS LeavedepartmentR, 
+Rchr_Employee.Rchr_Join_Rejoiningform_ID, 
+(CASE WHEN Rchr_Employee.Rchr_Join_Rejoiningform_ID IS NULL THEN '' ELSE  (COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table13.Documentno), ''))),'')  || ' - ' || COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table14.Fromdays), ''))),'')  || ' - ' || COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table14.Todays), ''))),'')  || ' - ' || COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table14.Basicamount), ''))),'')  || ' - ' || COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table14.Serviceincentive), ''))),'') ) END) AS Rchr_Join_Rejoiningform_IDR, 
+COALESCE(Rchr_Employee.Senior, 'N') AS Senior, 
+Rchr_Employee.Documentno, 
+Rchr_Employee.AD_Client_ID, 
+Rchr_Employee.Rchr_Employee_ID, 
+ 
+        ? AS LANGUAGE 
+        FROM Rchr_Employee left join (select AD_Org_ID, Name from AD_Org) table1 on (Rchr_Employee.AD_Org_ID = table1.AD_Org_ID) left join ad_ref_list_v list1 on (Rchr_Employee.Employeestatus = list1.value and list1.ad_reference_id = 'FC14213FA54E428AA6108273EF9E05DC' and list1.ad_language = ?)  left join ad_ref_list_v list2 on (Rchr_Employee.Salarystatus = list2.value and list2.ad_reference_id = '131' and list2.ad_language = ?)  left join ad_ref_list_v list3 on (Rchr_Employee.Gender = list3.value and list3.ad_reference_id = 'B8F4E6135F39438AB324C66053F51662' and list3.ad_language = ?)  left join ad_ref_list_v list4 on (Rchr_Employee.Maritalstatus = list4.value and list4.ad_reference_id = 'E34F72895CB8445199EA344EB9C6B0D4' and list4.ad_language = ?)  left join (select Rchr_Emp_Dept_ID, Name from Rchr_Emp_Dept) table2 on (Rchr_Employee.Rchr_Emp_Dept_ID = table2.Rchr_Emp_Dept_ID) left join (select Rchr_Subdepartment_ID, Name from Rchr_Subdepartment) table3 on (Rchr_Employee.Rchr_Subdepartment_ID = table3.Rchr_Subdepartment_ID) left join (select Rchr_Designation_ID, Name from Rchr_Designation) table4 on (Rchr_Employee.Rchr_Designation_ID = table4.Rchr_Designation_ID) left join (select Rchr_Employee_ID, Employeename from Rchr_Employee) table5 on (Rchr_Employee.Supervisorname =  table5.Rchr_Employee_ID) left join (select Rchr_Shiftgroup_ID, Name from Rchr_Shiftgroup) table6 on (Rchr_Employee.Rchr_Shiftgroup_ID = table6.Rchr_Shiftgroup_ID) left join (select Rchr_Mrelay_ID, Name from Rchr_Mrelay) table7 on (Rchr_Employee.Rchr_Mrelay_ID = table7.Rchr_Mrelay_ID) left join ad_ref_list_v list5 on (Rchr_Employee.Employeetype = list5.value and list5.ad_reference_id = '60AC4DA6E1D54452BDC42FF3387DC68C' and list5.ad_language = ?)  left join ad_ref_list_v list6 on (Rchr_Employee.Weeklyoff = list6.value and list6.ad_reference_id = 'A39B727AF2784C809BCF4AD5DED5C3DC' and list6.ad_language = ?)  left join (select Rchr_Room_ID, Roomno, Maxnoofemployees from Rchr_Room) table8 on (Rchr_Employee.Rchr_Room_ID = table8.Rchr_Room_ID) left join ad_ref_list_v list7 on (Rchr_Employee.Pftype = list7.value and list7.ad_reference_id = 'B3D302F1AC1349EDADEA70D09AE29AC4' and list7.ad_language = ?)  left join (select Rchr_Mobalizer_ID, Name from Rchr_Mobalizer) table9 on (Rchr_Employee.Rchr_Mobalizer_ID = table9.Rchr_Mobalizer_ID) left join (select Rchr_Leavetemplate_ID, Name from Rchr_Leavetemplate) table10 on (Rchr_Employee.Rchr_Leavetemplate_ID = table10.Rchr_Leavetemplate_ID) left join (select AD_User_ID, Name from AD_User) table11 on (Rchr_Employee.AD_User_ID = table11.AD_User_ID) left join (select Rchr_Emp_Dept_ID, Name from Rchr_Emp_Dept) table12 on (Rchr_Employee.Leavedepartment =  table12.Rchr_Emp_Dept_ID) left join (select Rchr_Join_Rejoiningform_ID, Documentno, Rchr_Desigbasic_ID from Rchr_Join_Rejoiningform) table13 on (Rchr_Employee.Rchr_Join_Rejoiningform_ID = table13.Rchr_Join_Rejoiningform_ID) left join (select RCHR_DesigBasic_ID, Fromdays, Todays, Basicamount, Serviceincentive from RCHR_DesigBasic) table14 on (table13.Rchr_Desigbasic_ID = table14.RCHR_DesigBasic_ID)
+        WHERE 2=2 
+
+        AND 1=1 
+        AND Rchr_Employee.Rchr_Employee_ID = ? 
+        AND Rchr_Employee.AD_Client_ID IN ('1') 
+           AND Rchr_Employee.AD_Org_ID IN ('1') 
+    ]]></Sql>
+    <Parameter name="dateTimeFormat"></Parameter>
+    <Parameter name="dateTimeFormat"></Parameter>
+    
+    <Parameter name="paramLanguage"></Parameter>
+<Parameter name="paramLanguage"/>
+<Parameter name="paramLanguage"/>
+<Parameter name="paramLanguage"/>
+<Parameter name="paramLanguage"/>
+<Parameter name="paramLanguage"/>
+<Parameter name="paramLanguage"/>
+<Parameter name="paramLanguage"/>
+
+
+    <Parameter name="key"></Parameter>
+        <Parameter name="adUserClient" type="replace" optional="true" after="Rchr_Employee.AD_Client_ID IN (" text="'1'"/>
+        <Parameter name="adOrgClient" type="replace" optional="true" after="Rchr_Employee.AD_Org_ID IN (" text="'1'"/>
+
+    <Field name="adUserClient" value="void"></Field>
+    <Field name="adOrgClient" value="void"></Field>
+    <Field name="createdby" value="void"></Field>
+    
+    <Field name="trBgcolor" value="void"></Field>
+    <Field name="totalCount" value="void"></Field>
+    <Field name="dateTimeFormat" value=""></Field>
+  </SqlMethod>
+  
+  
+
+  <SqlMethod name="set" type="constant" return="multiple">
+      <SqlMethodComment>Create a registry</SqlMethodComment>
+      <Sql></Sql>
+
+<Parameter name="weeklyoff"></Parameter><Parameter name="jdate"></Parameter><Parameter name="firstname"></Parameter><Parameter name="observicedays"></Parameter><Parameter name="jobtype"></Parameter><Parameter name="rchrShiftgroupId"></Parameter><Parameter name="documentno"></Parameter><Parameter name="maritalstatus"></Parameter><Parameter name="rchrJoinRejoiningformId"></Parameter><Parameter name="landlineno"></Parameter><Parameter name="isallotment"></Parameter><Parameter name="withheld"></Parameter><Parameter name="actualservicedays"></Parameter><Parameter name="dob"></Parameter><Parameter name="adImageId"></Parameter><Parameter name="epfno"></Parameter><Parameter name="punchno"></Parameter><Parameter name="emergencyphoneno"></Parameter><Parameter name="rotation"></Parameter><Parameter name="rchrMrelayId"></Parameter><Parameter name="licapplicable"></Parameter><Parameter name="rchrMobalizerId"></Parameter><Parameter name="employeetype"></Parameter><Parameter name="isesiapplicable"></Parameter><Parameter name="preattddays"></Parameter><Parameter name="supervisorname"></Parameter><Parameter name="isactive"></Parameter><Parameter name="phoneno"></Parameter><Parameter name="rchrDesignationId"></Parameter><Parameter name="employeename"></Parameter><Parameter name="leavedepartment"></Parameter><Parameter name="salarystatus"></Parameter><Parameter name="weekoffapplicable"></Parameter><Parameter name="adClientId"></Parameter><Parameter name="esino"></Parameter><Parameter name="updatedby"></Parameter><Parameter name="updatedbyr"></Parameter><Parameter name="employeestatus"></Parameter><Parameter name="createdby"></Parameter><Parameter name="createdbyr"></Parameter><Parameter name="adOrgId"></Parameter><Parameter name="lastname"></Parameter><Parameter name="pftype"></Parameter><Parameter name="accountno"></Parameter><Parameter name="ispfapplicable"></Parameter><Parameter name="gender"></Parameter><Parameter name="adharno"></Parameter><Parameter name="rchrEmployeeId"></Parameter><Parameter name="rchrLeavetemplateId"></Parameter><Parameter name="rchrAgentmasterId"></Parameter><Parameter name="email"></Parameter><Parameter name="halfdayapplicable"></Parameter><Parameter name="panno"></Parameter><Parameter name="adUserId"></Parameter><Parameter name="vpf"></Parameter><Parameter name="iscoffapplicable"></Parameter><Parameter name="isbank"></Parameter><Parameter name="rchrEmpDeptId"></Parameter><Parameter name="isodapplicable"></Parameter><Parameter name="shift"></Parameter><Parameter name="surname"></Parameter><Parameter name="senior"></Parameter><Parameter name="isleaveapplicable"></Parameter><Parameter name="rchrSubdepartmentId"></Parameter><Parameter name="rchrRoomId"></Parameter><Parameter name="vpfamount"></Parameter>
+   </SqlMethod>
+
+
+
+
+
+
+   <SqlMethod name="selectDefA3992BD9A1E14B038036F92D1899EA90_0" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>Select for auxiliar field</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT  ( COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table2.Name), ''))), '') ) as Updatedby FROM AD_User left join (select AD_User_ID, Name from AD_User) table2 on (AD_User.AD_User_ID = table2.AD_User_ID) WHERE AD_User.isActive='Y' AND AD_User.AD_User_ID = ?  
+    ]]></Sql>
+<Parameter name="UpdatedbyR"/>
+  </SqlMethod>
+
+   <SqlMethod name="selectDefAE1C0BBE0F294F17B905CE375F852EDF_1" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>Select for auxiliar field</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT  ( COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table2.Name), ''))), '') ) as Createdby FROM AD_User left join (select AD_User_ID, Name from AD_User) table2 on (AD_User.AD_User_ID = table2.AD_User_ID) WHERE AD_User.isActive='Y' AND AD_User.AD_User_ID = ?  
+    ]]></Sql>
+<Parameter name="CreatedbyR"/>
+  </SqlMethod>
+
+
+
+
+
+
+
+
+
+
+  <SqlMethod name="update" type="preparedStatement" return="rowCount" static="false" connection="true">
+    <Sql><![CDATA[
+        UPDATE Rchr_Employee
+        SET AD_Org_ID = (?) , Employeestatus = (?) , Salarystatus = (?) , Isactive = (?) , Withheld = (?) , Employeename = (?) , Punchno = (?) , Firstname = (?) , Lastname = (?) , Surname = (?) , Gender = (?) , Maritalstatus = (?) , Rchr_Emp_Dept_ID = (?) , Landlineno = (?) , Rchr_Subdepartment_ID = (?) , Rchr_Designation_ID = (?) , Emergencyphoneno = (?) , Supervisorname = (?) , Rchr_Shiftgroup_ID = (?) , Rchr_Mrelay_ID = (?) , Jdate = TO_DATE(?) , Jobtype = (?) , Employeetype = (?) , Dob = TO_DATE(?) , Shift = (?) , Weekoffapplicable = (?) , Rchr_Agentmaster_ID = (?) , Weeklyoff = (?) , Isallotment = (?) , AD_Image_ID = (?) , Rchr_Room_ID = (?) , Preattddays = TO_NUMBER(?) , Actualservicedays = TO_NUMBER(?) , Ispfapplicable = (?) , Panno = (?) , Pftype = (?) , Epfno = (?) , Isesiapplicable = (?) , Esino = (?) , Isbank = (?) , Adharno = (?) , Accountno = (?) , Rotation = (?) , Isleaveapplicable = (?) , Iscoffapplicable = (?) , Isodapplicable = (?) , Licapplicable = (?) , Vpfamount = TO_NUMBER(?) , Halfdayapplicable = (?) , Rchr_Mobalizer_ID = (?) , Observicedays = TO_NUMBER(?) , Email = (?) , Phoneno = (?) , Vpf = (?) , Rchr_Leavetemplate_ID = (?) , AD_User_ID = (?) , Leavedepartment = (?) , Rchr_Join_Rejoiningform_ID = (?) , Senior = (?) , Documentno = (?) , AD_Client_ID = (?) , Rchr_Employee_ID = (?) , updated = now(), updatedby = ? 
+        WHERE Rchr_Employee.Rchr_Employee_ID = ? 
+        
+        AND Rchr_Employee.AD_Client_ID IN ('1') 
+        AND Rchr_Employee.AD_Org_ID IN ('1') 
+    ]]></Sql>
+    <Parameter name="adOrgId"></Parameter> <Parameter name="employeestatus"></Parameter> <Parameter name="salarystatus"></Parameter> <Parameter name="isactive"></Parameter> <Parameter name="withheld"></Parameter> <Parameter name="employeename"></Parameter> <Parameter name="punchno"></Parameter> <Parameter name="firstname"></Parameter> <Parameter name="lastname"></Parameter> <Parameter name="surname"></Parameter> <Parameter name="gender"></Parameter> <Parameter name="maritalstatus"></Parameter> <Parameter name="rchrEmpDeptId"></Parameter> <Parameter name="landlineno"></Parameter> <Parameter name="rchrSubdepartmentId"></Parameter> <Parameter name="rchrDesignationId"></Parameter> <Parameter name="emergencyphoneno"></Parameter> <Parameter name="supervisorname"></Parameter> <Parameter name="rchrShiftgroupId"></Parameter> <Parameter name="rchrMrelayId"></Parameter> <Parameter name="jdate"></Parameter> <Parameter name="jobtype"></Parameter> <Parameter name="employeetype"></Parameter> <Parameter name="dob"></Parameter> <Parameter name="shift"></Parameter> <Parameter name="weekoffapplicable"></Parameter> <Parameter name="rchrAgentmasterId"></Parameter> <Parameter name="weeklyoff"></Parameter> <Parameter name="isallotment"></Parameter> <Parameter name="adImageId"></Parameter> <Parameter name="rchrRoomId"></Parameter> <Parameter name="preattddays"></Parameter> <Parameter name="actualservicedays"></Parameter> <Parameter name="ispfapplicable"></Parameter> <Parameter name="panno"></Parameter> <Parameter name="pftype"></Parameter> <Parameter name="epfno"></Parameter> <Parameter name="isesiapplicable"></Parameter> <Parameter name="esino"></Parameter> <Parameter name="isbank"></Parameter> <Parameter name="adharno"></Parameter> <Parameter name="accountno"></Parameter> <Parameter name="rotation"></Parameter> <Parameter name="isleaveapplicable"></Parameter> <Parameter name="iscoffapplicable"></Parameter> <Parameter name="isodapplicable"></Parameter> <Parameter name="licapplicable"></Parameter> <Parameter name="vpfamount"></Parameter> <Parameter name="halfdayapplicable"></Parameter> <Parameter name="rchrMobalizerId"></Parameter> <Parameter name="observicedays"></Parameter> <Parameter name="email"></Parameter> <Parameter name="phoneno"></Parameter> <Parameter name="vpf"></Parameter> <Parameter name="rchrLeavetemplateId"></Parameter> <Parameter name="adUserId"></Parameter> <Parameter name="leavedepartment"></Parameter> <Parameter name="rchrJoinRejoiningformId"></Parameter> <Parameter name="senior"></Parameter> <Parameter name="documentno"></Parameter> <Parameter name="adClientId"></Parameter> <Parameter name="rchrEmployeeId"></Parameter> 
+    <Parameter name="updatedby"></Parameter>
+    <Parameter id="paramKey" name="rchrEmployeeId"></Parameter>
+    
+    
+        <Parameter name="adUserClient" type="replace" optional="true" after="Rchr_Employee.AD_Client_ID IN (" text="'1'"/>
+        <Parameter name="adOrgClient" type="replace" optional="true" after="Rchr_Employee.AD_Org_ID IN (" text="'1'"/>
+  </SqlMethod>
+
+  <SqlMethod name="insert" type="preparedStatement" return="rowCount" static="false" connection="true">
+    <Sql><![CDATA[
+        INSERT INTO Rchr_Employee 
+        (AD_Org_ID, Employeestatus, Salarystatus, Isactive, Withheld, Employeename, Punchno, Firstname, Lastname, Surname, Gender, Maritalstatus, Rchr_Emp_Dept_ID, Landlineno, Rchr_Subdepartment_ID, Rchr_Designation_ID, Emergencyphoneno, Supervisorname, Rchr_Shiftgroup_ID, Rchr_Mrelay_ID, Jdate, Jobtype, Employeetype, Dob, Shift, Weekoffapplicable, Rchr_Agentmaster_ID, Weeklyoff, Isallotment, AD_Image_ID, Rchr_Room_ID, Preattddays, Actualservicedays, Ispfapplicable, Panno, Pftype, Epfno, Isesiapplicable, Esino, Isbank, Adharno, Accountno, Rotation, Isleaveapplicable, Iscoffapplicable, Isodapplicable, Licapplicable, Vpfamount, Halfdayapplicable, Rchr_Mobalizer_ID, Observicedays, Email, Phoneno, Vpf, Rchr_Leavetemplate_ID, AD_User_ID, Leavedepartment, Rchr_Join_Rejoiningform_ID, Senior, Documentno, AD_Client_ID, Rchr_Employee_ID, created, createdby, updated, updatedBy)
+        VALUES ((?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), TO_DATE(?), (?), (?), TO_DATE(?), (?), (?), (?), (?), (?), (?), (?), TO_NUMBER(?), TO_NUMBER(?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), TO_NUMBER(?), (?), (?), TO_NUMBER(?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), now(), ?, now(), ?)
+    ]]></Sql>
+    <Parameter name="adOrgId"></Parameter> <Parameter name="employeestatus"></Parameter> <Parameter name="salarystatus"></Parameter> <Parameter name="isactive"></Parameter> <Parameter name="withheld"></Parameter> <Parameter name="employeename"></Parameter> <Parameter name="punchno"></Parameter> <Parameter name="firstname"></Parameter> <Parameter name="lastname"></Parameter> <Parameter name="surname"></Parameter> <Parameter name="gender"></Parameter> <Parameter name="maritalstatus"></Parameter> <Parameter name="rchrEmpDeptId"></Parameter> <Parameter name="landlineno"></Parameter> <Parameter name="rchrSubdepartmentId"></Parameter> <Parameter name="rchrDesignationId"></Parameter> <Parameter name="emergencyphoneno"></Parameter> <Parameter name="supervisorname"></Parameter> <Parameter name="rchrShiftgroupId"></Parameter> <Parameter name="rchrMrelayId"></Parameter> <Parameter name="jdate"></Parameter> <Parameter name="jobtype"></Parameter> <Parameter name="employeetype"></Parameter> <Parameter name="dob"></Parameter> <Parameter name="shift"></Parameter> <Parameter name="weekoffapplicable"></Parameter> <Parameter name="rchrAgentmasterId"></Parameter> <Parameter name="weeklyoff"></Parameter> <Parameter name="isallotment"></Parameter> <Parameter name="adImageId"></Parameter> <Parameter name="rchrRoomId"></Parameter> <Parameter name="preattddays"></Parameter> <Parameter name="actualservicedays"></Parameter> <Parameter name="ispfapplicable"></Parameter> <Parameter name="panno"></Parameter> <Parameter name="pftype"></Parameter> <Parameter name="epfno"></Parameter> <Parameter name="isesiapplicable"></Parameter> <Parameter name="esino"></Parameter> <Parameter name="isbank"></Parameter> <Parameter name="adharno"></Parameter> <Parameter name="accountno"></Parameter> <Parameter name="rotation"></Parameter> <Parameter name="isleaveapplicable"></Parameter> <Parameter name="iscoffapplicable"></Parameter> <Parameter name="isodapplicable"></Parameter> <Parameter name="licapplicable"></Parameter> <Parameter name="vpfamount"></Parameter> <Parameter name="halfdayapplicable"></Parameter> <Parameter name="rchrMobalizerId"></Parameter> <Parameter name="observicedays"></Parameter> <Parameter name="email"></Parameter> <Parameter name="phoneno"></Parameter> <Parameter name="vpf"></Parameter> <Parameter name="rchrLeavetemplateId"></Parameter> <Parameter name="adUserId"></Parameter> <Parameter name="leavedepartment"></Parameter> <Parameter name="rchrJoinRejoiningformId"></Parameter> <Parameter name="senior"></Parameter> <Parameter name="documentno"></Parameter> <Parameter name="adClientId"></Parameter> <Parameter name="rchrEmployeeId"></Parameter> 
+    <Parameter name="createdby"></Parameter>
+    <Parameter name="updatedby"></Parameter>
+  </SqlMethod>
+
+  <SqlMethod name="delete" type="preparedStatement" return="rowCount">
+    <Sql><![CDATA[
+        DELETE FROM Rchr_Employee
+        WHERE Rchr_Employee.Rchr_Employee_ID = ? 
+        
+        AND Rchr_Employee.AD_Client_ID IN ('1') 
+        AND Rchr_Employee.AD_Org_ID IN ('1') 
+    ]]></Sql>
+    <Parameter name="param1"></Parameter>
+    
+        <Parameter name="adUserClient" type="replace" optional="true" after="Rchr_Employee.AD_Client_ID IN (" text="'1'"/>
+        <Parameter name="adOrgClient" type="replace" optional="true" after="Rchr_Employee.AD_Org_ID IN (" text="'1'"/>
+  </SqlMethod>
+
+  <SqlMethod name="selectOrg" type="preparedStatement" return="string">
+    <SqlMethodComment>Select for relation</SqlMethodComment>
+    <Sql><![CDATA[ 
+        SELECT AD_ORG_ID
+          FROM Rchr_Employee
+         WHERE Rchr_Employee.Rchr_Employee_ID = ? 
+    ]]></Sql>
+    <Parameter name="id"></Parameter>
+  </SqlMethod>
+  
+  <SqlMethod name="getCurrentDBTimestamp" type="preparedStatement" return="string">
+    <Sql><![CDATA[ 
+        SELECT to_char(Updated, 'YYYYMMDDHH24MISS') as Updated_Time_Stamp
+          FROM Rchr_Employee
+         WHERE Rchr_Employee.Rchr_Employee_ID = ? 
+    ]]></Sql>
+    <Parameter name="id"></Parameter>
+  </SqlMethod>
+</SqlClass>

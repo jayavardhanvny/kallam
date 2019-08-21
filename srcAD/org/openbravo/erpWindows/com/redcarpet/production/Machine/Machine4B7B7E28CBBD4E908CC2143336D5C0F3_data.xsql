@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SqlClass id="class" name="Machine4B7B7E28CBBD4E908CC2143336D5C0F3Data" package="org.openbravo.erpWindows.com.redcarpet.production.Machine">
+  <SqlClassComment>WAD Generated class</SqlClassComment>
+
+  <SqlMethod name="selectEdit" type="preparedStatement" return="multiple">
+    <SqlMethodComment>Select for edit</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT to_char(RCPR_Machine.Created, ?) as created, 
+        (SELECT NAME FROM AD_USER u WHERE AD_USER_ID = RCPR_Machine.CreatedBy) as CreatedByR, 
+        to_char(RCPR_Machine.Updated, ?) as updated, 
+        to_char(RCPR_Machine.Updated, 'YYYYMMDDHH24MISS') as Updated_Time_Stamp,  
+        RCPR_Machine.UpdatedBy, 
+        (SELECT NAME FROM AD_USER u WHERE AD_USER_ID = RCPR_Machine.UpdatedBy) as UpdatedByR,
+        RCPR_Machine.AD_Org_ID, 
+(CASE WHEN RCPR_Machine.AD_Org_ID IS NULL THEN '' ELSE  ( COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table1.Name), ''))),'') ) END) AS AD_Org_IDR, 
+COALESCE(RCPR_Machine.Isactive, 'N') AS Isactive, 
+RCPR_Machine.Name, 
+RCPR_Machine.Madeinyear, 
+RCPR_Machine.Machinemodel, 
+RCPR_Machine.Rcpr_Machinecategory_ID, 
+(CASE WHEN RCPR_Machine.Rcpr_Machinecategory_ID IS NULL THEN '' ELSE  (COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table2.Name), ''))),'') ) END) AS Rcpr_Machinecategory_IDR, 
+RCPR_Machine.Rcpr_Machineprocess_ID, 
+(CASE WHEN RCPR_Machine.Rcpr_Machineprocess_ID IS NULL THEN '' ELSE  (COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table3.Name), ''))),'') ) END) AS Rcpr_Machineprocess_IDR, 
+RCPR_Machine.Rcpr_Unit_ID, 
+RCPR_Machine.Machineserialno, 
+RCPR_Machine.Rcpr_Shed_ID, 
+RCPR_Machine.Line, 
+RCPR_Machine.Manufacturername, 
+RCPR_Machine.Totalrun, 
+RCPR_Machine.Spindles, 
+RCPR_Machine.Process, 
+RCPR_Machine.Rcpr_Machine_ID, 
+RCPR_Machine.AD_Client_ID, 
+ 
+        ? AS LANGUAGE 
+        FROM RCPR_Machine left join (select AD_Org_ID, Name from AD_Org) table1 on (RCPR_Machine.AD_Org_ID =  table1.AD_Org_ID) left join (select Rcpr_Machinecategory_ID, Name from Rcpr_Machinecategory) table2 on (RCPR_Machine.Rcpr_Machinecategory_ID = table2.Rcpr_Machinecategory_ID) left join (select Rcpr_Machineprocess_ID, Name from Rcpr_Machineprocess) table3 on (RCPR_Machine.Rcpr_Machineprocess_ID = table3.Rcpr_Machineprocess_ID)
+        WHERE 2=2 
+ AND 1=1
+        AND 1=1 
+        AND RCPR_Machine.Rcpr_Machine_ID = ? 
+        AND RCPR_Machine.AD_Client_ID IN ('1') 
+           AND RCPR_Machine.AD_Org_ID IN ('1') 
+    ]]></Sql>
+    <Parameter name="dateTimeFormat"></Parameter>
+    <Parameter name="dateTimeFormat"></Parameter>
+    
+    <Parameter name="paramLanguage"></Parameter>
+
+
+    <Parameter name="key"></Parameter>
+        <Parameter name="adUserClient" type="replace" optional="true" after="RCPR_Machine.AD_Client_ID IN (" text="'1'"/>
+        <Parameter name="adOrgClient" type="replace" optional="true" after="RCPR_Machine.AD_Org_ID IN (" text="'1'"/>
+
+    <Field name="adUserClient" value="void"></Field>
+    <Field name="adOrgClient" value="void"></Field>
+    <Field name="createdby" value="void"></Field>
+    
+    <Field name="trBgcolor" value="void"></Field>
+    <Field name="totalCount" value="void"></Field>
+    <Field name="dateTimeFormat" value=""></Field>
+  </SqlMethod>
+  
+  
+
+  <SqlMethod name="set" type="constant" return="multiple">
+      <SqlMethodComment>Create a registry</SqlMethodComment>
+      <Sql></Sql>
+
+<Parameter name="rcprMachineprocessId"></Parameter><Parameter name="machinemodel"></Parameter><Parameter name="rcprMachineId"></Parameter><Parameter name="rcprUnitId"></Parameter><Parameter name="machineserialno"></Parameter><Parameter name="createdby"></Parameter><Parameter name="createdbyr"></Parameter><Parameter name="manufacturername"></Parameter><Parameter name="line"></Parameter><Parameter name="process"></Parameter><Parameter name="adClientId"></Parameter><Parameter name="updatedby"></Parameter><Parameter name="updatedbyr"></Parameter><Parameter name="totalrun"></Parameter><Parameter name="spindles"></Parameter><Parameter name="rcprMachinecategoryId"></Parameter><Parameter name="adOrgId"></Parameter><Parameter name="name"></Parameter><Parameter name="isactive"></Parameter><Parameter name="madeinyear"></Parameter><Parameter name="rcprShedId"></Parameter>
+   </SqlMethod>
+
+
+
+
+
+
+   <SqlMethod name="selectDef3C3B9D10FC6A40418B9ECEAA79F10AE8_0" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>Select for auxiliar field</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT  ( COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table2.Name), ''))), '') ) as Createdby FROM AD_User left join (select AD_User_ID, Name from AD_User) table2 on (AD_User.AD_User_ID = table2.AD_User_ID) WHERE AD_User.isActive='Y' AND AD_User.AD_User_ID = ?  
+    ]]></Sql>
+<Parameter name="CreatedbyR"/>
+  </SqlMethod>
+
+   <SqlMethod name="selectDef8782FF1A11A047AAA2AFE34387227550_1" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>Select for auxiliar field</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT  ( COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table2.Name), ''))), '') ) as Updatedby FROM AD_User left join (select AD_User_ID, Name from AD_User) table2 on (AD_User.AD_User_ID = table2.AD_User_ID) WHERE AD_User.isActive='Y' AND AD_User.AD_User_ID = ?  
+    ]]></Sql>
+<Parameter name="UpdatedbyR"/>
+  </SqlMethod>
+
+
+
+
+
+
+
+
+
+
+  <SqlMethod name="update" type="preparedStatement" return="rowCount" static="false" connection="true">
+    <Sql><![CDATA[
+        UPDATE RCPR_Machine
+        SET AD_Org_ID = (?) , Isactive = (?) , Name = (?) , Madeinyear = TO_DATE(?) , Machinemodel = (?) , Rcpr_Machinecategory_ID = (?) , Rcpr_Machineprocess_ID = (?) , Rcpr_Unit_ID = (?) , Machineserialno = (?) , Rcpr_Shed_ID = (?) , Line = TO_NUMBER(?) , Manufacturername = (?) , Totalrun = TO_DATE(?) , Spindles = TO_NUMBER(?) , Process = (?) , Rcpr_Machine_ID = (?) , AD_Client_ID = (?) , updated = now(), updatedby = ? 
+        WHERE RCPR_Machine.Rcpr_Machine_ID = ? 
+        
+        AND RCPR_Machine.AD_Client_ID IN ('1') 
+        AND RCPR_Machine.AD_Org_ID IN ('1') 
+    ]]></Sql>
+    <Parameter name="adOrgId"></Parameter> <Parameter name="isactive"></Parameter> <Parameter name="name"></Parameter> <Parameter name="madeinyear"></Parameter> <Parameter name="machinemodel"></Parameter> <Parameter name="rcprMachinecategoryId"></Parameter> <Parameter name="rcprMachineprocessId"></Parameter> <Parameter name="rcprUnitId"></Parameter> <Parameter name="machineserialno"></Parameter> <Parameter name="rcprShedId"></Parameter> <Parameter name="line"></Parameter> <Parameter name="manufacturername"></Parameter> <Parameter name="totalrun"></Parameter> <Parameter name="spindles"></Parameter> <Parameter name="process"></Parameter> <Parameter name="rcprMachineId"></Parameter> <Parameter name="adClientId"></Parameter> 
+    <Parameter name="updatedby"></Parameter>
+    <Parameter id="paramKey" name="rcprMachineId"></Parameter>
+    
+    
+        <Parameter name="adUserClient" type="replace" optional="true" after="RCPR_Machine.AD_Client_ID IN (" text="'1'"/>
+        <Parameter name="adOrgClient" type="replace" optional="true" after="RCPR_Machine.AD_Org_ID IN (" text="'1'"/>
+  </SqlMethod>
+
+  <SqlMethod name="insert" type="preparedStatement" return="rowCount" static="false" connection="true">
+    <Sql><![CDATA[
+        INSERT INTO RCPR_Machine 
+        (AD_Org_ID, Isactive, Name, Madeinyear, Machinemodel, Rcpr_Machinecategory_ID, Rcpr_Machineprocess_ID, Rcpr_Unit_ID, Machineserialno, Rcpr_Shed_ID, Line, Manufacturername, Totalrun, Spindles, Process, Rcpr_Machine_ID, AD_Client_ID, created, createdby, updated, updatedBy)
+        VALUES ((?), (?), (?), TO_DATE(?), (?), (?), (?), (?), (?), (?), TO_NUMBER(?), (?), TO_DATE(?), TO_NUMBER(?), (?), (?), (?), now(), ?, now(), ?)
+    ]]></Sql>
+    <Parameter name="adOrgId"></Parameter> <Parameter name="isactive"></Parameter> <Parameter name="name"></Parameter> <Parameter name="madeinyear"></Parameter> <Parameter name="machinemodel"></Parameter> <Parameter name="rcprMachinecategoryId"></Parameter> <Parameter name="rcprMachineprocessId"></Parameter> <Parameter name="rcprUnitId"></Parameter> <Parameter name="machineserialno"></Parameter> <Parameter name="rcprShedId"></Parameter> <Parameter name="line"></Parameter> <Parameter name="manufacturername"></Parameter> <Parameter name="totalrun"></Parameter> <Parameter name="spindles"></Parameter> <Parameter name="process"></Parameter> <Parameter name="rcprMachineId"></Parameter> <Parameter name="adClientId"></Parameter> 
+    <Parameter name="createdby"></Parameter>
+    <Parameter name="updatedby"></Parameter>
+  </SqlMethod>
+
+  <SqlMethod name="delete" type="preparedStatement" return="rowCount">
+    <Sql><![CDATA[
+        DELETE FROM RCPR_Machine
+        WHERE RCPR_Machine.Rcpr_Machine_ID = ? 
+        
+        AND RCPR_Machine.AD_Client_ID IN ('1') 
+        AND RCPR_Machine.AD_Org_ID IN ('1') 
+    ]]></Sql>
+    <Parameter name="param1"></Parameter>
+    
+        <Parameter name="adUserClient" type="replace" optional="true" after="RCPR_Machine.AD_Client_ID IN (" text="'1'"/>
+        <Parameter name="adOrgClient" type="replace" optional="true" after="RCPR_Machine.AD_Org_ID IN (" text="'1'"/>
+  </SqlMethod>
+
+  <SqlMethod name="selectOrg" type="preparedStatement" return="string">
+    <SqlMethodComment>Select for relation</SqlMethodComment>
+    <Sql><![CDATA[ 
+        SELECT AD_ORG_ID
+          FROM RCPR_Machine
+         WHERE RCPR_Machine.Rcpr_Machine_ID = ? 
+    ]]></Sql>
+    <Parameter name="id"></Parameter>
+  </SqlMethod>
+  
+  <SqlMethod name="getCurrentDBTimestamp" type="preparedStatement" return="string">
+    <Sql><![CDATA[ 
+        SELECT to_char(Updated, 'YYYYMMDDHH24MISS') as Updated_Time_Stamp
+          FROM RCPR_Machine
+         WHERE RCPR_Machine.Rcpr_Machine_ID = ? 
+    ]]></Sql>
+    <Parameter name="id"></Parameter>
+  </SqlMethod>
+</SqlClass>

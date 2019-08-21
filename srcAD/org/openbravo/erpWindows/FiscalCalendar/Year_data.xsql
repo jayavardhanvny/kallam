@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SqlClass id="class" name="YearData" package="org.openbravo.erpWindows.FiscalCalendar">
+  <SqlClassComment>WAD Generated class</SqlClassComment>
+
+  <SqlMethod name="selectEdit" type="preparedStatement" return="multiple">
+    <SqlMethodComment>Select for edit</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT to_char(C_Year.Created, ?) as created, 
+        (SELECT NAME FROM AD_USER u WHERE AD_USER_ID = C_Year.CreatedBy) as CreatedByR, 
+        to_char(C_Year.Updated, ?) as updated, 
+        to_char(C_Year.Updated, 'YYYYMMDDHH24MISS') as Updated_Time_Stamp,  
+        C_Year.UpdatedBy, 
+        (SELECT NAME FROM AD_USER u WHERE AD_USER_ID = C_Year.UpdatedBy) as UpdatedByR,
+        C_Year.C_Year_ID, 
+C_Year.Year, 
+C_Year.Description, 
+COALESCE(C_Year.IsActive, 'N') AS IsActive, 
+C_Year.Processing, 
+C_Year.Create_Reg_Fact_Acct, 
+C_Year.Drop_Reg_Fact_Acct, 
+C_Year.AD_Org_ID, 
+C_Year.AD_Client_ID, 
+C_Year.C_Calendar_ID, 
+ 
+        ? AS LANGUAGE 
+        FROM C_Year
+        WHERE 2=2 
+
+        AND 1=1 
+        AND C_Year.C_Year_ID = ? 
+        AND C_Year.AD_Client_ID IN ('1') 
+           AND C_Year.AD_Org_ID IN ('1') 
+    ]]></Sql>
+    <Parameter name="dateTimeFormat"></Parameter>
+    <Parameter name="dateTimeFormat"></Parameter>
+    
+    <Parameter name="paramLanguage"></Parameter>
+
+    <Parameter name="cCalendarId" optional="true" after="AND 1=1 " id="paramKeyParent"> AND C_Year.C_Calendar_ID = ? </Parameter>
+    <Parameter name="key"></Parameter>
+        <Parameter name="adUserClient" type="replace" optional="true" after="C_Year.AD_Client_ID IN (" text="'1'"/>
+        <Parameter name="adOrgClient" type="replace" optional="true" after="C_Year.AD_Org_ID IN (" text="'1'"/>
+
+    <Field name="adUserClient" value="void"></Field>
+    <Field name="adOrgClient" value="void"></Field>
+    <Field name="createdby" value="void"></Field>
+    
+    <Field name="trBgcolor" value="void"></Field>
+    <Field name="totalCount" value="void"></Field>
+    <Field name="dateTimeFormat" value=""></Field>
+  </SqlMethod>
+  
+  
+
+  <SqlMethod name="set" type="constant" return="multiple">
+      <SqlMethodComment>Create a registry</SqlMethodComment>
+      <Sql></Sql>
+    <Parameter name="cCalendarId" id="paramKeyParent"></Parameter>
+<Parameter name="cYearId"></Parameter><Parameter name="adClientId"></Parameter><Parameter name="adOrgId"></Parameter><Parameter name="isactive"></Parameter><Parameter name="createdby"></Parameter><Parameter name="createdbyr"></Parameter><Parameter name="updatedby"></Parameter><Parameter name="updatedbyr"></Parameter><Parameter name="year"></Parameter><Parameter name="description"></Parameter><Parameter name="processing"></Parameter><Parameter name="createRegFactAcct"></Parameter><Parameter name="dropRegFactAcct"></Parameter>
+   </SqlMethod>
+
+
+
+
+   <SqlMethod name="selectActP100_AD_LANGUAGE_ID" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>Select for auxiliar field</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT AD_LANGUAGE_ID FROM AD_LANGUAGE WHERE AD_LANGUAGE = ? 
+    ]]></Sql>
+
+<Parameter name="AD_LANGUAGE"/>
+  </SqlMethod>
+
+
+
+   <SqlMethod name="selectDef1035_0" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>Select for auxiliar field</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT  ( COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table2.Name), ''))), '') ) as CreatedBy FROM AD_User left join (select AD_User_ID, Name from AD_User) table2 on (AD_User.AD_User_ID = table2.AD_User_ID) WHERE AD_User.isActive='Y' AND AD_User.AD_User_ID = ?  
+    ]]></Sql>
+<Parameter name="CreatedByR"/>
+  </SqlMethod>
+
+   <SqlMethod name="selectDef1037_1" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>Select for auxiliar field</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT  ( COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table2.Name), ''))), '') ) as UpdatedBy FROM AD_User left join (select AD_User_ID, Name from AD_User) table2 on (AD_User.AD_User_ID = table2.AD_User_ID) WHERE AD_User.isActive='Y' AND AD_User.AD_User_ID = ?  
+    ]]></Sql>
+<Parameter name="UpdatedByR"/>
+  </SqlMethod>
+
+
+
+  <SqlMethod name="selectParentID" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>return the parent ID</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT C_Year.C_Calendar_ID AS NAME
+        FROM C_Year
+        WHERE C_Year.C_Year_ID = ?
+    ]]></Sql>
+    <Parameter name="key"></Parameter>
+  </SqlMethod>
+
+   <SqlMethod name="selectParent" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>Select for parent field</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT (TO_CHAR(COALESCE(TO_CHAR(table1.Name), ''))) AS NAME FROM C_Calendar left join (select C_Calendar_ID, Name from C_Calendar) table1 on (C_Calendar.C_Calendar_ID = table1.C_Calendar_ID) WHERE C_Calendar.C_Calendar_ID = ?  
+    ]]></Sql>
+<Parameter name="cCalendarId"/>
+
+  </SqlMethod>
+
+
+
+
+   <SqlMethod name="selectParentTrl" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>Select for parent field</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT (TO_CHAR(COALESCE(TO_CHAR(table1.Name), ''))) AS NAME FROM C_Calendar left join (select C_Calendar_ID, Name from C_Calendar) table1 on (C_Calendar.C_Calendar_ID = table1.C_Calendar_ID) WHERE C_Calendar.C_Calendar_ID = ?  
+    ]]></Sql>
+<Parameter name="cCalendarId"/>
+
+  </SqlMethod>
+
+
+
+
+
+
+
+
+  <SqlMethod name="update" type="preparedStatement" return="rowCount" static="false" connection="true">
+    <Sql><![CDATA[
+        UPDATE C_Year
+        SET C_Year_ID = (?) , Year = (?) , Description = (?) , IsActive = (?) , Processing = (?) , Create_Reg_Fact_Acct = (?) , Drop_Reg_Fact_Acct = (?) , AD_Org_ID = (?) , AD_Client_ID = (?) , C_Calendar_ID = (?) , updated = now(), updatedby = ? 
+        WHERE C_Year.C_Year_ID = ? 
+                 AND C_Year.C_Calendar_ID = ? 
+        AND C_Year.AD_Client_ID IN ('1') 
+        AND C_Year.AD_Org_ID IN ('1') 
+    ]]></Sql>
+    <Parameter name="cYearId"></Parameter> <Parameter name="year"></Parameter> <Parameter name="description"></Parameter> <Parameter name="isactive"></Parameter> <Parameter name="processing"></Parameter> <Parameter name="createRegFactAcct"></Parameter> <Parameter name="dropRegFactAcct"></Parameter> <Parameter name="adOrgId"></Parameter> <Parameter name="adClientId"></Parameter> <Parameter name="cCalendarId"></Parameter> 
+    <Parameter name="updatedby"></Parameter>
+    <Parameter id="paramKey" name="cYearId"></Parameter>
+    
+    <Parameter name="cCalendarId" id="paramKeyParent"></Parameter>
+        <Parameter name="adUserClient" type="replace" optional="true" after="C_Year.AD_Client_ID IN (" text="'1'"/>
+        <Parameter name="adOrgClient" type="replace" optional="true" after="C_Year.AD_Org_ID IN (" text="'1'"/>
+  </SqlMethod>
+
+  <SqlMethod name="insert" type="preparedStatement" return="rowCount" static="false" connection="true">
+    <Sql><![CDATA[
+        INSERT INTO C_Year 
+        (C_Year_ID, Year, Description, IsActive, Processing, Create_Reg_Fact_Acct, Drop_Reg_Fact_Acct, AD_Org_ID, AD_Client_ID, C_Calendar_ID, created, createdby, updated, updatedBy)
+        VALUES ((?), (?), (?), (?), (?), (?), (?), (?), (?), (?), now(), ?, now(), ?)
+    ]]></Sql>
+    <Parameter name="cYearId"></Parameter> <Parameter name="year"></Parameter> <Parameter name="description"></Parameter> <Parameter name="isactive"></Parameter> <Parameter name="processing"></Parameter> <Parameter name="createRegFactAcct"></Parameter> <Parameter name="dropRegFactAcct"></Parameter> <Parameter name="adOrgId"></Parameter> <Parameter name="adClientId"></Parameter> <Parameter name="cCalendarId"></Parameter> 
+    <Parameter name="createdby"></Parameter>
+    <Parameter name="updatedby"></Parameter>
+  </SqlMethod>
+
+  <SqlMethod name="delete" type="preparedStatement" return="rowCount">
+    <Sql><![CDATA[
+        DELETE FROM C_Year
+        WHERE C_Year.C_Year_ID = ? 
+                 AND C_Year.C_Calendar_ID = ? 
+        AND C_Year.AD_Client_ID IN ('1') 
+        AND C_Year.AD_Org_ID IN ('1') 
+    ]]></Sql>
+    <Parameter name="param1"></Parameter>
+        <Parameter name="cCalendarId" id="paramKeyParent"></Parameter>
+        <Parameter name="adUserClient" type="replace" optional="true" after="C_Year.AD_Client_ID IN (" text="'1'"/>
+        <Parameter name="adOrgClient" type="replace" optional="true" after="C_Year.AD_Org_ID IN (" text="'1'"/>
+  </SqlMethod>
+
+  <SqlMethod name="selectOrg" type="preparedStatement" return="string">
+    <SqlMethodComment>Select for relation</SqlMethodComment>
+    <Sql><![CDATA[ 
+        SELECT AD_ORG_ID
+          FROM C_Year
+         WHERE C_Year.C_Year_ID = ? 
+    ]]></Sql>
+    <Parameter name="id"></Parameter>
+  </SqlMethod>
+  
+  <SqlMethod name="getCurrentDBTimestamp" type="preparedStatement" return="string">
+    <Sql><![CDATA[ 
+        SELECT to_char(Updated, 'YYYYMMDDHH24MISS') as Updated_Time_Stamp
+          FROM C_Year
+         WHERE C_Year.C_Year_ID = ? 
+    ]]></Sql>
+    <Parameter name="id"></Parameter>
+  </SqlMethod>
+</SqlClass>

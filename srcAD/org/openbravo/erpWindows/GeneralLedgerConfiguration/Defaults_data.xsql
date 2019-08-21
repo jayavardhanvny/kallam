@@ -1,0 +1,250 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SqlClass id="class" name="DefaultsData" package="org.openbravo.erpWindows.GeneralLedgerConfiguration">
+  <SqlClassComment>WAD Generated class</SqlClassComment>
+
+  <SqlMethod name="selectEdit" type="preparedStatement" return="multiple">
+    <SqlMethodComment>Select for edit</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT to_char(C_AcctSchema_Default.Created, ?) as created, 
+        (SELECT NAME FROM AD_USER u WHERE AD_USER_ID = C_AcctSchema_Default.CreatedBy) as CreatedByR, 
+        to_char(C_AcctSchema_Default.Updated, ?) as updated, 
+        to_char(C_AcctSchema_Default.Updated, 'YYYYMMDDHH24MISS') as Updated_Time_Stamp,  
+        C_AcctSchema_Default.UpdatedBy, 
+        (SELECT NAME FROM AD_USER u WHERE AD_USER_ID = C_AcctSchema_Default.UpdatedBy) as UpdatedByR,
+        C_AcctSchema_Default.C_Receivable_Acct, 
+C_AcctSchema_Default.C_Prepayment_Acct, 
+C_AcctSchema_Default.WriteOff_Acct, 
+C_AcctSchema_Default.Writeoff_Rev_Acct, 
+C_AcctSchema_Default.V_Liability_Acct, 
+C_AcctSchema_Default.V_Prepayment_Acct, 
+C_AcctSchema_Default.NotInvoicedReceipts_Acct, 
+C_AcctSchema_Default.DoubtfulDebt_Acct, 
+C_AcctSchema_Default.Baddebtexpense_Acct, 
+C_AcctSchema_Default.BadDebtRevenue_Acct, 
+C_AcctSchema_Default.Allowancefordoubtful_Acct, 
+C_AcctSchema_Default.P_Asset_Acct, 
+C_AcctSchema_Default.P_Expense_Acct, 
+C_AcctSchema_Default.P_Def_Expense_Acct, 
+C_AcctSchema_Default.P_Revenue_Acct, 
+C_AcctSchema_Default.P_Def_Revenue_Acct, 
+C_AcctSchema_Default.Withholding_Acct, 
+C_AcctSchema_Default.P_Cogs_Acct, 
+C_AcctSchema_Default.P_InvoicePriceVariance_Acct, 
+C_AcctSchema_Default.P_Revenue_Return_Acct, 
+C_AcctSchema_Default.P_Cogs_Return_Acct, 
+C_AcctSchema_Default.W_Inventory_Acct, 
+C_AcctSchema_Default.W_Differences_Acct, 
+C_AcctSchema_Default.W_Revaluation_Acct, 
+C_AcctSchema_Default.PJ_WIP_Acct, 
+C_AcctSchema_Default.B_Asset_Acct, 
+C_AcctSchema_Default.B_InTransit_Acct, 
+C_AcctSchema_Default.B_Expense_Acct, 
+C_AcctSchema_Default.B_RevaluationGain_Acct, 
+C_AcctSchema_Default.B_RevaluationLoss_Acct, 
+C_AcctSchema_Default.T_Due_Acct, 
+C_AcctSchema_Default.T_Credit_Acct, 
+C_AcctSchema_Default.Ch_Expense_Acct, 
+C_AcctSchema_Default.CB_Asset_Acct, 
+C_AcctSchema_Default.CB_Differences_Acct, 
+C_AcctSchema_Default.CB_CashTransfer_Acct, 
+C_AcctSchema_Default.CB_Expense_Acct, 
+C_AcctSchema_Default.CB_Receipt_Acct, 
+C_AcctSchema_Default.A_Depreciation_Acct, 
+C_AcctSchema_Default.B_PaymentSelect_Acct, 
+C_AcctSchema_Default.A_Accumdepreciation_Acct, 
+C_AcctSchema_Default.Processing, 
+C_AcctSchema_Default.E_Expense_Acct, 
+C_AcctSchema_Default.E_Prepayment_Acct, 
+C_AcctSchema_Default.PJ_Asset_Acct, 
+C_AcctSchema_Default.V_Liability_Services_Acct, 
+C_AcctSchema_Default.NotInvoicedRevenue_Acct, 
+C_AcctSchema_Default.P_PurchasePriceVariance_Acct, 
+C_AcctSchema_Default.PayDiscount_Exp_Acct, 
+C_AcctSchema_Default.PayDiscount_Rev_Acct, 
+C_AcctSchema_Default.UnrealizedGain_Acct, 
+C_AcctSchema_Default.UnrealizedLoss_Acct, 
+C_AcctSchema_Default.RealizedGain_Acct, 
+C_AcctSchema_Default.RealizedLoss_Acct, 
+C_AcctSchema_Default.T_Expense_Acct, 
+C_AcctSchema_Default.T_Liability_Acct, 
+C_AcctSchema_Default.T_Receivables_Acct, 
+C_AcctSchema_Default.B_InterestRev_Acct, 
+C_AcctSchema_Default.B_InterestExp_Acct, 
+C_AcctSchema_Default.B_Unidentified_Acct, 
+C_AcctSchema_Default.B_SettlementGain_Acct, 
+C_AcctSchema_Default.Ch_Revenue_Acct, 
+C_AcctSchema_Default.UnEarnedRevenue_Acct, 
+C_AcctSchema_Default.NotInvoicedReceivables_Acct, 
+C_AcctSchema_Default.P_TradeDiscountRec_Acct, 
+C_AcctSchema_Default.P_TradeDiscountGrant_Acct, 
+C_AcctSchema_Default.W_InvActualAdjust_Acct, 
+C_AcctSchema_Default.B_UnallocatedCash_Acct, 
+C_AcctSchema_Default.B_SettlementLoss_Acct, 
+C_AcctSchema_Default.C_AcctSchema_ID, 
+C_AcctSchema_Default.AD_Org_ID, 
+C_AcctSchema_Default.AD_Client_ID, 
+C_AcctSchema_Default.A_Disposal_Loss, 
+C_AcctSchema_Default.A_Disposal_Gain, 
+C_AcctSchema_Default.C_Acctschema_Default_ID, 
+COALESCE(C_AcctSchema_Default.IsActive, 'N') AS IsActive, 
+ 
+        ? AS LANGUAGE 
+        FROM C_AcctSchema_Default
+        WHERE 2=2 
+
+        AND 1=1 
+        AND C_AcctSchema_Default.C_Acctschema_Default_ID = ? 
+        AND C_AcctSchema_Default.AD_Client_ID IN ('1') 
+           AND C_AcctSchema_Default.AD_Org_ID IN ('1') 
+    ]]></Sql>
+    <Parameter name="dateTimeFormat"></Parameter>
+    <Parameter name="dateTimeFormat"></Parameter>
+    
+    <Parameter name="paramLanguage"></Parameter>
+
+    <Parameter name="cAcctschemaId" optional="true" after="AND 1=1 " id="paramKeyParent"> AND C_AcctSchema_Default.C_AcctSchema_ID = ? </Parameter>
+    <Parameter name="key"></Parameter>
+        <Parameter name="adUserClient" type="replace" optional="true" after="C_AcctSchema_Default.AD_Client_ID IN (" text="'1'"/>
+        <Parameter name="adOrgClient" type="replace" optional="true" after="C_AcctSchema_Default.AD_Org_ID IN (" text="'1'"/>
+
+    <Field name="adUserClient" value="void"></Field>
+    <Field name="adOrgClient" value="void"></Field>
+    <Field name="createdby" value="void"></Field>
+    
+    <Field name="trBgcolor" value="void"></Field>
+    <Field name="totalCount" value="void"></Field>
+    <Field name="dateTimeFormat" value=""></Field>
+  </SqlMethod>
+  
+  
+
+  <SqlMethod name="set" type="constant" return="multiple">
+      <SqlMethodComment>Create a registry</SqlMethodComment>
+      <Sql></Sql>
+    <Parameter name="cAcctschemaId" id="paramKeyParent"></Parameter>
+<Parameter name="pRevenueReturnAcct"></Parameter><Parameter name="adClientId"></Parameter><Parameter name="adOrgId"></Parameter><Parameter name="isactive"></Parameter><Parameter name="created"></Parameter><Parameter name="createdby"></Parameter><Parameter name="createdbyr"></Parameter><Parameter name="updatedby"></Parameter><Parameter name="updatedbyr"></Parameter><Parameter name="wInventoryAcct"></Parameter><Parameter name="wDifferencesAcct"></Parameter><Parameter name="pRevenueAcct"></Parameter><Parameter name="pExpenseAcct"></Parameter><Parameter name="pAssetAcct"></Parameter><Parameter name="pCogsAcct"></Parameter><Parameter name="eExpenseAcct"></Parameter><Parameter name="ePrepaymentAcct"></Parameter><Parameter name="cReceivableAcct"></Parameter><Parameter name="cPrepaymentAcct"></Parameter><Parameter name="vLiabilityAcct"></Parameter><Parameter name="vPrepaymentAcct"></Parameter><Parameter name="vLiabilityServicesAcct"></Parameter><Parameter name="pjAssetAcct"></Parameter><Parameter name="doubtfuldebtAcct"></Parameter><Parameter name="notinvoicedrevenueAcct"></Parameter><Parameter name="notinvoicedreceiptsAcct"></Parameter><Parameter name="processing"></Parameter><Parameter name="wRevaluationAcct"></Parameter><Parameter name="pPurchasepricevarianceAcct"></Parameter><Parameter name="paydiscountExpAcct"></Parameter><Parameter name="writeoffAcct"></Parameter><Parameter name="paydiscountRevAcct"></Parameter><Parameter name="unrealizedgainAcct"></Parameter><Parameter name="unrealizedlossAcct"></Parameter><Parameter name="realizedgainAcct"></Parameter><Parameter name="realizedlossAcct"></Parameter><Parameter name="withholdingAcct"></Parameter><Parameter name="pjWipAcct"></Parameter><Parameter name="tExpenseAcct"></Parameter><Parameter name="tLiabilityAcct"></Parameter><Parameter name="tReceivablesAcct"></Parameter><Parameter name="tDueAcct"></Parameter><Parameter name="tCreditAcct"></Parameter><Parameter name="bIntransitAcct"></Parameter><Parameter name="bAssetAcct"></Parameter><Parameter name="bExpenseAcct"></Parameter><Parameter name="bInterestrevAcct"></Parameter><Parameter name="bInterestexpAcct"></Parameter><Parameter name="bUnidentifiedAcct"></Parameter><Parameter name="bSettlementgainAcct"></Parameter><Parameter name="bSettlementlossAcct"></Parameter><Parameter name="bRevaluationgainAcct"></Parameter><Parameter name="bRevaluationlossAcct"></Parameter><Parameter name="chExpenseAcct"></Parameter><Parameter name="chRevenueAcct"></Parameter><Parameter name="unearnedrevenueAcct"></Parameter><Parameter name="notinvoicedreceivablesAcct"></Parameter><Parameter name="cbAssetAcct"></Parameter><Parameter name="cbDifferencesAcct"></Parameter><Parameter name="cbExpenseAcct"></Parameter><Parameter name="cbReceiptAcct"></Parameter><Parameter name="pDefRevenueAcct"></Parameter><Parameter name="pInvoicepricevarianceAcct"></Parameter><Parameter name="pTradediscountrecAcct"></Parameter><Parameter name="pTradediscountgrantAcct"></Parameter><Parameter name="wInvactualadjustAcct"></Parameter><Parameter name="bPaymentselectAcct"></Parameter><Parameter name="bUnallocatedcashAcct"></Parameter><Parameter name="cbCashtransferAcct"></Parameter><Parameter name="cAcctschemaDefaultId"></Parameter><Parameter name="aAccumdepreciationAcct"></Parameter><Parameter name="aDepreciationAcct"></Parameter><Parameter name="aDisposalGain"></Parameter><Parameter name="aDisposalLoss"></Parameter><Parameter name="pCogsReturnAcct"></Parameter><Parameter name="allowancefordoubtfulAcct"></Parameter><Parameter name="writeoffRevAcct"></Parameter><Parameter name="pDefExpenseAcct"></Parameter><Parameter name="baddebtrevenueAcct"></Parameter><Parameter name="baddebtexpenseAcct"></Parameter>
+   </SqlMethod>
+
+
+
+
+
+
+   <SqlMethod name="selectDef3440_0" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>Select for auxiliar field</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT  ( COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table2.Name), ''))), '') ) as CreatedBy FROM AD_User left join (select AD_User_ID, Name from AD_User) table2 on (AD_User.AD_User_ID = table2.AD_User_ID) WHERE AD_User.isActive='Y' AND AD_User.AD_User_ID = ?  
+    ]]></Sql>
+<Parameter name="CreatedByR"/>
+  </SqlMethod>
+
+   <SqlMethod name="selectDef3442_1" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>Select for auxiliar field</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT  ( COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table2.Name), ''))), '') ) as UpdatedBy FROM AD_User left join (select AD_User_ID, Name from AD_User) table2 on (AD_User.AD_User_ID = table2.AD_User_ID) WHERE AD_User.isActive='Y' AND AD_User.AD_User_ID = ?  
+    ]]></Sql>
+<Parameter name="UpdatedByR"/>
+  </SqlMethod>
+
+
+
+  <SqlMethod name="selectParentID" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>return the parent ID</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT C_AcctSchema_Default.C_AcctSchema_ID AS NAME
+        FROM C_AcctSchema_Default
+        WHERE C_AcctSchema_Default.C_Acctschema_Default_ID = ?
+    ]]></Sql>
+    <Parameter name="key"></Parameter>
+  </SqlMethod>
+
+   <SqlMethod name="selectParent" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>Select for parent field</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT (TO_CHAR(COALESCE(TO_CHAR(table1.Name), ''))) AS NAME FROM C_AcctSchema left join (select C_AcctSchema_ID, Name from C_AcctSchema) table1 on (C_AcctSchema.C_AcctSchema_ID = table1.C_AcctSchema_ID) WHERE C_AcctSchema.C_AcctSchema_ID = ?  
+    ]]></Sql>
+<Parameter name="cAcctschemaId"/>
+
+  </SqlMethod>
+
+
+
+
+   <SqlMethod name="selectParentTrl" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>Select for parent field</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT (TO_CHAR(COALESCE(TO_CHAR(table1.Name), ''))) AS NAME FROM C_AcctSchema left join (select C_AcctSchema_ID, Name from C_AcctSchema) table1 on (C_AcctSchema.C_AcctSchema_ID = table1.C_AcctSchema_ID) WHERE C_AcctSchema.C_AcctSchema_ID = ?  
+    ]]></Sql>
+<Parameter name="cAcctschemaId"/>
+
+  </SqlMethod>
+
+
+
+
+
+
+
+
+  <SqlMethod name="update" type="preparedStatement" return="rowCount" static="false" connection="true">
+    <Sql><![CDATA[
+        UPDATE C_AcctSchema_Default
+        SET C_Receivable_Acct = (?) , C_Prepayment_Acct = (?) , WriteOff_Acct = (?) , Writeoff_Rev_Acct = (?) , V_Liability_Acct = (?) , V_Prepayment_Acct = (?) , NotInvoicedReceipts_Acct = (?) , DoubtfulDebt_Acct = (?) , Baddebtexpense_Acct = (?) , BadDebtRevenue_Acct = (?) , Allowancefordoubtful_Acct = (?) , P_Asset_Acct = (?) , P_Expense_Acct = (?) , P_Def_Expense_Acct = (?) , P_Revenue_Acct = (?) , P_Def_Revenue_Acct = (?) , Withholding_Acct = (?) , P_Cogs_Acct = (?) , P_InvoicePriceVariance_Acct = (?) , P_Revenue_Return_Acct = (?) , P_Cogs_Return_Acct = (?) , W_Inventory_Acct = (?) , W_Differences_Acct = (?) , W_Revaluation_Acct = (?) , PJ_WIP_Acct = (?) , B_Asset_Acct = (?) , B_InTransit_Acct = (?) , B_Expense_Acct = (?) , B_RevaluationGain_Acct = (?) , B_RevaluationLoss_Acct = (?) , T_Due_Acct = (?) , T_Credit_Acct = (?) , Ch_Expense_Acct = (?) , CB_Asset_Acct = (?) , CB_Differences_Acct = (?) , CB_CashTransfer_Acct = (?) , CB_Expense_Acct = (?) , CB_Receipt_Acct = (?) , A_Depreciation_Acct = (?) , B_PaymentSelect_Acct = (?) , A_Accumdepreciation_Acct = (?) , Processing = (?) , E_Expense_Acct = (?) , E_Prepayment_Acct = (?) , PJ_Asset_Acct = (?) , V_Liability_Services_Acct = (?) , NotInvoicedRevenue_Acct = (?) , P_PurchasePriceVariance_Acct = (?) , PayDiscount_Exp_Acct = (?) , PayDiscount_Rev_Acct = (?) , UnrealizedGain_Acct = (?) , UnrealizedLoss_Acct = (?) , RealizedGain_Acct = (?) , RealizedLoss_Acct = (?) , T_Expense_Acct = (?) , T_Liability_Acct = (?) , T_Receivables_Acct = (?) , B_InterestRev_Acct = (?) , B_InterestExp_Acct = (?) , B_Unidentified_Acct = (?) , B_SettlementGain_Acct = (?) , Ch_Revenue_Acct = (?) , UnEarnedRevenue_Acct = (?) , NotInvoicedReceivables_Acct = (?) , P_TradeDiscountRec_Acct = (?) , P_TradeDiscountGrant_Acct = (?) , W_InvActualAdjust_Acct = (?) , B_UnallocatedCash_Acct = (?) , B_SettlementLoss_Acct = (?) , C_AcctSchema_ID = (?) , AD_Org_ID = (?) , AD_Client_ID = (?) , A_Disposal_Loss = (?) , A_Disposal_Gain = (?) , IsActive = (?) , C_Acctschema_Default_ID = (?) , updated = now(), updatedby = ? 
+        WHERE C_AcctSchema_Default.C_Acctschema_Default_ID = ? 
+                 AND C_AcctSchema_Default.C_AcctSchema_ID = ? 
+        AND C_AcctSchema_Default.AD_Client_ID IN ('1') 
+        AND C_AcctSchema_Default.AD_Org_ID IN ('1') 
+    ]]></Sql>
+    <Parameter name="cReceivableAcct"></Parameter> <Parameter name="cPrepaymentAcct"></Parameter> <Parameter name="writeoffAcct"></Parameter> <Parameter name="writeoffRevAcct"></Parameter> <Parameter name="vLiabilityAcct"></Parameter> <Parameter name="vPrepaymentAcct"></Parameter> <Parameter name="notinvoicedreceiptsAcct"></Parameter> <Parameter name="doubtfuldebtAcct"></Parameter> <Parameter name="baddebtexpenseAcct"></Parameter> <Parameter name="baddebtrevenueAcct"></Parameter> <Parameter name="allowancefordoubtfulAcct"></Parameter> <Parameter name="pAssetAcct"></Parameter> <Parameter name="pExpenseAcct"></Parameter> <Parameter name="pDefExpenseAcct"></Parameter> <Parameter name="pRevenueAcct"></Parameter> <Parameter name="pDefRevenueAcct"></Parameter> <Parameter name="withholdingAcct"></Parameter> <Parameter name="pCogsAcct"></Parameter> <Parameter name="pInvoicepricevarianceAcct"></Parameter> <Parameter name="pRevenueReturnAcct"></Parameter> <Parameter name="pCogsReturnAcct"></Parameter> <Parameter name="wInventoryAcct"></Parameter> <Parameter name="wDifferencesAcct"></Parameter> <Parameter name="wRevaluationAcct"></Parameter> <Parameter name="pjWipAcct"></Parameter> <Parameter name="bAssetAcct"></Parameter> <Parameter name="bIntransitAcct"></Parameter> <Parameter name="bExpenseAcct"></Parameter> <Parameter name="bRevaluationgainAcct"></Parameter> <Parameter name="bRevaluationlossAcct"></Parameter> <Parameter name="tDueAcct"></Parameter> <Parameter name="tCreditAcct"></Parameter> <Parameter name="chExpenseAcct"></Parameter> <Parameter name="cbAssetAcct"></Parameter> <Parameter name="cbDifferencesAcct"></Parameter> <Parameter name="cbCashtransferAcct"></Parameter> <Parameter name="cbExpenseAcct"></Parameter> <Parameter name="cbReceiptAcct"></Parameter> <Parameter name="aDepreciationAcct"></Parameter> <Parameter name="bPaymentselectAcct"></Parameter> <Parameter name="aAccumdepreciationAcct"></Parameter> <Parameter name="processing"></Parameter> <Parameter name="eExpenseAcct"></Parameter> <Parameter name="ePrepaymentAcct"></Parameter> <Parameter name="pjAssetAcct"></Parameter> <Parameter name="vLiabilityServicesAcct"></Parameter> <Parameter name="notinvoicedrevenueAcct"></Parameter> <Parameter name="pPurchasepricevarianceAcct"></Parameter> <Parameter name="paydiscountExpAcct"></Parameter> <Parameter name="paydiscountRevAcct"></Parameter> <Parameter name="unrealizedgainAcct"></Parameter> <Parameter name="unrealizedlossAcct"></Parameter> <Parameter name="realizedgainAcct"></Parameter> <Parameter name="realizedlossAcct"></Parameter> <Parameter name="tExpenseAcct"></Parameter> <Parameter name="tLiabilityAcct"></Parameter> <Parameter name="tReceivablesAcct"></Parameter> <Parameter name="bInterestrevAcct"></Parameter> <Parameter name="bInterestexpAcct"></Parameter> <Parameter name="bUnidentifiedAcct"></Parameter> <Parameter name="bSettlementgainAcct"></Parameter> <Parameter name="chRevenueAcct"></Parameter> <Parameter name="unearnedrevenueAcct"></Parameter> <Parameter name="notinvoicedreceivablesAcct"></Parameter> <Parameter name="pTradediscountrecAcct"></Parameter> <Parameter name="pTradediscountgrantAcct"></Parameter> <Parameter name="wInvactualadjustAcct"></Parameter> <Parameter name="bUnallocatedcashAcct"></Parameter> <Parameter name="bSettlementlossAcct"></Parameter> <Parameter name="cAcctschemaId"></Parameter> <Parameter name="adOrgId"></Parameter> <Parameter name="adClientId"></Parameter> <Parameter name="aDisposalLoss"></Parameter> <Parameter name="aDisposalGain"></Parameter> <Parameter name="isactive"></Parameter> <Parameter name="cAcctschemaDefaultId"></Parameter> 
+    <Parameter name="updatedby"></Parameter>
+    <Parameter id="paramKey" name="cAcctschemaDefaultId"></Parameter>
+    
+    <Parameter name="cAcctschemaId" id="paramKeyParent"></Parameter>
+        <Parameter name="adUserClient" type="replace" optional="true" after="C_AcctSchema_Default.AD_Client_ID IN (" text="'1'"/>
+        <Parameter name="adOrgClient" type="replace" optional="true" after="C_AcctSchema_Default.AD_Org_ID IN (" text="'1'"/>
+  </SqlMethod>
+
+  <SqlMethod name="insert" type="preparedStatement" return="rowCount" static="false" connection="true">
+    <Sql><![CDATA[
+        INSERT INTO C_AcctSchema_Default 
+        (C_Receivable_Acct, C_Prepayment_Acct, WriteOff_Acct, Writeoff_Rev_Acct, V_Liability_Acct, V_Prepayment_Acct, NotInvoicedReceipts_Acct, DoubtfulDebt_Acct, Baddebtexpense_Acct, BadDebtRevenue_Acct, Allowancefordoubtful_Acct, P_Asset_Acct, P_Expense_Acct, P_Def_Expense_Acct, P_Revenue_Acct, P_Def_Revenue_Acct, Withholding_Acct, P_Cogs_Acct, P_InvoicePriceVariance_Acct, P_Revenue_Return_Acct, P_Cogs_Return_Acct, W_Inventory_Acct, W_Differences_Acct, W_Revaluation_Acct, PJ_WIP_Acct, B_Asset_Acct, B_InTransit_Acct, B_Expense_Acct, B_RevaluationGain_Acct, B_RevaluationLoss_Acct, T_Due_Acct, T_Credit_Acct, Ch_Expense_Acct, CB_Asset_Acct, CB_Differences_Acct, CB_CashTransfer_Acct, CB_Expense_Acct, CB_Receipt_Acct, A_Depreciation_Acct, B_PaymentSelect_Acct, A_Accumdepreciation_Acct, Processing, E_Expense_Acct, E_Prepayment_Acct, PJ_Asset_Acct, V_Liability_Services_Acct, NotInvoicedRevenue_Acct, P_PurchasePriceVariance_Acct, PayDiscount_Exp_Acct, PayDiscount_Rev_Acct, UnrealizedGain_Acct, UnrealizedLoss_Acct, RealizedGain_Acct, RealizedLoss_Acct, T_Expense_Acct, T_Liability_Acct, T_Receivables_Acct, B_InterestRev_Acct, B_InterestExp_Acct, B_Unidentified_Acct, B_SettlementGain_Acct, Ch_Revenue_Acct, UnEarnedRevenue_Acct, NotInvoicedReceivables_Acct, P_TradeDiscountRec_Acct, P_TradeDiscountGrant_Acct, W_InvActualAdjust_Acct, B_UnallocatedCash_Acct, B_SettlementLoss_Acct, C_AcctSchema_ID, AD_Org_ID, AD_Client_ID, A_Disposal_Loss, A_Disposal_Gain, C_Acctschema_Default_ID, IsActive, created, createdby, updated, updatedBy)
+        VALUES ((?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), now(), ?, now(), ?)
+    ]]></Sql>
+    <Parameter name="cReceivableAcct"></Parameter> <Parameter name="cPrepaymentAcct"></Parameter> <Parameter name="writeoffAcct"></Parameter> <Parameter name="writeoffRevAcct"></Parameter> <Parameter name="vLiabilityAcct"></Parameter> <Parameter name="vPrepaymentAcct"></Parameter> <Parameter name="notinvoicedreceiptsAcct"></Parameter> <Parameter name="doubtfuldebtAcct"></Parameter> <Parameter name="baddebtexpenseAcct"></Parameter> <Parameter name="baddebtrevenueAcct"></Parameter> <Parameter name="allowancefordoubtfulAcct"></Parameter> <Parameter name="pAssetAcct"></Parameter> <Parameter name="pExpenseAcct"></Parameter> <Parameter name="pDefExpenseAcct"></Parameter> <Parameter name="pRevenueAcct"></Parameter> <Parameter name="pDefRevenueAcct"></Parameter> <Parameter name="withholdingAcct"></Parameter> <Parameter name="pCogsAcct"></Parameter> <Parameter name="pInvoicepricevarianceAcct"></Parameter> <Parameter name="pRevenueReturnAcct"></Parameter> <Parameter name="pCogsReturnAcct"></Parameter> <Parameter name="wInventoryAcct"></Parameter> <Parameter name="wDifferencesAcct"></Parameter> <Parameter name="wRevaluationAcct"></Parameter> <Parameter name="pjWipAcct"></Parameter> <Parameter name="bAssetAcct"></Parameter> <Parameter name="bIntransitAcct"></Parameter> <Parameter name="bExpenseAcct"></Parameter> <Parameter name="bRevaluationgainAcct"></Parameter> <Parameter name="bRevaluationlossAcct"></Parameter> <Parameter name="tDueAcct"></Parameter> <Parameter name="tCreditAcct"></Parameter> <Parameter name="chExpenseAcct"></Parameter> <Parameter name="cbAssetAcct"></Parameter> <Parameter name="cbDifferencesAcct"></Parameter> <Parameter name="cbCashtransferAcct"></Parameter> <Parameter name="cbExpenseAcct"></Parameter> <Parameter name="cbReceiptAcct"></Parameter> <Parameter name="aDepreciationAcct"></Parameter> <Parameter name="bPaymentselectAcct"></Parameter> <Parameter name="aAccumdepreciationAcct"></Parameter> <Parameter name="processing"></Parameter> <Parameter name="eExpenseAcct"></Parameter> <Parameter name="ePrepaymentAcct"></Parameter> <Parameter name="pjAssetAcct"></Parameter> <Parameter name="vLiabilityServicesAcct"></Parameter> <Parameter name="notinvoicedrevenueAcct"></Parameter> <Parameter name="pPurchasepricevarianceAcct"></Parameter> <Parameter name="paydiscountExpAcct"></Parameter> <Parameter name="paydiscountRevAcct"></Parameter> <Parameter name="unrealizedgainAcct"></Parameter> <Parameter name="unrealizedlossAcct"></Parameter> <Parameter name="realizedgainAcct"></Parameter> <Parameter name="realizedlossAcct"></Parameter> <Parameter name="tExpenseAcct"></Parameter> <Parameter name="tLiabilityAcct"></Parameter> <Parameter name="tReceivablesAcct"></Parameter> <Parameter name="bInterestrevAcct"></Parameter> <Parameter name="bInterestexpAcct"></Parameter> <Parameter name="bUnidentifiedAcct"></Parameter> <Parameter name="bSettlementgainAcct"></Parameter> <Parameter name="chRevenueAcct"></Parameter> <Parameter name="unearnedrevenueAcct"></Parameter> <Parameter name="notinvoicedreceivablesAcct"></Parameter> <Parameter name="pTradediscountrecAcct"></Parameter> <Parameter name="pTradediscountgrantAcct"></Parameter> <Parameter name="wInvactualadjustAcct"></Parameter> <Parameter name="bUnallocatedcashAcct"></Parameter> <Parameter name="bSettlementlossAcct"></Parameter> <Parameter name="cAcctschemaId"></Parameter> <Parameter name="adOrgId"></Parameter> <Parameter name="adClientId"></Parameter> <Parameter name="aDisposalLoss"></Parameter> <Parameter name="aDisposalGain"></Parameter> <Parameter name="cAcctschemaDefaultId"></Parameter> <Parameter name="isactive"></Parameter> 
+    <Parameter name="createdby"></Parameter>
+    <Parameter name="updatedby"></Parameter>
+  </SqlMethod>
+
+  <SqlMethod name="delete" type="preparedStatement" return="rowCount">
+    <Sql><![CDATA[
+        DELETE FROM C_AcctSchema_Default
+        WHERE C_AcctSchema_Default.C_Acctschema_Default_ID = ? 
+                 AND C_AcctSchema_Default.C_AcctSchema_ID = ? 
+        AND C_AcctSchema_Default.AD_Client_ID IN ('1') 
+        AND C_AcctSchema_Default.AD_Org_ID IN ('1') 
+    ]]></Sql>
+    <Parameter name="param1"></Parameter>
+        <Parameter name="cAcctschemaId" id="paramKeyParent"></Parameter>
+        <Parameter name="adUserClient" type="replace" optional="true" after="C_AcctSchema_Default.AD_Client_ID IN (" text="'1'"/>
+        <Parameter name="adOrgClient" type="replace" optional="true" after="C_AcctSchema_Default.AD_Org_ID IN (" text="'1'"/>
+  </SqlMethod>
+
+  <SqlMethod name="selectOrg" type="preparedStatement" return="string">
+    <SqlMethodComment>Select for relation</SqlMethodComment>
+    <Sql><![CDATA[ 
+        SELECT AD_ORG_ID
+          FROM C_AcctSchema_Default
+         WHERE C_AcctSchema_Default.C_Acctschema_Default_ID = ? 
+    ]]></Sql>
+    <Parameter name="id"></Parameter>
+  </SqlMethod>
+  
+  <SqlMethod name="getCurrentDBTimestamp" type="preparedStatement" return="string">
+    <Sql><![CDATA[ 
+        SELECT to_char(Updated, 'YYYYMMDDHH24MISS') as Updated_Time_Stamp
+          FROM C_AcctSchema_Default
+         WHERE C_AcctSchema_Default.C_Acctschema_Default_ID = ? 
+    ]]></Sql>
+    <Parameter name="id"></Parameter>
+  </SqlMethod>
+</SqlClass>

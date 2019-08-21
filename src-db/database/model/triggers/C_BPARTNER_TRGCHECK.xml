@@ -1,0 +1,92 @@
+<?xml version="1.0"?>
+  <database name="TRIGGER C_BPARTNER_TRGCHECK">
+    <trigger name="C_BPARTNER_TRGCHECK" table="C_BPARTNER" fires="before" insert="true" update="true" delete="false" foreach="row">
+      <body><![CDATA[
+  /*************************************************************************
+  * The contents of this file are subject to the Compiere Public
+  * License 1.1 ("License"); You may not use this file except in
+  * compliance with the License. You may obtain a copy of the License in
+  * the legal folder of your Openbravo installation.
+  * Software distributed under the License is distributed on an
+  * "AS IS" basis, WITHOUT WARRANTY OF ANY KIND, either express or
+  * implied. See the License for the specific language governing rights
+  * and limitations under the License.
+  * The Original Code is  Compiere  ERP &  Business Solution
+  * The Initial Developer of the Original Code is Jorg Janke and ComPiere, Inc.
+  * Portions created by Jorg Janke are Copyright (C) 1999-2001 Jorg Janke,
+  * parts created by ComPiere are Copyright (C) ComPiere, Inc.;
+  * All Rights Reserved.
+  * Contributor(s): Openbravo SLU
+  * Contributions are Copyright (C) 2001-2012 Openbravo, S.L.U.
+  *
+  * Specifically, this derivative work is based upon the following Compiere
+  * file and version.
+  *************************************************************************
+  * $Id: C_BPartner_Trg.sql,v 1.4 2002/10/23 03:16:57 jjanke Exp $
+  ***
+  * Title: Business Partner new necord
+  * Description:
+  *    - create default Account records
+  *    - add treenode
+  ************************************************************************/
+
+   TYPE RECORD IS REF CURSOR;
+ 
+BEGIN
+    
+    IF AD_isTriggerEnabled()='N' THEN RETURN;
+    END IF;
+
+IF INSERTING OR UPDATING THEN
+
+   IF (:NEW.EPCG_GSTTREATMENT_ID IN ('E945DE063B8B42EDAF71FEEB7E742D5E','A710D6EDF3434459998DDD0112D16CC0') ) THEN
+
+	IF(:NEW.EM_EPCG_GSTNO IS NULL OR length(:NEW.EM_EPCG_GSTNO )<2 ) THEN
+	    RAISE EXCEPTION 'PROVIDE GSTNO FOR THIS BUSINESS PARTNER ';
+        END IF;
+
+      
+         if :new.EM_EPCG_GSTNO not like '%'||:new.em_epcg_pan||'%'  then                        
+              
+              raise Exception ' Fill Gstn Number is Not currect or check Pan no (GSTNo Must BE Live XXPANNOXXX ';
+          end if;
+        
+   END IF;
+
+END IF;
+
+IF (:NEW.EPCG_GSTTREATMENT_ID ='BBCE2395E6244F199AF5A0DEEA4A5358') THEN
+
+    IF(:NEW.EM_EPCG_PAN IS NULL OR length(:new.EM_EPCG_PAN )<>10 ) THEN
+	    RAISE EXCEPTION 'PAN NO MUST REQUIRED FOR THIS BUSINESS PARTNER ';
+        END IF;
+END IF;  
+
+IF (:NEW.EPCG_GSTTREATMENT_ID NOT IN ('ED4F29BC2BDE4E0185BEB4F9985C67FF','B0A6533931844056B178260DDC14A7AD') ) THEN
+
+    IF( :NEW.C_REGION_ID IS NULL ) THEN
+	    RAISE EXCEPTION 'FILL PLACE OF SUPPLY';
+        END IF;
+END IF; 
+
+
+ 
+
+
+
+
+
+IF (:NEW.EM_EPCG_TAXTYPE ='Tax Exempt') THEN
+
+    IF( :NEW.EPCG_EXEMPTREASON_ID IS NULL ) THEN
+	    RAISE EXCEPTION 'FILL EXEMPT REASON FOR TAX TYPE :-Tax Exempt';
+        END IF;
+END IF;
+
+--SELECT *FROM c_BPARTNER LIMIT 10
+
+
+END C_BPARTNER_TRGCHECK
+]]></body>
+    </trigger>
+  </database>

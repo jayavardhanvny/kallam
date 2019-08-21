@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SqlClass id="class" name="HeaderData" package="org.openbravo.erpWindows.TaxPayment">
+  <SqlClassComment>WAD Generated class</SqlClassComment>
+
+  <SqlMethod name="selectEdit" type="preparedStatement" return="multiple">
+    <SqlMethodComment>Select for edit</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT to_char(C_TaxPayment.Created, ?) as created, 
+        (SELECT NAME FROM AD_USER u WHERE AD_USER_ID = C_TaxPayment.CreatedBy) as CreatedByR, 
+        to_char(C_TaxPayment.Updated, ?) as updated, 
+        to_char(C_TaxPayment.Updated, 'YYYYMMDDHH24MISS') as Updated_Time_Stamp,  
+        C_TaxPayment.UpdatedBy, 
+        (SELECT NAME FROM AD_USER u WHERE AD_USER_ID = C_TaxPayment.UpdatedBy) as UpdatedByR,
+        C_TaxPayment.AD_Org_ID, 
+(CASE WHEN C_TaxPayment.AD_Org_ID IS NULL THEN '' ELSE  (COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table1.Name), ''))),'') ) END) AS AD_Org_IDR, 
+C_TaxPayment.Name, 
+C_TaxPayment.C_BPartner_ID, 
+(CASE WHEN C_TaxPayment.C_BPartner_ID IS NULL THEN '' ELSE  (COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table2.Name), ''))),'') ) END) AS C_BPartner_IDR, 
+C_TaxPayment.C_AcctSchema_ID, 
+(CASE WHEN C_TaxPayment.C_AcctSchema_ID IS NULL THEN '' ELSE  (COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table3.Name), ''))),'') ) END) AS C_AcctSchema_IDR, 
+C_TaxPayment.C_Currency_ID, 
+(CASE WHEN C_TaxPayment.C_Currency_ID IS NULL THEN '' ELSE  (COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table4.ISO_Code), ''))),'') ) END) AS C_Currency_IDR, 
+C_TaxPayment.Datefrom, 
+C_TaxPayment.Dateto, 
+C_TaxPayment.GL_Journal_ID, 
+(CASE WHEN C_TaxPayment.GL_Journal_ID IS NULL THEN '' ELSE  (COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table5.DocumentNo), ''))),'') ) END) AS GL_Journal_IDR, 
+COALESCE(C_TaxPayment.Generatepayment, 'N') AS Generatepayment, 
+C_TaxPayment.CreateFrom, 
+C_TaxPayment.Processed, 
+list1.name as Processed_BTN, 
+C_TaxPayment.AD_Client_ID, 
+COALESCE(C_TaxPayment.IsActive, 'N') AS IsActive, 
+COALESCE(C_TaxPayment.Processing, 'N') AS Processing, 
+C_TaxPayment.C_Taxpayment_ID, 
+C_TaxPayment.C_Settlement_ID, 
+ 
+        ? AS LANGUAGE 
+        FROM C_TaxPayment left join (select AD_Org_ID, Name from AD_Org) table1 on (C_TaxPayment.AD_Org_ID = table1.AD_Org_ID) left join (select C_BPartner_ID, Name from C_BPartner) table2 on (C_TaxPayment.C_BPartner_ID = table2.C_BPartner_ID) left join (select C_AcctSchema_ID, Name from C_AcctSchema) table3 on (C_TaxPayment.C_AcctSchema_ID = table3.C_AcctSchema_ID) left join (select C_Currency_ID, ISO_Code from C_Currency) table4 on (C_TaxPayment.C_Currency_ID = table4.C_Currency_ID) left join (select GL_Journal_ID, DocumentNo from GL_Journal) table5 on (C_TaxPayment.GL_Journal_ID = table5.GL_Journal_ID) left join ad_ref_list_v list1 on (list1.ad_reference_id = '800024' and list1.ad_language = ?  AND C_TaxPayment.Processed = TO_CHAR(list1.value))
+        WHERE 2=2 
+
+        AND 1=1 
+        AND C_TaxPayment.C_Taxpayment_ID = ? 
+        AND C_TaxPayment.AD_Client_ID IN ('1') 
+           AND C_TaxPayment.AD_Org_ID IN ('1') 
+    ]]></Sql>
+    <Parameter name="dateTimeFormat"></Parameter>
+    <Parameter name="dateTimeFormat"></Parameter>
+    
+    <Parameter name="paramLanguage"></Parameter>
+<Parameter name="paramLanguage"/>
+
+
+    <Parameter name="key"></Parameter>
+        <Parameter name="adUserClient" type="replace" optional="true" after="C_TaxPayment.AD_Client_ID IN (" text="'1'"/>
+        <Parameter name="adOrgClient" type="replace" optional="true" after="C_TaxPayment.AD_Org_ID IN (" text="'1'"/>
+
+    <Field name="adUserClient" value="void"></Field>
+    <Field name="adOrgClient" value="void"></Field>
+    <Field name="createdby" value="void"></Field>
+    
+    <Field name="trBgcolor" value="void"></Field>
+    <Field name="totalCount" value="void"></Field>
+    <Field name="dateTimeFormat" value=""></Field>
+  </SqlMethod>
+  
+  
+
+  <SqlMethod name="set" type="constant" return="multiple">
+      <SqlMethodComment>Create a registry</SqlMethodComment>
+      <Sql></Sql>
+
+<Parameter name="adClientId"></Parameter><Parameter name="adOrgId"></Parameter><Parameter name="isactive"></Parameter><Parameter name="created"></Parameter><Parameter name="createdby"></Parameter><Parameter name="createdbyr"></Parameter><Parameter name="updatedby"></Parameter><Parameter name="updatedbyr"></Parameter><Parameter name="datefrom"></Parameter><Parameter name="dateto"></Parameter><Parameter name="generatepayment"></Parameter><Parameter name="processing"></Parameter><Parameter name="processed"></Parameter><Parameter name="processedBtn"></Parameter><Parameter name="cSettlementId"></Parameter><Parameter name="glJournalId"></Parameter><Parameter name="glJournalIdr"></Parameter><Parameter name="name"></Parameter><Parameter name="cTaxpaymentId"></Parameter><Parameter name="createfrom"></Parameter><Parameter name="cAcctschemaId"></Parameter><Parameter name="cCurrencyId"></Parameter><Parameter name="cBpartnerId"></Parameter><Parameter name="cBpartnerIdr"></Parameter>
+   </SqlMethod>
+
+
+
+
+
+
+   <SqlMethod name="selectDef1002100040_0" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>Select for auxiliar field</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT  ( COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table2.Name), ''))), '') ) as Createdby FROM AD_User left join (select AD_User_ID, Name from AD_User) table2 on (AD_User.AD_User_ID = table2.AD_User_ID) WHERE AD_User.isActive='Y' AND AD_User.AD_User_ID = ?  
+    ]]></Sql>
+<Parameter name="CreatedbyR"/>
+  </SqlMethod>
+
+   <SqlMethod name="selectDef1002100042_1" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>Select for auxiliar field</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT  ( COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table2.Name), ''))), '') ) as Updatedby FROM AD_User left join (select AD_User_ID, Name from AD_User) table2 on (AD_User.AD_User_ID = table2.AD_User_ID) WHERE AD_User.isActive='Y' AND AD_User.AD_User_ID = ?  
+    ]]></Sql>
+<Parameter name="UpdatedbyR"/>
+  </SqlMethod>
+
+   <SqlMethod name="selectDef1002100045" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>Select for auxiliar field</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT  to_char(max(DATETO)+1) AS dateto FROM C_TAXPAYMENT WHERE PROCESSED='Y' 
+    ]]></Sql>
+
+  </SqlMethod>
+
+   <SqlMethod name="selectDef1002100057_2" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>Select for auxiliar field</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT  ( COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table2.DocumentNo), ''))), '') ) as GL_Journal_ID FROM GL_Journal left join (select GL_Journal_ID, DocumentNo from GL_Journal) table2 on (GL_Journal.GL_Journal_ID = table2.GL_Journal_ID) WHERE GL_Journal.isActive='Y' AND GL_Journal.GL_Journal_ID = ?  
+    ]]></Sql>
+<Parameter name="GL_Journal_IDR"/>
+  </SqlMethod>
+
+   <SqlMethod name="selectDef1003900005_3" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>Select for auxiliar field</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT  ( COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table2.Name), ''))), '') ) as C_BPartner_ID FROM C_BPartner left join (select C_BPartner_ID, Name from C_BPartner) table2 on (C_BPartner.C_BPartner_ID = table2.C_BPartner_ID) WHERE C_BPartner.isActive='Y' AND C_BPartner.C_BPartner_ID = ?  
+    ]]></Sql>
+<Parameter name="C_BPartner_IDR"/>
+  </SqlMethod>
+
+
+
+
+
+
+
+
+
+
+  <SqlMethod name="update" type="preparedStatement" return="rowCount" static="false" connection="true">
+    <Sql><![CDATA[
+        UPDATE C_TaxPayment
+        SET AD_Org_ID = (?) , Name = (?) , C_BPartner_ID = (?) , C_AcctSchema_ID = (?) , C_Currency_ID = (?) , Datefrom = TO_DATE(?) , Dateto = TO_DATE(?) , GL_Journal_ID = (?) , Generatepayment = (?) , CreateFrom = (?) , Processed = (?) , IsActive = (?) , AD_Client_ID = (?) , C_Settlement_ID = (?) , Processing = (?) , C_Taxpayment_ID = (?) , updated = now(), updatedby = ? 
+        WHERE C_TaxPayment.C_Taxpayment_ID = ? 
+        
+        AND C_TaxPayment.AD_Client_ID IN ('1') 
+        AND C_TaxPayment.AD_Org_ID IN ('1') 
+    ]]></Sql>
+    <Parameter name="adOrgId"></Parameter> <Parameter name="name"></Parameter> <Parameter name="cBpartnerId"></Parameter> <Parameter name="cAcctschemaId"></Parameter> <Parameter name="cCurrencyId"></Parameter> <Parameter name="datefrom"></Parameter> <Parameter name="dateto"></Parameter> <Parameter name="glJournalId"></Parameter> <Parameter name="generatepayment"></Parameter> <Parameter name="createfrom"></Parameter> <Parameter name="processed"></Parameter> <Parameter name="isactive"></Parameter> <Parameter name="adClientId"></Parameter> <Parameter name="cSettlementId"></Parameter> <Parameter name="processing"></Parameter> <Parameter name="cTaxpaymentId"></Parameter> 
+    <Parameter name="updatedby"></Parameter>
+    <Parameter id="paramKey" name="cTaxpaymentId"></Parameter>
+    
+    
+        <Parameter name="adUserClient" type="replace" optional="true" after="C_TaxPayment.AD_Client_ID IN (" text="'1'"/>
+        <Parameter name="adOrgClient" type="replace" optional="true" after="C_TaxPayment.AD_Org_ID IN (" text="'1'"/>
+  </SqlMethod>
+
+  <SqlMethod name="insert" type="preparedStatement" return="rowCount" static="false" connection="true">
+    <Sql><![CDATA[
+        INSERT INTO C_TaxPayment 
+        (AD_Org_ID, Name, C_BPartner_ID, C_AcctSchema_ID, C_Currency_ID, Datefrom, Dateto, GL_Journal_ID, Generatepayment, CreateFrom, Processed, AD_Client_ID, IsActive, Processing, C_Taxpayment_ID, C_Settlement_ID, created, createdby, updated, updatedBy)
+        VALUES ((?), (?), (?), (?), (?), TO_DATE(?), TO_DATE(?), (?), (?), (?), (?), (?), (?), (?), (?), (?), now(), ?, now(), ?)
+    ]]></Sql>
+    <Parameter name="adOrgId"></Parameter> <Parameter name="name"></Parameter> <Parameter name="cBpartnerId"></Parameter> <Parameter name="cAcctschemaId"></Parameter> <Parameter name="cCurrencyId"></Parameter> <Parameter name="datefrom"></Parameter> <Parameter name="dateto"></Parameter> <Parameter name="glJournalId"></Parameter> <Parameter name="generatepayment"></Parameter> <Parameter name="createfrom"></Parameter> <Parameter name="processed"></Parameter> <Parameter name="adClientId"></Parameter> <Parameter name="isactive"></Parameter> <Parameter name="processing"></Parameter> <Parameter name="cTaxpaymentId"></Parameter> <Parameter name="cSettlementId"></Parameter> 
+    <Parameter name="createdby"></Parameter>
+    <Parameter name="updatedby"></Parameter>
+  </SqlMethod>
+
+  <SqlMethod name="delete" type="preparedStatement" return="rowCount">
+    <Sql><![CDATA[
+        DELETE FROM C_TaxPayment
+        WHERE C_TaxPayment.C_Taxpayment_ID = ? 
+        
+        AND C_TaxPayment.AD_Client_ID IN ('1') 
+        AND C_TaxPayment.AD_Org_ID IN ('1') 
+    ]]></Sql>
+    <Parameter name="param1"></Parameter>
+    
+        <Parameter name="adUserClient" type="replace" optional="true" after="C_TaxPayment.AD_Client_ID IN (" text="'1'"/>
+        <Parameter name="adOrgClient" type="replace" optional="true" after="C_TaxPayment.AD_Org_ID IN (" text="'1'"/>
+  </SqlMethod>
+
+  <SqlMethod name="selectOrg" type="preparedStatement" return="string">
+    <SqlMethodComment>Select for relation</SqlMethodComment>
+    <Sql><![CDATA[ 
+        SELECT AD_ORG_ID
+          FROM C_TaxPayment
+         WHERE C_TaxPayment.C_Taxpayment_ID = ? 
+    ]]></Sql>
+    <Parameter name="id"></Parameter>
+  </SqlMethod>
+  
+  <SqlMethod name="getCurrentDBTimestamp" type="preparedStatement" return="string">
+    <Sql><![CDATA[ 
+        SELECT to_char(Updated, 'YYYYMMDDHH24MISS') as Updated_Time_Stamp
+          FROM C_TaxPayment
+         WHERE C_TaxPayment.C_Taxpayment_ID = ? 
+    ]]></Sql>
+    <Parameter name="id"></Parameter>
+  </SqlMethod>
+</SqlClass>

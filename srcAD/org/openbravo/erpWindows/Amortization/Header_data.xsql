@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SqlClass id="class" name="HeaderData" package="org.openbravo.erpWindows.Amortization">
+  <SqlClassComment>WAD Generated class</SqlClassComment>
+
+  <SqlMethod name="selectEdit" type="preparedStatement" return="multiple">
+    <SqlMethodComment>Select for edit</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT to_char(A_Amortization.Created, ?) as created, 
+        (SELECT NAME FROM AD_USER u WHERE AD_USER_ID = A_Amortization.CreatedBy) as CreatedByR, 
+        to_char(A_Amortization.Updated, ?) as updated, 
+        to_char(A_Amortization.Updated, 'YYYYMMDDHH24MISS') as Updated_Time_Stamp,  
+        A_Amortization.UpdatedBy, 
+        (SELECT NAME FROM AD_USER u WHERE AD_USER_ID = A_Amortization.UpdatedBy) as UpdatedByR,
+        A_Amortization.AD_Org_ID, 
+(CASE WHEN A_Amortization.AD_Org_ID IS NULL THEN '' ELSE  (COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table1.Name), ''))),'') ) END) AS AD_Org_IDR, 
+A_Amortization.Name, 
+A_Amortization.Description, 
+A_Amortization.DateAcct, 
+A_Amortization.StartDate, 
+A_Amortization.Totalamortization, 
+A_Amortization.C_Currency_ID, 
+(CASE WHEN A_Amortization.C_Currency_ID IS NULL THEN '' ELSE  (COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table2.ISO_Code), ''))),'') ) END) AS C_Currency_IDR, 
+A_Amortization.Processed, 
+list1.name as Processed_BTN, 
+A_Amortization.Posted, 
+list2.name as Posted_BTN, 
+COALESCE(A_Amortization.IsActive, 'N') AS IsActive, 
+A_Amortization.C_Project_ID, 
+A_Amortization.C_Campaign_ID, 
+(CASE WHEN A_Amortization.C_Campaign_ID IS NULL THEN '' ELSE  (COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table3.Name), ''))),'') ) END) AS C_Campaign_IDR, 
+A_Amortization.C_Activity_ID, 
+(CASE WHEN A_Amortization.C_Activity_ID IS NULL THEN '' ELSE  (COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table4.Name), ''))),'') ) END) AS C_Activity_IDR, 
+A_Amortization.User1_ID, 
+A_Amortization.User2_ID, 
+COALESCE(A_Amortization.Processing, 'N') AS Processing, 
+A_Amortization.AD_Client_ID, 
+A_Amortization.A_Amortization_ID, 
+A_Amortization.EndDate, 
+ 
+        ? AS LANGUAGE 
+        FROM A_Amortization left join (select AD_Org_ID, Name from AD_Org) table1 on (A_Amortization.AD_Org_ID = table1.AD_Org_ID) left join (select C_Currency_ID, ISO_Code from C_Currency) table2 on (A_Amortization.C_Currency_ID = table2.C_Currency_ID) left join ad_ref_list_v list1 on (list1.ad_reference_id = '800024' and list1.ad_language = ?  AND A_Amortization.Processed = TO_CHAR(list1.value)) left join ad_ref_list_v list2 on (list2.ad_reference_id = '234' and list2.ad_language = ?  AND A_Amortization.Posted = TO_CHAR(list2.value)) left join (select C_Campaign_ID, Name from C_Campaign) table3 on (A_Amortization.C_Campaign_ID = table3.C_Campaign_ID) left join (select C_Activity_ID, Name from C_Activity) table4 on (A_Amortization.C_Activity_ID = table4.C_Activity_ID)
+        WHERE 2=2 
+
+        AND 1=1 
+        AND A_Amortization.A_Amortization_ID = ? 
+        AND A_Amortization.AD_Client_ID IN ('1') 
+           AND A_Amortization.AD_Org_ID IN ('1') 
+    ]]></Sql>
+    <Parameter name="dateTimeFormat"></Parameter>
+    <Parameter name="dateTimeFormat"></Parameter>
+    
+    <Parameter name="paramLanguage"></Parameter>
+<Parameter name="paramLanguage"/>
+<Parameter name="paramLanguage"/>
+
+
+    <Parameter name="key"></Parameter>
+        <Parameter name="adUserClient" type="replace" optional="true" after="A_Amortization.AD_Client_ID IN (" text="'1'"/>
+        <Parameter name="adOrgClient" type="replace" optional="true" after="A_Amortization.AD_Org_ID IN (" text="'1'"/>
+
+    <Field name="adUserClient" value="void"></Field>
+    <Field name="adOrgClient" value="void"></Field>
+    <Field name="createdby" value="void"></Field>
+    
+    <Field name="trBgcolor" value="void"></Field>
+    <Field name="totalCount" value="void"></Field>
+    <Field name="dateTimeFormat" value=""></Field>
+  </SqlMethod>
+  
+  
+
+  <SqlMethod name="set" type="constant" return="multiple">
+      <SqlMethodComment>Create a registry</SqlMethodComment>
+      <Sql></Sql>
+
+<Parameter name="aAmortizationId"></Parameter><Parameter name="adClientId"></Parameter><Parameter name="adOrgId"></Parameter><Parameter name="isactive"></Parameter><Parameter name="createdby"></Parameter><Parameter name="createdbyr"></Parameter><Parameter name="updatedby"></Parameter><Parameter name="updatedbyr"></Parameter><Parameter name="name"></Parameter><Parameter name="description"></Parameter><Parameter name="dateacct"></Parameter><Parameter name="startdate"></Parameter><Parameter name="enddate"></Parameter><Parameter name="processing"></Parameter><Parameter name="processed"></Parameter><Parameter name="processedBtn"></Parameter><Parameter name="posted"></Parameter><Parameter name="postedBtn"></Parameter><Parameter name="cProjectId"></Parameter><Parameter name="cCampaignId"></Parameter><Parameter name="cActivityId"></Parameter><Parameter name="user1Id"></Parameter><Parameter name="user2Id"></Parameter><Parameter name="cCurrencyId"></Parameter><Parameter name="totalamortization"></Parameter>
+   </SqlMethod>
+
+
+
+
+
+
+   <SqlMethod name="selectDef801074_0" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>Select for auxiliar field</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT  ( COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table2.Name), ''))), '') ) as Createdby FROM AD_User left join (select AD_User_ID, Name from AD_User) table2 on (AD_User.AD_User_ID = table2.AD_User_ID) WHERE AD_User.isActive='Y' AND AD_User.AD_User_ID = ?  
+    ]]></Sql>
+<Parameter name="CreatedbyR"/>
+  </SqlMethod>
+
+   <SqlMethod name="selectDef801076_1" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>Select for auxiliar field</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT  ( COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table2.Name), ''))), '') ) as Updatedby FROM AD_User left join (select AD_User_ID, Name from AD_User) table2 on (AD_User.AD_User_ID = table2.AD_User_ID) WHERE AD_User.isActive='Y' AND AD_User.AD_User_ID = ?  
+    ]]></Sql>
+<Parameter name="UpdatedbyR"/>
+  </SqlMethod>
+
+
+
+
+
+
+
+
+
+
+  <SqlMethod name="update" type="preparedStatement" return="rowCount" static="false" connection="true">
+    <Sql><![CDATA[
+        UPDATE A_Amortization
+        SET AD_Org_ID = (?) , Name = (?) , Description = (?) , DateAcct = TO_DATE(?) , StartDate = TO_DATE(?) , Totalamortization = TO_NUMBER(?) , C_Currency_ID = (?) , Processed = (?) , Posted = (?) , IsActive = (?) , C_Project_ID = (?) , C_Campaign_ID = (?) , C_Activity_ID = (?) , User1_ID = (?) , User2_ID = (?) , Processing = (?) , AD_Client_ID = (?) , A_Amortization_ID = (?) , EndDate = TO_DATE(?) , updated = now(), updatedby = ? 
+        WHERE A_Amortization.A_Amortization_ID = ? 
+        
+        AND A_Amortization.AD_Client_ID IN ('1') 
+        AND A_Amortization.AD_Org_ID IN ('1') 
+    ]]></Sql>
+    <Parameter name="adOrgId"></Parameter> <Parameter name="name"></Parameter> <Parameter name="description"></Parameter> <Parameter name="dateacct"></Parameter> <Parameter name="startdate"></Parameter> <Parameter name="totalamortization"></Parameter> <Parameter name="cCurrencyId"></Parameter> <Parameter name="processed"></Parameter> <Parameter name="posted"></Parameter> <Parameter name="isactive"></Parameter> <Parameter name="cProjectId"></Parameter> <Parameter name="cCampaignId"></Parameter> <Parameter name="cActivityId"></Parameter> <Parameter name="user1Id"></Parameter> <Parameter name="user2Id"></Parameter> <Parameter name="processing"></Parameter> <Parameter name="adClientId"></Parameter> <Parameter name="aAmortizationId"></Parameter> <Parameter name="enddate"></Parameter> 
+    <Parameter name="updatedby"></Parameter>
+    <Parameter id="paramKey" name="aAmortizationId"></Parameter>
+    
+    
+        <Parameter name="adUserClient" type="replace" optional="true" after="A_Amortization.AD_Client_ID IN (" text="'1'"/>
+        <Parameter name="adOrgClient" type="replace" optional="true" after="A_Amortization.AD_Org_ID IN (" text="'1'"/>
+  </SqlMethod>
+
+  <SqlMethod name="insert" type="preparedStatement" return="rowCount" static="false" connection="true">
+    <Sql><![CDATA[
+        INSERT INTO A_Amortization 
+        (AD_Org_ID, Name, Description, DateAcct, StartDate, Totalamortization, C_Currency_ID, Processed, Posted, IsActive, C_Project_ID, C_Campaign_ID, C_Activity_ID, User1_ID, User2_ID, Processing, AD_Client_ID, A_Amortization_ID, EndDate, created, createdby, updated, updatedBy)
+        VALUES ((?), (?), (?), TO_DATE(?), TO_DATE(?), TO_NUMBER(?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), TO_DATE(?), now(), ?, now(), ?)
+    ]]></Sql>
+    <Parameter name="adOrgId"></Parameter> <Parameter name="name"></Parameter> <Parameter name="description"></Parameter> <Parameter name="dateacct"></Parameter> <Parameter name="startdate"></Parameter> <Parameter name="totalamortization"></Parameter> <Parameter name="cCurrencyId"></Parameter> <Parameter name="processed"></Parameter> <Parameter name="posted"></Parameter> <Parameter name="isactive"></Parameter> <Parameter name="cProjectId"></Parameter> <Parameter name="cCampaignId"></Parameter> <Parameter name="cActivityId"></Parameter> <Parameter name="user1Id"></Parameter> <Parameter name="user2Id"></Parameter> <Parameter name="processing"></Parameter> <Parameter name="adClientId"></Parameter> <Parameter name="aAmortizationId"></Parameter> <Parameter name="enddate"></Parameter> 
+    <Parameter name="createdby"></Parameter>
+    <Parameter name="updatedby"></Parameter>
+  </SqlMethod>
+
+  <SqlMethod name="delete" type="preparedStatement" return="rowCount">
+    <Sql><![CDATA[
+        DELETE FROM A_Amortization
+        WHERE A_Amortization.A_Amortization_ID = ? 
+        
+        AND A_Amortization.AD_Client_ID IN ('1') 
+        AND A_Amortization.AD_Org_ID IN ('1') 
+    ]]></Sql>
+    <Parameter name="param1"></Parameter>
+    
+        <Parameter name="adUserClient" type="replace" optional="true" after="A_Amortization.AD_Client_ID IN (" text="'1'"/>
+        <Parameter name="adOrgClient" type="replace" optional="true" after="A_Amortization.AD_Org_ID IN (" text="'1'"/>
+  </SqlMethod>
+
+  <SqlMethod name="selectOrg" type="preparedStatement" return="string">
+    <SqlMethodComment>Select for relation</SqlMethodComment>
+    <Sql><![CDATA[ 
+        SELECT AD_ORG_ID
+          FROM A_Amortization
+         WHERE A_Amortization.A_Amortization_ID = ? 
+    ]]></Sql>
+    <Parameter name="id"></Parameter>
+  </SqlMethod>
+  
+  <SqlMethod name="getCurrentDBTimestamp" type="preparedStatement" return="string">
+    <Sql><![CDATA[ 
+        SELECT to_char(Updated, 'YYYYMMDDHH24MISS') as Updated_Time_Stamp
+          FROM A_Amortization
+         WHERE A_Amortization.A_Amortization_ID = ? 
+    ]]></Sql>
+    <Parameter name="id"></Parameter>
+  </SqlMethod>
+</SqlClass>

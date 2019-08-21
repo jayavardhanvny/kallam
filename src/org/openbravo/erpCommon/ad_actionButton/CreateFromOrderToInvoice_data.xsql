@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<SqlClass name="CreateFromOrderToInvoiceData" package="org.openbravo.erpCommon.ad_actionButton">
+  
+  
+  <SqlMethod name="test" type="preparedStatement" return="String">
+    <SqlMethodComment></SqlMethodComment>
+    <Sql>
+		select c_order_id from c_orderline where c_orderline_id = ?  limit 1
+    </Sql>
+    <Parameter name="orderLineId"/>
+  </SqlMethod>
+  
+  
+    <SqlMethod name="updateInvoice" type="preparedStatement" connection="true" return="rowCount">
+        <SqlMethodComment></SqlMethodComment>
+        <Sql>
+            update C_invoice set em_epcg_Agent=? , em_rcfr_ratetype=?, em_rcob_commission=to_number(?) where c_invoice_id=?
+        </Sql>
+        <Parameter name="agent"/>
+        <Parameter name="ratetype"/>
+        <Parameter name="commission"/>
+        <Parameter name="invoiceId"/>
+    </SqlMethod>
+    
+    <SqlMethod name="updateAgentLines" type="preparedStatement" connection="true" return="rowCount">
+        <Sql>
+            update rcob_agentline set c_invoice_id = ?  
+                where c_order_id = (select c_order_id from c_orderline where c_orderline_id = ?  limit 1)
+        </Sql>
+        <Parameter name="inoviceId"/>
+        <Parameter name="orderId"/>
+    </SqlMethod>
+    
+</SqlClass>

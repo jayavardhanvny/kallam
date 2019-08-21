@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SqlClass id="class" name="AdditionsB479B97A7086432FB653AA751A94D59FData" package="org.openbravo.erpWindows.com.redcarpet.payroll.Grievences">
+  <SqlClassComment>WAD Generated class</SqlClassComment>
+
+  <SqlMethod name="selectEdit" type="preparedStatement" return="multiple">
+    <SqlMethodComment>Select for edit</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT to_char(Rcpl_Emppprocessmanual.Created, ?) as created, 
+        (SELECT NAME FROM AD_USER u WHERE AD_USER_ID = Rcpl_Emppprocessmanual.CreatedBy) as CreatedByR, 
+        to_char(Rcpl_Emppprocessmanual.Updated, ?) as updated, 
+        to_char(Rcpl_Emppprocessmanual.Updated, 'YYYYMMDDHH24MISS') as Updated_Time_Stamp,  
+        Rcpl_Emppprocessmanual.UpdatedBy, 
+        (SELECT NAME FROM AD_USER u WHERE AD_USER_ID = Rcpl_Emppprocessmanual.UpdatedBy) as UpdatedByR,
+        Rcpl_Emppprocessmanual.AD_Org_ID, 
+(CASE WHEN Rcpl_Emppprocessmanual.AD_Org_ID IS NULL THEN '' ELSE  (COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table1.Name), ''))),'') ) END) AS AD_Org_IDR, 
+COALESCE(Rcpl_Emppprocessmanual.Isactive, 'N') AS Isactive, 
+Rcpl_Emppprocessmanual.Rcpl_Payrollprocessmanual_ID, 
+(CASE WHEN Rcpl_Emppprocessmanual.Rcpl_Payrollprocessmanual_ID IS NULL THEN '' ELSE  (COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table3.Monthname), ''))),'')  || ' - ' || COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table3.Type), ''))),'') ) END) AS Rcpl_Payrollprocessmanual_IDR, 
+Rcpl_Emppprocessmanual.Rchr_Employee_ID, 
+(CASE WHEN Rcpl_Emppprocessmanual.Rchr_Employee_ID IS NULL THEN '' ELSE  (COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table4.Punchno), ''))),'')  || ' - ' || COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table4.Employeename), ''))),'') ) END) AS Rchr_Employee_IDR, 
+Rcpl_Emppprocessmanual.Attddate, 
+COALESCE(Rcpl_Emppprocessmanual.Process, 'N') AS Process, 
+COALESCE(Rcpl_Emppprocessmanual.Processed, 'N') AS Processed, 
+Rcpl_Emppprocessmanual.Complete, 
+Rcpl_Emppprocessmanual.Rchr_Dailyattend_ID, 
+Rcpl_Emppprocessmanual.Daytype, 
+(CASE WHEN Rcpl_Emppprocessmanual.Daytype IS NULL THEN '' ELSE  ( COALESCE(TO_CHAR(list1.name),'') ) END) AS DaytypeR, 
+Rcpl_Emppprocessmanual.Description, 
+COALESCE(Rcpl_Emppprocessmanual.Otprocess, 'N') AS Otprocess, 
+COALESCE(Rcpl_Emppprocessmanual.Manualpresents, 'N') AS Manualpresents, 
+Rcpl_Emppprocessmanual.AD_Client_ID, 
+Rcpl_Emppprocessmanual.Rcpl_Emppprocessmanual_ID, 
+ 
+        ? AS LANGUAGE 
+        FROM Rcpl_Emppprocessmanual left join (select AD_Org_ID, Name from AD_Org) table1 on (Rcpl_Emppprocessmanual.AD_Org_ID = table1.AD_Org_ID) left join (select Rcpl_Payrollprocessmanual_ID, Rchr_Attd_Process_ID from Rcpl_Payrollprocessmanual) table2 on (Rcpl_Emppprocessmanual.Rcpl_Payrollprocessmanual_ID = table2.Rcpl_Payrollprocessmanual_ID) left join (select Rchr_Attd_Process_ID, Monthname, Type from Rchr_Attd_Process) table3 on (table2.Rchr_Attd_Process_ID = table3.Rchr_Attd_Process_ID) left join (select Rchr_Employee_ID, Punchno, Employeename from Rchr_Employee) table4 on (Rcpl_Emppprocessmanual.Rchr_Employee_ID = table4.Rchr_Employee_ID) left join ad_ref_list_v list1 on (Rcpl_Emppprocessmanual.Daytype = list1.value and list1.ad_reference_id = '7ACBFA8FF0FA4862A49790DB5FC62EB7' and list1.ad_language = ?) 
+        WHERE 2=2 
+
+        AND 1=1 
+        AND Rcpl_Emppprocessmanual.Rcpl_Emppprocessmanual_ID = ? 
+        AND Rcpl_Emppprocessmanual.AD_Client_ID IN ('1') 
+           AND Rcpl_Emppprocessmanual.AD_Org_ID IN ('1') 
+    ]]></Sql>
+    <Parameter name="dateTimeFormat"></Parameter>
+    <Parameter name="dateTimeFormat"></Parameter>
+    
+    <Parameter name="paramLanguage"></Parameter>
+<Parameter name="paramLanguage"/>
+
+    <Parameter name="rcplPayrollprocessmanualId" optional="true" after="AND 1=1 " id="paramKeyParent"> AND Rcpl_Emppprocessmanual.Rcpl_Payrollprocessmanual_ID = ? </Parameter>
+    <Parameter name="key"></Parameter>
+        <Parameter name="adUserClient" type="replace" optional="true" after="Rcpl_Emppprocessmanual.AD_Client_ID IN (" text="'1'"/>
+        <Parameter name="adOrgClient" type="replace" optional="true" after="Rcpl_Emppprocessmanual.AD_Org_ID IN (" text="'1'"/>
+
+    <Field name="adUserClient" value="void"></Field>
+    <Field name="adOrgClient" value="void"></Field>
+    <Field name="createdby" value="void"></Field>
+    
+    <Field name="trBgcolor" value="void"></Field>
+    <Field name="totalCount" value="void"></Field>
+    <Field name="dateTimeFormat" value=""></Field>
+  </SqlMethod>
+  
+  
+
+  <SqlMethod name="set" type="constant" return="multiple">
+      <SqlMethodComment>Create a registry</SqlMethodComment>
+      <Sql></Sql>
+    <Parameter name="rcplPayrollprocessmanualId" id="paramKeyParent"></Parameter>
+<Parameter name="processed"></Parameter><Parameter name="complete"></Parameter><Parameter name="attddate"></Parameter><Parameter name="rchrEmployeeId"></Parameter><Parameter name="rcplEmppprocessmanualId"></Parameter><Parameter name="description"></Parameter><Parameter name="updatedby"></Parameter><Parameter name="updatedbyr"></Parameter><Parameter name="adOrgId"></Parameter><Parameter name="adClientId"></Parameter><Parameter name="daytype"></Parameter><Parameter name="process"></Parameter><Parameter name="otprocess"></Parameter><Parameter name="isactive"></Parameter><Parameter name="manualpresents"></Parameter><Parameter name="rchrDailyattendId"></Parameter><Parameter name="createdby"></Parameter><Parameter name="createdbyr"></Parameter>
+   </SqlMethod>
+
+
+
+
+
+
+   <SqlMethod name="selectDef2B8100ADF9194ABDA03D1F8AF94512F6_0" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>Select for auxiliar field</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT  ( COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table2.Name), ''))), '') ) as Updatedby FROM AD_User left join (select AD_User_ID, Name from AD_User) table2 on (AD_User.AD_User_ID = table2.AD_User_ID) WHERE AD_User.isActive='Y' AND AD_User.AD_User_ID = ?  
+    ]]></Sql>
+<Parameter name="UpdatedbyR"/>
+  </SqlMethod>
+
+   <SqlMethod name="selectDefE2FDF006E80940439BE56D69655CB054_1" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>Select for auxiliar field</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT  ( COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table2.Name), ''))), '') ) as Createdby FROM AD_User left join (select AD_User_ID, Name from AD_User) table2 on (AD_User.AD_User_ID = table2.AD_User_ID) WHERE AD_User.isActive='Y' AND AD_User.AD_User_ID = ?  
+    ]]></Sql>
+<Parameter name="CreatedbyR"/>
+  </SqlMethod>
+
+
+
+  <SqlMethod name="selectParentID" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>return the parent ID</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT Rcpl_Emppprocessmanual.Rcpl_Payrollprocessmanual_ID AS NAME
+        FROM Rcpl_Emppprocessmanual
+        WHERE Rcpl_Emppprocessmanual.Rcpl_Emppprocessmanual_ID = ?
+    ]]></Sql>
+    <Parameter name="key"></Parameter>
+  </SqlMethod>
+
+   <SqlMethod name="selectParent" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>Select for parent field</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT (TO_CHAR(COALESCE(TO_CHAR(table2.Monthname), '')) || ' - ' || TO_CHAR(COALESCE(TO_CHAR(table2.Type), ''))) AS NAME FROM Rcpl_Payrollprocessmanual left join (select Rcpl_Payrollprocessmanual_ID, Rchr_Attd_Process_ID from Rcpl_Payrollprocessmanual) table1 on (Rcpl_Payrollprocessmanual.Rcpl_Payrollprocessmanual_ID = table1.Rcpl_Payrollprocessmanual_ID) left join (select Rchr_Attd_Process_ID, Monthname, Type from Rchr_Attd_Process) table2 on (table1.Rchr_Attd_Process_ID = table2.Rchr_Attd_Process_ID) WHERE Rcpl_Payrollprocessmanual.Rcpl_Payrollprocessmanual_ID = ?  
+    ]]></Sql>
+<Parameter name="rcplPayrollprocessmanualId"/>
+
+  </SqlMethod>
+
+
+
+
+   <SqlMethod name="selectParentTrl" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>Select for parent field</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT (TO_CHAR(COALESCE(TO_CHAR(table2.Monthname), '')) || ' - ' || TO_CHAR(COALESCE(TO_CHAR(table2.Type), ''))) AS NAME FROM Rcpl_Payrollprocessmanual left join (select Rcpl_Payrollprocessmanual_ID, Rchr_Attd_Process_ID from Rcpl_Payrollprocessmanual) table1 on (Rcpl_Payrollprocessmanual.Rcpl_Payrollprocessmanual_ID = table1.Rcpl_Payrollprocessmanual_ID) left join (select Rchr_Attd_Process_ID, Monthname, Type from Rchr_Attd_Process) table2 on (table1.Rchr_Attd_Process_ID = table2.Rchr_Attd_Process_ID) WHERE Rcpl_Payrollprocessmanual.Rcpl_Payrollprocessmanual_ID = ?  
+    ]]></Sql>
+<Parameter name="rcplPayrollprocessmanualId"/>
+
+  </SqlMethod>
+
+
+
+
+
+
+
+
+  <SqlMethod name="update" type="preparedStatement" return="rowCount" static="false" connection="true">
+    <Sql><![CDATA[
+        UPDATE Rcpl_Emppprocessmanual
+        SET AD_Org_ID = (?) , Isactive = (?) , Rcpl_Payrollprocessmanual_ID = (?) , Rchr_Employee_ID = (?) , Attddate = TO_DATE(?) , Process = (?) , Processed = (?) , Complete = (?) , Rchr_Dailyattend_ID = (?) , Daytype = (?) , Description = (?) , Otprocess = (?) , Manualpresents = (?) , AD_Client_ID = (?) , Rcpl_Emppprocessmanual_ID = (?) , updated = now(), updatedby = ? 
+        WHERE Rcpl_Emppprocessmanual.Rcpl_Emppprocessmanual_ID = ? 
+                 AND Rcpl_Emppprocessmanual.Rcpl_Payrollprocessmanual_ID = ? 
+        AND Rcpl_Emppprocessmanual.AD_Client_ID IN ('1') 
+        AND Rcpl_Emppprocessmanual.AD_Org_ID IN ('1') 
+    ]]></Sql>
+    <Parameter name="adOrgId"></Parameter> <Parameter name="isactive"></Parameter> <Parameter name="rcplPayrollprocessmanualId"></Parameter> <Parameter name="rchrEmployeeId"></Parameter> <Parameter name="attddate"></Parameter> <Parameter name="process"></Parameter> <Parameter name="processed"></Parameter> <Parameter name="complete"></Parameter> <Parameter name="rchrDailyattendId"></Parameter> <Parameter name="daytype"></Parameter> <Parameter name="description"></Parameter> <Parameter name="otprocess"></Parameter> <Parameter name="manualpresents"></Parameter> <Parameter name="adClientId"></Parameter> <Parameter name="rcplEmppprocessmanualId"></Parameter> 
+    <Parameter name="updatedby"></Parameter>
+    <Parameter id="paramKey" name="rcplEmppprocessmanualId"></Parameter>
+    
+    <Parameter name="rcplPayrollprocessmanualId" id="paramKeyParent"></Parameter>
+        <Parameter name="adUserClient" type="replace" optional="true" after="Rcpl_Emppprocessmanual.AD_Client_ID IN (" text="'1'"/>
+        <Parameter name="adOrgClient" type="replace" optional="true" after="Rcpl_Emppprocessmanual.AD_Org_ID IN (" text="'1'"/>
+  </SqlMethod>
+
+  <SqlMethod name="insert" type="preparedStatement" return="rowCount" static="false" connection="true">
+    <Sql><![CDATA[
+        INSERT INTO Rcpl_Emppprocessmanual 
+        (AD_Org_ID, Isactive, Rcpl_Payrollprocessmanual_ID, Rchr_Employee_ID, Attddate, Process, Processed, Complete, Rchr_Dailyattend_ID, Daytype, Description, Otprocess, Manualpresents, AD_Client_ID, Rcpl_Emppprocessmanual_ID, created, createdby, updated, updatedBy)
+        VALUES ((?), (?), (?), (?), TO_DATE(?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), now(), ?, now(), ?)
+    ]]></Sql>
+    <Parameter name="adOrgId"></Parameter> <Parameter name="isactive"></Parameter> <Parameter name="rcplPayrollprocessmanualId"></Parameter> <Parameter name="rchrEmployeeId"></Parameter> <Parameter name="attddate"></Parameter> <Parameter name="process"></Parameter> <Parameter name="processed"></Parameter> <Parameter name="complete"></Parameter> <Parameter name="rchrDailyattendId"></Parameter> <Parameter name="daytype"></Parameter> <Parameter name="description"></Parameter> <Parameter name="otprocess"></Parameter> <Parameter name="manualpresents"></Parameter> <Parameter name="adClientId"></Parameter> <Parameter name="rcplEmppprocessmanualId"></Parameter> 
+    <Parameter name="createdby"></Parameter>
+    <Parameter name="updatedby"></Parameter>
+  </SqlMethod>
+
+  <SqlMethod name="delete" type="preparedStatement" return="rowCount">
+    <Sql><![CDATA[
+        DELETE FROM Rcpl_Emppprocessmanual
+        WHERE Rcpl_Emppprocessmanual.Rcpl_Emppprocessmanual_ID = ? 
+                 AND Rcpl_Emppprocessmanual.Rcpl_Payrollprocessmanual_ID = ? 
+        AND Rcpl_Emppprocessmanual.AD_Client_ID IN ('1') 
+        AND Rcpl_Emppprocessmanual.AD_Org_ID IN ('1') 
+    ]]></Sql>
+    <Parameter name="param1"></Parameter>
+        <Parameter name="rcplPayrollprocessmanualId" id="paramKeyParent"></Parameter>
+        <Parameter name="adUserClient" type="replace" optional="true" after="Rcpl_Emppprocessmanual.AD_Client_ID IN (" text="'1'"/>
+        <Parameter name="adOrgClient" type="replace" optional="true" after="Rcpl_Emppprocessmanual.AD_Org_ID IN (" text="'1'"/>
+  </SqlMethod>
+
+  <SqlMethod name="selectOrg" type="preparedStatement" return="string">
+    <SqlMethodComment>Select for relation</SqlMethodComment>
+    <Sql><![CDATA[ 
+        SELECT AD_ORG_ID
+          FROM Rcpl_Emppprocessmanual
+         WHERE Rcpl_Emppprocessmanual.Rcpl_Emppprocessmanual_ID = ? 
+    ]]></Sql>
+    <Parameter name="id"></Parameter>
+  </SqlMethod>
+  
+  <SqlMethod name="getCurrentDBTimestamp" type="preparedStatement" return="string">
+    <Sql><![CDATA[ 
+        SELECT to_char(Updated, 'YYYYMMDDHH24MISS') as Updated_Time_Stamp
+          FROM Rcpl_Emppprocessmanual
+         WHERE Rcpl_Emppprocessmanual.Rcpl_Emppprocessmanual_ID = ? 
+    ]]></Sql>
+    <Parameter name="id"></Parameter>
+  </SqlMethod>
+</SqlClass>

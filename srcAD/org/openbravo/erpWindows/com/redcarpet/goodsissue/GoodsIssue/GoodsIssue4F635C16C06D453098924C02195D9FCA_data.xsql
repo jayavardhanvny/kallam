@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SqlClass id="class" name="GoodsIssue4F635C16C06D453098924C02195D9FCAData" package="org.openbravo.erpWindows.com.redcarpet.goodsissue.GoodsIssue">
+  <SqlClassComment>WAD Generated class</SqlClassComment>
+
+  <SqlMethod name="selectEdit" type="preparedStatement" return="multiple">
+    <SqlMethodComment>Select for edit</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT to_char(RCGI_GoodsIssue.Created, ?) as created, 
+        (SELECT NAME FROM AD_USER u WHERE AD_USER_ID = RCGI_GoodsIssue.CreatedBy) as CreatedByR, 
+        to_char(RCGI_GoodsIssue.Updated, ?) as updated, 
+        to_char(RCGI_GoodsIssue.Updated, 'YYYYMMDDHH24MISS') as Updated_Time_Stamp,  
+        RCGI_GoodsIssue.UpdatedBy, 
+        (SELECT NAME FROM AD_USER u WHERE AD_USER_ID = RCGI_GoodsIssue.UpdatedBy) as UpdatedByR,
+        RCGI_GoodsIssue.AD_Org_ID, 
+(CASE WHEN RCGI_GoodsIssue.AD_Org_ID IS NULL THEN '' ELSE  (COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table1.Name), ''))),'') ) END) AS AD_Org_IDR, 
+COALESCE(RCGI_GoodsIssue.Isactive, 'N') AS Isactive, 
+RCGI_GoodsIssue.C_Doctype_ID, 
+(CASE WHEN RCGI_GoodsIssue.C_Doctype_ID IS NULL THEN '' ELSE  ( COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR((CASE WHEN tableTRL2.Name IS NULL THEN TO_CHAR(table2.Name) ELSE TO_CHAR(tableTRL2.Name) END)), ''))),'') ) END) AS C_Doctype_IDR, 
+RCGI_GoodsIssue.Documentno, 
+RCGI_GoodsIssue.Name, 
+RCGI_GoodsIssue.Movementdate, 
+RCGI_GoodsIssue.M_Requisition_ID, 
+(CASE WHEN RCGI_GoodsIssue.M_Requisition_ID IS NULL THEN '' ELSE  (COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table3.DocumentNo), ''))),'') ) END) AS M_Requisition_IDR, 
+RCGI_GoodsIssue.Rchr_emp_dept_id, 
+(CASE WHEN RCGI_GoodsIssue.Rchr_emp_dept_id IS NULL THEN '' ELSE  (COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table4.Name), ''))),'') ) END) AS Rchr_emp_dept_idR, 
+RCGI_GoodsIssue.User1_ID, 
+(CASE WHEN RCGI_GoodsIssue.User1_ID IS NULL THEN '' ELSE  (COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table5.Name), ''))),'') ) END) AS User1_IDR, 
+RCGI_GoodsIssue.Description, 
+RCGI_GoodsIssue.Createfromindent, 
+RCGI_GoodsIssue.Createlines, 
+RCGI_GoodsIssue.Process, 
+RCGI_GoodsIssue.Postx, 
+COALESCE(RCGI_GoodsIssue.Processed, 'N') AS Processed, 
+RCGI_GoodsIssue.Totallines, 
+RCGI_GoodsIssue.Completenew, 
+RCGI_GoodsIssue.Docstatus, 
+(CASE WHEN RCGI_GoodsIssue.Docstatus IS NULL THEN '' ELSE  ( COALESCE(TO_CHAR(list1.name),'') ) END) AS DocstatusR, 
+RCGI_GoodsIssue.AD_Client_ID, 
+RCGI_GoodsIssue.Rcgi_Goodsissue_ID, 
+ 
+        ? AS LANGUAGE 
+        FROM RCGI_GoodsIssue left join (select AD_Org_ID, Name from AD_Org) table1 on (RCGI_GoodsIssue.AD_Org_ID = table1.AD_Org_ID) left join (select C_DocType_ID, Name from C_DocType) table2 on (RCGI_GoodsIssue.C_Doctype_ID =  table2.C_DocType_ID) left join (select C_DocType_ID,AD_Language, Name from C_DocType_TRL) tableTRL2 on (table2.C_DocType_ID = tableTRL2.C_DocType_ID and tableTRL2.AD_Language = ?)  left join (select M_Requisition_ID, DocumentNo from M_Requisition) table3 on (RCGI_GoodsIssue.M_Requisition_ID = table3.M_Requisition_ID) left join (select Rchr_emp_dept_id, Name from Rchr_emp_dept) table4 on (RCGI_GoodsIssue.Rchr_emp_dept_id = table4.Rchr_emp_dept_id) left join (select User1_ID, Name from User1) table5 on (RCGI_GoodsIssue.User1_ID = table5.User1_ID) left join ad_ref_list_v list1 on (RCGI_GoodsIssue.Docstatus = list1.value and list1.ad_reference_id = '131' and list1.ad_language = ?) 
+        WHERE 2=2 
+
+        AND 1=1 
+        AND RCGI_GoodsIssue.Rcgi_Goodsissue_ID = ? 
+        AND RCGI_GoodsIssue.AD_Client_ID IN ('1') 
+           AND RCGI_GoodsIssue.AD_Org_ID IN ('1') 
+    ]]></Sql>
+    <Parameter name="dateTimeFormat"></Parameter>
+    <Parameter name="dateTimeFormat"></Parameter>
+    
+    <Parameter name="paramLanguage"></Parameter>
+<Parameter name="paramLanguage"/>
+<Parameter name="paramLanguage"/>
+
+
+    <Parameter name="key"></Parameter>
+        <Parameter name="adUserClient" type="replace" optional="true" after="RCGI_GoodsIssue.AD_Client_ID IN (" text="'1'"/>
+        <Parameter name="adOrgClient" type="replace" optional="true" after="RCGI_GoodsIssue.AD_Org_ID IN (" text="'1'"/>
+
+    <Field name="adUserClient" value="void"></Field>
+    <Field name="adOrgClient" value="void"></Field>
+    <Field name="createdby" value="void"></Field>
+    
+    <Field name="trBgcolor" value="void"></Field>
+    <Field name="totalCount" value="void"></Field>
+    <Field name="dateTimeFormat" value=""></Field>
+  </SqlMethod>
+  
+  
+
+  <SqlMethod name="set" type="constant" return="multiple">
+      <SqlMethodComment>Create a registry</SqlMethodComment>
+      <Sql></Sql>
+
+<Parameter name="completenew"></Parameter><Parameter name="totallines"></Parameter><Parameter name="name"></Parameter><Parameter name="createdby"></Parameter><Parameter name="createdbyr"></Parameter><Parameter name="adOrgId"></Parameter><Parameter name="postx"></Parameter><Parameter name="processed"></Parameter><Parameter name="createfromindent"></Parameter><Parameter name="cDoctypeId"></Parameter><Parameter name="user1Id"></Parameter><Parameter name="createlines"></Parameter><Parameter name="docstatus"></Parameter><Parameter name="adClientId"></Parameter><Parameter name="rcgiGoodsissueId"></Parameter><Parameter name="process"></Parameter><Parameter name="movementdate"></Parameter><Parameter name="mRequisitionId"></Parameter><Parameter name="updatedby"></Parameter><Parameter name="updatedbyr"></Parameter><Parameter name="description"></Parameter><Parameter name="rchrEmpDeptId"></Parameter><Parameter name="isactive"></Parameter><Parameter name="documentno"></Parameter>
+   </SqlMethod>
+
+
+
+
+
+
+   <SqlMethod name="selectDef4417C3DC5BC74AC59897504B0905FEC0_0" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>Select for auxiliar field</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT  ( COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table2.Name), ''))), '') ) as Createdby FROM AD_User left join (select AD_User_ID, Name from AD_User) table2 on (AD_User.AD_User_ID = table2.AD_User_ID) WHERE AD_User.isActive='Y' AND AD_User.AD_User_ID = ?  
+    ]]></Sql>
+<Parameter name="CreatedbyR"/>
+  </SqlMethod>
+
+   <SqlMethod name="selectDefB758E0FCC67D4B6CAA24EF8824C65BB5_1" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>Select for auxiliar field</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT  ( COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table2.Name), ''))), '') ) as Updatedby FROM AD_User left join (select AD_User_ID, Name from AD_User) table2 on (AD_User.AD_User_ID = table2.AD_User_ID) WHERE AD_User.isActive='Y' AND AD_User.AD_User_ID = ?  
+    ]]></Sql>
+<Parameter name="UpdatedbyR"/>
+  </SqlMethod>
+
+
+
+
+
+
+
+
+
+
+  <SqlMethod name="update" type="preparedStatement" return="rowCount" static="false" connection="true">
+    <Sql><![CDATA[
+        UPDATE RCGI_GoodsIssue
+        SET AD_Org_ID = (?) , Isactive = (?) , C_Doctype_ID = (?) , Documentno = (?) , Name = (?) , Movementdate = TO_DATE(?) , M_Requisition_ID = (?) , Rchr_emp_dept_id = (?) , User1_ID = (?) , Description = (?) , Createfromindent = (?) , Createlines = (?) , Process = (?) , Postx = (?) , Processed = (?) , Totallines = TO_NUMBER(?) , Completenew = (?) , Docstatus = (?) , AD_Client_ID = (?) , Rcgi_Goodsissue_ID = (?) , updated = now(), updatedby = ? 
+        WHERE RCGI_GoodsIssue.Rcgi_Goodsissue_ID = ? 
+        
+        AND RCGI_GoodsIssue.AD_Client_ID IN ('1') 
+        AND RCGI_GoodsIssue.AD_Org_ID IN ('1') 
+    ]]></Sql>
+    <Parameter name="adOrgId"></Parameter> <Parameter name="isactive"></Parameter> <Parameter name="cDoctypeId"></Parameter> <Parameter name="documentno"></Parameter> <Parameter name="name"></Parameter> <Parameter name="movementdate"></Parameter> <Parameter name="mRequisitionId"></Parameter> <Parameter name="rchrEmpDeptId"></Parameter> <Parameter name="user1Id"></Parameter> <Parameter name="description"></Parameter> <Parameter name="createfromindent"></Parameter> <Parameter name="createlines"></Parameter> <Parameter name="process"></Parameter> <Parameter name="postx"></Parameter> <Parameter name="processed"></Parameter> <Parameter name="totallines"></Parameter> <Parameter name="completenew"></Parameter> <Parameter name="docstatus"></Parameter> <Parameter name="adClientId"></Parameter> <Parameter name="rcgiGoodsissueId"></Parameter> 
+    <Parameter name="updatedby"></Parameter>
+    <Parameter id="paramKey" name="rcgiGoodsissueId"></Parameter>
+    
+    
+        <Parameter name="adUserClient" type="replace" optional="true" after="RCGI_GoodsIssue.AD_Client_ID IN (" text="'1'"/>
+        <Parameter name="adOrgClient" type="replace" optional="true" after="RCGI_GoodsIssue.AD_Org_ID IN (" text="'1'"/>
+  </SqlMethod>
+
+  <SqlMethod name="insert" type="preparedStatement" return="rowCount" static="false" connection="true">
+    <Sql><![CDATA[
+        INSERT INTO RCGI_GoodsIssue 
+        (AD_Org_ID, Isactive, C_Doctype_ID, Documentno, Name, Movementdate, M_Requisition_ID, Rchr_emp_dept_id, User1_ID, Description, Createfromindent, Createlines, Process, Postx, Processed, Totallines, Completenew, Docstatus, AD_Client_ID, Rcgi_Goodsissue_ID, created, createdby, updated, updatedBy)
+        VALUES ((?), (?), (?), (?), (?), TO_DATE(?), (?), (?), (?), (?), (?), (?), (?), (?), (?), TO_NUMBER(?), (?), (?), (?), (?), now(), ?, now(), ?)
+    ]]></Sql>
+    <Parameter name="adOrgId"></Parameter> <Parameter name="isactive"></Parameter> <Parameter name="cDoctypeId"></Parameter> <Parameter name="documentno"></Parameter> <Parameter name="name"></Parameter> <Parameter name="movementdate"></Parameter> <Parameter name="mRequisitionId"></Parameter> <Parameter name="rchrEmpDeptId"></Parameter> <Parameter name="user1Id"></Parameter> <Parameter name="description"></Parameter> <Parameter name="createfromindent"></Parameter> <Parameter name="createlines"></Parameter> <Parameter name="process"></Parameter> <Parameter name="postx"></Parameter> <Parameter name="processed"></Parameter> <Parameter name="totallines"></Parameter> <Parameter name="completenew"></Parameter> <Parameter name="docstatus"></Parameter> <Parameter name="adClientId"></Parameter> <Parameter name="rcgiGoodsissueId"></Parameter> 
+    <Parameter name="createdby"></Parameter>
+    <Parameter name="updatedby"></Parameter>
+  </SqlMethod>
+
+  <SqlMethod name="delete" type="preparedStatement" return="rowCount">
+    <Sql><![CDATA[
+        DELETE FROM RCGI_GoodsIssue
+        WHERE RCGI_GoodsIssue.Rcgi_Goodsissue_ID = ? 
+        
+        AND RCGI_GoodsIssue.AD_Client_ID IN ('1') 
+        AND RCGI_GoodsIssue.AD_Org_ID IN ('1') 
+    ]]></Sql>
+    <Parameter name="param1"></Parameter>
+    
+        <Parameter name="adUserClient" type="replace" optional="true" after="RCGI_GoodsIssue.AD_Client_ID IN (" text="'1'"/>
+        <Parameter name="adOrgClient" type="replace" optional="true" after="RCGI_GoodsIssue.AD_Org_ID IN (" text="'1'"/>
+  </SqlMethod>
+
+  <SqlMethod name="selectOrg" type="preparedStatement" return="string">
+    <SqlMethodComment>Select for relation</SqlMethodComment>
+    <Sql><![CDATA[ 
+        SELECT AD_ORG_ID
+          FROM RCGI_GoodsIssue
+         WHERE RCGI_GoodsIssue.Rcgi_Goodsissue_ID = ? 
+    ]]></Sql>
+    <Parameter name="id"></Parameter>
+  </SqlMethod>
+  
+  <SqlMethod name="getCurrentDBTimestamp" type="preparedStatement" return="string">
+    <Sql><![CDATA[ 
+        SELECT to_char(Updated, 'YYYYMMDDHH24MISS') as Updated_Time_Stamp
+          FROM RCGI_GoodsIssue
+         WHERE RCGI_GoodsIssue.Rcgi_Goodsissue_ID = ? 
+    ]]></Sql>
+    <Parameter name="id"></Parameter>
+  </SqlMethod>
+</SqlClass>

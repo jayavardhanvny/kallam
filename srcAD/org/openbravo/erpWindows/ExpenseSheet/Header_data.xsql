@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SqlClass id="class" name="HeaderData" package="org.openbravo.erpWindows.ExpenseSheet">
+  <SqlClassComment>WAD Generated class</SqlClassComment>
+
+  <SqlMethod name="selectEdit" type="preparedStatement" return="multiple">
+    <SqlMethodComment>Select for edit</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT to_char(S_TimeExpense.Created, ?) as created, 
+        (SELECT NAME FROM AD_USER u WHERE AD_USER_ID = S_TimeExpense.CreatedBy) as CreatedByR, 
+        to_char(S_TimeExpense.Updated, ?) as updated, 
+        to_char(S_TimeExpense.Updated, 'YYYYMMDDHH24MISS') as Updated_Time_Stamp,  
+        S_TimeExpense.UpdatedBy, 
+        (SELECT NAME FROM AD_USER u WHERE AD_USER_ID = S_TimeExpense.UpdatedBy) as UpdatedByR,
+        S_TimeExpense.AD_Org_ID, 
+(CASE WHEN S_TimeExpense.AD_Org_ID IS NULL THEN '' ELSE  (COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table1.Name), ''))),'') ) END) AS AD_Org_IDR, 
+S_TimeExpense.DocumentNo, 
+S_TimeExpense.C_BPartner_ID, 
+(CASE WHEN S_TimeExpense.C_BPartner_ID IS NULL THEN '' ELSE  ( COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table2.Name), ''))),'') ) END) AS C_BPartner_IDR, 
+S_TimeExpense.DateReport, 
+COALESCE(S_TimeExpense.Processed, 'N') AS Processed, 
+S_TimeExpense.M_Pricelist_ID, 
+S_TimeExpense.M_Warehouse_ID, 
+S_TimeExpense.Posted, 
+S_TimeExpense.C_Project_ID, 
+(CASE WHEN S_TimeExpense.C_Project_ID IS NULL THEN '' ELSE  (COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table3.Value), ''))),'')  || ' - ' || COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table3.Name), ''))),'') ) END) AS C_Project_IDR, 
+S_TimeExpense.A_Asset_ID, 
+S_TimeExpense.C_Costcenter_ID, 
+S_TimeExpense.User1_ID, 
+S_TimeExpense.User2_ID, 
+S_TimeExpense.S_TimeExpense_ID, 
+S_TimeExpense.Description, 
+COALESCE(S_TimeExpense.IsActive, 'N') AS IsActive, 
+S_TimeExpense.AD_Client_ID, 
+S_TimeExpense.Processing, 
+list1.name as Processing_BTN, 
+ 
+        ? AS LANGUAGE 
+        FROM S_TimeExpense left join (select AD_Org_ID, Name from AD_Org) table1 on (S_TimeExpense.AD_Org_ID = table1.AD_Org_ID) left join (select C_BPartner_ID, Name from C_BPartner) table2 on (S_TimeExpense.C_BPartner_ID =  table2.C_BPartner_ID) left join (select C_Project_ID, Value, Name from C_Project) table3 on (S_TimeExpense.C_Project_ID = table3.C_Project_ID) left join ad_ref_list_v list1 on (list1.ad_reference_id = '1005900000' and list1.ad_language = ?  AND S_TimeExpense.Processing = TO_CHAR(list1.value))
+        WHERE 2=2 
+
+        AND 1=1 
+        AND S_TimeExpense.S_TimeExpense_ID = ? 
+        AND S_TimeExpense.AD_Client_ID IN ('1') 
+           AND S_TimeExpense.AD_Org_ID IN ('1') 
+    ]]></Sql>
+    <Parameter name="dateTimeFormat"></Parameter>
+    <Parameter name="dateTimeFormat"></Parameter>
+    
+    <Parameter name="paramLanguage"></Parameter>
+<Parameter name="paramLanguage"/>
+
+
+    <Parameter name="key"></Parameter>
+        <Parameter name="adUserClient" type="replace" optional="true" after="S_TimeExpense.AD_Client_ID IN (" text="'1'"/>
+        <Parameter name="adOrgClient" type="replace" optional="true" after="S_TimeExpense.AD_Org_ID IN (" text="'1'"/>
+
+    <Field name="adUserClient" value="void"></Field>
+    <Field name="adOrgClient" value="void"></Field>
+    <Field name="createdby" value="void"></Field>
+    
+    <Field name="trBgcolor" value="void"></Field>
+    <Field name="totalCount" value="void"></Field>
+    <Field name="dateTimeFormat" value=""></Field>
+  </SqlMethod>
+  
+  
+
+  <SqlMethod name="set" type="constant" return="multiple">
+      <SqlMethodComment>Create a registry</SqlMethodComment>
+      <Sql></Sql>
+
+<Parameter name="aAssetId"></Parameter><Parameter name="mPricelistId"></Parameter><Parameter name="mWarehouseId"></Parameter><Parameter name="processed"></Parameter><Parameter name="processing"></Parameter><Parameter name="processingBtn"></Parameter><Parameter name="description"></Parameter><Parameter name="datereport"></Parameter><Parameter name="cBpartnerId"></Parameter><Parameter name="documentno"></Parameter><Parameter name="updatedby"></Parameter><Parameter name="updatedbyr"></Parameter><Parameter name="createdby"></Parameter><Parameter name="createdbyr"></Parameter><Parameter name="isactive"></Parameter><Parameter name="adOrgId"></Parameter><Parameter name="adClientId"></Parameter><Parameter name="sTimeexpenseId"></Parameter><Parameter name="cCostcenterId"></Parameter><Parameter name="user2Id"></Parameter><Parameter name="posted"></Parameter><Parameter name="postedBtn"></Parameter><Parameter name="user1Id"></Parameter><Parameter name="cProjectId"></Parameter><Parameter name="cProjectIdr"></Parameter>
+   </SqlMethod>
+
+
+
+
+
+
+   <SqlMethod name="selectDef6841_0" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>Select for auxiliar field</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT  ( COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table2.Name), ''))), '') ) as UpdatedBy FROM AD_User left join (select AD_User_ID, Name from AD_User) table2 on (AD_User.AD_User_ID = table2.AD_User_ID) WHERE AD_User.isActive='Y' AND AD_User.AD_User_ID = ?  
+    ]]></Sql>
+<Parameter name="UpdatedByR"/>
+  </SqlMethod>
+
+   <SqlMethod name="selectDef6843_1" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>Select for auxiliar field</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT  ( COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table2.Name), ''))), '') ) as CreatedBy FROM AD_User left join (select AD_User_ID, Name from AD_User) table2 on (AD_User.AD_User_ID = table2.AD_User_ID) WHERE AD_User.isActive='Y' AND AD_User.AD_User_ID = ?  
+    ]]></Sql>
+<Parameter name="CreatedByR"/>
+  </SqlMethod>
+
+   <SqlMethod name="selectDefF6D70107C1114E5FA5F3E05B4F6C8898_2" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>Select for auxiliar field</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT  ( COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table2.Value), ''))), '')  || ' - ' || COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table2.Name), ''))), '') ) as C_Project_ID FROM C_Project left join (select C_Project_ID, Value, Name from C_Project) table2 on (C_Project.C_Project_ID = table2.C_Project_ID) WHERE C_Project.isActive='Y' AND C_Project.C_Project_ID = ?  
+    ]]></Sql>
+<Parameter name="C_Project_IDR"/>
+  </SqlMethod>
+
+
+
+
+
+
+
+
+
+
+  <SqlMethod name="update" type="preparedStatement" return="rowCount" static="false" connection="true">
+    <Sql><![CDATA[
+        UPDATE S_TimeExpense
+        SET AD_Org_ID = (?) , DocumentNo = (?) , C_BPartner_ID = (?) , DateReport = TO_DATE(?) , Processed = (?) , M_Pricelist_ID = (?) , M_Warehouse_ID = (?) , Posted = (?) , C_Project_ID = (?) , A_Asset_ID = (?) , C_Costcenter_ID = (?) , User1_ID = (?) , User2_ID = (?) , S_TimeExpense_ID = (?) , Description = (?) , IsActive = (?) , AD_Client_ID = (?) , Processing = (?) , updated = now(), updatedby = ? 
+        WHERE S_TimeExpense.S_TimeExpense_ID = ? 
+        
+        AND S_TimeExpense.AD_Client_ID IN ('1') 
+        AND S_TimeExpense.AD_Org_ID IN ('1') 
+    ]]></Sql>
+    <Parameter name="adOrgId"></Parameter> <Parameter name="documentno"></Parameter> <Parameter name="cBpartnerId"></Parameter> <Parameter name="datereport"></Parameter> <Parameter name="processed"></Parameter> <Parameter name="mPricelistId"></Parameter> <Parameter name="mWarehouseId"></Parameter> <Parameter name="posted"></Parameter> <Parameter name="cProjectId"></Parameter> <Parameter name="aAssetId"></Parameter> <Parameter name="cCostcenterId"></Parameter> <Parameter name="user1Id"></Parameter> <Parameter name="user2Id"></Parameter> <Parameter name="sTimeexpenseId"></Parameter> <Parameter name="description"></Parameter> <Parameter name="isactive"></Parameter> <Parameter name="adClientId"></Parameter> <Parameter name="processing"></Parameter> 
+    <Parameter name="updatedby"></Parameter>
+    <Parameter id="paramKey" name="sTimeexpenseId"></Parameter>
+    
+    
+        <Parameter name="adUserClient" type="replace" optional="true" after="S_TimeExpense.AD_Client_ID IN (" text="'1'"/>
+        <Parameter name="adOrgClient" type="replace" optional="true" after="S_TimeExpense.AD_Org_ID IN (" text="'1'"/>
+  </SqlMethod>
+
+  <SqlMethod name="insert" type="preparedStatement" return="rowCount" static="false" connection="true">
+    <Sql><![CDATA[
+        INSERT INTO S_TimeExpense 
+        (AD_Org_ID, DocumentNo, C_BPartner_ID, DateReport, Processed, M_Pricelist_ID, M_Warehouse_ID, Posted, C_Project_ID, A_Asset_ID, C_Costcenter_ID, User1_ID, User2_ID, S_TimeExpense_ID, Description, IsActive, AD_Client_ID, Processing, created, createdby, updated, updatedBy)
+        VALUES ((?), (?), (?), TO_DATE(?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), now(), ?, now(), ?)
+    ]]></Sql>
+    <Parameter name="adOrgId"></Parameter> <Parameter name="documentno"></Parameter> <Parameter name="cBpartnerId"></Parameter> <Parameter name="datereport"></Parameter> <Parameter name="processed"></Parameter> <Parameter name="mPricelistId"></Parameter> <Parameter name="mWarehouseId"></Parameter> <Parameter name="posted"></Parameter> <Parameter name="cProjectId"></Parameter> <Parameter name="aAssetId"></Parameter> <Parameter name="cCostcenterId"></Parameter> <Parameter name="user1Id"></Parameter> <Parameter name="user2Id"></Parameter> <Parameter name="sTimeexpenseId"></Parameter> <Parameter name="description"></Parameter> <Parameter name="isactive"></Parameter> <Parameter name="adClientId"></Parameter> <Parameter name="processing"></Parameter> 
+    <Parameter name="createdby"></Parameter>
+    <Parameter name="updatedby"></Parameter>
+  </SqlMethod>
+
+  <SqlMethod name="delete" type="preparedStatement" return="rowCount">
+    <Sql><![CDATA[
+        DELETE FROM S_TimeExpense
+        WHERE S_TimeExpense.S_TimeExpense_ID = ? 
+        
+        AND S_TimeExpense.AD_Client_ID IN ('1') 
+        AND S_TimeExpense.AD_Org_ID IN ('1') 
+    ]]></Sql>
+    <Parameter name="param1"></Parameter>
+    
+        <Parameter name="adUserClient" type="replace" optional="true" after="S_TimeExpense.AD_Client_ID IN (" text="'1'"/>
+        <Parameter name="adOrgClient" type="replace" optional="true" after="S_TimeExpense.AD_Org_ID IN (" text="'1'"/>
+  </SqlMethod>
+
+  <SqlMethod name="selectOrg" type="preparedStatement" return="string">
+    <SqlMethodComment>Select for relation</SqlMethodComment>
+    <Sql><![CDATA[ 
+        SELECT AD_ORG_ID
+          FROM S_TimeExpense
+         WHERE S_TimeExpense.S_TimeExpense_ID = ? 
+    ]]></Sql>
+    <Parameter name="id"></Parameter>
+  </SqlMethod>
+  
+  <SqlMethod name="getCurrentDBTimestamp" type="preparedStatement" return="string">
+    <Sql><![CDATA[ 
+        SELECT to_char(Updated, 'YYYYMMDDHH24MISS') as Updated_Time_Stamp
+          FROM S_TimeExpense
+         WHERE S_TimeExpense.S_TimeExpense_ID = ? 
+    ]]></Sql>
+    <Parameter name="id"></Parameter>
+  </SqlMethod>
+</SqlClass>

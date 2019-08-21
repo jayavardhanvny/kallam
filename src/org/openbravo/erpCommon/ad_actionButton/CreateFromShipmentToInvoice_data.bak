@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<SqlClass name="CreateFromShipmentToInvoiceData" package="org.openbravo.erpCommon.ad_actionButton">
+    <SqlMethod name="selectData" type="preparedStatement" return="multiple">
+        <SqlMethodComment></SqlMethodComment>
+        <Sql>
+            select io.m_inout_id, iol.m_inoutline_id, io.em_rcfr_freighth,  
+            io.em_rcfr_insuranceh, io.em_rcfr_ratetype, 
+            iol.em_rcfr_netunitrate, iol.em_rcfr_priceactual, iol.c_bpartner_id, 
+            io.em_rcob_commission 
+            from m_inout io
+            inner join m_inoutline iol on iol.m_inout_id = io.m_inout_id
+            where m_inoutline_id = ? limit 1
+        </Sql>
+        <Parameter name="lineId"/>
+    </SqlMethod>
+  
+    <SqlMethod name="updateInvoice" type="preparedStatement" connection="true" return="rowCount">
+        <SqlMethodComment></SqlMethodComment>
+        <Sql>
+            update C_invoice set em_rcfr_ratetype=?, em_rcfr_freighth=to_number(?), em_rcfr_insuranceh=to_number(?), 
+            em_epcg_agent=?, em_rcob_commission=to_number(?) 
+            where c_invoice_id=?
+        </Sql>
+        <Parameter name="ratetype"/>
+        <Parameter name="freight"/>
+        <Parameter name="insurance"/>
+        <Parameter name="businessagent"/>
+        <Parameter name="commission"/>
+        <Parameter name="invoiceId"/>
+    </SqlMethod>
+  
+    <SqlMethod name="updateInvoiceLine" type="preparedStatement" connection="true" return="rowCount">
+        <SqlMethodComment></SqlMethodComment>
+        <Sql>
+            update c_invoiceline set priceactual= to_number(?), em_rcfr_netunitrate=to_number(?), em_rcfr_netrate= to_number(?) 
+            where c_invoiceline_id=?   
+
+        </Sql>
+        <Parameter name="netunitprice"/>
+        <Parameter name="netunitrate"/>
+        <Parameter name="netrate"/>
+        <Parameter name="invoicelineid"/>
+    </SqlMethod>
+</SqlClass>

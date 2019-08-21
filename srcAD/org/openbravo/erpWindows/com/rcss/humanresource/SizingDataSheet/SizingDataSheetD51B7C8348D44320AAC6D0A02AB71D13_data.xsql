@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SqlClass id="class" name="SizingDataSheetD51B7C8348D44320AAC6D0A02AB71D13Data" package="org.openbravo.erpWindows.com.rcss.humanresource.SizingDataSheet">
+  <SqlClassComment>WAD Generated class</SqlClassComment>
+
+  <SqlMethod name="selectEdit" type="preparedStatement" return="multiple">
+    <SqlMethodComment>Select for edit</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT to_char(RCHR_Sizingsheet.Created, ?) as created, 
+        (SELECT NAME FROM AD_USER u WHERE AD_USER_ID = RCHR_Sizingsheet.CreatedBy) as CreatedByR, 
+        to_char(RCHR_Sizingsheet.Updated, ?) as updated, 
+        to_char(RCHR_Sizingsheet.Updated, 'YYYYMMDDHH24MISS') as Updated_Time_Stamp,  
+        RCHR_Sizingsheet.UpdatedBy, 
+        (SELECT NAME FROM AD_USER u WHERE AD_USER_ID = RCHR_Sizingsheet.UpdatedBy) as UpdatedByR,
+        RCHR_Sizingsheet.AD_Org_ID, 
+(CASE WHEN RCHR_Sizingsheet.AD_Org_ID IS NULL THEN '' ELSE  (COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table1.Name), ''))),'') ) END) AS AD_Org_IDR, 
+COALESCE(RCHR_Sizingsheet.Isactive, 'N') AS Isactive, 
+RCHR_Sizingsheet.Sizingdate, 
+RCHR_Sizingsheet.Rcpr_Shift_ID, 
+(CASE WHEN RCHR_Sizingsheet.Rcpr_Shift_ID IS NULL THEN '' ELSE  (COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table2.Name), ''))),'') ) END) AS Rcpr_Shift_IDR, 
+RCHR_Sizingsheet.C_Doctype_ID, 
+(CASE WHEN RCHR_Sizingsheet.C_Doctype_ID IS NULL THEN '' ELSE  ( COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR((CASE WHEN tableTRL3.Name IS NULL THEN TO_CHAR(table3.Name) ELSE TO_CHAR(tableTRL3.Name) END)), ''))),'') ) END) AS C_Doctype_IDR, 
+COALESCE(RCHR_Sizingsheet.Isstopped, 'N') AS Isstopped, 
+RCHR_Sizingsheet.Rchr_Detention_ID, 
+(CASE WHEN RCHR_Sizingsheet.Rchr_Detention_ID IS NULL THEN '' ELSE  (COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table4.Name), ''))),'') ) END) AS Rchr_Detention_IDR, 
+TO_CHAR(RCHR_Sizingsheet.Detfromtime, 'HH24:MI:SS') AS Detfromtime, 
+TO_CHAR(RCHR_Sizingsheet.Dettotime, 'HH24:MI:SS') AS Dettotime, 
+RCHR_Sizingsheet.Dettimedifference, 
+RCHR_Sizingsheet.Documentno, 
+RCHR_Sizingsheet.Rchr_Directwarp_ID, 
+(CASE WHEN RCHR_Sizingsheet.Rchr_Directwarp_ID IS NULL THEN '' ELSE  (COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table5.Documentno), ''))),'') ) END) AS Rchr_Directwarp_IDR, 
+RCHR_Sizingsheet.Rchr_Qualitystandard_ID, 
+(CASE WHEN RCHR_Sizingsheet.Rchr_Qualitystandard_ID IS NULL THEN '' ELSE  (COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table6.Qualityno), ''))),'')  || ' - ' || COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table6.Partyconstruction), ''))),'') ) END) AS Rchr_Qualitystandard_IDR, 
+RCHR_Sizingsheet.Construction, 
+RCHR_Sizingsheet.Totalends, 
+RCHR_Sizingsheet.Setlength, 
+RCHR_Sizingsheet.Beamcount, 
+RCHR_Sizingsheet.Glm, 
+RCHR_Sizingsheet.Warperbeams, 
+RCHR_Sizingsheet.Yarnsuppliier, 
+TO_CHAR(RCHR_Sizingsheet.Fromtime, 'HH24:MI:SS') AS Fromtime, 
+TO_CHAR(RCHR_Sizingsheet.Totime, 'HH24:MI:SS') AS Totime, 
+RCHR_Sizingsheet.Shiftinmins, 
+RCHR_Sizingsheet.Utilization, 
+RCHR_Sizingsheet.Rchr_Jobcard_ID, 
+(CASE WHEN RCHR_Sizingsheet.Rchr_Jobcard_ID IS NULL THEN '' ELSE  (COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table7.Documentno), ''))),'') ) END) AS Rchr_Jobcard_IDR, 
+RCHR_Sizingsheet.Status, 
+(CASE WHEN RCHR_Sizingsheet.Status IS NULL THEN '' ELSE  ( COALESCE(TO_CHAR(list1.name),'') ) END) AS StatusR, 
+RCHR_Sizingsheet.Complete, 
+RCHR_Sizingsheet.Rchr_Sizingsheet_ID, 
+RCHR_Sizingsheet.AD_Client_ID, 
+ 
+        ? AS LANGUAGE 
+        FROM RCHR_Sizingsheet left join (select AD_Org_ID, Name from AD_Org) table1 on (RCHR_Sizingsheet.AD_Org_ID = table1.AD_Org_ID) left join (select Rcpr_Shift_ID, Name from Rcpr_Shift) table2 on (RCHR_Sizingsheet.Rcpr_Shift_ID = table2.Rcpr_Shift_ID) left join (select C_DocType_ID, Name from C_DocType) table3 on (RCHR_Sizingsheet.C_Doctype_ID =  table3.C_DocType_ID) left join (select C_DocType_ID,AD_Language, Name from C_DocType_TRL) tableTRL3 on (table3.C_DocType_ID = tableTRL3.C_DocType_ID and tableTRL3.AD_Language = ?)  left join (select Rchr_Detention_ID, Name from Rchr_Detention) table4 on (RCHR_Sizingsheet.Rchr_Detention_ID = table4.Rchr_Detention_ID) left join (select Rchr_Directwarp_ID, Documentno from Rchr_Directwarp) table5 on (RCHR_Sizingsheet.Rchr_Directwarp_ID = table5.Rchr_Directwarp_ID) left join (select Rchr_Qualitystandard_ID, Qualityno, Partyconstruction from Rchr_Qualitystandard) table6 on (RCHR_Sizingsheet.Rchr_Qualitystandard_ID = table6.Rchr_Qualitystandard_ID) left join (select Rchr_Jobcard_ID, Documentno from Rchr_Jobcard) table7 on (RCHR_Sizingsheet.Rchr_Jobcard_ID = table7.Rchr_Jobcard_ID) left join ad_ref_list_v list1 on (RCHR_Sizingsheet.Status = list1.value and list1.ad_reference_id = '131' and list1.ad_language = ?) 
+        WHERE 2=2 
+
+        AND 1=1 
+        AND RCHR_Sizingsheet.Rchr_Sizingsheet_ID = ? 
+        AND RCHR_Sizingsheet.AD_Client_ID IN ('1') 
+           AND RCHR_Sizingsheet.AD_Org_ID IN ('1') 
+    ]]></Sql>
+    <Parameter name="dateTimeFormat"></Parameter>
+    <Parameter name="dateTimeFormat"></Parameter>
+    
+    <Parameter name="paramLanguage"></Parameter>
+<Parameter name="paramLanguage"/>
+<Parameter name="paramLanguage"/>
+
+
+    <Parameter name="key"></Parameter>
+        <Parameter name="adUserClient" type="replace" optional="true" after="RCHR_Sizingsheet.AD_Client_ID IN (" text="'1'"/>
+        <Parameter name="adOrgClient" type="replace" optional="true" after="RCHR_Sizingsheet.AD_Org_ID IN (" text="'1'"/>
+
+    <Field name="adUserClient" value="void"></Field>
+    <Field name="adOrgClient" value="void"></Field>
+    <Field name="createdby" value="void"></Field>
+    
+    <Field name="trBgcolor" value="void"></Field>
+    <Field name="totalCount" value="void"></Field>
+    <Field name="dateTimeFormat" value=""></Field>
+  </SqlMethod>
+  
+  
+
+  <SqlMethod name="set" type="constant" return="multiple">
+      <SqlMethodComment>Create a registry</SqlMethodComment>
+      <Sql></Sql>
+
+<Parameter name="createdby"></Parameter><Parameter name="createdbyr"></Parameter><Parameter name="cDoctypeId"></Parameter><Parameter name="isstopped"></Parameter><Parameter name="dettimedifference"></Parameter><Parameter name="complete"></Parameter><Parameter name="rchrDetentionId"></Parameter><Parameter name="utilization"></Parameter><Parameter name="sizingdate"></Parameter><Parameter name="yarnsuppliier"></Parameter><Parameter name="warperbeams"></Parameter><Parameter name="totime"></Parameter><Parameter name="documentno"></Parameter><Parameter name="beamcount"></Parameter><Parameter name="dettotime"></Parameter><Parameter name="updatedby"></Parameter><Parameter name="updatedbyr"></Parameter><Parameter name="setlength"></Parameter><Parameter name="fromtime"></Parameter><Parameter name="rcprShiftId"></Parameter><Parameter name="rchrDirectwarpId"></Parameter><Parameter name="isactive"></Parameter><Parameter name="detfromtime"></Parameter><Parameter name="adClientId"></Parameter><Parameter name="adOrgId"></Parameter><Parameter name="shiftinmins"></Parameter><Parameter name="rchrSizingsheetId"></Parameter><Parameter name="status"></Parameter><Parameter name="construction"></Parameter><Parameter name="rchrQualitystandardId"></Parameter><Parameter name="glm"></Parameter><Parameter name="rchrJobcardId"></Parameter><Parameter name="totalends"></Parameter>
+   </SqlMethod>
+
+
+
+
+
+
+   <SqlMethod name="selectDef06AC617772374C4281397D840FC06C49_0" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>Select for auxiliar field</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT  ( COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table2.Name), ''))), '') ) as Createdby FROM AD_User left join (select AD_User_ID, Name from AD_User) table2 on (AD_User.AD_User_ID = table2.AD_User_ID) WHERE AD_User.isActive='Y' AND AD_User.AD_User_ID = ?  
+    ]]></Sql>
+<Parameter name="CreatedbyR"/>
+  </SqlMethod>
+
+   <SqlMethod name="selectDef6BBB93C75908410DB76FAB49D59E4A13_1" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>Select for auxiliar field</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT  ( COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table2.Name), ''))), '') ) as Updatedby FROM AD_User left join (select AD_User_ID, Name from AD_User) table2 on (AD_User.AD_User_ID = table2.AD_User_ID) WHERE AD_User.isActive='Y' AND AD_User.AD_User_ID = ?  
+    ]]></Sql>
+<Parameter name="UpdatedbyR"/>
+  </SqlMethod>
+
+
+
+
+
+
+
+
+
+
+  <SqlMethod name="update" type="preparedStatement" return="rowCount" static="false" connection="true">
+    <Sql><![CDATA[
+        UPDATE RCHR_Sizingsheet
+        SET AD_Org_ID = (?) , Isactive = (?) , Sizingdate = TO_DATE(?) , Rcpr_Shift_ID = (?) , C_Doctype_ID = (?) , Isstopped = (?) , Rchr_Detention_ID = (?) , Detfromtime = TO_TIMESTAMP(?,'HH24:MI:SS') , Dettotime = TO_TIMESTAMP(?,'HH24:MI:SS') , Dettimedifference = (?) , Documentno = (?) , Rchr_Directwarp_ID = (?) , Rchr_Qualitystandard_ID = (?) , Construction = (?) , Totalends = TO_NUMBER(?) , Setlength = TO_NUMBER(?) , Beamcount = TO_NUMBER(?) , Glm = TO_NUMBER(?) , Warperbeams = TO_NUMBER(?) , Yarnsuppliier = (?) , Fromtime = TO_TIMESTAMP(?,'HH24:MI:SS') , Totime = TO_TIMESTAMP(?,'HH24:MI:SS') , Shiftinmins = TO_NUMBER(?) , Utilization = TO_NUMBER(?) , Rchr_Jobcard_ID = (?) , Status = (?) , Complete = (?) , Rchr_Sizingsheet_ID = (?) , AD_Client_ID = (?) , updated = now(), updatedby = ? 
+        WHERE RCHR_Sizingsheet.Rchr_Sizingsheet_ID = ? 
+        
+        AND RCHR_Sizingsheet.AD_Client_ID IN ('1') 
+        AND RCHR_Sizingsheet.AD_Org_ID IN ('1') 
+    ]]></Sql>
+    <Parameter name="adOrgId"></Parameter> <Parameter name="isactive"></Parameter> <Parameter name="sizingdate"></Parameter> <Parameter name="rcprShiftId"></Parameter> <Parameter name="cDoctypeId"></Parameter> <Parameter name="isstopped"></Parameter> <Parameter name="rchrDetentionId"></Parameter> <Parameter name="detfromtime"></Parameter> <Parameter name="dettotime"></Parameter> <Parameter name="dettimedifference"></Parameter> <Parameter name="documentno"></Parameter> <Parameter name="rchrDirectwarpId"></Parameter> <Parameter name="rchrQualitystandardId"></Parameter> <Parameter name="construction"></Parameter> <Parameter name="totalends"></Parameter> <Parameter name="setlength"></Parameter> <Parameter name="beamcount"></Parameter> <Parameter name="glm"></Parameter> <Parameter name="warperbeams"></Parameter> <Parameter name="yarnsuppliier"></Parameter> <Parameter name="fromtime"></Parameter> <Parameter name="totime"></Parameter> <Parameter name="shiftinmins"></Parameter> <Parameter name="utilization"></Parameter> <Parameter name="rchrJobcardId"></Parameter> <Parameter name="status"></Parameter> <Parameter name="complete"></Parameter> <Parameter name="rchrSizingsheetId"></Parameter> <Parameter name="adClientId"></Parameter> 
+    <Parameter name="updatedby"></Parameter>
+    <Parameter id="paramKey" name="rchrSizingsheetId"></Parameter>
+    
+    
+        <Parameter name="adUserClient" type="replace" optional="true" after="RCHR_Sizingsheet.AD_Client_ID IN (" text="'1'"/>
+        <Parameter name="adOrgClient" type="replace" optional="true" after="RCHR_Sizingsheet.AD_Org_ID IN (" text="'1'"/>
+  </SqlMethod>
+
+  <SqlMethod name="insert" type="preparedStatement" return="rowCount" static="false" connection="true">
+    <Sql><![CDATA[
+        INSERT INTO RCHR_Sizingsheet 
+        (AD_Org_ID, Isactive, Sizingdate, Rcpr_Shift_ID, C_Doctype_ID, Isstopped, Rchr_Detention_ID, Detfromtime, Dettotime, Dettimedifference, Documentno, Rchr_Directwarp_ID, Rchr_Qualitystandard_ID, Construction, Totalends, Setlength, Beamcount, Glm, Warperbeams, Yarnsuppliier, Fromtime, Totime, Shiftinmins, Utilization, Rchr_Jobcard_ID, Status, Complete, Rchr_Sizingsheet_ID, AD_Client_ID, created, createdby, updated, updatedBy)
+        VALUES ((?), (?), TO_DATE(?), (?), (?), (?), (?), TO_TIMESTAMP(?, 'HH24:MI:SS'), TO_TIMESTAMP(?, 'HH24:MI:SS'), (?), (?), (?), (?), (?), TO_NUMBER(?), TO_NUMBER(?), TO_NUMBER(?), TO_NUMBER(?), TO_NUMBER(?), (?), TO_TIMESTAMP(?, 'HH24:MI:SS'), TO_TIMESTAMP(?, 'HH24:MI:SS'), TO_NUMBER(?), TO_NUMBER(?), (?), (?), (?), (?), (?), now(), ?, now(), ?)
+    ]]></Sql>
+    <Parameter name="adOrgId"></Parameter> <Parameter name="isactive"></Parameter> <Parameter name="sizingdate"></Parameter> <Parameter name="rcprShiftId"></Parameter> <Parameter name="cDoctypeId"></Parameter> <Parameter name="isstopped"></Parameter> <Parameter name="rchrDetentionId"></Parameter> <Parameter name="detfromtime"></Parameter> <Parameter name="dettotime"></Parameter> <Parameter name="dettimedifference"></Parameter> <Parameter name="documentno"></Parameter> <Parameter name="rchrDirectwarpId"></Parameter> <Parameter name="rchrQualitystandardId"></Parameter> <Parameter name="construction"></Parameter> <Parameter name="totalends"></Parameter> <Parameter name="setlength"></Parameter> <Parameter name="beamcount"></Parameter> <Parameter name="glm"></Parameter> <Parameter name="warperbeams"></Parameter> <Parameter name="yarnsuppliier"></Parameter> <Parameter name="fromtime"></Parameter> <Parameter name="totime"></Parameter> <Parameter name="shiftinmins"></Parameter> <Parameter name="utilization"></Parameter> <Parameter name="rchrJobcardId"></Parameter> <Parameter name="status"></Parameter> <Parameter name="complete"></Parameter> <Parameter name="rchrSizingsheetId"></Parameter> <Parameter name="adClientId"></Parameter> 
+    <Parameter name="createdby"></Parameter>
+    <Parameter name="updatedby"></Parameter>
+  </SqlMethod>
+
+  <SqlMethod name="delete" type="preparedStatement" return="rowCount">
+    <Sql><![CDATA[
+        DELETE FROM RCHR_Sizingsheet
+        WHERE RCHR_Sizingsheet.Rchr_Sizingsheet_ID = ? 
+        
+        AND RCHR_Sizingsheet.AD_Client_ID IN ('1') 
+        AND RCHR_Sizingsheet.AD_Org_ID IN ('1') 
+    ]]></Sql>
+    <Parameter name="param1"></Parameter>
+    
+        <Parameter name="adUserClient" type="replace" optional="true" after="RCHR_Sizingsheet.AD_Client_ID IN (" text="'1'"/>
+        <Parameter name="adOrgClient" type="replace" optional="true" after="RCHR_Sizingsheet.AD_Org_ID IN (" text="'1'"/>
+  </SqlMethod>
+
+  <SqlMethod name="selectOrg" type="preparedStatement" return="string">
+    <SqlMethodComment>Select for relation</SqlMethodComment>
+    <Sql><![CDATA[ 
+        SELECT AD_ORG_ID
+          FROM RCHR_Sizingsheet
+         WHERE RCHR_Sizingsheet.Rchr_Sizingsheet_ID = ? 
+    ]]></Sql>
+    <Parameter name="id"></Parameter>
+  </SqlMethod>
+  
+  <SqlMethod name="getCurrentDBTimestamp" type="preparedStatement" return="string">
+    <Sql><![CDATA[ 
+        SELECT to_char(Updated, 'YYYYMMDDHH24MISS') as Updated_Time_Stamp
+          FROM RCHR_Sizingsheet
+         WHERE RCHR_Sizingsheet.Rchr_Sizingsheet_ID = ? 
+    ]]></Sql>
+    <Parameter name="id"></Parameter>
+  </SqlMethod>
+</SqlClass>

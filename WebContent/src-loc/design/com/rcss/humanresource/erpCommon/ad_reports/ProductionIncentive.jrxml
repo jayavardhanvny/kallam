@@ -1,0 +1,343 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ProductionIncentive" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="FromD" class="java.util.Date"/>
+	<parameter name="ToDate" class="java.util.Date"/>
+	<parameter name="Dept_ID" class="java.lang.String">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="aux_dept" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[$P{Dept_ID}.equals("") ? " " : " AND RCHR_EMPLOYEE.RCHR_EMP_DEPT_ID = '" + $P{Dept_ID} + "'"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="SubDept_ID" class="java.lang.String">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="aux_subdept" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[$P{SubDept_ID}.equals("") ? " " : " AND RCHR_EMPLOYEE.RCHR_SUBDEPARTMENT_ID = '" + $P{SubDept_ID} + "'"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="Designation_ID" class="java.lang.String">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="aux_designation" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[$P{Designation_ID}.equals("") ? " " : " AND RCHR_EMPLOYEE.RCHR_DESIGNATION_ID = '" +$P{Designation_ID} + "'"]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[select sum(rcpl_prodincent.amount) as incentive,rchr_employee.employeename as empname,
+rchr_employee.punchno as punchno,rchr_employee.documentno,
+(select name from rchr_emp_dept where rchr_emp_dept.rchr_emp_dept_id=rchr_employee.rchr_emp_dept_id) as department,
+(select name from rchr_designation where rchr_designation.rchr_designation_id=rchr_employee.rchr_designation_id) as desig,
+(select name from rchr_emp_dept where rchr_emp_dept_id=$P{Dept_ID}) as parm_dept,
+('- '||(select name from rchr_subdepartment where rchr_subdepartment_id=$P{SubDept_ID})) as parm_subdept
+from rcpl_prodincent
+left join rchr_employee on rchr_employee.rchr_employee_id=rcpl_prodincent.rchr_employee_id
+where rcpl_prodincent.fromdate >=$P{FromD} and rcpl_prodincent.todate <=$P{ToDate}
+and 1=1
+$P!{aux_dept}
+$P!{aux_subdept}
+$P!{aux_designation}
+group by empname,punchno,department,desig,rchr_employee.documentno]]>
+	</queryString>
+	<field name="incentive" class="java.math.BigDecimal"/>
+	<field name="empname" class="java.lang.String"/>
+	<field name="punchno" class="java.lang.String"/>
+	<field name="documentno" class="java.lang.String"/>
+	<field name="department" class="java.lang.String"/>
+	<field name="desig" class="java.lang.String"/>
+	<field name="parm_dept" class="java.lang.String"/>
+	<field name="parm_subdept" class="java.lang.String"/>
+	<variable name="sno" class="java.math.BigDecimal" calculation="Count">
+		<variableExpression><![CDATA[$F{documentno}]]></variableExpression>
+	</variable>
+	<variable name="Total" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{incentive}]]></variableExpression>
+		<initialValueExpression><![CDATA[$F{incentive}]]></initialValueExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="68" splitType="Stretch">
+			<line>
+				<reportElement x="554" y="0" width="1" height="68"/>
+			</line>
+			<line>
+				<reportElement x="0" y="0" width="1" height="68"/>
+			</line>
+			<line>
+				<reportElement x="0" y="0" width="555" height="1"/>
+			</line>
+			<staticText>
+				<reportElement key="staticText-2" x="181" y="2" width="239" height="22"/>
+				<textElement textAlignment="Center" verticalAlignment="Top">
+					<font fontName="Verdana" size="14" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[Kallam Spinning Mills ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-3" x="136" y="43" width="356" height="23"/>
+				<textElement textAlignment="Center">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Kunkupadu, Addanki - 523264 - Prakasam - Andhra Pradesh]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-2" x="175" y="21" width="239" height="21"/>
+				<textElement textAlignment="Center" verticalAlignment="Top">
+					<font fontName="Verdana" size="14" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[ (Weaving Division)]]></text>
+			</staticText>
+			<image>
+				<reportElement x="12" y="2" width="124" height="62"/>
+				<imageExpression class="java.lang.String"><![CDATA["D:\\production\\web\\images\\blankicm.gif"]]></imageExpression>
+			</image>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="42" splitType="Stretch">
+			<line>
+				<reportElement x="0" y="0" width="1" height="42"/>
+			</line>
+			<staticText>
+				<reportElement x="5" y="5" width="53" height="14"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[FROM DATE :]]></text>
+			</staticText>
+			<line>
+				<reportElement x="554" y="0" width="1" height="42"/>
+			</line>
+			<textField pattern="dd-MMM-yy" isBlankWhenNull="true">
+				<reportElement x="66" y="5" width="64" height="14"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{FromD}.toLocaleString()]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="1" y="0" width="554" height="1"/>
+			</line>
+			<staticText>
+				<reportElement key="staticText-9" x="166" y="4" width="245" height="16"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Verdana" size="12" isBold="true" isUnderline="false" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[Production Incentive Report]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="213" y="20" width="100" height="20"/>
+				<textElement textAlignment="Justified" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{parm_dept}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="312" y="20" width="100" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{parm_subdept}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="4" y="23" width="53" height="14"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[TO DATE :]]></text>
+			</staticText>
+			<textField pattern="dd-MMM-yyyy">
+				<reportElement x="66" y="23" width="64" height="14"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.util.Date"><![CDATA[$P{ToDate}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="25" splitType="Stretch">
+			<line>
+				<reportElement x="0" y="0" width="1" height="25"/>
+			</line>
+			<line>
+				<reportElement x="80" y="0" width="1" height="24"/>
+			</line>
+			<line>
+				<reportElement x="191" y="0" width="1" height="25"/>
+			</line>
+			<line>
+				<reportElement x="402" y="0" width="1" height="25"/>
+			</line>
+			<line>
+				<reportElement x="554" y="0" width="1" height="23"/>
+			</line>
+			<line>
+				<reportElement x="0" y="-1" width="555" height="1"/>
+			</line>
+			<staticText>
+				<reportElement x="32" y="-1" width="45" height="26"/>
+				<textElement textAlignment="Center" verticalAlignment="Top">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Punch No.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="309" y="2" width="84" height="20"/>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Designation]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-19" x="84" y="4" width="104" height="17"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ Name]]></text>
+			</staticText>
+			<line>
+				<reportElement stretchType="RelativeToBandHeight" x="30" y="1" width="1" height="23"/>
+			</line>
+			<staticText>
+				<reportElement x="0" y="1" width="30" height="22"/>
+				<textElement textAlignment="Center" verticalAlignment="Top">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[S.No.]]></text>
+			</staticText>
+			<line>
+				<reportElement x="302" y="0" width="1" height="25"/>
+			</line>
+			<staticText>
+				<reportElement x="200" y="3" width="93" height="20"/>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Dept.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="419" y="2" width="106" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Incentive  Amount]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="21" splitType="Stretch">
+			<line>
+				<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="1" height="21"/>
+			</line>
+			<line>
+				<reportElement stretchType="RelativeToBandHeight" x="80" y="0" width="1" height="21"/>
+			</line>
+			<line>
+				<reportElement stretchType="RelativeToBandHeight" x="191" y="0" width="1" height="21"/>
+			</line>
+			<line>
+				<reportElement stretchType="RelativeToBandHeight" x="402" y="0" width="1" height="21"/>
+			</line>
+			<line>
+				<reportElement stretchType="RelativeToBandHeight" x="554" y="0" width="1" height="21"/>
+			</line>
+			<line>
+				<reportElement positionType="Float" x="0" y="20" width="555" height="1"/>
+			</line>
+			<line>
+				<reportElement positionType="Float" x="0" y="-1" width="555" height="1"/>
+			</line>
+			<line>
+				<reportElement stretchType="RelativeToBandHeight" x="30" y="0" width="1" height="21"/>
+			</line>
+			<textField isBlankWhenNull="true">
+				<reportElement x="4" y="1" width="26" height="18"/>
+				<textElement verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{sno}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement stretchType="RelativeToBandHeight" x="302" y="0" width="1" height="21"/>
+			</line>
+			<textField>
+				<reportElement x="32" y="1" width="45" height="18"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{punchno}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="82" y="1" width="107" height="17"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{empname}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="199" y="1" width="100" height="17"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{department}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="307" y="3" width="92" height="15"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{desig}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.00">
+				<reportElement x="420" y="2" width="100" height="17"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{incentive}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="53" splitType="Stretch">
+			<staticText>
+				<reportElement x="341" y="2" width="61" height="15"/>
+				<textElement textAlignment="Right">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Total :]]></text>
+			</staticText>
+			<textField pattern="###0.00">
+				<reportElement x="419" y="2" width="100" height="17"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{Total}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement key="staticText-29" x="166" y="30" width="100" height="12"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[H.O.D]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="30" y="30" width="100" height="12"/>
+				<textElement textAlignment="Center">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[TO Incharge]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="425" y="30" width="100" height="12"/>
+				<textElement textAlignment="Center">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Approved By]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-29" x="307" y="30" width="73" height="12"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[G.M]]></text>
+			</staticText>
+		</band>
+	</summary>
+</jasperReport>

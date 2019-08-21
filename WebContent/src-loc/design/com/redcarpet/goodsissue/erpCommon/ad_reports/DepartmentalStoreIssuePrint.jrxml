@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="DepartmentalStoreIssuePrint" pageWidth="205" pageHeight="3800" columnWidth="205" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" isIgnorePagination="true">
+	<property name="ireport.zoom" value="3.9930000000000074"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="ID" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[select m.name,m.value,line.orderedqty,line.unitprice,linenetamt,i.movementdate,i.payableamount,i.documentno,
+(select concat(documentno,'-',employeename) from rchr_employee where rchr_employee_id=i.rchr_employee_id) as empno
+from
+rcgi_dilines line
+left join rcgi_departmentissue i on i.rcgi_departmentissue_id=line.rcgi_departmentissue_id
+left join m_product m on m.m_product_id=line.m_product_id
+WHERE i.docstatus='CO' AND I.rcgi_departmentissue_id=$P{ID}]]>
+	</queryString>
+	<field name="name" class="java.lang.String"/>
+	<field name="value" class="java.lang.String"/>
+	<field name="orderedqty" class="java.math.BigDecimal"/>
+	<field name="unitprice" class="java.math.BigDecimal"/>
+	<field name="linenetamt" class="java.math.BigDecimal"/>
+	<field name="movementdate" class="java.sql.Timestamp"/>
+	<field name="payableamount" class="java.math.BigDecimal"/>
+	<field name="documentno" class="java.lang.String"/>
+	<field name="empno" class="java.lang.String"/>
+	<variable name="totalamt" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{linenetamt}]]></variableExpression>
+	</variable>
+	<variable name="amountinwords" class="java.lang.String">
+		<variableExpression><![CDATA[new com.sam.numbertowords.NumberToWordsConverter_en_In().convertIt($F{payableamount}.longValue())+" Only)"]]></variableExpression>
+	</variable>
+	<variable name="billNO" class="java.lang.String">
+		<variableExpression><![CDATA[new StringBuffer($F{documentno}).replace($F{documentno}.lastIndexOf("/"), $F{documentno}.lastIndexOf("/") + 6, "").toString()]]></variableExpression>
+		<initialValueExpression><![CDATA[new StringBuffer($F{documentno}).replace($F{documentno}.lastIndexOf("/"), $F{documentno}.lastIndexOf("/") + 6, "").toString()]]></initialValueExpression>
+	</variable>
+	<variable name="stringBufferBillNo" class="java.lang.StringBuffer">
+		<variableExpression><![CDATA[new StringBuffer($F{documentno})]]></variableExpression>
+		<initialValueExpression><![CDATA[new StringBuffer($F{documentno})]]></initialValueExpression>
+	</variable>
+	<pageHeader>
+		<band height="32">
+			<textField pattern="dd-MM-yyyy" isBlankWhenNull="true">
+				<reportElement x="54" y="2" width="79" height="10"/>
+				<textElement lineSpacing="Single">
+					<font fontName="DejaVu Sans Mono" size="8"/>
+				</textElement>
+				<textFieldExpression class="java.sql.Timestamp"><![CDATA[$F{movementdate}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="1" y="2" width="53" height="10"/>
+				<textElement lineSpacing="Single">
+					<font fontName="DejaVu Sans Mono" size="8"/>
+				</textElement>
+				<text><![CDATA[Date & No.:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1" y="12" width="40" height="10"/>
+				<textElement lineSpacing="Single">
+					<font fontName="DejaVu Sans Mono" size="8"/>
+				</textElement>
+				<text><![CDATA[EmpNo  :]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="41" y="12" width="100" height="10"/>
+				<textElement lineSpacing="Single">
+					<font fontName="DejaVu Sans Mono" size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{empno}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="0" y="22" width="205" height="1"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineStyle="Dotted"/>
+				</graphicElement>
+			</line>
+			<staticText>
+				<reportElement x="62" y="23" width="100" height="9"/>
+				<textElement lineSpacing="Single">
+					<font fontName="DejaVu Sans Mono" size="7"/>
+				</textElement>
+				<text><![CDATA[Product Details]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="1" width="205" height="1"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineStyle="Dotted"/>
+				</graphicElement>
+			</line>
+			<textField>
+				<reportElement x="109" y="2" width="63" height="10"/>
+				<textElement lineSpacing="Single">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["/ "+$V{billNO}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="10" splitType="Stretch">
+			<staticText>
+				<reportElement x="19" y="0" width="83" height="10"/>
+				<textElement verticalAlignment="Middle" lineSpacing="Single">
+					<font fontName="DejaVu Sans Mono" size="7" isBold="false"/>
+				</textElement>
+				<text><![CDATA[PRODUCT NAME]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="110" y="0" width="20" height="10"/>
+				<textElement verticalAlignment="Middle" lineSpacing="Single">
+					<font fontName="DejaVu Sans Mono" size="7" isBold="false"/>
+				</textElement>
+				<text><![CDATA[QTY]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="130" y="0" width="30" height="10"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle" lineSpacing="Single">
+					<font fontName="DejaVu Sans Mono" size="7" isBold="false"/>
+				</textElement>
+				<text><![CDATA[PRICE]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1" y="0" width="18" height="10"/>
+				<textElement verticalAlignment="Middle" lineSpacing="Single">
+					<font fontName="DejaVu Sans Mono" size="7" isBold="false"/>
+				</textElement>
+				<text><![CDATA[SNo]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="9" width="205" height="1" forecolor="#000000"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineStyle="Dotted"/>
+				</graphicElement>
+			</line>
+			<staticText>
+				<reportElement x="161" y="0" width="43" height="9"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle" lineSpacing="Single">
+					<font fontName="DejaVu Sans Mono" size="7"/>
+				</textElement>
+				<text><![CDATA[Amount]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="12" splitType="Stretch">
+			<textField isStretchWithOverflow="true">
+				<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="19" y="1" width="83" height="10"/>
+				<textElement verticalAlignment="Middle" lineSpacing="Single">
+					<font fontName="DejaVu Sans Mono" size="7" isBold="false"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{name}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.00">
+				<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="110" y="1" width="20" height="10"/>
+				<textElement verticalAlignment="Middle" lineSpacing="Single">
+					<font fontName="DejaVu Sans Mono" size="7" isBold="false"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{orderedqty}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.00">
+				<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="130" y="1" width="30" height="10"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle" lineSpacing="Single">
+					<font fontName="DejaVu Sans Mono" size="7" isBold="false"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{unitprice}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="1" y="1" width="18" height="10"/>
+				<textElement verticalAlignment="Middle" lineSpacing="Single">
+					<font fontName="DejaVu Sans Mono" size="7" isBold="false"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Integer"><![CDATA[$V{REPORT_COUNT}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.00">
+				<reportElement x="161" y="1" width="43" height="10"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle" lineSpacing="Single">
+					<font fontName="DejaVu Sans Mono" size="7"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{linenetamt}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<summary>
+		<band height="12">
+			<line>
+				<reportElement x="1" y="0" width="204" height="1"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineStyle="Dotted"/>
+				</graphicElement>
+			</line>
+			<textField pattern="###0.00">
+				<reportElement x="161" y="1" width="43" height="11"/>
+				<textElement textAlignment="Right" verticalAlignment="Top" lineSpacing="Single">
+					<font fontName="DejaVu Sans Mono" size="8"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{payableamount}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="1" y="1" width="79" height="11"/>
+				<textElement lineSpacing="Single">
+					<font fontName="DejaVu Sans Mono" size="8"/>
+				</textElement>
+				<text><![CDATA[Payable Amount]]></text>
+			</staticText>
+		</band>
+	</summary>
+</jasperReport>

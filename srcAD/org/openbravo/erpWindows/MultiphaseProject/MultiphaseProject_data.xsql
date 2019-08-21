@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SqlClass id="class" name="MultiphaseProjectData" package="org.openbravo.erpWindows.MultiphaseProject">
+  <SqlClassComment>WAD Generated class</SqlClassComment>
+
+  <SqlMethod name="selectEdit" type="preparedStatement" return="multiple">
+    <SqlMethodComment>Select for edit</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT to_char(C_Project.Created, ?) as created, 
+        (SELECT NAME FROM AD_USER u WHERE AD_USER_ID = C_Project.CreatedBy) as CreatedByR, 
+        to_char(C_Project.Updated, ?) as updated, 
+        to_char(C_Project.Updated, 'YYYYMMDDHH24MISS') as Updated_Time_Stamp,  
+        C_Project.UpdatedBy, 
+        (SELECT NAME FROM AD_USER u WHERE AD_USER_ID = C_Project.UpdatedBy) as UpdatedByR,
+        C_Project.AD_Org_ID, 
+(CASE WHEN C_Project.AD_Org_ID IS NULL THEN '' ELSE  (COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table1.Name), ''))),'') ) END) AS AD_Org_IDR, 
+C_Project.Value, 
+C_Project.Name, 
+COALESCE(C_Project.IsSummary, 'N') AS IsSummary, 
+C_Project.Setprojecttype, 
+C_Project.Projectstatus, 
+C_Project.C_ProjectType_ID, 
+C_Project.C_ProjectPhase_ID, 
+(CASE WHEN C_Project.C_ProjectPhase_ID IS NULL THEN '' ELSE  (COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table2.SeqNo), ''))),'')  || ' - ' || COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table2.Name), ''))),'') ) END) AS C_ProjectPhase_IDR, 
+C_Project.Startdate, 
+C_Project.DateContract, 
+C_Project.DateFinish, 
+C_Project.Description, 
+C_Project.SalesRep_ID, 
+(CASE WHEN C_Project.SalesRep_ID IS NULL THEN '' ELSE  ( COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table3.Name), ''))),'') ) END) AS SalesRep_IDR, 
+C_Project.Responsible_ID, 
+(CASE WHEN C_Project.Responsible_ID IS NULL THEN '' ELSE  ( COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table4.Name), ''))),'') ) END) AS Responsible_IDR, 
+COALESCE(C_Project.IsCommitment, 'N') AS IsCommitment, 
+COALESCE(C_Project.IsCommitCeiling, 'N') AS IsCommitCeiling, 
+C_Project.CommittedAmt, 
+C_Project.CommittedQty, 
+C_Project.Servrevenue, 
+C_Project.Expexpenses, 
+C_Project.Servsercost, 
+C_Project.Servoutcost, 
+C_Project.Servcost, 
+C_Project.Expreinvoicing, 
+C_Project.Servmargin, 
+C_Project.Expmargin, 
+C_Project.C_BPartner_ID, 
+(CASE WHEN C_Project.C_BPartner_ID IS NULL THEN '' ELSE  (COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table5.Name), ''))),'') ) END) AS C_BPartner_IDR, 
+C_Project.C_BPartner_Location_ID, 
+(CASE WHEN C_Project.C_BPartner_Location_ID IS NULL THEN '' ELSE  (COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table6.Name), ''))),'') ) END) AS C_BPartner_Location_IDR, 
+C_Project.AD_User_ID, 
+(CASE WHEN C_Project.AD_User_ID IS NULL THEN '' ELSE  (COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table7.Name), ''))),'') ) END) AS AD_User_IDR, 
+C_Project.POReference, 
+C_Project.FIN_Paymentmethod_ID, 
+(CASE WHEN C_Project.FIN_Paymentmethod_ID IS NULL THEN '' ELSE  (COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table8.Name), ''))),'') ) END) AS FIN_Paymentmethod_IDR, 
+C_Project.C_PaymentTerm_ID, 
+(CASE WHEN C_Project.C_PaymentTerm_ID IS NULL THEN '' ELSE  (COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR((CASE WHEN tableTRL9.Name IS NULL THEN TO_CHAR(table9.Name) ELSE TO_CHAR(tableTRL9.Name) END)), ''))),'') ) END) AS C_PaymentTerm_IDR, 
+C_Project.M_PriceList_ID, 
+(CASE WHEN C_Project.M_PriceList_ID IS NULL THEN '' ELSE  (COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table10.Name), ''))),'') ) END) AS M_PriceList_IDR, 
+C_Project.C_Currency_ID, 
+(CASE WHEN C_Project.C_Currency_ID IS NULL THEN '' ELSE  (COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table11.ISO_Code), ''))),'') ) END) AS C_Currency_IDR, 
+C_Project.M_Warehouse_ID, 
+(CASE WHEN C_Project.M_Warehouse_ID IS NULL THEN '' ELSE  (COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table12.Name), ''))),'') ) END) AS M_Warehouse_IDR, 
+C_Project.ChangeProjectStatus, 
+C_Project.CopyFrom, 
+C_Project.Processing, 
+C_Project.AD_Client_ID, 
+COALESCE(C_Project.IsActive, 'N') AS IsActive, 
+COALESCE(C_Project.Processed, 'N') AS Processed, 
+C_Project.M_PriceList_Version_ID, 
+C_Project.Note, 
+C_Project.PlannedAmt, 
+C_Project.PlannedMarginAmt, 
+C_Project.PlannedQty, 
+C_Project.C_Campaign_ID, 
+C_Project.InvoicedAmt, 
+C_Project.InvoicedQty, 
+C_Project.ProjectBalanceAmt, 
+C_Project.ProjectCategory, 
+C_Project.Projectkind, 
+C_Project.Projectphase, 
+C_Project.Publicprivate, 
+C_Project.BillTo_ID, 
+C_Project.AccountNo, 
+C_Project.Document_Copies, 
+C_Project.PaymentRule, 
+COALESCE(C_Project.Invoice_ToProject, 'N') AS Invoice_ToProject, 
+C_Project.C_Location_ID, 
+C_Project.PlannedPOAmt, 
+C_Project.LastPlannedProposalDate, 
+COALESCE(C_Project.Createtemppricelist, 'N') AS Createtemppricelist, 
+C_Project.C_Phase_ID, 
+C_Project.GenerateTo, 
+C_Project.GenerateOrder, 
+C_Project.C_Project_ID, 
+ 
+        ? AS LANGUAGE 
+        FROM C_Project left join (select AD_Org_ID, Name from AD_Org) table1 on (C_Project.AD_Org_ID = table1.AD_Org_ID) left join (select C_ProjectPhase_ID, SeqNo, Name from C_ProjectPhase) table2 on (C_Project.C_ProjectPhase_ID = table2.C_ProjectPhase_ID) left join (select AD_User_ID, Name from AD_User) table3 on (C_Project.SalesRep_ID =  table3.AD_User_ID) left join (select C_BPartner_ID, Name from C_BPartner) table4 on (C_Project.Responsible_ID =  table4.C_BPartner_ID) left join (select C_BPartner_ID, Name from C_BPartner) table5 on (C_Project.C_BPartner_ID = table5.C_BPartner_ID) left join (select C_BPartner_Location_ID, Name from C_BPartner_Location) table6 on (C_Project.C_BPartner_Location_ID = table6.C_BPartner_Location_ID) left join (select AD_User_ID, Name from AD_User) table7 on (C_Project.AD_User_ID = table7.AD_User_ID) left join (select FIN_Paymentmethod_ID, Name from FIN_Paymentmethod) table8 on (C_Project.FIN_Paymentmethod_ID = table8.FIN_Paymentmethod_ID) left join (select C_PaymentTerm_ID, Name from C_PaymentTerm) table9 on (C_Project.C_PaymentTerm_ID = table9.C_PaymentTerm_ID) left join (select C_PaymentTerm_ID,AD_Language, Name from C_PaymentTerm_TRL) tableTRL9 on (table9.C_PaymentTerm_ID = tableTRL9.C_PaymentTerm_ID and tableTRL9.AD_Language = ?)  left join (select M_PriceList_ID, Name from M_PriceList) table10 on (C_Project.M_PriceList_ID = table10.M_PriceList_ID) left join (select C_Currency_ID, ISO_Code from C_Currency) table11 on (C_Project.C_Currency_ID = table11.C_Currency_ID) left join (select M_Warehouse_ID, Name from M_Warehouse) table12 on (C_Project.M_Warehouse_ID = table12.M_Warehouse_ID)
+        WHERE 2=2 
+ AND C_Project.ProjectCategory='S'
+        AND 1=1 
+        AND C_Project.C_Project_ID = ? 
+        AND C_Project.AD_Client_ID IN ('1') 
+           AND C_Project.AD_Org_ID IN ('1') 
+    ]]></Sql>
+    <Parameter name="dateTimeFormat"></Parameter>
+    <Parameter name="dateTimeFormat"></Parameter>
+    
+    <Parameter name="paramLanguage"></Parameter>
+<Parameter name="paramLanguage"/>
+
+
+    <Parameter name="key"></Parameter>
+        <Parameter name="adUserClient" type="replace" optional="true" after="C_Project.AD_Client_ID IN (" text="'1'"/>
+        <Parameter name="adOrgClient" type="replace" optional="true" after="C_Project.AD_Org_ID IN (" text="'1'"/>
+
+    <Field name="adUserClient" value="void"></Field>
+    <Field name="adOrgClient" value="void"></Field>
+    <Field name="createdby" value="void"></Field>
+    
+    <Field name="trBgcolor" value="void"></Field>
+    <Field name="totalCount" value="void"></Field>
+    <Field name="dateTimeFormat" value=""></Field>
+  </SqlMethod>
+  
+  
+
+  <SqlMethod name="set" type="constant" return="multiple">
+      <SqlMethodComment>Create a registry</SqlMethodComment>
+      <Sql></Sql>
+
+<Parameter name="cProjectphaseId"></Parameter><Parameter name="createtemppricelist"></Parameter><Parameter name="startdate"></Parameter><Parameter name="cProjectId"></Parameter><Parameter name="adOrgId"></Parameter><Parameter name="adClientId"></Parameter><Parameter name="isactive"></Parameter><Parameter name="createdby"></Parameter><Parameter name="createdbyr"></Parameter><Parameter name="name"></Parameter><Parameter name="updatedby"></Parameter><Parameter name="updatedbyr"></Parameter><Parameter name="description"></Parameter><Parameter name="issummary"></Parameter><Parameter name="value"></Parameter><Parameter name="servoutcost"></Parameter><Parameter name="cCurrencyId"></Parameter><Parameter name="cBpartnerId"></Parameter><Parameter name="cBpartnerIdr"></Parameter><Parameter name="iscommitment"></Parameter><Parameter name="committedamt"></Parameter><Parameter name="datecontract"></Parameter><Parameter name="datefinish"></Parameter><Parameter name="generateto"></Parameter><Parameter name="processed"></Parameter><Parameter name="note"></Parameter><Parameter name="salesrepId"></Parameter><Parameter name="mPricelistVersionId"></Parameter><Parameter name="plannedamt"></Parameter><Parameter name="plannedqty"></Parameter><Parameter name="plannedmarginamt"></Parameter><Parameter name="poreference"></Parameter><Parameter name="cCampaignId"></Parameter><Parameter name="cPaymenttermId"></Parameter><Parameter name="adUserId"></Parameter><Parameter name="cBpartnerLocationId"></Parameter><Parameter name="publicprivate"></Parameter><Parameter name="projectstatus"></Parameter><Parameter name="projectkind"></Parameter><Parameter name="billtoId"></Parameter><Parameter name="projectphase"></Parameter><Parameter name="generateorder"></Parameter><Parameter name="changeprojectstatus"></Parameter><Parameter name="changeprojectstatusBtn"></Parameter><Parameter name="cLocationId"></Parameter><Parameter name="mPricelistId"></Parameter><Parameter name="paymentrule"></Parameter><Parameter name="invoiceToproject"></Parameter><Parameter name="plannedpoamt"></Parameter><Parameter name="lastplannedproposaldate"></Parameter><Parameter name="documentCopies"></Parameter><Parameter name="accountno"></Parameter><Parameter name="responsibleId"></Parameter><Parameter name="servrevenue"></Parameter><Parameter name="servcost"></Parameter><Parameter name="servmargin"></Parameter><Parameter name="expreinvoicing"></Parameter><Parameter name="expexpenses"></Parameter><Parameter name="expmargin"></Parameter><Parameter name="setprojecttype"></Parameter><Parameter name="finPaymentmethodId"></Parameter><Parameter name="invoicedamt"></Parameter><Parameter name="copyfrom"></Parameter><Parameter name="cPhaseId"></Parameter><Parameter name="invoicedqty"></Parameter><Parameter name="cProjecttypeId"></Parameter><Parameter name="projectbalanceamt"></Parameter><Parameter name="committedqty"></Parameter><Parameter name="iscommitceiling"></Parameter><Parameter name="mWarehouseId"></Parameter><Parameter name="projectcategory"></Parameter><Parameter name="processing"></Parameter><Parameter name="servsercost"></Parameter>
+   </SqlMethod>
+
+
+
+
+
+
+   <SqlMethod name="selectDef1354_0" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>Select for auxiliar field</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT  ( COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table2.Name), ''))), '') ) as CreatedBy FROM AD_User left join (select AD_User_ID, Name from AD_User) table2 on (AD_User.AD_User_ID = table2.AD_User_ID) WHERE AD_User.isActive='Y' AND AD_User.AD_User_ID = ?  
+    ]]></Sql>
+<Parameter name="CreatedByR"/>
+  </SqlMethod>
+
+   <SqlMethod name="selectDef1357_1" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>Select for auxiliar field</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT  ( COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table2.Name), ''))), '') ) as UpdatedBy FROM AD_User left join (select AD_User_ID, Name from AD_User) table2 on (AD_User.AD_User_ID = table2.AD_User_ID) WHERE AD_User.isActive='Y' AND AD_User.AD_User_ID = ?  
+    ]]></Sql>
+<Parameter name="UpdatedByR"/>
+  </SqlMethod>
+
+   <SqlMethod name="selectDef3902_2" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>Select for auxiliar field</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT  ( COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table2.Name), ''))), '') ) as C_BPartner_ID FROM C_BPartner left join (select C_BPartner_ID, Name from C_BPartner) table2 on (C_BPartner.C_BPartner_ID = table2.C_BPartner_ID) WHERE C_BPartner.isActive='Y' AND C_BPartner.C_BPartner_ID = ?  
+    ]]></Sql>
+<Parameter name="C_BPartner_IDR"/>
+  </SqlMethod>
+
+
+
+
+
+  <SqlMethod name="updateChangeProjectStatus" type="preparedStatement" return="rowCount">
+    <Sql><![CDATA[
+        UPDATE C_Project
+        SET changeprojectstatus = ? 
+        WHERE C_Project.C_Project_ID = ?
+    ]]></Sql>
+    <Parameter name="changeprojectstatus"></Parameter>
+    <Parameter id="paramKey" name="cProjectId"></Parameter>
+  </SqlMethod>
+
+
+
+
+
+   <SqlMethod name="selectActDefC_Project_ID" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>Select for action search</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT Value FROM C_Project WHERE isActive='Y' AND C_Project_ID = ?  
+    ]]></Sql>
+    <Parameter name="C_Project_ID"/>
+  </SqlMethod>
+
+
+  <SqlMethod name="update" type="preparedStatement" return="rowCount" static="false" connection="true">
+    <Sql><![CDATA[
+        UPDATE C_Project
+        SET AD_Org_ID = (?) , Value = (?) , Name = (?) , IsSummary = (?) , Setprojecttype = (?) , Projectstatus = (?) , C_ProjectType_ID = (?) , C_ProjectPhase_ID = (?) , Startdate = TO_DATE(?) , DateContract = TO_DATE(?) , DateFinish = TO_DATE(?) , Description = (?) , SalesRep_ID = (?) , Responsible_ID = (?) , IsCommitment = (?) , IsCommitCeiling = (?) , CommittedAmt = TO_NUMBER(?) , CommittedQty = TO_NUMBER(?) , Servrevenue = TO_NUMBER(?) , Expexpenses = TO_NUMBER(?) , Servsercost = TO_NUMBER(?) , Servoutcost = TO_NUMBER(?) , Servcost = TO_NUMBER(?) , Expreinvoicing = TO_NUMBER(?) , Servmargin = TO_NUMBER(?) , Expmargin = TO_NUMBER(?) , C_BPartner_ID = (?) , C_BPartner_Location_ID = (?) , AD_User_ID = (?) , POReference = (?) , FIN_Paymentmethod_ID = (?) , C_PaymentTerm_ID = (?) , M_PriceList_ID = (?) , C_Currency_ID = (?) , M_Warehouse_ID = (?) , ChangeProjectStatus = (?) , CopyFrom = (?) , Processing = (?) , AD_Client_ID = (?) , IsActive = (?) , Processed = (?) , M_PriceList_Version_ID = (?) , Note = (?) , PlannedAmt = TO_NUMBER(?) , PlannedMarginAmt = TO_NUMBER(?) , PlannedQty = TO_NUMBER(?) , C_Campaign_ID = (?) , InvoicedAmt = TO_NUMBER(?) , InvoicedQty = TO_NUMBER(?) , ProjectBalanceAmt = TO_NUMBER(?) , ProjectCategory = (?) , Projectkind = (?) , Projectphase = (?) , Publicprivate = (?) , BillTo_ID = (?) , AccountNo = (?) , Document_Copies = TO_NUMBER(?) , PaymentRule = (?) , Invoice_ToProject = (?) , C_Location_ID = (?) , PlannedPOAmt = TO_NUMBER(?) , LastPlannedProposalDate = TO_DATE(?) , Createtemppricelist = (?) , C_Phase_ID = (?) , GenerateTo = (?) , GenerateOrder = (?) , C_Project_ID = (?) , updated = now(), updatedby = ? 
+        WHERE C_Project.C_Project_ID = ? 
+        
+        AND C_Project.AD_Client_ID IN ('1') 
+        AND C_Project.AD_Org_ID IN ('1') 
+    ]]></Sql>
+    <Parameter name="adOrgId"></Parameter> <Parameter name="value"></Parameter> <Parameter name="name"></Parameter> <Parameter name="issummary"></Parameter> <Parameter name="setprojecttype"></Parameter> <Parameter name="projectstatus"></Parameter> <Parameter name="cProjecttypeId"></Parameter> <Parameter name="cProjectphaseId"></Parameter> <Parameter name="startdate"></Parameter> <Parameter name="datecontract"></Parameter> <Parameter name="datefinish"></Parameter> <Parameter name="description"></Parameter> <Parameter name="salesrepId"></Parameter> <Parameter name="responsibleId"></Parameter> <Parameter name="iscommitment"></Parameter> <Parameter name="iscommitceiling"></Parameter> <Parameter name="committedamt"></Parameter> <Parameter name="committedqty"></Parameter> <Parameter name="servrevenue"></Parameter> <Parameter name="expexpenses"></Parameter> <Parameter name="servsercost"></Parameter> <Parameter name="servoutcost"></Parameter> <Parameter name="servcost"></Parameter> <Parameter name="expreinvoicing"></Parameter> <Parameter name="servmargin"></Parameter> <Parameter name="expmargin"></Parameter> <Parameter name="cBpartnerId"></Parameter> <Parameter name="cBpartnerLocationId"></Parameter> <Parameter name="adUserId"></Parameter> <Parameter name="poreference"></Parameter> <Parameter name="finPaymentmethodId"></Parameter> <Parameter name="cPaymenttermId"></Parameter> <Parameter name="mPricelistId"></Parameter> <Parameter name="cCurrencyId"></Parameter> <Parameter name="mWarehouseId"></Parameter> <Parameter name="changeprojectstatus"></Parameter> <Parameter name="copyfrom"></Parameter> <Parameter name="processing"></Parameter> <Parameter name="adClientId"></Parameter> <Parameter name="isactive"></Parameter> <Parameter name="processed"></Parameter> <Parameter name="mPricelistVersionId"></Parameter> <Parameter name="note"></Parameter> <Parameter name="plannedamt"></Parameter> <Parameter name="plannedmarginamt"></Parameter> <Parameter name="plannedqty"></Parameter> <Parameter name="cCampaignId"></Parameter> <Parameter name="invoicedamt"></Parameter> <Parameter name="invoicedqty"></Parameter> <Parameter name="projectbalanceamt"></Parameter> <Parameter name="projectcategory"></Parameter> <Parameter name="projectkind"></Parameter> <Parameter name="projectphase"></Parameter> <Parameter name="publicprivate"></Parameter> <Parameter name="billtoId"></Parameter> <Parameter name="accountno"></Parameter> <Parameter name="documentCopies"></Parameter> <Parameter name="paymentrule"></Parameter> <Parameter name="invoiceToproject"></Parameter> <Parameter name="cLocationId"></Parameter> <Parameter name="plannedpoamt"></Parameter> <Parameter name="lastplannedproposaldate"></Parameter> <Parameter name="createtemppricelist"></Parameter> <Parameter name="cPhaseId"></Parameter> <Parameter name="generateto"></Parameter> <Parameter name="generateorder"></Parameter> <Parameter name="cProjectId"></Parameter> 
+    <Parameter name="updatedby"></Parameter>
+    <Parameter id="paramKey" name="cProjectId"></Parameter>
+    
+    
+        <Parameter name="adUserClient" type="replace" optional="true" after="C_Project.AD_Client_ID IN (" text="'1'"/>
+        <Parameter name="adOrgClient" type="replace" optional="true" after="C_Project.AD_Org_ID IN (" text="'1'"/>
+  </SqlMethod>
+
+  <SqlMethod name="insert" type="preparedStatement" return="rowCount" static="false" connection="true">
+    <Sql><![CDATA[
+        INSERT INTO C_Project 
+        (AD_Org_ID, Value, Name, IsSummary, Setprojecttype, Projectstatus, C_ProjectType_ID, C_ProjectPhase_ID, Startdate, DateContract, DateFinish, Description, SalesRep_ID, Responsible_ID, IsCommitment, IsCommitCeiling, CommittedAmt, CommittedQty, Servrevenue, Expexpenses, Servsercost, Servoutcost, Servcost, Expreinvoicing, Servmargin, Expmargin, C_BPartner_ID, C_BPartner_Location_ID, AD_User_ID, POReference, FIN_Paymentmethod_ID, C_PaymentTerm_ID, M_PriceList_ID, C_Currency_ID, M_Warehouse_ID, ChangeProjectStatus, CopyFrom, Processing, AD_Client_ID, IsActive, Processed, M_PriceList_Version_ID, Note, PlannedAmt, PlannedMarginAmt, PlannedQty, C_Campaign_ID, InvoicedAmt, InvoicedQty, ProjectBalanceAmt, ProjectCategory, Projectkind, Projectphase, Publicprivate, BillTo_ID, AccountNo, Document_Copies, PaymentRule, Invoice_ToProject, C_Location_ID, PlannedPOAmt, LastPlannedProposalDate, Createtemppricelist, C_Phase_ID, GenerateTo, GenerateOrder, C_Project_ID, created, createdby, updated, updatedBy)
+        VALUES ((?), (?), (?), (?), (?), (?), (?), (?), TO_DATE(?), TO_DATE(?), TO_DATE(?), (?), (?), (?), (?), (?), TO_NUMBER(?), TO_NUMBER(?), TO_NUMBER(?), TO_NUMBER(?), TO_NUMBER(?), TO_NUMBER(?), TO_NUMBER(?), TO_NUMBER(?), TO_NUMBER(?), TO_NUMBER(?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), TO_NUMBER(?), TO_NUMBER(?), TO_NUMBER(?), (?), TO_NUMBER(?), TO_NUMBER(?), TO_NUMBER(?), (?), (?), (?), (?), (?), (?), TO_NUMBER(?), (?), (?), (?), TO_NUMBER(?), TO_DATE(?), (?), (?), (?), (?), (?), now(), ?, now(), ?)
+    ]]></Sql>
+    <Parameter name="adOrgId"></Parameter> <Parameter name="value"></Parameter> <Parameter name="name"></Parameter> <Parameter name="issummary"></Parameter> <Parameter name="setprojecttype"></Parameter> <Parameter name="projectstatus"></Parameter> <Parameter name="cProjecttypeId"></Parameter> <Parameter name="cProjectphaseId"></Parameter> <Parameter name="startdate"></Parameter> <Parameter name="datecontract"></Parameter> <Parameter name="datefinish"></Parameter> <Parameter name="description"></Parameter> <Parameter name="salesrepId"></Parameter> <Parameter name="responsibleId"></Parameter> <Parameter name="iscommitment"></Parameter> <Parameter name="iscommitceiling"></Parameter> <Parameter name="committedamt"></Parameter> <Parameter name="committedqty"></Parameter> <Parameter name="servrevenue"></Parameter> <Parameter name="expexpenses"></Parameter> <Parameter name="servsercost"></Parameter> <Parameter name="servoutcost"></Parameter> <Parameter name="servcost"></Parameter> <Parameter name="expreinvoicing"></Parameter> <Parameter name="servmargin"></Parameter> <Parameter name="expmargin"></Parameter> <Parameter name="cBpartnerId"></Parameter> <Parameter name="cBpartnerLocationId"></Parameter> <Parameter name="adUserId"></Parameter> <Parameter name="poreference"></Parameter> <Parameter name="finPaymentmethodId"></Parameter> <Parameter name="cPaymenttermId"></Parameter> <Parameter name="mPricelistId"></Parameter> <Parameter name="cCurrencyId"></Parameter> <Parameter name="mWarehouseId"></Parameter> <Parameter name="changeprojectstatus"></Parameter> <Parameter name="copyfrom"></Parameter> <Parameter name="processing"></Parameter> <Parameter name="adClientId"></Parameter> <Parameter name="isactive"></Parameter> <Parameter name="processed"></Parameter> <Parameter name="mPricelistVersionId"></Parameter> <Parameter name="note"></Parameter> <Parameter name="plannedamt"></Parameter> <Parameter name="plannedmarginamt"></Parameter> <Parameter name="plannedqty"></Parameter> <Parameter name="cCampaignId"></Parameter> <Parameter name="invoicedamt"></Parameter> <Parameter name="invoicedqty"></Parameter> <Parameter name="projectbalanceamt"></Parameter> <Parameter name="projectcategory"></Parameter> <Parameter name="projectkind"></Parameter> <Parameter name="projectphase"></Parameter> <Parameter name="publicprivate"></Parameter> <Parameter name="billtoId"></Parameter> <Parameter name="accountno"></Parameter> <Parameter name="documentCopies"></Parameter> <Parameter name="paymentrule"></Parameter> <Parameter name="invoiceToproject"></Parameter> <Parameter name="cLocationId"></Parameter> <Parameter name="plannedpoamt"></Parameter> <Parameter name="lastplannedproposaldate"></Parameter> <Parameter name="createtemppricelist"></Parameter> <Parameter name="cPhaseId"></Parameter> <Parameter name="generateto"></Parameter> <Parameter name="generateorder"></Parameter> <Parameter name="cProjectId"></Parameter> 
+    <Parameter name="createdby"></Parameter>
+    <Parameter name="updatedby"></Parameter>
+  </SqlMethod>
+
+  <SqlMethod name="delete" type="preparedStatement" return="rowCount">
+    <Sql><![CDATA[
+        DELETE FROM C_Project
+        WHERE C_Project.C_Project_ID = ? 
+        
+        AND C_Project.AD_Client_ID IN ('1') 
+        AND C_Project.AD_Org_ID IN ('1') 
+    ]]></Sql>
+    <Parameter name="param1"></Parameter>
+    
+        <Parameter name="adUserClient" type="replace" optional="true" after="C_Project.AD_Client_ID IN (" text="'1'"/>
+        <Parameter name="adOrgClient" type="replace" optional="true" after="C_Project.AD_Org_ID IN (" text="'1'"/>
+  </SqlMethod>
+
+  <SqlMethod name="selectOrg" type="preparedStatement" return="string">
+    <SqlMethodComment>Select for relation</SqlMethodComment>
+    <Sql><![CDATA[ 
+        SELECT AD_ORG_ID
+          FROM C_Project
+         WHERE C_Project.C_Project_ID = ? 
+    ]]></Sql>
+    <Parameter name="id"></Parameter>
+  </SqlMethod>
+  
+  <SqlMethod name="getCurrentDBTimestamp" type="preparedStatement" return="string">
+    <Sql><![CDATA[ 
+        SELECT to_char(Updated, 'YYYYMMDDHH24MISS') as Updated_Time_Stamp
+          FROM C_Project
+         WHERE C_Project.C_Project_ID = ? 
+    ]]></Sql>
+    <Parameter name="id"></Parameter>
+  </SqlMethod>
+</SqlClass>

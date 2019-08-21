@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SqlClass id="class" name="LoomProductionIncentive6798ED7C13384124ABA362D31003519EData" package="org.openbravo.erpWindows.com.redcarpet.payroll.LoomProductionIncentive">
+  <SqlClassComment>WAD Generated class</SqlClassComment>
+
+  <SqlMethod name="selectEdit" type="preparedStatement" return="multiple">
+    <SqlMethodComment>Select for edit</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT to_char(RCPL_ProdIncentive.Created, ?) as created, 
+        (SELECT NAME FROM AD_USER u WHERE AD_USER_ID = RCPL_ProdIncentive.CreatedBy) as CreatedByR, 
+        to_char(RCPL_ProdIncentive.Updated, ?) as updated, 
+        to_char(RCPL_ProdIncentive.Updated, 'YYYYMMDDHH24MISS') as Updated_Time_Stamp,  
+        RCPL_ProdIncentive.UpdatedBy, 
+        (SELECT NAME FROM AD_USER u WHERE AD_USER_ID = RCPL_ProdIncentive.UpdatedBy) as UpdatedByR,
+        RCPL_ProdIncentive.AD_Org_ID, 
+(CASE WHEN RCPL_ProdIncentive.AD_Org_ID IS NULL THEN '' ELSE  (COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table1.Name), ''))),'') ) END) AS AD_Org_IDR, 
+RCPL_ProdIncentive.Date, 
+RCPL_ProdIncentive.Setreleiver, 
+RCPL_ProdIncentive.Rchr_Emp_Dept_ID, 
+RCPL_ProdIncentive.Rchr_Employee_ID, 
+(CASE WHEN RCPL_ProdIncentive.Rchr_Employee_ID IS NULL THEN '' ELSE  (COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table2.Punchno), ''))),'')  || ' - ' || COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table2.Employeename), ''))),'') ) END) AS Rchr_Employee_IDR, 
+RCPL_ProdIncentive.Rcpr_Shift_ID, 
+(CASE WHEN RCPL_ProdIncentive.Rcpr_Shift_ID IS NULL THEN '' ELSE  (COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table3.Name), ''))),'') ) END) AS Rcpr_Shift_IDR, 
+RCPL_ProdIncentive.Rcpl_Loomcategory_ID, 
+(CASE WHEN RCPL_ProdIncentive.Rcpl_Loomcategory_ID IS NULL THEN '' ELSE  (COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table4.Name), ''))),'') ) END) AS Rcpl_Loomcategory_IDR, 
+RCPL_ProdIncentive.Loomsyarntype, 
+(CASE WHEN RCPL_ProdIncentive.Loomsyarntype IS NULL THEN '' ELSE  ( COALESCE(TO_CHAR(list1.name),'') ) END) AS LoomsyarntypeR, 
+RCPL_ProdIncentive.Nooflooms, 
+RCPL_ProdIncentive.Amount, 
+RCPL_ProdIncentive.Selectlooms, 
+COALESCE(RCPL_ProdIncentive.Isactive, 'N') AS Isactive, 
+RCPL_ProdIncentive.Rcpl_Prodincentivetype_ID, 
+RCPL_ProdIncentive.Effavg, 
+COALESCE(RCPL_ProdIncentive.Isreleiver, 'N') AS Isreleiver, 
+RCPL_ProdIncentive.Yarndyedincentive, 
+RCPL_ProdIncentive.AD_Client_ID, 
+RCPL_ProdIncentive.Rcpl_Prodincentive_ID, 
+ 
+        ? AS LANGUAGE 
+        FROM RCPL_ProdIncentive left join (select AD_Org_ID, Name from AD_Org) table1 on (RCPL_ProdIncentive.AD_Org_ID = table1.AD_Org_ID) left join (select Rchr_Employee_ID, Punchno, Employeename from Rchr_Employee) table2 on (RCPL_ProdIncentive.Rchr_Employee_ID = table2.Rchr_Employee_ID) left join (select Rcpr_Shift_ID, Name from Rcpr_Shift) table3 on (RCPL_ProdIncentive.Rcpr_Shift_ID = table3.Rcpr_Shift_ID) left join (select Rcpl_Loomcategory_ID, Name from Rcpl_Loomcategory) table4 on (RCPL_ProdIncentive.Rcpl_Loomcategory_ID = table4.Rcpl_Loomcategory_ID) left join ad_ref_list_v list1 on (RCPL_ProdIncentive.Loomsyarntype = list1.value and list1.ad_reference_id = '3AE5DF0C8F264085821997CBAFD4C8A2' and list1.ad_language = ?) 
+        WHERE 2=2 
+
+        AND 1=1 
+        AND RCPL_ProdIncentive.Rcpl_Prodincentive_ID = ? 
+        AND RCPL_ProdIncentive.AD_Client_ID IN ('1') 
+           AND RCPL_ProdIncentive.AD_Org_ID IN ('1') 
+    ]]></Sql>
+    <Parameter name="dateTimeFormat"></Parameter>
+    <Parameter name="dateTimeFormat"></Parameter>
+    
+    <Parameter name="paramLanguage"></Parameter>
+<Parameter name="paramLanguage"/>
+
+
+    <Parameter name="key"></Parameter>
+        <Parameter name="adUserClient" type="replace" optional="true" after="RCPL_ProdIncentive.AD_Client_ID IN (" text="'1'"/>
+        <Parameter name="adOrgClient" type="replace" optional="true" after="RCPL_ProdIncentive.AD_Org_ID IN (" text="'1'"/>
+
+    <Field name="adUserClient" value="void"></Field>
+    <Field name="adOrgClient" value="void"></Field>
+    <Field name="createdby" value="void"></Field>
+    
+    <Field name="trBgcolor" value="void"></Field>
+    <Field name="totalCount" value="void"></Field>
+    <Field name="dateTimeFormat" value=""></Field>
+  </SqlMethod>
+  
+  
+
+  <SqlMethod name="set" type="constant" return="multiple">
+      <SqlMethodComment>Create a registry</SqlMethodComment>
+      <Sql></Sql>
+
+<Parameter name="rcprShiftId"></Parameter><Parameter name="setreleiver"></Parameter><Parameter name="adOrgId"></Parameter><Parameter name="rcplLoomcategoryId"></Parameter><Parameter name="rcplProdincentiveId"></Parameter><Parameter name="createdby"></Parameter><Parameter name="createdbyr"></Parameter><Parameter name="rchrEmployeeId"></Parameter><Parameter name="updatedby"></Parameter><Parameter name="updatedbyr"></Parameter><Parameter name="adClientId"></Parameter><Parameter name="loomsyarntype"></Parameter><Parameter name="date"></Parameter><Parameter name="isactive"></Parameter><Parameter name="selectlooms"></Parameter><Parameter name="yarndyedincentive"></Parameter><Parameter name="nooflooms"></Parameter><Parameter name="rchrEmpDeptId"></Parameter><Parameter name="effavg"></Parameter><Parameter name="rcplProdincentivetypeId"></Parameter><Parameter name="isreleiver"></Parameter><Parameter name="amount"></Parameter>
+   </SqlMethod>
+
+
+
+
+
+
+   <SqlMethod name="selectDef73C06BDFAE124B29A97CB629014E5E2D_0" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>Select for auxiliar field</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT  ( COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table2.Name), ''))), '') ) as Createdby FROM AD_User left join (select AD_User_ID, Name from AD_User) table2 on (AD_User.AD_User_ID = table2.AD_User_ID) WHERE AD_User.isActive='Y' AND AD_User.AD_User_ID = ?  
+    ]]></Sql>
+<Parameter name="CreatedbyR"/>
+  </SqlMethod>
+
+   <SqlMethod name="selectDef83BE64E77AE740B9B2E74264BF06294D_1" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>Select for auxiliar field</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT  ( COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table2.Name), ''))), '') ) as Updatedby FROM AD_User left join (select AD_User_ID, Name from AD_User) table2 on (AD_User.AD_User_ID = table2.AD_User_ID) WHERE AD_User.isActive='Y' AND AD_User.AD_User_ID = ?  
+    ]]></Sql>
+<Parameter name="UpdatedbyR"/>
+  </SqlMethod>
+
+
+
+
+
+
+
+
+
+
+  <SqlMethod name="update" type="preparedStatement" return="rowCount" static="false" connection="true">
+    <Sql><![CDATA[
+        UPDATE RCPL_ProdIncentive
+        SET AD_Org_ID = (?) , Date = TO_DATE(?) , Setreleiver = (?) , Rchr_Emp_Dept_ID = (?) , Rchr_Employee_ID = (?) , Rcpr_Shift_ID = (?) , Rcpl_Loomcategory_ID = (?) , Loomsyarntype = (?) , Nooflooms = TO_NUMBER(?) , Amount = TO_NUMBER(?) , Selectlooms = (?) , Isactive = (?) , Rcpl_Prodincentivetype_ID = (?) , Effavg = TO_NUMBER(?) , Isreleiver = (?) , Yarndyedincentive = TO_NUMBER(?) , AD_Client_ID = (?) , Rcpl_Prodincentive_ID = (?) , updated = now(), updatedby = ? 
+        WHERE RCPL_ProdIncentive.Rcpl_Prodincentive_ID = ? 
+        
+        AND RCPL_ProdIncentive.AD_Client_ID IN ('1') 
+        AND RCPL_ProdIncentive.AD_Org_ID IN ('1') 
+    ]]></Sql>
+    <Parameter name="adOrgId"></Parameter> <Parameter name="date"></Parameter> <Parameter name="setreleiver"></Parameter> <Parameter name="rchrEmpDeptId"></Parameter> <Parameter name="rchrEmployeeId"></Parameter> <Parameter name="rcprShiftId"></Parameter> <Parameter name="rcplLoomcategoryId"></Parameter> <Parameter name="loomsyarntype"></Parameter> <Parameter name="nooflooms"></Parameter> <Parameter name="amount"></Parameter> <Parameter name="selectlooms"></Parameter> <Parameter name="isactive"></Parameter> <Parameter name="rcplProdincentivetypeId"></Parameter> <Parameter name="effavg"></Parameter> <Parameter name="isreleiver"></Parameter> <Parameter name="yarndyedincentive"></Parameter> <Parameter name="adClientId"></Parameter> <Parameter name="rcplProdincentiveId"></Parameter> 
+    <Parameter name="updatedby"></Parameter>
+    <Parameter id="paramKey" name="rcplProdincentiveId"></Parameter>
+    
+    
+        <Parameter name="adUserClient" type="replace" optional="true" after="RCPL_ProdIncentive.AD_Client_ID IN (" text="'1'"/>
+        <Parameter name="adOrgClient" type="replace" optional="true" after="RCPL_ProdIncentive.AD_Org_ID IN (" text="'1'"/>
+  </SqlMethod>
+
+  <SqlMethod name="insert" type="preparedStatement" return="rowCount" static="false" connection="true">
+    <Sql><![CDATA[
+        INSERT INTO RCPL_ProdIncentive 
+        (AD_Org_ID, Date, Setreleiver, Rchr_Emp_Dept_ID, Rchr_Employee_ID, Rcpr_Shift_ID, Rcpl_Loomcategory_ID, Loomsyarntype, Nooflooms, Amount, Selectlooms, Isactive, Rcpl_Prodincentivetype_ID, Effavg, Isreleiver, Yarndyedincentive, AD_Client_ID, Rcpl_Prodincentive_ID, created, createdby, updated, updatedBy)
+        VALUES ((?), TO_DATE(?), (?), (?), (?), (?), (?), (?), TO_NUMBER(?), TO_NUMBER(?), (?), (?), (?), TO_NUMBER(?), (?), TO_NUMBER(?), (?), (?), now(), ?, now(), ?)
+    ]]></Sql>
+    <Parameter name="adOrgId"></Parameter> <Parameter name="date"></Parameter> <Parameter name="setreleiver"></Parameter> <Parameter name="rchrEmpDeptId"></Parameter> <Parameter name="rchrEmployeeId"></Parameter> <Parameter name="rcprShiftId"></Parameter> <Parameter name="rcplLoomcategoryId"></Parameter> <Parameter name="loomsyarntype"></Parameter> <Parameter name="nooflooms"></Parameter> <Parameter name="amount"></Parameter> <Parameter name="selectlooms"></Parameter> <Parameter name="isactive"></Parameter> <Parameter name="rcplProdincentivetypeId"></Parameter> <Parameter name="effavg"></Parameter> <Parameter name="isreleiver"></Parameter> <Parameter name="yarndyedincentive"></Parameter> <Parameter name="adClientId"></Parameter> <Parameter name="rcplProdincentiveId"></Parameter> 
+    <Parameter name="createdby"></Parameter>
+    <Parameter name="updatedby"></Parameter>
+  </SqlMethod>
+
+  <SqlMethod name="delete" type="preparedStatement" return="rowCount">
+    <Sql><![CDATA[
+        DELETE FROM RCPL_ProdIncentive
+        WHERE RCPL_ProdIncentive.Rcpl_Prodincentive_ID = ? 
+        
+        AND RCPL_ProdIncentive.AD_Client_ID IN ('1') 
+        AND RCPL_ProdIncentive.AD_Org_ID IN ('1') 
+    ]]></Sql>
+    <Parameter name="param1"></Parameter>
+    
+        <Parameter name="adUserClient" type="replace" optional="true" after="RCPL_ProdIncentive.AD_Client_ID IN (" text="'1'"/>
+        <Parameter name="adOrgClient" type="replace" optional="true" after="RCPL_ProdIncentive.AD_Org_ID IN (" text="'1'"/>
+  </SqlMethod>
+
+  <SqlMethod name="selectOrg" type="preparedStatement" return="string">
+    <SqlMethodComment>Select for relation</SqlMethodComment>
+    <Sql><![CDATA[ 
+        SELECT AD_ORG_ID
+          FROM RCPL_ProdIncentive
+         WHERE RCPL_ProdIncentive.Rcpl_Prodincentive_ID = ? 
+    ]]></Sql>
+    <Parameter name="id"></Parameter>
+  </SqlMethod>
+  
+  <SqlMethod name="getCurrentDBTimestamp" type="preparedStatement" return="string">
+    <Sql><![CDATA[ 
+        SELECT to_char(Updated, 'YYYYMMDDHH24MISS') as Updated_Time_Stamp
+          FROM RCPL_ProdIncentive
+         WHERE RCPL_ProdIncentive.Rcpl_Prodincentive_ID = ? 
+    ]]></Sql>
+    <Parameter name="id"></Parameter>
+  </SqlMethod>
+</SqlClass>

@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="DeductionsSummaryReportNetWage_subreport1" language="groovy" pageWidth="802" pageHeight="555" orientation="Landscape" columnWidth="802" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0">
+	<property name="ireport.zoom" value="1.6105100000000008"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<style name="Crosstab Data Text" hAlign="Center" lineSpacing="Single"/>
+	<parameter name="ProcessID" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+sum(grandtotal) as grandtotal,
+sum(deductionsum)*-1 as deductionsum,
+(sum(grandtotal)-sum(deductionsum)*-1)as netwage,
+emppp.employeetype as emptype,
+
+(case when (select isdyeing from rchr_emp_dept where rchr_emp_dept_id=emppp.rchr_emp_dept_id and rchr_emp_dept.isdyeing='Y')='Y' then 'Dyeing'
+else 'weaving'
+end ) as type,
+
+(select monthname from rchr_attd_process where rchr_attd_process_id =pp.rcpl_payrollprocess_id) as monthname
+
+FROM rcpl_payrollprocess pp
+left join rcpl_emppayrollprocess emppp ON emppp.rcpl_payrollprocess_id = pp.rcpl_payrollprocess_id
+WHERE pp.rchr_attd_process_id=$P{ProcessID} and totalpay>0
+group by emptype,type,pp.rcpl_payrollprocess_id]]>
+	</queryString>
+	<field name="grandtotal" class="java.math.BigDecimal"/>
+	<field name="deductionsum" class="java.math.BigDecimal"/>
+	<field name="netwage" class="java.math.BigDecimal"/>
+	<field name="emptype" class="java.lang.String"/>
+	<field name="type" class="java.lang.String"/>
+	<field name="monthname" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<summary>
+		<band height="37" splitType="Stretch">
+			<crosstab>
+				<reportElement x="0" y="15" width="802" height="20"/>
+				<rowGroup name="emptype" width="60" totalPosition="End">
+					<bucket>
+						<bucketExpression><![CDATA[$F{emptype}]]></bucketExpression>
+					</bucket>
+					<crosstabRowHeader>
+						<cellContents backcolor="#F0F8FF" mode="Opaque">
+							<box>
+								<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+							</box>
+							<textField>
+								<reportElement style="Crosstab Data Text" x="0" y="0" width="59" height="18"/>
+								<textElement verticalAlignment="Middle" lineSpacing="Single">
+									<font size="7"/>
+								</textElement>
+								<textFieldExpression class="java.lang.String"><![CDATA[$V{emptype}]]></textFieldExpression>
+							</textField>
+						</cellContents>
+					</crosstabRowHeader>
+					<crosstabTotalRowHeader>
+						<cellContents backcolor="#BFE1FF" mode="Opaque">
+							<box>
+								<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+							</box>
+							<staticText>
+								<reportElement x="0" y="0" width="59" height="20"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle" lineSpacing="Single">
+									<font size="7"/>
+								</textElement>
+								<text><![CDATA[Total emptype]]></text>
+							</staticText>
+						</cellContents>
+					</crosstabTotalRowHeader>
+				</rowGroup>
+				<columnGroup name="type" height="17" totalPosition="End">
+					<bucket>
+						<bucketExpression><![CDATA[$F{type}]]></bucketExpression>
+					</bucket>
+					<crosstabColumnHeader>
+						<cellContents backcolor="#F0F8FF" mode="Opaque">
+							<box>
+								<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+							</box>
+							<textField>
+								<reportElement style="Crosstab Data Text" x="0" y="0" width="39" height="17"/>
+								<textElement verticalAlignment="Middle" lineSpacing="Single">
+									<font size="8"/>
+								</textElement>
+								<textFieldExpression class="java.lang.String"><![CDATA[$V{type}]]></textFieldExpression>
+							</textField>
+						</cellContents>
+					</crosstabColumnHeader>
+					<crosstabTotalColumnHeader>
+						<cellContents backcolor="#BFE1FF" mode="Opaque">
+							<box>
+								<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+							</box>
+							<staticText>
+								<reportElement x="0" y="0" width="38" height="17"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle" lineSpacing="Single">
+									<font size="8"/>
+								</textElement>
+								<text><![CDATA[Total type]]></text>
+							</staticText>
+						</cellContents>
+					</crosstabTotalColumnHeader>
+				</columnGroup>
+				<measure name="grandtotalMeasure" class="java.math.BigDecimal" calculation="Sum">
+					<measureExpression><![CDATA[$F{grandtotal}]]></measureExpression>
+				</measure>
+				<crosstabCell width="39" height="18">
+					<cellContents>
+						<box>
+							<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						</box>
+						<textField>
+							<reportElement style="Crosstab Data Text" x="0" y="0" width="39" height="18"/>
+							<textElement textAlignment="Right" verticalAlignment="Middle" lineSpacing="Single">
+								<font size="6"/>
+							</textElement>
+							<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{grandtotalMeasure}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell width="39" height="20" rowTotalGroup="emptype">
+					<cellContents backcolor="#BFE1FF" mode="Opaque">
+						<box>
+							<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						</box>
+						<textField>
+							<reportElement style="Crosstab Data Text" x="0" y="0" width="39" height="20"/>
+							<textElement textAlignment="Right" verticalAlignment="Middle" lineSpacing="Single">
+								<font size="6"/>
+							</textElement>
+							<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{grandtotalMeasure}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell width="38" height="18" columnTotalGroup="type">
+					<cellContents backcolor="#BFE1FF" mode="Opaque">
+						<box>
+							<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						</box>
+						<textField>
+							<reportElement style="Crosstab Data Text" x="0" y="0" width="38" height="18"/>
+							<textElement textAlignment="Right" verticalAlignment="Middle" lineSpacing="Single">
+								<font size="6"/>
+							</textElement>
+							<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{grandtotalMeasure}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell width="38" height="20" rowTotalGroup="emptype" columnTotalGroup="type">
+					<cellContents backcolor="#BFE1FF" mode="Opaque">
+						<box>
+							<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						</box>
+						<textField>
+							<reportElement style="Crosstab Data Text" x="0" y="0" width="38" height="20"/>
+							<textElement textAlignment="Right" verticalAlignment="Middle" lineSpacing="Single">
+								<font size="6"/>
+							</textElement>
+							<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{grandtotalMeasure}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+			</crosstab>
+			<staticText>
+				<reportElement x="18" y="0" width="162" height="15"/>
+				<textElement lineSpacing="Single">
+					<font isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[Grand Total]]></text>
+			</staticText>
+		</band>
+	</summary>
+</jasperReport>

@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report2" pageWidth="595" pageHeight="842" whenNoDataType="NoDataSection" columnWidth="595" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0">
+	<property name="ireport.zoom" value="2.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="id" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[select
+e1.documentno as tno,upper(e1.employeename) as tname,emp.rchr_exbanksalpaymentsemp_id,
+LINE.paidamount as tosal
+from
+rchr_exbanksalpaymentsemp emp
+left join rchr_exbanksalpaymentsempln line on emp.rchr_exbanksalpaymentsemp_id=line.rchr_exbanksalpaymentsemp_id
+left join rchr_employee e1 on e1.rchr_employee_id=line.rchr_employee_id
+where emp.rchr_exbanksalpaymentsemp_id=$P{id}
+order by SUBSTRING(e1.documentno FROM '([0-9]+)')::BIGINT ASC,e1.documentno]]>
+	</queryString>
+	<field name="tno" class="java.lang.String"/>
+	<field name="tname" class="java.lang.String"/>
+	<field name="rchr_exbanksalpaymentsemp_id" class="java.lang.String"/>
+	<field name="tosal" class="java.math.BigDecimal"/>
+	<group name="ex">
+		<groupExpression><![CDATA[$F{rchr_exbanksalpaymentsemp_id}]]></groupExpression>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<columnHeader>
+		<band height="12">
+			<staticText>
+				<reportElement x="2" y="1" width="68" height="10" isPrintWhenDetailOverflows="true"/>
+				<textElement lineSpacing="Single">
+					<font fontName="DejaVu Sans" size="7" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[EMP NO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="74" y="1" width="100" height="10" isPrintWhenDetailOverflows="true"/>
+				<textElement lineSpacing="Single">
+					<font fontName="DejaVu Sans" size="7" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[EMP NAME]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="178" y="1" width="100" height="10" isPrintWhenDetailOverflows="true"/>
+				<textElement lineSpacing="Single">
+					<font fontName="DejaVu Sans" size="7" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[SALARY]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="12" splitType="Stretch">
+			<textField isBlankWhenNull="true">
+				<reportElement x="3" y="1" width="67" height="10" isPrintWhenDetailOverflows="true"/>
+				<textElement lineSpacing="Single">
+					<font fontName="DejaVu Sans" size="7"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{tno}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="74" y="1" width="100" height="10" isPrintWhenDetailOverflows="true"/>
+				<textElement lineSpacing="Single">
+					<font fontName="DejaVu Sans" size="7"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{tname}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0" isBlankWhenNull="true">
+				<reportElement x="178" y="1" width="100" height="10" isPrintWhenDetailOverflows="true"/>
+				<textElement lineSpacing="Single">
+					<font fontName="DejaVu Sans" size="7"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{tosal}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

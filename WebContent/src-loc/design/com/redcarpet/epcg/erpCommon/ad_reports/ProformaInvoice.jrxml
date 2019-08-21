@@ -1,0 +1,479 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ProformaInvoice" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="354"/>
+	<subDataset name="dataset1"/>
+	<subDataset name="dataset2"/>
+	<parameter name="EPCG_Proforma_ID" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[Select
+(select description from ad_client where ad_client_id=c_order.ad_client_id) as header,(select description from ad_org where ad_org_id=c_order.ad_org_id) as orgheader,
+to_char(proformadate,'dd.MM.yyyy') AS PFDATE,
+Epcg_Proforma.documentno as profdoc,
+Epcg_Proforma.Grandtotal as prograndtot,
+Epcg_Proformaline.Proformalineqty,
+Epcg_Proformaline.priceactual,
+--Epcg_Proformaline.Price as priceactual,
+
+Epcg_Proformaline.linenetamt as lineamt
+--Epcg_Proformaline.Price*Epcg_Proformaline.Proformalineqty as lineamt
+,
+
+m_product.name as prdname,
+(select name from c_bpartner where c_bpartner_Id=c_order.c_bpartner_Id) as bpname,
+(select coalesce(address1,'')
+||', '||coalesce(address2,'') from c_location
+where c_location_Id =(select c_location_Id from c_bpartner_location where
+c_bpartner_location_Id=c_order.c_bpartner_location_Id)  ) as Bplocation,
+C_order.documentno as orderdocno,
+
+(select
+coalesce(city,'')
+ from c_location
+where c_location_Id =(select c_location_Id from c_bpartner_location where
+c_bpartner_location_Id=c_order.c_bpartner_location_Id) ) as Bpcity,
+
+(SELECT ONCONTRACT FROM EPCG_COSTENQUIRY WHERE EPCG_COSTENQUIRY_ID
+=(SELECT EPCG_COSTENQUIRY_ID FROM C_ORDERLINE WHERE Epcg_Proformaline.C_ORDERLINE_ID=C_ORDERLINE.C_ORDERLINE_id)
+)
+AS ONCONTRACT,
+
+(SELECT NAME FROM C_TAX WHERE C_TAX.C_TAX_iD=Epcg_Proformaline.C_TAX_iD) TAXNAME,
+Epcg_Proformaline.TAXAMT
+,
+Epcg_Proforma.GRANDTOTAL,
+Epcg_Proformaline.insurance as insurance,
+
+(select name from Epcg_Insurancetype where Epcg_Insurancetype_Id =(select Epcg_Insurancetype_Id from epcg_costenquiry where epcg_costenquiry_id
+=(select epcg_costenquiry_id from C_orderline where C_orderline_Id=Epcg_Proformaline.C_orderline_Id)))
+as typeinsurance
+,
+
+coalesce(round((select cashdiscount from epcg_costenquiry where epcg_costenquiry_id
+=(select epcg_costenquiry_id from C_orderline where C_orderline_Id=Epcg_Proformaline.C_orderline_Id))
+*(Epcg_Proformaline.priceactual*Epcg_Proformaline.Proformalineqty)/100,2),0)
+
+ as cashdis
+
+
+from Epcg_Proforma left join C_order on Epcg_Proforma.C_order_Id=C_order.C_order_Id
+left join Epcg_Proformaline on
+ Epcg_Proforma.Epcg_Proforma_id=Epcg_Proformaline.Epcg_Proforma_Id
+left join m_product on
+m_product.m_product_id=Epcg_Proformaline.m_product_Id
+where Epcg_Proforma.Epcg_Proforma_Id=$P{EPCG_Proforma_ID}]]>
+	</queryString>
+	<field name="header" class="java.lang.String"/>
+	<field name="orgheader" class="java.lang.String"/>
+	<field name="pfdate" class="java.lang.String"/>
+	<field name="profdoc" class="java.lang.String"/>
+	<field name="prograndtot" class="java.math.BigDecimal"/>
+	<field name="proformalineqty" class="java.math.BigDecimal"/>
+	<field name="priceactual" class="java.math.BigDecimal"/>
+	<field name="lineamt" class="java.math.BigDecimal"/>
+	<field name="prdname" class="java.lang.String"/>
+	<field name="bpname" class="java.lang.String"/>
+	<field name="bplocation" class="java.lang.String"/>
+	<field name="orderdocno" class="java.lang.String"/>
+	<field name="bpcity" class="java.lang.String"/>
+	<field name="oncontract" class="java.lang.String"/>
+	<field name="taxname" class="java.lang.String"/>
+	<field name="taxamt" class="java.math.BigDecimal"/>
+	<field name="grandtotal" class="java.math.BigDecimal"/>
+	<field name="insurance" class="java.math.BigDecimal"/>
+	<field name="typeinsurance" class="java.lang.String"/>
+	<field name="cashdis" class="java.math.BigDecimal"/>
+	<variable name="docnodate" class="java.lang.String">
+		<variableExpression><![CDATA["No: "+$F{profdoc}]]></variableExpression>
+	</variable>
+	<variable name="ref" class="java.lang.String">
+		<variableExpression><![CDATA["REF:-SALES CONTRACT No:"+$F{orderdocno}+", DATE"+$F{pfdate}]]></variableExpression>
+	</variable>
+	<variable name="dissum" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{cashdis}]]></variableExpression>
+	</variable>
+	<variable name="grandtotal" class="java.math.BigDecimal">
+		<variableExpression><![CDATA[$F{grandtotal}.subtract( $V{dissum} )]]></variableExpression>
+	</variable>
+	<variable name="grandtotalwords" class="java.lang.String">
+		<variableExpression><![CDATA[new com.sam.numbertowords.NumberToWordsConverter_en_In().convertIt($V{grandtotal}.longValue())+" Only."]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="206" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="555" height="30"/>
+				<textElement textAlignment="Center">
+					<font size="18" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{header}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="57" y="30" width="424" height="22"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{orgheader}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="0" y="55" width="555" height="1"/>
+				<graphicElement>
+					<pen lineWidth="2.25" lineStyle="Solid"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement x="0" y="59" width="555" height="1"/>
+			</line>
+			<staticText>
+				<reportElement x="130" y="65" width="251" height="17"/>
+				<textElement textAlignment="Center">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[PROFORMA INVOICE]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="5" y="103" width="21" height="20"/>
+				<textElement/>
+				<text><![CDATA[M/s.]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="26" y="103" width="295" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{bpname}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="5" y="123" width="281" height="29"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{bplocation}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="5" y="152" width="53" height="20"/>
+				<textElement/>
+				<text><![CDATA[Dear Sir,]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="6" y="180" width="475" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA["REF:-SALES CONTRACT No:"+$F{orderdocno}+", DATE :"+$F{pfdate}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="51" y="81" width="413" height="20"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression class="java.lang.String"><![CDATA["No."+$F{profdoc}+", DATE: "+$F{pfdate}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="22" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="35" splitType="Stretch">
+			<line>
+				<reportElement x="0" y="0" width="554" height="1"/>
+			</line>
+			<staticText>
+				<reportElement x="1" y="4" width="105" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Top"/>
+				<text><![CDATA[Description]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="107" y="4" width="156" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Top"/>
+				<text><![CDATA[Construction]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="280" y="4" width="57" height="29"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Quantity In MTRS]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="347" y="4" width="78" height="20"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Rates Rs.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="464" y="4" width="83" height="20"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[VALUE IN]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="34" width="554" height="1"/>
+			</line>
+			<line>
+				<reportElement x="0" y="0" width="1" height="33"/>
+			</line>
+			<line>
+				<reportElement x="554" y="1" width="1" height="33"/>
+			</line>
+			<line>
+				<reportElement x="106" y="2" width="1" height="33"/>
+			</line>
+			<line>
+				<reportElement x="276" y="2" width="1" height="33"/>
+			</line>
+			<line>
+				<reportElement x="344" y="2" width="1" height="33"/>
+			</line>
+			<line>
+				<reportElement x="445" y="2" width="1" height="33"/>
+			</line>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="93" splitType="Stretch">
+			<textField>
+				<reportElement x="6" y="0" width="100" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{prdname}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="280" y="0" width="60" height="20"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{proformalineqty}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="345" y="0" width="100" height="20"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{priceactual}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="446" y="0" width="101" height="20"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{lineamt}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="111" y="0" width="163" height="39"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{oncontract}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="0" y="0" width="1" height="92"/>
+			</line>
+			<line>
+				<reportElement x="554" y="0" width="1" height="92"/>
+			</line>
+			<line>
+				<reportElement x="106" y="0" width="1" height="92"/>
+			</line>
+			<line>
+				<reportElement x="276" y="0" width="1" height="92"/>
+			</line>
+			<line>
+				<reportElement x="344" y="0" width="1" height="92"/>
+			</line>
+			<line>
+				<reportElement x="445" y="0" width="1" height="92"/>
+			</line>
+			<line>
+				<reportElement x="1" y="92" width="554" height="1"/>
+			</line>
+			<textField pattern="#,##0.00">
+				<reportElement x="450" y="59" width="100" height="15">
+					<printWhenExpression><![CDATA[$F{taxamt}.floatValue()>0.00]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{taxamt}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="113" y="59" width="51" height="15">
+					<printWhenExpression><![CDATA[$F{taxamt}.floatValue()>0.00]]></printWhenExpression>
+				</reportElement>
+				<textElement/>
+				<text><![CDATA[TAX:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="141" y="59" width="134" height="15">
+					<printWhenExpression><![CDATA[$F{taxamt}.floatValue()>0.00]]></printWhenExpression>
+				</reportElement>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{taxname}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="452" y="38" width="100" height="20">
+					<printWhenExpression><![CDATA[$F{insurance}.floatValue()>0.00 && $F{typeinsurance}.equals( "By Kallam" )]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{insurance}]]></textFieldExpression>
+			</textField>
+			<textField pattern="">
+				<reportElement x="113" y="40" width="160" height="20">
+					<printWhenExpression><![CDATA[$F{insurance}.floatValue()>0.00 && $F{typeinsurance}.equals( "By Kallam" )]]></printWhenExpression>
+				</reportElement>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA["Insurance "+$F{typeinsurance}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="111" y="75" width="152" height="15">
+					<printWhenExpression><![CDATA[$V{dissum}.floatValue()>0.00]]></printWhenExpression>
+				</reportElement>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[CASH DISCOUNT]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="450" y="75" width="100" height="18"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{dissum}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="129" splitType="Stretch">
+			<line>
+				<reportElement x="1" y="55" width="554" height="1"/>
+				<graphicElement>
+					<pen lineStyle="Solid"/>
+				</graphicElement>
+			</line>
+			<staticText>
+				<reportElement x="1" y="8" width="183" height="14"/>
+				<textElement/>
+				<text><![CDATA[FOR KALLAM SPINNING MILLS LTD]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1" y="22" width="183" height="14"/>
+				<textElement/>
+				<text><![CDATA[AUTHORISED SIGNATORY]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1" y="36" width="71" height="14"/>
+				<textElement/>
+				<text><![CDATA[Sales Person]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="26" y="56" width="495" height="14"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[REGD. OFFICE: NH-5, CHOWDAVARAM, GUNTUR-522019, A.P., INDIA.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="26" y="70" width="495" height="14"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[CIN-L18100AP1992PLC013860]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="26" y="84" width="495" height="12"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[TIN NO.37870194036, CSTNO.GNT/07/01/2020,DT.06.11.93, ECC NO. AAACK9363M XM 001]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="26" y="96" width="495" height="12"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Ph:2344004(5 LINES), FAX:+91-8632344000]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="26" y="108" width="495" height="12"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[E-Mail: kallamsp@gmail.com;kallam.weaving@gmail.com]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="54" width="554" height="1"/>
+				<graphicElement>
+					<pen lineStyle="Solid"/>
+				</graphicElement>
+			</line>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="207" splitType="Stretch">
+			<staticText>
+				<reportElement x="6" y="34" width="51" height="20"/>
+				<textElement/>
+				<text><![CDATA[TERMS:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="26" y="54" width="495" height="14"/>
+				<textElement/>
+				<text><![CDATA[1. DISPATH:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="26" y="68" width="495" height="14"/>
+				<textElement/>
+				<text><![CDATA[2. FREIGHT:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="26" y="82" width="495" height="14"/>
+				<textElement/>
+				<text><![CDATA[3. PLEASE ARRANGE RTGS AARRANG IMMEDIATELY]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="26" y="96" width="495" height="14"/>
+				<textElement/>
+				<text><![CDATA[4. PLEASE ARRANGE PAYMENT FOR ABOVE AMOUNT TO THE BELOW ACCOUNT:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="38" y="110" width="175" height="13"/>
+				<textElement/>
+				<text><![CDATA[M/S. KALLAM SPINNING MILS LTD. ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="38" y="123" width="309" height="13"/>
+				<textElement/>
+				<text><![CDATA[ INDIAN BANK, GUNTUUR MAIN BRANCH, SAMBASIVAPET,
+]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="38" y="136" width="309" height="13"/>
+				<textElement/>
+				<text><![CDATA[NAAZ CENTER, GUNTUR.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="38" y="149" width="309" height="13"/>
+				<textElement/>
+				<text><![CDATA[OCC A/C NO. 6177951881. IFS CODE:IDIB 000 G023]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="0" width="1" height="188"/>
+			</line>
+			<line>
+				<reportElement x="554" y="0" width="1" height="188"/>
+			</line>
+			<line>
+				<reportElement x="1" y="187" width="554" height="1"/>
+			</line>
+			<line>
+				<reportElement x="1" y="16" width="554" height="1"/>
+			</line>
+			<staticText>
+				<reportElement x="38" y="0" width="131" height="14"/>
+				<textElement/>
+				<text><![CDATA[TOTAL AMOUNT]]></text>
+			</staticText>
+			<line>
+				<reportElement x="1" y="33" width="554" height="1"/>
+			</line>
+			<textField pattern="#,##0.00">
+				<reportElement x="445" y="0" width="100" height="14"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{grandtotal}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="5" y="187" width="131" height="14"/>
+				<textElement/>
+				<text><![CDATA[THANKING YOU]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="75" y="17" width="479" height="16"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$V{grandtotalwords}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="19" y="17" width="56" height="16"/>
+				<textElement/>
+				<text><![CDATA[RUPEES:]]></text>
+			</staticText>
+		</band>
+	</summary>
+</jasperReport>

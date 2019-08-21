@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SqlClass id="class" name="PlanningJobCardCC3668222EB945E598053511A4FB32A1Data" package="org.openbravo.erpWindows.com.rcss.humanresource.PlanningJobCard">
+  <SqlClassComment>WAD Generated class</SqlClassComment>
+
+  <SqlMethod name="selectEdit" type="preparedStatement" return="multiple">
+    <SqlMethodComment>Select for edit</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT to_char(RCHR_Jobcard.Created, ?) as created, 
+        (SELECT NAME FROM AD_USER u WHERE AD_USER_ID = RCHR_Jobcard.CreatedBy) as CreatedByR, 
+        to_char(RCHR_Jobcard.Updated, ?) as updated, 
+        to_char(RCHR_Jobcard.Updated, 'YYYYMMDDHH24MISS') as Updated_Time_Stamp,  
+        RCHR_Jobcard.UpdatedBy, 
+        (SELECT NAME FROM AD_USER u WHERE AD_USER_ID = RCHR_Jobcard.UpdatedBy) as UpdatedByR,
+        RCHR_Jobcard.AD_Org_ID, 
+(CASE WHEN RCHR_Jobcard.AD_Org_ID IS NULL THEN '' ELSE  (COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table1.Name), ''))),'') ) END) AS AD_Org_IDR, 
+RCHR_Jobcard.Rchr_Qualitystandard_ID, 
+(CASE WHEN RCHR_Jobcard.Rchr_Qualitystandard_ID IS NULL THEN '' ELSE  (COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table2.Qualityno), ''))),'')  || ' - ' || COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table2.Partyconstruction), ''))),'') ) END) AS Rchr_Qualitystandard_IDR, 
+COALESCE(RCHR_Jobcard.Isactive, 'N') AS Isactive, 
+RCHR_Jobcard.Documentno, 
+RCHR_Jobcard.Mofdate, 
+RCHR_Jobcard.Orderno, 
+RCHR_Jobcard.Rchr_Orderstatus_ID, 
+(CASE WHEN RCHR_Jobcard.Rchr_Orderstatus_ID IS NULL THEN '' ELSE  (COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table3.Name), ''))),'') ) END) AS Rchr_Orderstatus_IDR, 
+RCHR_Jobcard.Orderdate, 
+RCHR_Jobcard.Deliverydate, 
+RCHR_Jobcard.Orderquantity, 
+RCHR_Jobcard.Towrapmtrs, 
+RCHR_Jobcard.Warpyarnreq, 
+RCHR_Jobcard.Weftyarnreq, 
+RCHR_Jobcard.Towarpdate, 
+RCHR_Jobcard.Process, 
+RCHR_Jobcard.Warpcustomer, 
+RCHR_Jobcard.Docstatus, 
+(CASE WHEN RCHR_Jobcard.Docstatus IS NULL THEN '' ELSE  ( COALESCE(TO_CHAR(list1.name),'') ) END) AS DocstatusR, 
+RCHR_Jobcard.Toloomdate, 
+RCHR_Jobcard.Sizingdate, 
+RCHR_Jobcard.Ppi, 
+RCHR_Jobcard.Nooflloms, 
+RCHR_Jobcard.Loomprdctn, 
+RCHR_Jobcard.Weftcustomer, 
+RCHR_Jobcard.Construction, 
+RCHR_Jobcard.Description, 
+RCHR_Jobcard.Epcg_Mof_ID, 
+(CASE WHEN RCHR_Jobcard.Epcg_Mof_ID IS NULL THEN '' ELSE  (COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table4.Documentno), ''))),'') ) END) AS Epcg_Mof_IDR, 
+RCHR_Jobcard.Warpissued, 
+RCHR_Jobcard.Weftissued, 
+RCHR_Jobcard.Warpremainingqty, 
+RCHR_Jobcard.Weftremainingqty, 
+RCHR_Jobcard.Rchr_Jobcard_ID, 
+RCHR_Jobcard.AD_Client_ID, 
+ 
+        ? AS LANGUAGE 
+        FROM RCHR_Jobcard left join (select AD_Org_ID, Name from AD_Org) table1 on (RCHR_Jobcard.AD_Org_ID = table1.AD_Org_ID) left join (select Rchr_Qualitystandard_ID, Qualityno, Partyconstruction from Rchr_Qualitystandard) table2 on (RCHR_Jobcard.Rchr_Qualitystandard_ID = table2.Rchr_Qualitystandard_ID) left join (select Rchr_Orderstatus_ID, Name from Rchr_Orderstatus) table3 on (RCHR_Jobcard.Rchr_Orderstatus_ID = table3.Rchr_Orderstatus_ID) left join ad_ref_list_v list1 on (RCHR_Jobcard.Docstatus = list1.value and list1.ad_reference_id = '131' and list1.ad_language = ?)  left join (select Epcg_Mof_ID, Documentno from Epcg_Mof) table4 on (RCHR_Jobcard.Epcg_Mof_ID = table4.Epcg_Mof_ID)
+        WHERE 2=2 
+
+        AND 1=1 
+        AND RCHR_Jobcard.Rchr_Jobcard_ID = ? 
+        AND RCHR_Jobcard.AD_Client_ID IN ('1') 
+           AND RCHR_Jobcard.AD_Org_ID IN ('1') 
+    ]]></Sql>
+    <Parameter name="dateTimeFormat"></Parameter>
+    <Parameter name="dateTimeFormat"></Parameter>
+    
+    <Parameter name="paramLanguage"></Parameter>
+<Parameter name="paramLanguage"/>
+
+
+    <Parameter name="key"></Parameter>
+        <Parameter name="adUserClient" type="replace" optional="true" after="RCHR_Jobcard.AD_Client_ID IN (" text="'1'"/>
+        <Parameter name="adOrgClient" type="replace" optional="true" after="RCHR_Jobcard.AD_Org_ID IN (" text="'1'"/>
+
+    <Field name="adUserClient" value="void"></Field>
+    <Field name="adOrgClient" value="void"></Field>
+    <Field name="createdby" value="void"></Field>
+    
+    <Field name="trBgcolor" value="void"></Field>
+    <Field name="totalCount" value="void"></Field>
+    <Field name="dateTimeFormat" value=""></Field>
+  </SqlMethod>
+  
+  
+
+  <SqlMethod name="set" type="constant" return="multiple">
+      <SqlMethodComment>Create a registry</SqlMethodComment>
+      <Sql></Sql>
+
+<Parameter name="rchrQualitystandardId"></Parameter><Parameter name="mofdate"></Parameter><Parameter name="description"></Parameter><Parameter name="orderquantity"></Parameter><Parameter name="sizingdate"></Parameter><Parameter name="adOrgId"></Parameter><Parameter name="towarpdate"></Parameter><Parameter name="process"></Parameter><Parameter name="ppi"></Parameter><Parameter name="weftyarnreq"></Parameter><Parameter name="weftissued"></Parameter><Parameter name="docstatus"></Parameter><Parameter name="weftremainingqty"></Parameter><Parameter name="updatedby"></Parameter><Parameter name="updatedbyr"></Parameter><Parameter name="documentno"></Parameter><Parameter name="toloomdate"></Parameter><Parameter name="rchrJobcardId"></Parameter><Parameter name="adClientId"></Parameter><Parameter name="warpcustomer"></Parameter><Parameter name="weftcustomer"></Parameter><Parameter name="orderno"></Parameter><Parameter name="warpyarnreq"></Parameter><Parameter name="isactive"></Parameter><Parameter name="rchrOrderstatusId"></Parameter><Parameter name="construction"></Parameter><Parameter name="loomprdctn"></Parameter><Parameter name="orderdate"></Parameter><Parameter name="towrapmtrs"></Parameter><Parameter name="epcgMofId"></Parameter><Parameter name="deliverydate"></Parameter><Parameter name="createdby"></Parameter><Parameter name="createdbyr"></Parameter><Parameter name="warpissued"></Parameter><Parameter name="warpremainingqty"></Parameter><Parameter name="nooflloms"></Parameter>
+   </SqlMethod>
+
+
+
+
+
+
+   <SqlMethod name="selectDef5E4292B24644406EB23F0BE05DAD830E_0" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>Select for auxiliar field</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT  ( COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table2.Name), ''))), '') ) as Updatedby FROM AD_User left join (select AD_User_ID, Name from AD_User) table2 on (AD_User.AD_User_ID = table2.AD_User_ID) WHERE AD_User.isActive='Y' AND AD_User.AD_User_ID = ?  
+    ]]></Sql>
+<Parameter name="UpdatedbyR"/>
+  </SqlMethod>
+
+   <SqlMethod name="selectDefF5E738B53B98400695F3BCB3644DAC4E_1" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>Select for auxiliar field</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT  ( COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table2.Name), ''))), '') ) as Createdby FROM AD_User left join (select AD_User_ID, Name from AD_User) table2 on (AD_User.AD_User_ID = table2.AD_User_ID) WHERE AD_User.isActive='Y' AND AD_User.AD_User_ID = ?  
+    ]]></Sql>
+<Parameter name="CreatedbyR"/>
+  </SqlMethod>
+
+
+
+
+
+
+
+
+
+
+  <SqlMethod name="update" type="preparedStatement" return="rowCount" static="false" connection="true">
+    <Sql><![CDATA[
+        UPDATE RCHR_Jobcard
+        SET AD_Org_ID = (?) , Rchr_Qualitystandard_ID = (?) , Isactive = (?) , Documentno = (?) , Mofdate = TO_DATE(?) , Orderno = (?) , Rchr_Orderstatus_ID = (?) , Orderdate = TO_DATE(?) , Deliverydate = TO_DATE(?) , Orderquantity = TO_NUMBER(?) , Towrapmtrs = TO_NUMBER(?) , Warpyarnreq = TO_NUMBER(?) , Weftyarnreq = TO_NUMBER(?) , Towarpdate = TO_DATE(?) , Process = (?) , Warpcustomer = (?) , Docstatus = (?) , Toloomdate = TO_DATE(?) , Sizingdate = TO_DATE(?) , Ppi = TO_NUMBER(?) , Nooflloms = TO_NUMBER(?) , Loomprdctn = TO_NUMBER(?) , Weftcustomer = (?) , Construction = (?) , Description = (?) , Epcg_Mof_ID = (?) , Warpissued = TO_NUMBER(?) , Weftissued = TO_NUMBER(?) , Warpremainingqty = TO_NUMBER(?) , Weftremainingqty = TO_NUMBER(?) , Rchr_Jobcard_ID = (?) , AD_Client_ID = (?) , updated = now(), updatedby = ? 
+        WHERE RCHR_Jobcard.Rchr_Jobcard_ID = ? 
+        
+        AND RCHR_Jobcard.AD_Client_ID IN ('1') 
+        AND RCHR_Jobcard.AD_Org_ID IN ('1') 
+    ]]></Sql>
+    <Parameter name="adOrgId"></Parameter> <Parameter name="rchrQualitystandardId"></Parameter> <Parameter name="isactive"></Parameter> <Parameter name="documentno"></Parameter> <Parameter name="mofdate"></Parameter> <Parameter name="orderno"></Parameter> <Parameter name="rchrOrderstatusId"></Parameter> <Parameter name="orderdate"></Parameter> <Parameter name="deliverydate"></Parameter> <Parameter name="orderquantity"></Parameter> <Parameter name="towrapmtrs"></Parameter> <Parameter name="warpyarnreq"></Parameter> <Parameter name="weftyarnreq"></Parameter> <Parameter name="towarpdate"></Parameter> <Parameter name="process"></Parameter> <Parameter name="warpcustomer"></Parameter> <Parameter name="docstatus"></Parameter> <Parameter name="toloomdate"></Parameter> <Parameter name="sizingdate"></Parameter> <Parameter name="ppi"></Parameter> <Parameter name="nooflloms"></Parameter> <Parameter name="loomprdctn"></Parameter> <Parameter name="weftcustomer"></Parameter> <Parameter name="construction"></Parameter> <Parameter name="description"></Parameter> <Parameter name="epcgMofId"></Parameter> <Parameter name="warpissued"></Parameter> <Parameter name="weftissued"></Parameter> <Parameter name="warpremainingqty"></Parameter> <Parameter name="weftremainingqty"></Parameter> <Parameter name="rchrJobcardId"></Parameter> <Parameter name="adClientId"></Parameter> 
+    <Parameter name="updatedby"></Parameter>
+    <Parameter id="paramKey" name="rchrJobcardId"></Parameter>
+    
+    
+        <Parameter name="adUserClient" type="replace" optional="true" after="RCHR_Jobcard.AD_Client_ID IN (" text="'1'"/>
+        <Parameter name="adOrgClient" type="replace" optional="true" after="RCHR_Jobcard.AD_Org_ID IN (" text="'1'"/>
+  </SqlMethod>
+
+  <SqlMethod name="insert" type="preparedStatement" return="rowCount" static="false" connection="true">
+    <Sql><![CDATA[
+        INSERT INTO RCHR_Jobcard 
+        (AD_Org_ID, Rchr_Qualitystandard_ID, Isactive, Documentno, Mofdate, Orderno, Rchr_Orderstatus_ID, Orderdate, Deliverydate, Orderquantity, Towrapmtrs, Warpyarnreq, Weftyarnreq, Towarpdate, Process, Warpcustomer, Docstatus, Toloomdate, Sizingdate, Ppi, Nooflloms, Loomprdctn, Weftcustomer, Construction, Description, Epcg_Mof_ID, Warpissued, Weftissued, Warpremainingqty, Weftremainingqty, Rchr_Jobcard_ID, AD_Client_ID, created, createdby, updated, updatedBy)
+        VALUES ((?), (?), (?), (?), TO_DATE(?), (?), (?), TO_DATE(?), TO_DATE(?), TO_NUMBER(?), TO_NUMBER(?), TO_NUMBER(?), TO_NUMBER(?), TO_DATE(?), (?), (?), (?), TO_DATE(?), TO_DATE(?), TO_NUMBER(?), TO_NUMBER(?), TO_NUMBER(?), (?), (?), (?), (?), TO_NUMBER(?), TO_NUMBER(?), TO_NUMBER(?), TO_NUMBER(?), (?), (?), now(), ?, now(), ?)
+    ]]></Sql>
+    <Parameter name="adOrgId"></Parameter> <Parameter name="rchrQualitystandardId"></Parameter> <Parameter name="isactive"></Parameter> <Parameter name="documentno"></Parameter> <Parameter name="mofdate"></Parameter> <Parameter name="orderno"></Parameter> <Parameter name="rchrOrderstatusId"></Parameter> <Parameter name="orderdate"></Parameter> <Parameter name="deliverydate"></Parameter> <Parameter name="orderquantity"></Parameter> <Parameter name="towrapmtrs"></Parameter> <Parameter name="warpyarnreq"></Parameter> <Parameter name="weftyarnreq"></Parameter> <Parameter name="towarpdate"></Parameter> <Parameter name="process"></Parameter> <Parameter name="warpcustomer"></Parameter> <Parameter name="docstatus"></Parameter> <Parameter name="toloomdate"></Parameter> <Parameter name="sizingdate"></Parameter> <Parameter name="ppi"></Parameter> <Parameter name="nooflloms"></Parameter> <Parameter name="loomprdctn"></Parameter> <Parameter name="weftcustomer"></Parameter> <Parameter name="construction"></Parameter> <Parameter name="description"></Parameter> <Parameter name="epcgMofId"></Parameter> <Parameter name="warpissued"></Parameter> <Parameter name="weftissued"></Parameter> <Parameter name="warpremainingqty"></Parameter> <Parameter name="weftremainingqty"></Parameter> <Parameter name="rchrJobcardId"></Parameter> <Parameter name="adClientId"></Parameter> 
+    <Parameter name="createdby"></Parameter>
+    <Parameter name="updatedby"></Parameter>
+  </SqlMethod>
+
+  <SqlMethod name="delete" type="preparedStatement" return="rowCount">
+    <Sql><![CDATA[
+        DELETE FROM RCHR_Jobcard
+        WHERE RCHR_Jobcard.Rchr_Jobcard_ID = ? 
+        
+        AND RCHR_Jobcard.AD_Client_ID IN ('1') 
+        AND RCHR_Jobcard.AD_Org_ID IN ('1') 
+    ]]></Sql>
+    <Parameter name="param1"></Parameter>
+    
+        <Parameter name="adUserClient" type="replace" optional="true" after="RCHR_Jobcard.AD_Client_ID IN (" text="'1'"/>
+        <Parameter name="adOrgClient" type="replace" optional="true" after="RCHR_Jobcard.AD_Org_ID IN (" text="'1'"/>
+  </SqlMethod>
+
+  <SqlMethod name="selectOrg" type="preparedStatement" return="string">
+    <SqlMethodComment>Select for relation</SqlMethodComment>
+    <Sql><![CDATA[ 
+        SELECT AD_ORG_ID
+          FROM RCHR_Jobcard
+         WHERE RCHR_Jobcard.Rchr_Jobcard_ID = ? 
+    ]]></Sql>
+    <Parameter name="id"></Parameter>
+  </SqlMethod>
+  
+  <SqlMethod name="getCurrentDBTimestamp" type="preparedStatement" return="string">
+    <Sql><![CDATA[ 
+        SELECT to_char(Updated, 'YYYYMMDDHH24MISS') as Updated_Time_Stamp
+          FROM RCHR_Jobcard
+         WHERE RCHR_Jobcard.Rchr_Jobcard_ID = ? 
+    ]]></Sql>
+    <Parameter name="id"></Parameter>
+  </SqlMethod>
+</SqlClass>

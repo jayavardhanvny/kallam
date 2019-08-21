@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SqlClass id="class" name="LinesData" package="org.openbravo.erpWindows.ManufacturingPlan">
+  <SqlClassComment>WAD Generated class</SqlClassComment>
+
+  <SqlMethod name="selectEdit" type="preparedStatement" return="multiple">
+    <SqlMethodComment>Select for edit</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT to_char(MRP_Run_ProductionLine.Created, ?) as created, 
+        (SELECT NAME FROM AD_USER u WHERE AD_USER_ID = MRP_Run_ProductionLine.CreatedBy) as CreatedByR, 
+        to_char(MRP_Run_ProductionLine.Updated, ?) as updated, 
+        to_char(MRP_Run_ProductionLine.Updated, 'YYYYMMDDHH24MISS') as Updated_Time_Stamp,  
+        MRP_Run_ProductionLine.UpdatedBy, 
+        (SELECT NAME FROM AD_USER u WHERE AD_USER_ID = MRP_Run_ProductionLine.UpdatedBy) as UpdatedByR,
+        MRP_Run_ProductionLine.Planneddate, 
+MRP_Run_ProductionLine.M_Product_ID, 
+(CASE WHEN MRP_Run_ProductionLine.M_Product_ID IS NULL THEN '' ELSE  (COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table1.Value), ''))),'')  || ' - ' || COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR((CASE WHEN tableTRL1.Name IS NULL THEN TO_CHAR(table1.Name) ELSE TO_CHAR(tableTRL1.Name) END)), ''))),'')  || ' - ' || COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table1.EM_Rcgi_Ksmlbarcode), ''))),'') ) END) AS M_Product_IDR, 
+MRP_Run_ProductionLine.Qty, 
+MRP_Run_ProductionLine.Neededqty, 
+MRP_Run_ProductionLine.Inouttrxtype, 
+(CASE WHEN MRP_Run_ProductionLine.Inouttrxtype IS NULL THEN '' ELSE  ( COALESCE(TO_CHAR(list1.name),'') ) END) AS InouttrxtypeR, 
+MRP_Run_ProductionLine.Parent_ID, 
+(CASE WHEN MRP_Run_ProductionLine.Parent_ID IS NULL THEN '' ELSE  ( COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table2.M_Product_ID), ''))),'') ) END) AS Parent_IDR, 
+MRP_Run_ProductionLine.Cumqty, 
+MRP_Run_ProductionLine.Plannedorderdate, 
+COALESCE(MRP_Run_ProductionLine.Isfixed, 'N') AS Isfixed, 
+MRP_Run_ProductionLine.M_Requisitionline_ID, 
+(CASE WHEN MRP_Run_ProductionLine.M_Requisitionline_ID IS NULL THEN '' ELSE  (COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table4.DocumentNo), ''))),'')  || ' - ' || COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table5.Value), ''))),'')  || ' - ' || COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR((CASE WHEN tableTRL5.Name IS NULL THEN TO_CHAR(table5.Name) ELSE TO_CHAR(tableTRL5.Name) END)), ''))),'')  || ' - ' || COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table5.EM_Rcgi_Ksmlbarcode), ''))),'')  || ' - ' || COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table3.Qty), ''))),'')  || ' - ' || COALESCE(TO_CHAR(TO_CHAR(table3.Needbydate, 'DD-MM-YYYY')),'') ) END) AS M_Requisitionline_IDR, 
+MRP_Run_ProductionLine.MA_Processplan_ID, 
+(CASE WHEN MRP_Run_ProductionLine.MA_Processplan_ID IS NULL THEN '' ELSE  (COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table6.Name), ''))),'') ) END) AS MA_Processplan_IDR, 
+MRP_Run_ProductionLine.C_OrderLine_ID, 
+(CASE WHEN MRP_Run_ProductionLine.C_OrderLine_ID IS NULL THEN '' ELSE  (COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table8.DocumentNo), ''))),'')  || ' - ' || COALESCE(TO_CHAR(TO_CHAR(table8.DateOrdered, 'DD-MM-YYYY')),'')  || ' - ' || COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table8.GrandTotal), ''))),'')  || ' - ' || COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table7.Line), ''))),'')  || ' - ' || COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table7.LineNetAmt), ''))),'') ) END) AS C_OrderLine_IDR, 
+MRP_Run_ProductionLine.MA_Workrequirement_ID, 
+(CASE WHEN MRP_Run_ProductionLine.MA_Workrequirement_ID IS NULL THEN '' ELSE  (COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table9.DocumentNo), ''))),'')  || ' - ' || COALESCE(TO_CHAR(TO_CHAR(table9.StartDate, 'DD-MM-YYYY')),'') ) END) AS MA_Workrequirement_IDR, 
+MRP_Run_ProductionLine.MRP_Salesforecastline_ID, 
+(CASE WHEN MRP_Run_ProductionLine.MRP_Salesforecastline_ID IS NULL THEN '' ELSE  (COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table11.Value), ''))),'')  || ' - ' || COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR((CASE WHEN tableTRL11.Name IS NULL THEN TO_CHAR(table11.Name) ELSE TO_CHAR(tableTRL11.Name) END)), ''))),'')  || ' - ' || COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table11.EM_Rcgi_Ksmlbarcode), ''))),'')  || ' - ' || COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table13.Name), ''))),'')  || ' - ' || COALESCE(TO_CHAR(TO_CHAR(table12.DateDoc, 'DD-MM-YYYY')),'') ) END) AS MRP_Salesforecastline_IDR, 
+MRP_Run_ProductionLine.Recalculatestock, 
+COALESCE(MRP_Run_ProductionLine.Isplanned, 'N') AS Isplanned, 
+MRP_Run_ProductionLine.MRP_Run_Productionline_ID, 
+MRP_Run_ProductionLine.AD_Client_ID, 
+MRP_Run_ProductionLine.AD_Org_ID, 
+MRP_Run_ProductionLine.MRP_Run_Production_ID, 
+COALESCE(MRP_Run_ProductionLine.Isexploded, 'N') AS Isexploded, 
+COALESCE(MRP_Run_ProductionLine.IsActive, 'N') AS IsActive, 
+ 
+        ? AS LANGUAGE 
+        FROM MRP_Run_ProductionLine left join (select M_Product_ID, Value, Name, EM_Rcgi_Ksmlbarcode from M_Product) table1 on (MRP_Run_ProductionLine.M_Product_ID = table1.M_Product_ID) left join (select M_Product_ID,AD_Language, Name from M_Product_TRL) tableTRL1 on (table1.M_Product_ID = tableTRL1.M_Product_ID and tableTRL1.AD_Language = ?)  left join ad_ref_list_v list1 on (MRP_Run_ProductionLine.Inouttrxtype = list1.value and list1.ad_reference_id = '800098' and list1.ad_language = ?)  left join (select MRP_Run_Productionline_ID, M_Product_ID from MRP_Run_ProductionLine) table2 on (MRP_Run_ProductionLine.Parent_ID =  table2.MRP_Run_Productionline_ID) left join (select M_Requisitionline_ID, M_Requisition_ID, M_Product_ID, Qty, Needbydate from M_Requisitionline) table3 on (MRP_Run_ProductionLine.M_Requisitionline_ID = table3.M_Requisitionline_ID) left join (select M_Requisition_ID, DocumentNo from M_Requisition) table4 on (table3.M_Requisition_ID = table4.M_Requisition_ID) left join (select M_Product_ID, Value, Name, EM_Rcgi_Ksmlbarcode from M_Product) table5 on (table3.M_Product_ID = table5.M_Product_ID) left join (select M_Product_ID,AD_Language, Name from M_Product_TRL) tableTRL5 on (table5.M_Product_ID = tableTRL5.M_Product_ID and tableTRL5.AD_Language = ?)  left join (select MA_Processplan_ID, Name from MA_Processplan) table6 on (MRP_Run_ProductionLine.MA_Processplan_ID = table6.MA_Processplan_ID) left join (select C_OrderLine_ID, C_Order_ID, Line, LineNetAmt from C_OrderLine) table7 on (MRP_Run_ProductionLine.C_OrderLine_ID = table7.C_OrderLine_ID) left join (select C_Order_ID, DocumentNo, DateOrdered, GrandTotal from C_Order) table8 on (table7.C_Order_ID = table8.C_Order_ID) left join (select MA_Workrequirement_ID, DocumentNo, StartDate from MA_Workrequirement) table9 on (MRP_Run_ProductionLine.MA_Workrequirement_ID = table9.MA_Workrequirement_ID) left join (select MRP_Salesforecastline_ID, M_Product_ID, MRP_Salesforecast_ID from MRP_Salesforecastline) table10 on (MRP_Run_ProductionLine.MRP_Salesforecastline_ID = table10.MRP_Salesforecastline_ID) left join (select M_Product_ID, Value, Name, EM_Rcgi_Ksmlbarcode from M_Product) table11 on (table10.M_Product_ID = table11.M_Product_ID) left join (select M_Product_ID,AD_Language, Name from M_Product_TRL) tableTRL11 on (table11.M_Product_ID = tableTRL11.M_Product_ID and tableTRL11.AD_Language = ?)  left join (select MRP_Salesforecast_ID, C_BPartner_ID, DateDoc from MRP_Salesforecast) table12 on (table10.MRP_Salesforecast_ID = table12.MRP_Salesforecast_ID) left join (select C_BPartner_ID, Name from C_BPartner) table13 on (table12.C_BPartner_ID = table13.C_BPartner_ID)
+        WHERE 2=2 
+
+        AND 1=1 
+        AND MRP_Run_ProductionLine.MRP_Run_Productionline_ID = ? 
+        AND MRP_Run_ProductionLine.AD_Client_ID IN ('1') 
+           AND MRP_Run_ProductionLine.AD_Org_ID IN ('1') 
+    ]]></Sql>
+    <Parameter name="dateTimeFormat"></Parameter>
+    <Parameter name="dateTimeFormat"></Parameter>
+    
+    <Parameter name="paramLanguage"></Parameter>
+<Parameter name="paramLanguage"/>
+<Parameter name="paramLanguage"/>
+<Parameter name="paramLanguage"/>
+<Parameter name="paramLanguage"/>
+
+    <Parameter name="mrpRunProductionId" optional="true" after="AND 1=1 " id="paramKeyParent"> AND MRP_Run_ProductionLine.MRP_Run_Production_ID = ? </Parameter>
+    <Parameter name="key"></Parameter>
+        <Parameter name="adUserClient" type="replace" optional="true" after="MRP_Run_ProductionLine.AD_Client_ID IN (" text="'1'"/>
+        <Parameter name="adOrgClient" type="replace" optional="true" after="MRP_Run_ProductionLine.AD_Org_ID IN (" text="'1'"/>
+
+    <Field name="adUserClient" value="void"></Field>
+    <Field name="adOrgClient" value="void"></Field>
+    <Field name="createdby" value="void"></Field>
+    
+    <Field name="trBgcolor" value="void"></Field>
+    <Field name="totalCount" value="void"></Field>
+    <Field name="dateTimeFormat" value=""></Field>
+  </SqlMethod>
+  
+  
+
+  <SqlMethod name="set" type="constant" return="multiple">
+      <SqlMethodComment>Create a registry</SqlMethodComment>
+      <Sql></Sql>
+    <Parameter name="mrpRunProductionId" id="paramKeyParent"></Parameter>
+<Parameter name="mrpRunProductionlineId"></Parameter><Parameter name="adClientId"></Parameter><Parameter name="adOrgId"></Parameter><Parameter name="isactive"></Parameter><Parameter name="createdby"></Parameter><Parameter name="createdbyr"></Parameter><Parameter name="updatedby"></Parameter><Parameter name="updatedbyr"></Parameter><Parameter name="mProductId"></Parameter><Parameter name="mProductIdr"></Parameter><Parameter name="qty"></Parameter><Parameter name="neededqty"></Parameter><Parameter name="planneddate"></Parameter><Parameter name="parentId"></Parameter><Parameter name="inouttrxtype"></Parameter><Parameter name="isfixed"></Parameter><Parameter name="cOrderlineId"></Parameter><Parameter name="mrpSalesforecastlineId"></Parameter><Parameter name="mRequisitionlineId"></Parameter><Parameter name="maProcessplanId"></Parameter><Parameter name="maWorkrequirementId"></Parameter><Parameter name="isexploded"></Parameter><Parameter name="plannedorderdate"></Parameter><Parameter name="isplanned"></Parameter><Parameter name="cumqty"></Parameter><Parameter name="recalculatestock"></Parameter>
+   </SqlMethod>
+
+
+
+
+
+
+   <SqlMethod name="selectDef803628_0" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>Select for auxiliar field</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT  ( COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table2.Name), ''))), '') ) as Createdby FROM AD_User left join (select AD_User_ID, Name from AD_User) table2 on (AD_User.AD_User_ID = table2.AD_User_ID) WHERE AD_User.isActive='Y' AND AD_User.AD_User_ID = ?  
+    ]]></Sql>
+<Parameter name="CreatedbyR"/>
+  </SqlMethod>
+
+   <SqlMethod name="selectDef803630_1" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>Select for auxiliar field</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT  ( COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table2.Name), ''))), '') ) as Updatedby FROM AD_User left join (select AD_User_ID, Name from AD_User) table2 on (AD_User.AD_User_ID = table2.AD_User_ID) WHERE AD_User.isActive='Y' AND AD_User.AD_User_ID = ?  
+    ]]></Sql>
+<Parameter name="UpdatedbyR"/>
+  </SqlMethod>
+
+   <SqlMethod name="selectDef803632_2" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>Select for auxiliar field</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT  ( COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table2.Value), ''))), '')  || ' - ' || COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR((CASE WHEN tableTRL2.Name IS NULL THEN TO_CHAR(table2.Name) ELSE TO_CHAR(tableTRL2.Name) END)), ''))), '')  || ' - ' || COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table2.EM_Rcgi_Ksmlbarcode), ''))), '') ) as M_Product_ID FROM M_Product left join (select M_Product_ID, Value, Name, EM_Rcgi_Ksmlbarcode from M_Product) table2 on (M_Product.M_Product_ID = table2.M_Product_ID)left join (select M_Product_ID,AD_Language, Name from M_Product_TRL) tableTRL2 on (table2.M_Product_ID = tableTRL2.M_Product_ID and tableTRL2.AD_Language = ?)  WHERE M_Product.isActive='Y' AND M_Product.M_Product_ID = ?  
+    ]]></Sql>
+<Parameter name="paramLanguage"/>
+<Parameter name="M_Product_IDR"/>
+  </SqlMethod>
+
+
+
+  <SqlMethod name="selectParentID" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>return the parent ID</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT MRP_Run_ProductionLine.MRP_Run_Production_ID AS NAME
+        FROM MRP_Run_ProductionLine
+        WHERE MRP_Run_ProductionLine.MRP_Run_Productionline_ID = ?
+    ]]></Sql>
+    <Parameter name="key"></Parameter>
+  </SqlMethod>
+
+   <SqlMethod name="selectParent" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>Select for parent field</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT (TO_CHAR(COALESCE(TO_CHAR(table1.Name), '')) || ' - ' || TO_CHAR(COALESCE(TO_CHAR(table2.Name), '')) || ' - ' || TO_CHAR(COALESCE(TO_CHAR(table3.Value), '')) || ' - ' || TO_CHAR(COALESCE(TO_CHAR((CASE WHEN tableTRL3.Name IS NULL THEN TO_CHAR(table3.Name) ELSE TO_CHAR(tableTRL3.Name) END)), '')) || ' - ' || TO_CHAR(COALESCE(TO_CHAR(table3.EM_Rcgi_Ksmlbarcode), ''))) AS NAME FROM MRP_Run_Production left join (select MRP_Run_Production_ID, Name, MRP_Planner_ID, M_Product_ID from MRP_Run_Production) table1 on (MRP_Run_Production.MRP_Run_Production_ID = table1.MRP_Run_Production_ID) left join (select MRP_Planner_ID, Name from MRP_Planner) table2 on (table1.MRP_Planner_ID = table2.MRP_Planner_ID) left join (select M_Product_ID, Value, Name, EM_Rcgi_Ksmlbarcode from M_Product) table3 on (table1.M_Product_ID = table3.M_Product_ID) left join (select M_Product_ID,AD_Language, Name from M_Product_TRL) tableTRL3 on (table3.M_Product_ID = tableTRL3.M_Product_ID and tableTRL3.AD_Language = ?)  WHERE MRP_Run_Production.MRP_Run_Production_ID = ?  
+    ]]></Sql>
+<Parameter name="paramLanguage"/>
+<Parameter name="mrpRunProductionId"/>
+
+  </SqlMethod>
+
+
+
+
+   <SqlMethod name="selectParentTrl" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>Select for parent field</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT (TO_CHAR(COALESCE(TO_CHAR(table1.Name), '')) || ' - ' || TO_CHAR(COALESCE(TO_CHAR(table2.Name), '')) || ' - ' || TO_CHAR(COALESCE(TO_CHAR(table3.Value), '')) || ' - ' || TO_CHAR(COALESCE(TO_CHAR((CASE WHEN tableTRL3.Name IS NULL THEN TO_CHAR(table3.Name) ELSE TO_CHAR(tableTRL3.Name) END)), '')) || ' - ' || TO_CHAR(COALESCE(TO_CHAR(table3.EM_Rcgi_Ksmlbarcode), ''))) AS NAME FROM MRP_Run_Production left join (select MRP_Run_Production_ID, Name, MRP_Planner_ID, M_Product_ID from MRP_Run_Production) table1 on (MRP_Run_Production.MRP_Run_Production_ID = table1.MRP_Run_Production_ID) left join (select MRP_Planner_ID, Name from MRP_Planner) table2 on (table1.MRP_Planner_ID = table2.MRP_Planner_ID) left join (select M_Product_ID, Value, Name, EM_Rcgi_Ksmlbarcode from M_Product) table3 on (table1.M_Product_ID = table3.M_Product_ID) left join (select M_Product_ID,AD_Language, Name from M_Product_TRL) tableTRL3 on (table3.M_Product_ID = tableTRL3.M_Product_ID and tableTRL3.AD_Language = ?)  WHERE MRP_Run_Production.MRP_Run_Production_ID = ?  
+    ]]></Sql>
+<Parameter name="paramLanguage"/>
+<Parameter name="mrpRunProductionId"/>
+
+  </SqlMethod>
+
+
+
+
+
+
+
+
+  <SqlMethod name="update" type="preparedStatement" return="rowCount" static="false" connection="true">
+    <Sql><![CDATA[
+        UPDATE MRP_Run_ProductionLine
+        SET Planneddate = TO_DATE(?) , M_Product_ID = (?) , Qty = TO_NUMBER(?) , Neededqty = TO_NUMBER(?) , Inouttrxtype = (?) , Parent_ID = (?) , Cumqty = TO_NUMBER(?) , Plannedorderdate = TO_DATE(?) , Isfixed = (?) , M_Requisitionline_ID = (?) , MA_Processplan_ID = (?) , C_OrderLine_ID = (?) , MA_Workrequirement_ID = (?) , MRP_Salesforecastline_ID = (?) , Recalculatestock = (?) , Isplanned = (?) , MRP_Run_Productionline_ID = (?) , AD_Client_ID = (?) , AD_Org_ID = (?) , MRP_Run_Production_ID = (?) , Isexploded = (?) , IsActive = (?) , updated = now(), updatedby = ? 
+        WHERE MRP_Run_ProductionLine.MRP_Run_Productionline_ID = ? 
+                 AND MRP_Run_ProductionLine.MRP_Run_Production_ID = ? 
+        AND MRP_Run_ProductionLine.AD_Client_ID IN ('1') 
+        AND MRP_Run_ProductionLine.AD_Org_ID IN ('1') 
+    ]]></Sql>
+    <Parameter name="planneddate"></Parameter> <Parameter name="mProductId"></Parameter> <Parameter name="qty"></Parameter> <Parameter name="neededqty"></Parameter> <Parameter name="inouttrxtype"></Parameter> <Parameter name="parentId"></Parameter> <Parameter name="cumqty"></Parameter> <Parameter name="plannedorderdate"></Parameter> <Parameter name="isfixed"></Parameter> <Parameter name="mRequisitionlineId"></Parameter> <Parameter name="maProcessplanId"></Parameter> <Parameter name="cOrderlineId"></Parameter> <Parameter name="maWorkrequirementId"></Parameter> <Parameter name="mrpSalesforecastlineId"></Parameter> <Parameter name="recalculatestock"></Parameter> <Parameter name="isplanned"></Parameter> <Parameter name="mrpRunProductionlineId"></Parameter> <Parameter name="adClientId"></Parameter> <Parameter name="adOrgId"></Parameter> <Parameter name="mrpRunProductionId"></Parameter> <Parameter name="isexploded"></Parameter> <Parameter name="isactive"></Parameter> 
+    <Parameter name="updatedby"></Parameter>
+    <Parameter id="paramKey" name="mrpRunProductionlineId"></Parameter>
+    
+    <Parameter name="mrpRunProductionId" id="paramKeyParent"></Parameter>
+        <Parameter name="adUserClient" type="replace" optional="true" after="MRP_Run_ProductionLine.AD_Client_ID IN (" text="'1'"/>
+        <Parameter name="adOrgClient" type="replace" optional="true" after="MRP_Run_ProductionLine.AD_Org_ID IN (" text="'1'"/>
+  </SqlMethod>
+
+  <SqlMethod name="insert" type="preparedStatement" return="rowCount" static="false" connection="true">
+    <Sql><![CDATA[
+        INSERT INTO MRP_Run_ProductionLine 
+        (Planneddate, M_Product_ID, Qty, Neededqty, Inouttrxtype, Parent_ID, Cumqty, Plannedorderdate, Isfixed, M_Requisitionline_ID, MA_Processplan_ID, C_OrderLine_ID, MA_Workrequirement_ID, MRP_Salesforecastline_ID, Recalculatestock, Isplanned, MRP_Run_Productionline_ID, AD_Client_ID, AD_Org_ID, MRP_Run_Production_ID, Isexploded, IsActive, created, createdby, updated, updatedBy)
+        VALUES (TO_DATE(?), (?), TO_NUMBER(?), TO_NUMBER(?), (?), (?), TO_NUMBER(?), TO_DATE(?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), now(), ?, now(), ?)
+    ]]></Sql>
+    <Parameter name="planneddate"></Parameter> <Parameter name="mProductId"></Parameter> <Parameter name="qty"></Parameter> <Parameter name="neededqty"></Parameter> <Parameter name="inouttrxtype"></Parameter> <Parameter name="parentId"></Parameter> <Parameter name="cumqty"></Parameter> <Parameter name="plannedorderdate"></Parameter> <Parameter name="isfixed"></Parameter> <Parameter name="mRequisitionlineId"></Parameter> <Parameter name="maProcessplanId"></Parameter> <Parameter name="cOrderlineId"></Parameter> <Parameter name="maWorkrequirementId"></Parameter> <Parameter name="mrpSalesforecastlineId"></Parameter> <Parameter name="recalculatestock"></Parameter> <Parameter name="isplanned"></Parameter> <Parameter name="mrpRunProductionlineId"></Parameter> <Parameter name="adClientId"></Parameter> <Parameter name="adOrgId"></Parameter> <Parameter name="mrpRunProductionId"></Parameter> <Parameter name="isexploded"></Parameter> <Parameter name="isactive"></Parameter> 
+    <Parameter name="createdby"></Parameter>
+    <Parameter name="updatedby"></Parameter>
+  </SqlMethod>
+
+  <SqlMethod name="delete" type="preparedStatement" return="rowCount">
+    <Sql><![CDATA[
+        DELETE FROM MRP_Run_ProductionLine
+        WHERE MRP_Run_ProductionLine.MRP_Run_Productionline_ID = ? 
+                 AND MRP_Run_ProductionLine.MRP_Run_Production_ID = ? 
+        AND MRP_Run_ProductionLine.AD_Client_ID IN ('1') 
+        AND MRP_Run_ProductionLine.AD_Org_ID IN ('1') 
+    ]]></Sql>
+    <Parameter name="param1"></Parameter>
+        <Parameter name="mrpRunProductionId" id="paramKeyParent"></Parameter>
+        <Parameter name="adUserClient" type="replace" optional="true" after="MRP_Run_ProductionLine.AD_Client_ID IN (" text="'1'"/>
+        <Parameter name="adOrgClient" type="replace" optional="true" after="MRP_Run_ProductionLine.AD_Org_ID IN (" text="'1'"/>
+  </SqlMethod>
+
+  <SqlMethod name="selectOrg" type="preparedStatement" return="string">
+    <SqlMethodComment>Select for relation</SqlMethodComment>
+    <Sql><![CDATA[ 
+        SELECT AD_ORG_ID
+          FROM MRP_Run_ProductionLine
+         WHERE MRP_Run_ProductionLine.MRP_Run_Productionline_ID = ? 
+    ]]></Sql>
+    <Parameter name="id"></Parameter>
+  </SqlMethod>
+  
+  <SqlMethod name="getCurrentDBTimestamp" type="preparedStatement" return="string">
+    <Sql><![CDATA[ 
+        SELECT to_char(Updated, 'YYYYMMDDHH24MISS') as Updated_Time_Stamp
+          FROM MRP_Run_ProductionLine
+         WHERE MRP_Run_ProductionLine.MRP_Run_Productionline_ID = ? 
+    ]]></Sql>
+    <Parameter name="id"></Parameter>
+  </SqlMethod>
+</SqlClass>

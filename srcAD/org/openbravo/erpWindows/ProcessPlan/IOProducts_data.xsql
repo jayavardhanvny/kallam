@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SqlClass id="class" name="IOProductsData" package="org.openbravo.erpWindows.ProcessPlan">
+  <SqlClassComment>WAD Generated class</SqlClassComment>
+
+  <SqlMethod name="selectEdit" type="preparedStatement" return="multiple">
+    <SqlMethodComment>Select for edit</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT to_char(MA_SequenceProduct.Created, ?) as created, 
+        (SELECT NAME FROM AD_USER u WHERE AD_USER_ID = MA_SequenceProduct.CreatedBy) as CreatedByR, 
+        to_char(MA_SequenceProduct.Updated, ?) as updated, 
+        to_char(MA_SequenceProduct.Updated, 'YYYYMMDDHH24MISS') as Updated_Time_Stamp,  
+        MA_SequenceProduct.UpdatedBy, 
+        (SELECT NAME FROM AD_USER u WHERE AD_USER_ID = MA_SequenceProduct.UpdatedBy) as UpdatedByR,
+        MA_SequenceProduct.Line, 
+MA_SequenceProduct.M_Product_ID, 
+(CASE WHEN MA_SequenceProduct.M_Product_ID IS NULL THEN '' ELSE  (COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table1.Value), ''))),'')  || ' - ' || COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR((CASE WHEN tableTRL1.Name IS NULL THEN TO_CHAR(table1.Name) ELSE TO_CHAR(tableTRL1.Name) END)), ''))),'')  || ' - ' || COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table1.EM_Rcgi_Ksmlbarcode), ''))),'') ) END) AS M_Product_IDR, 
+MA_SequenceProduct.Productiontype, 
+(CASE WHEN MA_SequenceProduct.Productiontype IS NULL THEN '' ELSE  ( COALESCE(TO_CHAR(list1.name),'') ) END) AS ProductiontypeR, 
+MA_SequenceProduct.Quantity, 
+MA_SequenceProduct.C_UOM_ID, 
+(CASE WHEN MA_SequenceProduct.C_UOM_ID IS NULL THEN '' ELSE  (COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR((CASE WHEN tableTRL2.Name IS NULL THEN TO_CHAR(table2.Name) ELSE TO_CHAR(tableTRL2.Name) END)), ''))),'') ) END) AS C_UOM_IDR, 
+COALESCE(MA_SequenceProduct.Uniqueattconsum, 'N') AS Uniqueattconsum, 
+MA_SequenceProduct.Componentcost, 
+MA_SequenceProduct.Decrease, 
+MA_SequenceProduct.Rejected, 
+MA_SequenceProduct.QuantityOrder, 
+MA_SequenceProduct.M_Product_Uom_Id, 
+(CASE WHEN MA_SequenceProduct.M_Product_Uom_Id IS NULL THEN '' ELSE  ( COALESCE(TO_CHAR(list2.name),'') ) END) AS M_Product_Uom_IdR, 
+MA_SequenceProduct.Cost, 
+COALESCE(MA_SequenceProduct.IsActive, 'N') AS IsActive, 
+MA_SequenceProduct.Divisiongroupqty, 
+MA_SequenceProduct.Copyproduct, 
+MA_SequenceProduct.M_Warehouse_Rule_ID, 
+(CASE WHEN MA_SequenceProduct.M_Warehouse_Rule_ID IS NULL THEN '' ELSE  (COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table4.Name), ''))),'') ) END) AS M_Warehouse_Rule_IDR, 
+MA_SequenceProduct.AD_Org_ID, 
+MA_SequenceProduct.AD_Client_ID, 
+MA_SequenceProduct.MA_Sequenceproduct_ID, 
+MA_SequenceProduct.MA_Sequence_ID, 
+ 
+        ? AS LANGUAGE 
+        FROM MA_SequenceProduct left join (select M_Product_ID, Value, Name, EM_Rcgi_Ksmlbarcode from M_Product) table1 on (MA_SequenceProduct.M_Product_ID = table1.M_Product_ID) left join (select M_Product_ID,AD_Language, Name from M_Product_TRL) tableTRL1 on (table1.M_Product_ID = tableTRL1.M_Product_ID and tableTRL1.AD_Language = ?)  left join ad_ref_list_v list1 on (MA_SequenceProduct.Productiontype = list1.value and list1.ad_reference_id = '800034' and list1.ad_language = ?)  left join (select C_UOM_ID, Name from C_UOM) table2 on (MA_SequenceProduct.C_UOM_ID = table2.C_UOM_ID) left join (select C_UOM_ID,AD_Language, Name from C_UOM_TRL) tableTRL2 on (table2.C_UOM_ID = tableTRL2.C_UOM_ID and tableTRL2.AD_Language = ?)  left join (select M_Product_Uom_Id, C_UOM_ID from M_Product_UOM) table3 on (MA_SequenceProduct.M_Product_Uom_Id =  table3.M_Product_Uom_Id) left join ad_ref_list_v list2 on (table3.C_UOM_ID = list2.value and list2.ad_reference_id = '' and list2.ad_language = ?)  left join (select M_Warehouse_Rule_ID, Name from M_Warehouse_Rule) table4 on (MA_SequenceProduct.M_Warehouse_Rule_ID = table4.M_Warehouse_Rule_ID)
+        WHERE 2=2 
+
+        AND 1=1 
+        AND MA_SequenceProduct.MA_Sequenceproduct_ID = ? 
+        AND MA_SequenceProduct.AD_Client_ID IN ('1') 
+           AND MA_SequenceProduct.AD_Org_ID IN ('1') 
+    ]]></Sql>
+    <Parameter name="dateTimeFormat"></Parameter>
+    <Parameter name="dateTimeFormat"></Parameter>
+    
+    <Parameter name="paramLanguage"></Parameter>
+<Parameter name="paramLanguage"/>
+<Parameter name="paramLanguage"/>
+<Parameter name="paramLanguage"/>
+<Parameter name="paramLanguage"/>
+
+    <Parameter name="maSequenceId" optional="true" after="AND 1=1 " id="paramKeyParent"> AND MA_SequenceProduct.MA_Sequence_ID = ? </Parameter>
+    <Parameter name="key"></Parameter>
+        <Parameter name="adUserClient" type="replace" optional="true" after="MA_SequenceProduct.AD_Client_ID IN (" text="'1'"/>
+        <Parameter name="adOrgClient" type="replace" optional="true" after="MA_SequenceProduct.AD_Org_ID IN (" text="'1'"/>
+
+    <Field name="adUserClient" value="void"></Field>
+    <Field name="adOrgClient" value="void"></Field>
+    <Field name="createdby" value="void"></Field>
+    
+    <Field name="trBgcolor" value="void"></Field>
+    <Field name="totalCount" value="void"></Field>
+    <Field name="dateTimeFormat" value=""></Field>
+  </SqlMethod>
+  
+  
+
+  <SqlMethod name="set" type="constant" return="multiple">
+      <SqlMethodComment>Create a registry</SqlMethodComment>
+      <Sql></Sql>
+    <Parameter name="maSequenceId" id="paramKeyParent"></Parameter>
+<Parameter name="uniqueattconsum"></Parameter><Parameter name="maSequenceproductId"></Parameter><Parameter name="adClientId"></Parameter><Parameter name="adOrgId"></Parameter><Parameter name="isactive"></Parameter><Parameter name="createdby"></Parameter><Parameter name="createdbyr"></Parameter><Parameter name="updatedby"></Parameter><Parameter name="updatedbyr"></Parameter><Parameter name="mProductId"></Parameter><Parameter name="mProductIdr"></Parameter><Parameter name="quantity"></Parameter><Parameter name="productiontype"></Parameter><Parameter name="cUomId"></Parameter><Parameter name="quantityorder"></Parameter><Parameter name="mProductUomId"></Parameter><Parameter name="componentcost"></Parameter><Parameter name="decrease"></Parameter><Parameter name="rejected"></Parameter><Parameter name="cost"></Parameter><Parameter name="divisiongroupqty"></Parameter><Parameter name="copyproduct"></Parameter><Parameter name="mWarehouseRuleId"></Parameter><Parameter name="line"></Parameter>
+   </SqlMethod>
+
+
+   <SqlMethod name="selectAux800038" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>Select for auxiliar field</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT (CASE COUNT(*) WHEN 0 THEN 0 ELSE 1 END) AS TOTAL FROM M_PRODUCT_UOM WHERE M_PRODUCT_ID=? 
+    ]]></Sql>
+
+<Parameter name="M_Product_ID"/>
+  </SqlMethod>
+
+
+
+   <SqlMethod name="selectActPFF8081813219E68E013219ECFE930004_Value" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>Select for auxiliar field</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT M_PRODUCT.VALUE||' - '||MA_SEQUENCE.VALUE||' - '||MA_SEQUENCE.SEQNO AS value FROM MA_SEQUENCEPRODUCT JOIN MA_SEQUENCE ON MA_SEQUENCE.MA_SEQUENCE_ID = MA_SEQUENCEPRODUCT.MA_SEQUENCE_ID LEFT JOIN M_PRODUCT ON MA_SEQUENCEPRODUCT.M_PRODUCT_ID = M_PRODUCT.M_PRODUCT_ID WHERE MA_SEQUENCEPRODUCT_ID = ? 
+    ]]></Sql>
+
+<Parameter name="MA_SEQUENCEPRODUCT_ID"/>
+  </SqlMethod>
+
+   <SqlMethod name="selectActPFF8081813219E68E013219ECFE930004_Name" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>Select for auxiliar field</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT M_PRODUCT.NAME||' - '||MA_SEQUENCE.NAME||' - '||MA_SEQUENCE.SEQNO AS name FROM MA_SEQUENCEPRODUCT JOIN MA_SEQUENCE ON MA_SEQUENCE.MA_SEQUENCE_ID = MA_SEQUENCEPRODUCT.MA_SEQUENCE_ID LEFT JOIN M_PRODUCT ON MA_SEQUENCEPRODUCT.M_PRODUCT_ID = M_PRODUCT.M_PRODUCT_ID WHERE MA_SEQUENCEPRODUCT_ID = ? 
+    ]]></Sql>
+
+<Parameter name="MA_SEQUENCEPRODUCT_ID"/>
+  </SqlMethod>
+
+
+
+   <SqlMethod name="selectDef801541_0" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>Select for auxiliar field</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT  ( COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table2.Name), ''))), '') ) as Createdby FROM AD_User left join (select AD_User_ID, Name from AD_User) table2 on (AD_User.AD_User_ID = table2.AD_User_ID) WHERE AD_User.isActive='Y' AND AD_User.AD_User_ID = ?  
+    ]]></Sql>
+<Parameter name="CreatedbyR"/>
+  </SqlMethod>
+
+   <SqlMethod name="selectDef801543_1" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>Select for auxiliar field</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT  ( COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table2.Name), ''))), '') ) as Updatedby FROM AD_User left join (select AD_User_ID, Name from AD_User) table2 on (AD_User.AD_User_ID = table2.AD_User_ID) WHERE AD_User.isActive='Y' AND AD_User.AD_User_ID = ?  
+    ]]></Sql>
+<Parameter name="UpdatedbyR"/>
+  </SqlMethod>
+
+   <SqlMethod name="selectDef801546_2" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>Select for auxiliar field</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT  ( COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table2.Value), ''))), '')  || ' - ' || COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR((CASE WHEN tableTRL2.Name IS NULL THEN TO_CHAR(table2.Name) ELSE TO_CHAR(tableTRL2.Name) END)), ''))), '')  || ' - ' || COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table2.EM_Rcgi_Ksmlbarcode), ''))), '') ) as M_Product_ID FROM M_Product left join (select M_Product_ID, Value, Name, EM_Rcgi_Ksmlbarcode from M_Product) table2 on (M_Product.M_Product_ID = table2.M_Product_ID)left join (select M_Product_ID,AD_Language, Name from M_Product_TRL) tableTRL2 on (table2.M_Product_ID = tableTRL2.M_Product_ID and tableTRL2.AD_Language = ?)  WHERE M_Product.isActive='Y' AND M_Product.M_Product_ID = ?  
+    ]]></Sql>
+<Parameter name="paramLanguage"/>
+<Parameter name="M_Product_IDR"/>
+  </SqlMethod>
+
+   <SqlMethod name="selectDefECD90C86634B4A51B2FFCE7248293BED" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>Select for auxiliar field</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT COALESCE(MAX(LINE),0)+10 AS DefaultValue FROM MA_SEQUENCEPRODUCT WHERE MA_SEQUENCE_ID=? 
+    ]]></Sql>
+
+<Parameter name="Ma_Sequence_Id"/>
+  </SqlMethod>
+
+
+
+  <SqlMethod name="selectParentID" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>return the parent ID</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT MA_SequenceProduct.MA_Sequence_ID AS NAME
+        FROM MA_SequenceProduct
+        WHERE MA_SequenceProduct.MA_Sequenceproduct_ID = ?
+    ]]></Sql>
+    <Parameter name="key"></Parameter>
+  </SqlMethod>
+
+   <SqlMethod name="selectParent" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>Select for parent field</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT (TO_CHAR(COALESCE(TO_CHAR(table1.Name), ''))) AS NAME FROM MA_Sequence left join (select MA_Sequence_ID, Name from MA_Sequence) table1 on (MA_Sequence.MA_Sequence_ID = table1.MA_Sequence_ID) WHERE MA_Sequence.MA_Sequence_ID = ?  
+    ]]></Sql>
+<Parameter name="maSequenceId"/>
+
+  </SqlMethod>
+
+
+
+
+   <SqlMethod name="selectParentTrl" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>Select for parent field</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT (TO_CHAR(COALESCE(TO_CHAR(table1.Name), ''))) AS NAME FROM MA_Sequence left join (select MA_Sequence_ID, Name from MA_Sequence) table1 on (MA_Sequence.MA_Sequence_ID = table1.MA_Sequence_ID) WHERE MA_Sequence.MA_Sequence_ID = ?  
+    ]]></Sql>
+<Parameter name="maSequenceId"/>
+
+  </SqlMethod>
+
+
+
+
+
+
+
+
+  <SqlMethod name="update" type="preparedStatement" return="rowCount" static="false" connection="true">
+    <Sql><![CDATA[
+        UPDATE MA_SequenceProduct
+        SET Line = TO_NUMBER(?) , M_Product_ID = (?) , Productiontype = (?) , Quantity = TO_NUMBER(?) , C_UOM_ID = (?) , Uniqueattconsum = (?) , Componentcost = TO_NUMBER(?) , Decrease = TO_NUMBER(?) , Rejected = TO_NUMBER(?) , QuantityOrder = TO_NUMBER(?) , M_Product_Uom_Id = (?) , Cost = TO_NUMBER(?) , IsActive = (?) , Divisiongroupqty = TO_NUMBER(?) , Copyproduct = (?) , M_Warehouse_Rule_ID = (?) , AD_Org_ID = (?) , AD_Client_ID = (?) , MA_Sequenceproduct_ID = (?) , MA_Sequence_ID = (?) , updated = now(), updatedby = ? 
+        WHERE MA_SequenceProduct.MA_Sequenceproduct_ID = ? 
+                 AND MA_SequenceProduct.MA_Sequence_ID = ? 
+        AND MA_SequenceProduct.AD_Client_ID IN ('1') 
+        AND MA_SequenceProduct.AD_Org_ID IN ('1') 
+    ]]></Sql>
+    <Parameter name="line"></Parameter> <Parameter name="mProductId"></Parameter> <Parameter name="productiontype"></Parameter> <Parameter name="quantity"></Parameter> <Parameter name="cUomId"></Parameter> <Parameter name="uniqueattconsum"></Parameter> <Parameter name="componentcost"></Parameter> <Parameter name="decrease"></Parameter> <Parameter name="rejected"></Parameter> <Parameter name="quantityorder"></Parameter> <Parameter name="mProductUomId"></Parameter> <Parameter name="cost"></Parameter> <Parameter name="isactive"></Parameter> <Parameter name="divisiongroupqty"></Parameter> <Parameter name="copyproduct"></Parameter> <Parameter name="mWarehouseRuleId"></Parameter> <Parameter name="adOrgId"></Parameter> <Parameter name="adClientId"></Parameter> <Parameter name="maSequenceproductId"></Parameter> <Parameter name="maSequenceId"></Parameter> 
+    <Parameter name="updatedby"></Parameter>
+    <Parameter id="paramKey" name="maSequenceproductId"></Parameter>
+    
+    <Parameter name="maSequenceId" id="paramKeyParent"></Parameter>
+        <Parameter name="adUserClient" type="replace" optional="true" after="MA_SequenceProduct.AD_Client_ID IN (" text="'1'"/>
+        <Parameter name="adOrgClient" type="replace" optional="true" after="MA_SequenceProduct.AD_Org_ID IN (" text="'1'"/>
+  </SqlMethod>
+
+  <SqlMethod name="insert" type="preparedStatement" return="rowCount" static="false" connection="true">
+    <Sql><![CDATA[
+        INSERT INTO MA_SequenceProduct 
+        (Line, M_Product_ID, Productiontype, Quantity, C_UOM_ID, Uniqueattconsum, Componentcost, Decrease, Rejected, QuantityOrder, M_Product_Uom_Id, Cost, IsActive, Divisiongroupqty, Copyproduct, M_Warehouse_Rule_ID, AD_Org_ID, AD_Client_ID, MA_Sequenceproduct_ID, MA_Sequence_ID, created, createdby, updated, updatedBy)
+        VALUES (TO_NUMBER(?), (?), (?), TO_NUMBER(?), (?), (?), TO_NUMBER(?), TO_NUMBER(?), TO_NUMBER(?), TO_NUMBER(?), (?), TO_NUMBER(?), (?), TO_NUMBER(?), (?), (?), (?), (?), (?), (?), now(), ?, now(), ?)
+    ]]></Sql>
+    <Parameter name="line"></Parameter> <Parameter name="mProductId"></Parameter> <Parameter name="productiontype"></Parameter> <Parameter name="quantity"></Parameter> <Parameter name="cUomId"></Parameter> <Parameter name="uniqueattconsum"></Parameter> <Parameter name="componentcost"></Parameter> <Parameter name="decrease"></Parameter> <Parameter name="rejected"></Parameter> <Parameter name="quantityorder"></Parameter> <Parameter name="mProductUomId"></Parameter> <Parameter name="cost"></Parameter> <Parameter name="isactive"></Parameter> <Parameter name="divisiongroupqty"></Parameter> <Parameter name="copyproduct"></Parameter> <Parameter name="mWarehouseRuleId"></Parameter> <Parameter name="adOrgId"></Parameter> <Parameter name="adClientId"></Parameter> <Parameter name="maSequenceproductId"></Parameter> <Parameter name="maSequenceId"></Parameter> 
+    <Parameter name="createdby"></Parameter>
+    <Parameter name="updatedby"></Parameter>
+  </SqlMethod>
+
+  <SqlMethod name="delete" type="preparedStatement" return="rowCount">
+    <Sql><![CDATA[
+        DELETE FROM MA_SequenceProduct
+        WHERE MA_SequenceProduct.MA_Sequenceproduct_ID = ? 
+                 AND MA_SequenceProduct.MA_Sequence_ID = ? 
+        AND MA_SequenceProduct.AD_Client_ID IN ('1') 
+        AND MA_SequenceProduct.AD_Org_ID IN ('1') 
+    ]]></Sql>
+    <Parameter name="param1"></Parameter>
+        <Parameter name="maSequenceId" id="paramKeyParent"></Parameter>
+        <Parameter name="adUserClient" type="replace" optional="true" after="MA_SequenceProduct.AD_Client_ID IN (" text="'1'"/>
+        <Parameter name="adOrgClient" type="replace" optional="true" after="MA_SequenceProduct.AD_Org_ID IN (" text="'1'"/>
+  </SqlMethod>
+
+  <SqlMethod name="selectOrg" type="preparedStatement" return="string">
+    <SqlMethodComment>Select for relation</SqlMethodComment>
+    <Sql><![CDATA[ 
+        SELECT AD_ORG_ID
+          FROM MA_SequenceProduct
+         WHERE MA_SequenceProduct.MA_Sequenceproduct_ID = ? 
+    ]]></Sql>
+    <Parameter name="id"></Parameter>
+  </SqlMethod>
+  
+  <SqlMethod name="getCurrentDBTimestamp" type="preparedStatement" return="string">
+    <Sql><![CDATA[ 
+        SELECT to_char(Updated, 'YYYYMMDDHH24MISS') as Updated_Time_Stamp
+          FROM MA_SequenceProduct
+         WHERE MA_SequenceProduct.MA_Sequenceproduct_ID = ? 
+    ]]></Sql>
+    <Parameter name="id"></Parameter>
+  </SqlMethod>
+</SqlClass>

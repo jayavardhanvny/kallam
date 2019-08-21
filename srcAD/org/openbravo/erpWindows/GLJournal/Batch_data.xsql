@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SqlClass id="class" name="BatchData" package="org.openbravo.erpWindows.GLJournal">
+  <SqlClassComment>WAD Generated class</SqlClassComment>
+
+  <SqlMethod name="selectEdit" type="preparedStatement" return="multiple">
+    <SqlMethodComment>Select for edit</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT to_char(GL_JournalBatch.Created, ?) as created, 
+        (SELECT NAME FROM AD_USER u WHERE AD_USER_ID = GL_JournalBatch.CreatedBy) as CreatedByR, 
+        to_char(GL_JournalBatch.Updated, ?) as updated, 
+        to_char(GL_JournalBatch.Updated, 'YYYYMMDDHH24MISS') as Updated_Time_Stamp,  
+        GL_JournalBatch.UpdatedBy, 
+        (SELECT NAME FROM AD_USER u WHERE AD_USER_ID = GL_JournalBatch.UpdatedBy) as UpdatedByR,
+        GL_JournalBatch.AD_Org_ID, 
+(CASE WHEN GL_JournalBatch.AD_Org_ID IS NULL THEN '' ELSE  (COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table1.Name), ''))),'') ) END) AS AD_Org_IDR, 
+GL_JournalBatch.DocumentNo, 
+GL_JournalBatch.Description, 
+GL_JournalBatch.DateDoc, 
+GL_JournalBatch.DateAcct, 
+GL_JournalBatch.C_Period_ID, 
+(CASE WHEN GL_JournalBatch.C_Period_ID IS NULL THEN '' ELSE  ( COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table2.Name), ''))),'') ) END) AS C_Period_IDR, 
+GL_JournalBatch.C_Currency_ID, 
+(CASE WHEN GL_JournalBatch.C_Currency_ID IS NULL THEN '' ELSE  (COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table3.ISO_Code), ''))),'') ) END) AS C_Currency_IDR, 
+COALESCE(GL_JournalBatch.IsTemplate, 'N') AS IsTemplate, 
+GL_JournalBatch.ControlAmt, 
+GL_JournalBatch.TotalDr, 
+GL_JournalBatch.TotalCr, 
+GL_JournalBatch.CopyFrom, 
+GL_JournalBatch.Processing, 
+COALESCE(GL_JournalBatch.IsActive, 'N') AS IsActive, 
+GL_JournalBatch.GL_Category_ID, 
+GL_JournalBatch.GL_JournalBatch_ID, 
+COALESCE(GL_JournalBatch.Processed, 'N') AS Processed, 
+GL_JournalBatch.PostingType, 
+GL_JournalBatch.AD_Client_ID, 
+ 
+        ? AS LANGUAGE 
+        FROM GL_JournalBatch left join (select AD_Org_ID, Name from AD_Org) table1 on (GL_JournalBatch.AD_Org_ID = table1.AD_Org_ID) left join (select C_Period_ID, Name from C_Period) table2 on (GL_JournalBatch.C_Period_ID =  table2.C_Period_ID) left join (select C_Currency_ID, ISO_Code from C_Currency) table3 on (GL_JournalBatch.C_Currency_ID = table3.C_Currency_ID)
+        WHERE 2=2 
+
+        AND 1=1 
+        AND GL_JournalBatch.GL_JournalBatch_ID = ? 
+        AND GL_JournalBatch.AD_Client_ID IN ('1') 
+           AND GL_JournalBatch.AD_Org_ID IN ('1') 
+    ]]></Sql>
+    <Parameter name="dateTimeFormat"></Parameter>
+    <Parameter name="dateTimeFormat"></Parameter>
+    
+    <Parameter name="paramLanguage"></Parameter>
+
+
+    <Parameter name="key"></Parameter>
+        <Parameter name="adUserClient" type="replace" optional="true" after="GL_JournalBatch.AD_Client_ID IN (" text="'1'"/>
+        <Parameter name="adOrgClient" type="replace" optional="true" after="GL_JournalBatch.AD_Org_ID IN (" text="'1'"/>
+
+    <Field name="adUserClient" value="void"></Field>
+    <Field name="adOrgClient" value="void"></Field>
+    <Field name="createdby" value="void"></Field>
+    
+    <Field name="trBgcolor" value="void"></Field>
+    <Field name="totalCount" value="void"></Field>
+    <Field name="dateTimeFormat" value=""></Field>
+  </SqlMethod>
+  
+  
+
+  <SqlMethod name="set" type="constant" return="multiple">
+      <SqlMethodComment>Create a registry</SqlMethodComment>
+      <Sql></Sql>
+
+<Parameter name="glJournalbatchId"></Parameter><Parameter name="adClientId"></Parameter><Parameter name="adOrgId"></Parameter><Parameter name="isactive"></Parameter><Parameter name="createdby"></Parameter><Parameter name="createdbyr"></Parameter><Parameter name="updatedby"></Parameter><Parameter name="updatedbyr"></Parameter><Parameter name="documentno"></Parameter><Parameter name="description"></Parameter><Parameter name="postingtype"></Parameter><Parameter name="glCategoryId"></Parameter><Parameter name="cPeriodId"></Parameter><Parameter name="cCurrencyId"></Parameter><Parameter name="totaldr"></Parameter><Parameter name="totalcr"></Parameter><Parameter name="controlamt"></Parameter><Parameter name="datedoc"></Parameter><Parameter name="dateacct"></Parameter><Parameter name="processing"></Parameter><Parameter name="processed"></Parameter><Parameter name="istemplate"></Parameter><Parameter name="copyfrom"></Parameter>
+   </SqlMethod>
+
+
+
+
+
+
+   <SqlMethod name="selectDef1646_0" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>Select for auxiliar field</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT  ( COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table2.Name), ''))), '') ) as CreatedBy FROM AD_User left join (select AD_User_ID, Name from AD_User) table2 on (AD_User.AD_User_ID = table2.AD_User_ID) WHERE AD_User.isActive='Y' AND AD_User.AD_User_ID = ?  
+    ]]></Sql>
+<Parameter name="CreatedByR"/>
+  </SqlMethod>
+
+   <SqlMethod name="selectDef1648_1" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>Select for auxiliar field</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT  ( COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table2.Name), ''))), '') ) as UpdatedBy FROM AD_User left join (select AD_User_ID, Name from AD_User) table2 on (AD_User.AD_User_ID = table2.AD_User_ID) WHERE AD_User.isActive='Y' AND AD_User.AD_User_ID = ?  
+    ]]></Sql>
+<Parameter name="UpdatedByR"/>
+  </SqlMethod>
+
+   <SqlMethod name="selectDef1654" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>Select for auxiliar field</SqlMethodComment>
+    <Sql><![CDATA[
+         SELECT C_Period_ID FROM C_Period WHERE C_Year_ID IN (SELECT C_Year_ID FROM C_Year WHERE C_Calendar_ID =(SELECT C_Calendar_ID FROM AD_ORG WHERE AD_Client_ID= ? AND AD_ORG_ID=(SELECT AD_ORG_GETCALENDAROWNER( ? ) from dual))) AND to_date( ? ) BETWEEN StartDate AND EndDate AND PeriodType='S' AND exists (select 1 from c_periodcontrol where c_periodcontrol.c_period_id = c_period.c_period_id AND periodstatus = 'O') 
+    ]]></Sql>
+
+<Parameter name="AD_Client_ID"/>
+<Parameter name="AD_Org_ID"/>
+<Parameter name="DateAcct"/>
+  </SqlMethod>
+
+
+
+
+
+
+
+
+
+   <SqlMethod name="selectActDefGL_JournalBatch_ID" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>Select for action search</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT DocumentNo FROM GL_JournalBatch WHERE isActive='Y' AND GL_JournalBatch_ID = ?  
+    ]]></Sql>
+    <Parameter name="GL_JournalBatch_ID"/>
+  </SqlMethod>
+
+
+  <SqlMethod name="update" type="preparedStatement" return="rowCount" static="false" connection="true">
+    <Sql><![CDATA[
+        UPDATE GL_JournalBatch
+        SET AD_Org_ID = (?) , DocumentNo = (?) , Description = (?) , DateDoc = TO_DATE(?) , DateAcct = TO_DATE(?) , C_Period_ID = (?) , C_Currency_ID = (?) , IsTemplate = (?) , ControlAmt = TO_NUMBER(?) , TotalDr = TO_NUMBER(?) , TotalCr = TO_NUMBER(?) , CopyFrom = (?) , Processing = (?) , IsActive = (?) , GL_Category_ID = (?) , GL_JournalBatch_ID = (?) , Processed = (?) , PostingType = (?) , AD_Client_ID = (?) , updated = now(), updatedby = ? 
+        WHERE GL_JournalBatch.GL_JournalBatch_ID = ? 
+        
+        AND GL_JournalBatch.AD_Client_ID IN ('1') 
+        AND GL_JournalBatch.AD_Org_ID IN ('1') 
+    ]]></Sql>
+    <Parameter name="adOrgId"></Parameter> <Parameter name="documentno"></Parameter> <Parameter name="description"></Parameter> <Parameter name="datedoc"></Parameter> <Parameter name="dateacct"></Parameter> <Parameter name="cPeriodId"></Parameter> <Parameter name="cCurrencyId"></Parameter> <Parameter name="istemplate"></Parameter> <Parameter name="controlamt"></Parameter> <Parameter name="totaldr"></Parameter> <Parameter name="totalcr"></Parameter> <Parameter name="copyfrom"></Parameter> <Parameter name="processing"></Parameter> <Parameter name="isactive"></Parameter> <Parameter name="glCategoryId"></Parameter> <Parameter name="glJournalbatchId"></Parameter> <Parameter name="processed"></Parameter> <Parameter name="postingtype"></Parameter> <Parameter name="adClientId"></Parameter> 
+    <Parameter name="updatedby"></Parameter>
+    <Parameter id="paramKey" name="glJournalbatchId"></Parameter>
+    
+    
+        <Parameter name="adUserClient" type="replace" optional="true" after="GL_JournalBatch.AD_Client_ID IN (" text="'1'"/>
+        <Parameter name="adOrgClient" type="replace" optional="true" after="GL_JournalBatch.AD_Org_ID IN (" text="'1'"/>
+  </SqlMethod>
+
+  <SqlMethod name="insert" type="preparedStatement" return="rowCount" static="false" connection="true">
+    <Sql><![CDATA[
+        INSERT INTO GL_JournalBatch 
+        (AD_Org_ID, DocumentNo, Description, DateDoc, DateAcct, C_Period_ID, C_Currency_ID, IsTemplate, ControlAmt, TotalDr, TotalCr, CopyFrom, Processing, IsActive, GL_Category_ID, GL_JournalBatch_ID, Processed, PostingType, AD_Client_ID, created, createdby, updated, updatedBy)
+        VALUES ((?), (?), (?), TO_DATE(?), TO_DATE(?), (?), (?), (?), TO_NUMBER(?), TO_NUMBER(?), TO_NUMBER(?), (?), (?), (?), (?), (?), (?), (?), (?), now(), ?, now(), ?)
+    ]]></Sql>
+    <Parameter name="adOrgId"></Parameter> <Parameter name="documentno"></Parameter> <Parameter name="description"></Parameter> <Parameter name="datedoc"></Parameter> <Parameter name="dateacct"></Parameter> <Parameter name="cPeriodId"></Parameter> <Parameter name="cCurrencyId"></Parameter> <Parameter name="istemplate"></Parameter> <Parameter name="controlamt"></Parameter> <Parameter name="totaldr"></Parameter> <Parameter name="totalcr"></Parameter> <Parameter name="copyfrom"></Parameter> <Parameter name="processing"></Parameter> <Parameter name="isactive"></Parameter> <Parameter name="glCategoryId"></Parameter> <Parameter name="glJournalbatchId"></Parameter> <Parameter name="processed"></Parameter> <Parameter name="postingtype"></Parameter> <Parameter name="adClientId"></Parameter> 
+    <Parameter name="createdby"></Parameter>
+    <Parameter name="updatedby"></Parameter>
+  </SqlMethod>
+
+  <SqlMethod name="delete" type="preparedStatement" return="rowCount">
+    <Sql><![CDATA[
+        DELETE FROM GL_JournalBatch
+        WHERE GL_JournalBatch.GL_JournalBatch_ID = ? 
+        
+        AND GL_JournalBatch.AD_Client_ID IN ('1') 
+        AND GL_JournalBatch.AD_Org_ID IN ('1') 
+    ]]></Sql>
+    <Parameter name="param1"></Parameter>
+    
+        <Parameter name="adUserClient" type="replace" optional="true" after="GL_JournalBatch.AD_Client_ID IN (" text="'1'"/>
+        <Parameter name="adOrgClient" type="replace" optional="true" after="GL_JournalBatch.AD_Org_ID IN (" text="'1'"/>
+  </SqlMethod>
+
+  <SqlMethod name="selectOrg" type="preparedStatement" return="string">
+    <SqlMethodComment>Select for relation</SqlMethodComment>
+    <Sql><![CDATA[ 
+        SELECT AD_ORG_ID
+          FROM GL_JournalBatch
+         WHERE GL_JournalBatch.GL_JournalBatch_ID = ? 
+    ]]></Sql>
+    <Parameter name="id"></Parameter>
+  </SqlMethod>
+  
+  <SqlMethod name="getCurrentDBTimestamp" type="preparedStatement" return="string">
+    <Sql><![CDATA[ 
+        SELECT to_char(Updated, 'YYYYMMDDHH24MISS') as Updated_Time_Stamp
+          FROM GL_JournalBatch
+         WHERE GL_JournalBatch.GL_JournalBatch_ID = ? 
+    ]]></Sql>
+    <Parameter name="id"></Parameter>
+  </SqlMethod>
+</SqlClass>

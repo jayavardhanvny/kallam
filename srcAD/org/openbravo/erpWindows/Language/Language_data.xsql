@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SqlClass id="class" name="LanguageData" package="org.openbravo.erpWindows.Language">
+  <SqlClassComment>WAD Generated class</SqlClassComment>
+
+  <SqlMethod name="selectEdit" type="preparedStatement" return="multiple">
+    <SqlMethodComment>Select for edit</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT to_char(AD_Language.Created, ?) as created, 
+        (SELECT NAME FROM AD_USER u WHERE AD_USER_ID = AD_Language.CreatedBy) as CreatedByR, 
+        to_char(AD_Language.Updated, ?) as updated, 
+        to_char(AD_Language.Updated, 'YYYYMMDDHH24MISS') as Updated_Time_Stamp,  
+        AD_Language.UpdatedBy, 
+        (SELECT NAME FROM AD_USER u WHERE AD_USER_ID = AD_Language.UpdatedBy) as UpdatedByR,
+        AD_Language.AD_Language, 
+AD_Language.Name, 
+AD_Language.LanguageISO, 
+AD_Language.CountryCode, 
+COALESCE(AD_Language.IsActive, 'N') AS IsActive, 
+COALESCE(AD_Language.IsSystemLanguage, 'N') AS IsSystemLanguage, 
+AD_Language.Translatedby, 
+COALESCE(AD_Language.Isrtl, 'N') AS Isrtl, 
+AD_Language.Processing, 
+AD_Language.AD_Language_ID, 
+AD_Language.Pixelsize, 
+AD_Language.AD_Org_ID, 
+AD_Language.AD_Client_ID, 
+ 
+        ? AS LANGUAGE 
+        FROM AD_Language
+        WHERE 2=2 
+
+        AND 1=1 
+        AND AD_Language.AD_Language_ID = ? 
+        AND AD_Language.AD_Client_ID IN ('1') 
+           AND AD_Language.AD_Org_ID IN ('1') 
+    ]]></Sql>
+    <Parameter name="dateTimeFormat"></Parameter>
+    <Parameter name="dateTimeFormat"></Parameter>
+    
+    <Parameter name="paramLanguage"></Parameter>
+
+
+    <Parameter name="key"></Parameter>
+        <Parameter name="adUserClient" type="replace" optional="true" after="AD_Language.AD_Client_ID IN (" text="'1'"/>
+        <Parameter name="adOrgClient" type="replace" optional="true" after="AD_Language.AD_Org_ID IN (" text="'1'"/>
+
+    <Field name="adUserClient" value="void"></Field>
+    <Field name="adOrgClient" value="void"></Field>
+    <Field name="createdby" value="void"></Field>
+    
+    <Field name="trBgcolor" value="void"></Field>
+    <Field name="totalCount" value="void"></Field>
+    <Field name="dateTimeFormat" value=""></Field>
+  </SqlMethod>
+  
+  
+
+  <SqlMethod name="set" type="constant" return="multiple">
+      <SqlMethodComment>Create a registry</SqlMethodComment>
+      <Sql></Sql>
+
+<Parameter name="adLanguage"></Parameter><Parameter name="name"></Parameter><Parameter name="isbaselanguage"></Parameter><Parameter name="isactive"></Parameter><Parameter name="issystemlanguage"></Parameter><Parameter name="languageiso"></Parameter><Parameter name="adClientId"></Parameter><Parameter name="adOrgId"></Parameter><Parameter name="isrtl"></Parameter><Parameter name="createdby"></Parameter><Parameter name="createdbyr"></Parameter><Parameter name="updatedby"></Parameter><Parameter name="updatedbyr"></Parameter><Parameter name="countrycode"></Parameter><Parameter name="processing"></Parameter><Parameter name="pixelsize"></Parameter><Parameter name="translatedby"></Parameter><Parameter name="adLanguageId"></Parameter>
+   </SqlMethod>
+
+
+
+
+
+
+   <SqlMethod name="selectDef614_0" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>Select for auxiliar field</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT  ( COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table2.Name), ''))), '') ) as CreatedBy FROM AD_User left join (select AD_User_ID, Name from AD_User) table2 on (AD_User.AD_User_ID = table2.AD_User_ID) WHERE AD_User.isActive='Y' AND AD_User.AD_User_ID = ?  
+    ]]></Sql>
+<Parameter name="CreatedByR"/>
+  </SqlMethod>
+
+   <SqlMethod name="selectDef616_1" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>Select for auxiliar field</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT  ( COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table2.Name), ''))), '') ) as UpdatedBy FROM AD_User left join (select AD_User_ID, Name from AD_User) table2 on (AD_User.AD_User_ID = table2.AD_User_ID) WHERE AD_User.isActive='Y' AND AD_User.AD_User_ID = ?  
+    ]]></Sql>
+<Parameter name="UpdatedByR"/>
+  </SqlMethod>
+
+   <SqlMethod name="selectDef9622" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>Select for auxiliar field</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT AD_GET_NEXT_SEQUENCE('AD_Language', '0') AS DefaultValue FROM AD_Language 
+    ]]></Sql>
+
+  </SqlMethod>
+
+
+
+
+
+
+
+
+
+
+  <SqlMethod name="update" type="preparedStatement" return="rowCount" static="false" connection="true">
+    <Sql><![CDATA[
+        UPDATE AD_Language
+        SET AD_Language = (?) , Name = (?) , LanguageISO = (?) , CountryCode = (?) , IsActive = (?) , IsSystemLanguage = (?) , Translatedby = (?) , Isrtl = (?) , Processing = (?) , AD_Language_ID = (?) , Pixelsize = TO_NUMBER(?) , AD_Org_ID = (?) , AD_Client_ID = (?) , updated = now(), updatedby = ? 
+        WHERE AD_Language.AD_Language_ID = ? 
+        
+        AND AD_Language.AD_Client_ID IN ('1') 
+        AND AD_Language.AD_Org_ID IN ('1') 
+    ]]></Sql>
+    <Parameter name="adLanguage"></Parameter> <Parameter name="name"></Parameter> <Parameter name="languageiso"></Parameter> <Parameter name="countrycode"></Parameter> <Parameter name="isactive"></Parameter> <Parameter name="issystemlanguage"></Parameter> <Parameter name="translatedby"></Parameter> <Parameter name="isrtl"></Parameter> <Parameter name="processing"></Parameter> <Parameter name="adLanguageId"></Parameter> <Parameter name="pixelsize"></Parameter> <Parameter name="adOrgId"></Parameter> <Parameter name="adClientId"></Parameter> 
+    <Parameter name="updatedby"></Parameter>
+    <Parameter id="paramKey" name="adLanguageId"></Parameter>
+    
+    
+        <Parameter name="adUserClient" type="replace" optional="true" after="AD_Language.AD_Client_ID IN (" text="'1'"/>
+        <Parameter name="adOrgClient" type="replace" optional="true" after="AD_Language.AD_Org_ID IN (" text="'1'"/>
+  </SqlMethod>
+
+  <SqlMethod name="insert" type="preparedStatement" return="rowCount" static="false" connection="true">
+    <Sql><![CDATA[
+        INSERT INTO AD_Language 
+        (AD_Language, Name, LanguageISO, CountryCode, IsActive, IsSystemLanguage, Translatedby, Isrtl, Processing, AD_Language_ID, Pixelsize, AD_Org_ID, AD_Client_ID, created, createdby, updated, updatedBy)
+        VALUES ((?), (?), (?), (?), (?), (?), (?), (?), (?), (?), TO_NUMBER(?), (?), (?), now(), ?, now(), ?)
+    ]]></Sql>
+    <Parameter name="adLanguage"></Parameter> <Parameter name="name"></Parameter> <Parameter name="languageiso"></Parameter> <Parameter name="countrycode"></Parameter> <Parameter name="isactive"></Parameter> <Parameter name="issystemlanguage"></Parameter> <Parameter name="translatedby"></Parameter> <Parameter name="isrtl"></Parameter> <Parameter name="processing"></Parameter> <Parameter name="adLanguageId"></Parameter> <Parameter name="pixelsize"></Parameter> <Parameter name="adOrgId"></Parameter> <Parameter name="adClientId"></Parameter> 
+    <Parameter name="createdby"></Parameter>
+    <Parameter name="updatedby"></Parameter>
+  </SqlMethod>
+
+  <SqlMethod name="delete" type="preparedStatement" return="rowCount">
+    <Sql><![CDATA[
+        DELETE FROM AD_Language
+        WHERE AD_Language.AD_Language_ID = ? 
+        
+        AND AD_Language.AD_Client_ID IN ('1') 
+        AND AD_Language.AD_Org_ID IN ('1') 
+    ]]></Sql>
+    <Parameter name="param1"></Parameter>
+    
+        <Parameter name="adUserClient" type="replace" optional="true" after="AD_Language.AD_Client_ID IN (" text="'1'"/>
+        <Parameter name="adOrgClient" type="replace" optional="true" after="AD_Language.AD_Org_ID IN (" text="'1'"/>
+  </SqlMethod>
+
+  <SqlMethod name="selectOrg" type="preparedStatement" return="string">
+    <SqlMethodComment>Select for relation</SqlMethodComment>
+    <Sql><![CDATA[ 
+        SELECT AD_ORG_ID
+          FROM AD_Language
+         WHERE AD_Language.AD_Language_ID = ? 
+    ]]></Sql>
+    <Parameter name="id"></Parameter>
+  </SqlMethod>
+  
+  <SqlMethod name="getCurrentDBTimestamp" type="preparedStatement" return="string">
+    <Sql><![CDATA[ 
+        SELECT to_char(Updated, 'YYYYMMDDHH24MISS') as Updated_Time_Stamp
+          FROM AD_Language
+         WHERE AD_Language.AD_Language_ID = ? 
+    ]]></Sql>
+    <Parameter name="id"></Parameter>
+  </SqlMethod>
+</SqlClass>

@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SqlClass id="class" name="TimeData" package="org.openbravo.erpWindows.QualityControlReport">
+  <SqlClassComment>WAD Generated class</SqlClassComment>
+
+  <SqlMethod name="selectEdit" type="preparedStatement" return="multiple">
+    <SqlMethodComment>Select for edit</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT to_char(MA_Measure_Time.Created, ?) as created, 
+        (SELECT NAME FROM AD_USER u WHERE AD_USER_ID = MA_Measure_Time.CreatedBy) as CreatedByR, 
+        to_char(MA_Measure_Time.Updated, ?) as updated, 
+        to_char(MA_Measure_Time.Updated, 'YYYYMMDDHH24MISS') as Updated_Time_Stamp,  
+        MA_Measure_Time.UpdatedBy, 
+        (SELECT NAME FROM AD_USER u WHERE AD_USER_ID = MA_Measure_Time.UpdatedBy) as UpdatedByR,
+        TO_CHAR(MA_Measure_Time.Measurehour, 'HH24:MI:SS') AS Measurehour, 
+MA_Measure_Time.MA_Measure_Group_ID, 
+(CASE WHEN MA_Measure_Time.MA_Measure_Group_ID IS NULL THEN '' ELSE  (COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table2.Name), ''))),'')  || ' - ' || COALESCE(TO_CHAR(TO_CHAR(table3.Measuredate, 'DD-MM-YYYY')),'') ) END) AS MA_Measure_Group_IDR, 
+MA_Measure_Time.Explode, 
+COALESCE(MA_Measure_Time.Processed, 'N') AS Processed, 
+MA_Measure_Time.AD_Client_ID, 
+MA_Measure_Time.AD_Org_ID, 
+COALESCE(MA_Measure_Time.IsActive, 'N') AS IsActive, 
+MA_Measure_Time.MA_Measure_Time_ID, 
+ 
+        ? AS LANGUAGE 
+        FROM MA_Measure_Time left join (select MA_Measure_Group_ID, MA_CCP_Group_ID, MA_Measure_Shift_ID from MA_Measure_Group) table1 on (MA_Measure_Time.MA_Measure_Group_ID = table1.MA_Measure_Group_ID) left join (select MA_CCP_Group_ID, Name from MA_CCP_Group) table2 on (table1.MA_CCP_Group_ID = table2.MA_CCP_Group_ID) left join (select MA_Measure_Shift_ID, Measuredate from MA_Measure_Shift) table3 on (table1.MA_Measure_Shift_ID = table3.MA_Measure_Shift_ID)
+        WHERE 2=2 
+
+        AND 1=1 
+        AND MA_Measure_Time.MA_Measure_Time_ID = ? 
+        AND MA_Measure_Time.AD_Client_ID IN ('1') 
+           AND MA_Measure_Time.AD_Org_ID IN ('1') 
+    ]]></Sql>
+    <Parameter name="dateTimeFormat"></Parameter>
+    <Parameter name="dateTimeFormat"></Parameter>
+    
+    <Parameter name="paramLanguage"></Parameter>
+
+    <Parameter name="maMeasureGroupId" optional="true" after="AND 1=1 " id="paramKeyParent"> AND MA_Measure_Time.MA_Measure_Group_ID = ? </Parameter>
+    <Parameter name="key"></Parameter>
+        <Parameter name="adUserClient" type="replace" optional="true" after="MA_Measure_Time.AD_Client_ID IN (" text="'1'"/>
+        <Parameter name="adOrgClient" type="replace" optional="true" after="MA_Measure_Time.AD_Org_ID IN (" text="'1'"/>
+
+    <Field name="adUserClient" value="void"></Field>
+    <Field name="adOrgClient" value="void"></Field>
+    <Field name="createdby" value="void"></Field>
+    
+    <Field name="trBgcolor" value="void"></Field>
+    <Field name="totalCount" value="void"></Field>
+    <Field name="dateTimeFormat" value=""></Field>
+  </SqlMethod>
+  
+  
+
+  <SqlMethod name="set" type="constant" return="multiple">
+      <SqlMethodComment>Create a registry</SqlMethodComment>
+      <Sql></Sql>
+    <Parameter name="maMeasureGroupId" id="paramKeyParent"></Parameter>
+<Parameter name="maMeasureTimeId"></Parameter><Parameter name="adClientId"></Parameter><Parameter name="adOrgId"></Parameter><Parameter name="isactive"></Parameter><Parameter name="createdby"></Parameter><Parameter name="createdbyr"></Parameter><Parameter name="updatedby"></Parameter><Parameter name="updatedbyr"></Parameter><Parameter name="measurehour"></Parameter><Parameter name="explode"></Parameter><Parameter name="processed"></Parameter>
+   </SqlMethod>
+
+
+
+
+
+
+   <SqlMethod name="selectDef802248_0" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>Select for auxiliar field</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT  ( COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table2.Name), ''))), '') ) as Createdby FROM AD_User left join (select AD_User_ID, Name from AD_User) table2 on (AD_User.AD_User_ID = table2.AD_User_ID) WHERE AD_User.isActive='Y' AND AD_User.AD_User_ID = ?  
+    ]]></Sql>
+<Parameter name="CreatedbyR"/>
+  </SqlMethod>
+
+   <SqlMethod name="selectDef802250_1" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>Select for auxiliar field</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT  ( COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table2.Name), ''))), '') ) as Updatedby FROM AD_User left join (select AD_User_ID, Name from AD_User) table2 on (AD_User.AD_User_ID = table2.AD_User_ID) WHERE AD_User.isActive='Y' AND AD_User.AD_User_ID = ?  
+    ]]></Sql>
+<Parameter name="UpdatedbyR"/>
+  </SqlMethod>
+
+
+
+  <SqlMethod name="selectParentID" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>return the parent ID</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT MA_Measure_Time.MA_Measure_Group_ID AS NAME
+        FROM MA_Measure_Time
+        WHERE MA_Measure_Time.MA_Measure_Time_ID = ?
+    ]]></Sql>
+    <Parameter name="key"></Parameter>
+  </SqlMethod>
+
+   <SqlMethod name="selectParent" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>Select for parent field</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT (TO_CHAR(COALESCE(TO_CHAR(table2.Name), '')) || ' - ' || TO_CHAR(table3.Measuredate, 'DD-MM-YYYY')) AS NAME FROM MA_Measure_Group left join (select MA_Measure_Group_ID, MA_CCP_Group_ID, MA_Measure_Shift_ID from MA_Measure_Group) table1 on (MA_Measure_Group.MA_Measure_Group_ID = table1.MA_Measure_Group_ID) left join (select MA_CCP_Group_ID, Name from MA_CCP_Group) table2 on (table1.MA_CCP_Group_ID = table2.MA_CCP_Group_ID) left join (select MA_Measure_Shift_ID, Measuredate from MA_Measure_Shift) table3 on (table1.MA_Measure_Shift_ID = table3.MA_Measure_Shift_ID) WHERE MA_Measure_Group.MA_Measure_Group_ID = ?  
+    ]]></Sql>
+<Parameter name="maMeasureGroupId"/>
+
+  </SqlMethod>
+
+
+
+
+   <SqlMethod name="selectParentTrl" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>Select for parent field</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT (TO_CHAR(COALESCE(TO_CHAR(table2.Name), '')) || ' - ' || TO_CHAR(table3.Measuredate, 'DD-MM-YYYY')) AS NAME FROM MA_Measure_Group left join (select MA_Measure_Group_ID, MA_CCP_Group_ID, MA_Measure_Shift_ID from MA_Measure_Group) table1 on (MA_Measure_Group.MA_Measure_Group_ID = table1.MA_Measure_Group_ID) left join (select MA_CCP_Group_ID, Name from MA_CCP_Group) table2 on (table1.MA_CCP_Group_ID = table2.MA_CCP_Group_ID) left join (select MA_Measure_Shift_ID, Measuredate from MA_Measure_Shift) table3 on (table1.MA_Measure_Shift_ID = table3.MA_Measure_Shift_ID) WHERE MA_Measure_Group.MA_Measure_Group_ID = ?  
+    ]]></Sql>
+<Parameter name="maMeasureGroupId"/>
+
+  </SqlMethod>
+
+
+
+
+
+
+
+
+  <SqlMethod name="update" type="preparedStatement" return="rowCount" static="false" connection="true">
+    <Sql><![CDATA[
+        UPDATE MA_Measure_Time
+        SET Measurehour = TO_TIMESTAMP(?,'HH24:MI:SS') , MA_Measure_Group_ID = (?) , Explode = (?) , Processed = (?) , AD_Client_ID = (?) , AD_Org_ID = (?) , IsActive = (?) , MA_Measure_Time_ID = (?) , updated = now(), updatedby = ? 
+        WHERE MA_Measure_Time.MA_Measure_Time_ID = ? 
+                 AND MA_Measure_Time.MA_Measure_Group_ID = ? 
+        AND MA_Measure_Time.AD_Client_ID IN ('1') 
+        AND MA_Measure_Time.AD_Org_ID IN ('1') 
+    ]]></Sql>
+    <Parameter name="measurehour"></Parameter> <Parameter name="maMeasureGroupId"></Parameter> <Parameter name="explode"></Parameter> <Parameter name="processed"></Parameter> <Parameter name="adClientId"></Parameter> <Parameter name="adOrgId"></Parameter> <Parameter name="isactive"></Parameter> <Parameter name="maMeasureTimeId"></Parameter> 
+    <Parameter name="updatedby"></Parameter>
+    <Parameter id="paramKey" name="maMeasureTimeId"></Parameter>
+    
+    <Parameter name="maMeasureGroupId" id="paramKeyParent"></Parameter>
+        <Parameter name="adUserClient" type="replace" optional="true" after="MA_Measure_Time.AD_Client_ID IN (" text="'1'"/>
+        <Parameter name="adOrgClient" type="replace" optional="true" after="MA_Measure_Time.AD_Org_ID IN (" text="'1'"/>
+  </SqlMethod>
+
+  <SqlMethod name="insert" type="preparedStatement" return="rowCount" static="false" connection="true">
+    <Sql><![CDATA[
+        INSERT INTO MA_Measure_Time 
+        (Measurehour, MA_Measure_Group_ID, Explode, Processed, AD_Client_ID, AD_Org_ID, IsActive, MA_Measure_Time_ID, created, createdby, updated, updatedBy)
+        VALUES (TO_TIMESTAMP(?, 'HH24:MI:SS'), (?), (?), (?), (?), (?), (?), (?), now(), ?, now(), ?)
+    ]]></Sql>
+    <Parameter name="measurehour"></Parameter> <Parameter name="maMeasureGroupId"></Parameter> <Parameter name="explode"></Parameter> <Parameter name="processed"></Parameter> <Parameter name="adClientId"></Parameter> <Parameter name="adOrgId"></Parameter> <Parameter name="isactive"></Parameter> <Parameter name="maMeasureTimeId"></Parameter> 
+    <Parameter name="createdby"></Parameter>
+    <Parameter name="updatedby"></Parameter>
+  </SqlMethod>
+
+  <SqlMethod name="delete" type="preparedStatement" return="rowCount">
+    <Sql><![CDATA[
+        DELETE FROM MA_Measure_Time
+        WHERE MA_Measure_Time.MA_Measure_Time_ID = ? 
+                 AND MA_Measure_Time.MA_Measure_Group_ID = ? 
+        AND MA_Measure_Time.AD_Client_ID IN ('1') 
+        AND MA_Measure_Time.AD_Org_ID IN ('1') 
+    ]]></Sql>
+    <Parameter name="param1"></Parameter>
+        <Parameter name="maMeasureGroupId" id="paramKeyParent"></Parameter>
+        <Parameter name="adUserClient" type="replace" optional="true" after="MA_Measure_Time.AD_Client_ID IN (" text="'1'"/>
+        <Parameter name="adOrgClient" type="replace" optional="true" after="MA_Measure_Time.AD_Org_ID IN (" text="'1'"/>
+  </SqlMethod>
+
+  <SqlMethod name="selectOrg" type="preparedStatement" return="string">
+    <SqlMethodComment>Select for relation</SqlMethodComment>
+    <Sql><![CDATA[ 
+        SELECT AD_ORG_ID
+          FROM MA_Measure_Time
+         WHERE MA_Measure_Time.MA_Measure_Time_ID = ? 
+    ]]></Sql>
+    <Parameter name="id"></Parameter>
+  </SqlMethod>
+  
+  <SqlMethod name="getCurrentDBTimestamp" type="preparedStatement" return="string">
+    <Sql><![CDATA[ 
+        SELECT to_char(Updated, 'YYYYMMDDHH24MISS') as Updated_Time_Stamp
+          FROM MA_Measure_Time
+         WHERE MA_Measure_Time.MA_Measure_Time_ID = ? 
+    ]]></Sql>
+    <Parameter name="id"></Parameter>
+  </SqlMethod>
+</SqlClass>

@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SqlClass id="class" name="ProductionRun0D43A1553F5744439A4D9D47DB20A44CData" package="org.openbravo.erpWindows.com.redcarpet.production.ProductionRun">
+  <SqlClassComment>WAD Generated class</SqlClassComment>
+
+  <SqlMethod name="selectEdit" type="preparedStatement" return="multiple">
+    <SqlMethodComment>Select for edit</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT to_char(RCPR_ProductionRun.Created, ?) as created, 
+        (SELECT NAME FROM AD_USER u WHERE AD_USER_ID = RCPR_ProductionRun.CreatedBy) as CreatedByR, 
+        to_char(RCPR_ProductionRun.Updated, ?) as updated, 
+        to_char(RCPR_ProductionRun.Updated, 'YYYYMMDDHH24MISS') as Updated_Time_Stamp,  
+        RCPR_ProductionRun.UpdatedBy, 
+        (SELECT NAME FROM AD_USER u WHERE AD_USER_ID = RCPR_ProductionRun.UpdatedBy) as UpdatedByR,
+        RCPR_ProductionRun.AD_Org_ID, 
+(CASE WHEN RCPR_ProductionRun.AD_Org_ID IS NULL THEN '' ELSE  (COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table1.Name), ''))),'') ) END) AS AD_Org_IDR, 
+COALESCE(RCPR_ProductionRun.Isactive, 'N') AS Isactive, 
+RCPR_ProductionRun.Documentno, 
+RCPR_ProductionRun.Rcpr_Prbom_ID, 
+(CASE WHEN RCPR_ProductionRun.Rcpr_Prbom_ID IS NULL THEN '' ELSE  (COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table2.Name), ''))),'')  || ' - ' || COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table2.Documentno), ''))),'') ) END) AS Rcpr_Prbom_IDR, 
+RCPR_ProductionRun.Movementdate, 
+RCPR_ProductionRun.Startdate, 
+RCPR_ProductionRun.Exenddate, 
+RCPR_ProductionRun.Issuequantity, 
+RCPR_ProductionRun.M_Product_ID, 
+(CASE WHEN RCPR_ProductionRun.M_Product_ID IS NULL THEN '' ELSE  ( COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR((CASE WHEN tableTRL3.Name IS NULL THEN TO_CHAR(table3.Name) ELSE TO_CHAR(tableTRL3.Name) END)), ''))),'') ) END) AS M_Product_IDR, 
+RCPR_ProductionRun.C_Uom_ID, 
+(CASE WHEN RCPR_ProductionRun.C_Uom_ID IS NULL THEN '' ELSE  (COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR((CASE WHEN tableTRL4.Name IS NULL THEN TO_CHAR(table4.Name) ELSE TO_CHAR(tableTRL4.Name) END)), ''))),'') ) END) AS C_Uom_IDR, 
+RCPR_ProductionRun.M_Locator_ID, 
+(CASE WHEN RCPR_ProductionRun.M_Locator_ID IS NULL THEN '' ELSE  (COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table5.Value), ''))),'') ) END) AS M_Locator_IDR, 
+RCPR_ProductionRun.Itemcost, 
+RCPR_ProductionRun.Productionissue, 
+RCPR_ProductionRun.Createlines, 
+RCPR_ProductionRun.Postedx, 
+RCPR_ProductionRun.Productionreceipt, 
+RCPR_ProductionRun.Totalitemcost, 
+RCPR_ProductionRun.Expensecost, 
+RCPR_ProductionRun.Grossamount, 
+RCPR_ProductionRun.Postedy, 
+RCPR_ProductionRun.AD_Client_ID, 
+RCPR_ProductionRun.Rcpr_Productionrun_ID, 
+ 
+        ? AS LANGUAGE 
+        FROM RCPR_ProductionRun left join (select AD_Org_ID, Name from AD_Org) table1 on (RCPR_ProductionRun.AD_Org_ID = table1.AD_Org_ID) left join (select Rcpr_Prbom_ID, Name, Documentno from Rcpr_Prbom) table2 on (RCPR_ProductionRun.Rcpr_Prbom_ID = table2.Rcpr_Prbom_ID) left join (select M_Product_ID, Name from M_Product) table3 on (RCPR_ProductionRun.M_Product_ID =  table3.M_Product_ID) left join (select M_Product_ID,AD_Language, Name from M_Product_TRL) tableTRL3 on (table3.M_Product_ID = tableTRL3.M_Product_ID and tableTRL3.AD_Language = ?)  left join (select C_Uom_ID, Name from C_Uom) table4 on (RCPR_ProductionRun.C_Uom_ID = table4.C_Uom_ID) left join (select C_UOM_ID,AD_Language, Name from C_UOM_TRL) tableTRL4 on (table4.C_UOM_ID = tableTRL4.C_UOM_ID and tableTRL4.AD_Language = ?)  left join (select M_Locator_ID, Value from M_Locator) table5 on (RCPR_ProductionRun.M_Locator_ID = table5.M_Locator_ID)
+        WHERE 2=2 
+
+        AND 1=1 
+        AND RCPR_ProductionRun.Rcpr_Productionrun_ID = ? 
+        AND RCPR_ProductionRun.AD_Client_ID IN ('1') 
+           AND RCPR_ProductionRun.AD_Org_ID IN ('1') 
+    ]]></Sql>
+    <Parameter name="dateTimeFormat"></Parameter>
+    <Parameter name="dateTimeFormat"></Parameter>
+    
+    <Parameter name="paramLanguage"></Parameter>
+<Parameter name="paramLanguage"/>
+<Parameter name="paramLanguage"/>
+
+
+    <Parameter name="key"></Parameter>
+        <Parameter name="adUserClient" type="replace" optional="true" after="RCPR_ProductionRun.AD_Client_ID IN (" text="'1'"/>
+        <Parameter name="adOrgClient" type="replace" optional="true" after="RCPR_ProductionRun.AD_Org_ID IN (" text="'1'"/>
+
+    <Field name="adUserClient" value="void"></Field>
+    <Field name="adOrgClient" value="void"></Field>
+    <Field name="createdby" value="void"></Field>
+    
+    <Field name="trBgcolor" value="void"></Field>
+    <Field name="totalCount" value="void"></Field>
+    <Field name="dateTimeFormat" value=""></Field>
+  </SqlMethod>
+  
+  
+
+  <SqlMethod name="set" type="constant" return="multiple">
+      <SqlMethodComment>Create a registry</SqlMethodComment>
+      <Sql></Sql>
+
+<Parameter name="productionissue"></Parameter><Parameter name="postedy"></Parameter><Parameter name="issuequantity"></Parameter><Parameter name="updatedby"></Parameter><Parameter name="updatedbyr"></Parameter><Parameter name="rcprProductionrunId"></Parameter><Parameter name="movementdate"></Parameter><Parameter name="cUomId"></Parameter><Parameter name="adClientId"></Parameter><Parameter name="createdby"></Parameter><Parameter name="createdbyr"></Parameter><Parameter name="isactive"></Parameter><Parameter name="exenddate"></Parameter><Parameter name="mProductId"></Parameter><Parameter name="grossamount"></Parameter><Parameter name="expensecost"></Parameter><Parameter name="itemcost"></Parameter><Parameter name="startdate"></Parameter><Parameter name="adOrgId"></Parameter><Parameter name="postedx"></Parameter><Parameter name="rcprPrbomId"></Parameter><Parameter name="mLocatorId"></Parameter><Parameter name="mLocatorIdr"></Parameter><Parameter name="productionreceipt"></Parameter><Parameter name="totalitemcost"></Parameter><Parameter name="createlines"></Parameter><Parameter name="documentno"></Parameter>
+   </SqlMethod>
+
+
+
+
+
+
+   <SqlMethod name="selectDef1BC591F1415448DDAF96569306E6F498_0" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>Select for auxiliar field</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT  ( COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table2.Name), ''))), '') ) as Updatedby FROM AD_User left join (select AD_User_ID, Name from AD_User) table2 on (AD_User.AD_User_ID = table2.AD_User_ID) WHERE AD_User.isActive='Y' AND AD_User.AD_User_ID = ?  
+    ]]></Sql>
+<Parameter name="UpdatedbyR"/>
+  </SqlMethod>
+
+   <SqlMethod name="selectDef69AC032679514D3B85558EC1677B65CD_1" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>Select for auxiliar field</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT  ( COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table2.Name), ''))), '') ) as Createdby FROM AD_User left join (select AD_User_ID, Name from AD_User) table2 on (AD_User.AD_User_ID = table2.AD_User_ID) WHERE AD_User.isActive='Y' AND AD_User.AD_User_ID = ?  
+    ]]></Sql>
+<Parameter name="CreatedbyR"/>
+  </SqlMethod>
+
+   <SqlMethod name="selectDefCEB5E62DAFD244F88712D9ADD56CFAEB_2" type="preparedStatement" return="String" default="">
+    <SqlMethodComment>Select for auxiliar field</SqlMethodComment>
+    <Sql><![CDATA[
+        SELECT  ( COALESCE(TO_CHAR(TO_CHAR(COALESCE(TO_CHAR(table2.Value), ''))), '') ) as M_Locator_ID FROM M_Locator left join (select M_Locator_ID, Value from M_Locator) table2 on (M_Locator.M_Locator_ID = table2.M_Locator_ID) WHERE M_Locator.isActive='Y' AND M_Locator.M_Locator_ID = ?  
+    ]]></Sql>
+<Parameter name="M_Locator_IDR"/>
+  </SqlMethod>
+
+
+
+
+
+
+
+
+
+
+  <SqlMethod name="update" type="preparedStatement" return="rowCount" static="false" connection="true">
+    <Sql><![CDATA[
+        UPDATE RCPR_ProductionRun
+        SET AD_Org_ID = (?) , Isactive = (?) , Documentno = (?) , Rcpr_Prbom_ID = (?) , Movementdate = TO_DATE(?) , Startdate = TO_DATE(?) , Exenddate = TO_DATE(?) , Issuequantity = TO_NUMBER(?) , M_Product_ID = (?) , C_Uom_ID = (?) , M_Locator_ID = (?) , Itemcost = TO_NUMBER(?) , Productionissue = (?) , Createlines = (?) , Postedx = (?) , Productionreceipt = (?) , Totalitemcost = TO_NUMBER(?) , Expensecost = TO_NUMBER(?) , Grossamount = TO_NUMBER(?) , Postedy = (?) , AD_Client_ID = (?) , Rcpr_Productionrun_ID = (?) , updated = now(), updatedby = ? 
+        WHERE RCPR_ProductionRun.Rcpr_Productionrun_ID = ? 
+        
+        AND RCPR_ProductionRun.AD_Client_ID IN ('1') 
+        AND RCPR_ProductionRun.AD_Org_ID IN ('1') 
+    ]]></Sql>
+    <Parameter name="adOrgId"></Parameter> <Parameter name="isactive"></Parameter> <Parameter name="documentno"></Parameter> <Parameter name="rcprPrbomId"></Parameter> <Parameter name="movementdate"></Parameter> <Parameter name="startdate"></Parameter> <Parameter name="exenddate"></Parameter> <Parameter name="issuequantity"></Parameter> <Parameter name="mProductId"></Parameter> <Parameter name="cUomId"></Parameter> <Parameter name="mLocatorId"></Parameter> <Parameter name="itemcost"></Parameter> <Parameter name="productionissue"></Parameter> <Parameter name="createlines"></Parameter> <Parameter name="postedx"></Parameter> <Parameter name="productionreceipt"></Parameter> <Parameter name="totalitemcost"></Parameter> <Parameter name="expensecost"></Parameter> <Parameter name="grossamount"></Parameter> <Parameter name="postedy"></Parameter> <Parameter name="adClientId"></Parameter> <Parameter name="rcprProductionrunId"></Parameter> 
+    <Parameter name="updatedby"></Parameter>
+    <Parameter id="paramKey" name="rcprProductionrunId"></Parameter>
+    
+    
+        <Parameter name="adUserClient" type="replace" optional="true" after="RCPR_ProductionRun.AD_Client_ID IN (" text="'1'"/>
+        <Parameter name="adOrgClient" type="replace" optional="true" after="RCPR_ProductionRun.AD_Org_ID IN (" text="'1'"/>
+  </SqlMethod>
+
+  <SqlMethod name="insert" type="preparedStatement" return="rowCount" static="false" connection="true">
+    <Sql><![CDATA[
+        INSERT INTO RCPR_ProductionRun 
+        (AD_Org_ID, Isactive, Documentno, Rcpr_Prbom_ID, Movementdate, Startdate, Exenddate, Issuequantity, M_Product_ID, C_Uom_ID, M_Locator_ID, Itemcost, Productionissue, Createlines, Postedx, Productionreceipt, Totalitemcost, Expensecost, Grossamount, Postedy, AD_Client_ID, Rcpr_Productionrun_ID, created, createdby, updated, updatedBy)
+        VALUES ((?), (?), (?), (?), TO_DATE(?), TO_DATE(?), TO_DATE(?), TO_NUMBER(?), (?), (?), (?), TO_NUMBER(?), (?), (?), (?), (?), TO_NUMBER(?), TO_NUMBER(?), TO_NUMBER(?), (?), (?), (?), now(), ?, now(), ?)
+    ]]></Sql>
+    <Parameter name="adOrgId"></Parameter> <Parameter name="isactive"></Parameter> <Parameter name="documentno"></Parameter> <Parameter name="rcprPrbomId"></Parameter> <Parameter name="movementdate"></Parameter> <Parameter name="startdate"></Parameter> <Parameter name="exenddate"></Parameter> <Parameter name="issuequantity"></Parameter> <Parameter name="mProductId"></Parameter> <Parameter name="cUomId"></Parameter> <Parameter name="mLocatorId"></Parameter> <Parameter name="itemcost"></Parameter> <Parameter name="productionissue"></Parameter> <Parameter name="createlines"></Parameter> <Parameter name="postedx"></Parameter> <Parameter name="productionreceipt"></Parameter> <Parameter name="totalitemcost"></Parameter> <Parameter name="expensecost"></Parameter> <Parameter name="grossamount"></Parameter> <Parameter name="postedy"></Parameter> <Parameter name="adClientId"></Parameter> <Parameter name="rcprProductionrunId"></Parameter> 
+    <Parameter name="createdby"></Parameter>
+    <Parameter name="updatedby"></Parameter>
+  </SqlMethod>
+
+  <SqlMethod name="delete" type="preparedStatement" return="rowCount">
+    <Sql><![CDATA[
+        DELETE FROM RCPR_ProductionRun
+        WHERE RCPR_ProductionRun.Rcpr_Productionrun_ID = ? 
+        
+        AND RCPR_ProductionRun.AD_Client_ID IN ('1') 
+        AND RCPR_ProductionRun.AD_Org_ID IN ('1') 
+    ]]></Sql>
+    <Parameter name="param1"></Parameter>
+    
+        <Parameter name="adUserClient" type="replace" optional="true" after="RCPR_ProductionRun.AD_Client_ID IN (" text="'1'"/>
+        <Parameter name="adOrgClient" type="replace" optional="true" after="RCPR_ProductionRun.AD_Org_ID IN (" text="'1'"/>
+  </SqlMethod>
+
+  <SqlMethod name="selectOrg" type="preparedStatement" return="string">
+    <SqlMethodComment>Select for relation</SqlMethodComment>
+    <Sql><![CDATA[ 
+        SELECT AD_ORG_ID
+          FROM RCPR_ProductionRun
+         WHERE RCPR_ProductionRun.Rcpr_Productionrun_ID = ? 
+    ]]></Sql>
+    <Parameter name="id"></Parameter>
+  </SqlMethod>
+  
+  <SqlMethod name="getCurrentDBTimestamp" type="preparedStatement" return="string">
+    <Sql><![CDATA[ 
+        SELECT to_char(Updated, 'YYYYMMDDHH24MISS') as Updated_Time_Stamp
+          FROM RCPR_ProductionRun
+         WHERE RCPR_ProductionRun.Rcpr_Productionrun_ID = ? 
+    ]]></Sql>
+    <Parameter name="id"></Parameter>
+  </SqlMethod>
+</SqlClass>

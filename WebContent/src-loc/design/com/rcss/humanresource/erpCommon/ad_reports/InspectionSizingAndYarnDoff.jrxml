@@ -1,0 +1,1166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="InspectionSizingAndYarn" pageWidth="842" pageHeight="595" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="FromD" class="java.util.Date"/>
+	<parameter name="BeforeDate1" class="java.util.Date"/>
+	<parameter name="BeforeDate2" class="java.util.Date"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+		<defaultValueExpression><![CDATA["D:\\production\\\\modules\\com.rcss.humanresource\\src\\com\\rcss\\humanresource\\erpCommon\\ad_reports\\"]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[select sort.qualityno,sort.qstandard,
+
+(select sum(b+sl) from rchr_inspcategoryline where rchr_inspectionsheet_id IN (select rchr_inspectionsheet_id from rchr_inspectionsheet
+where rchr_qualitystandard_id=sort.rchr_qualitystandard_id
+and doffdate=$P{FromD} and btotal+sltotal >0) and  rchr_inspectiontype_id IN (select rchr_inspectiontype_id from rchr_inspectiontype
+where rchr_inspremarktype_id=remark.rchr_inspremarktype_id)) as tot,
+
+(select sum(b+sl) from rchr_inspcategoryline where rchr_inspectionsheet_id IN (select rchr_inspectionsheet_id from rchr_inspectionsheet
+where rchr_qualitystandard_id=sort.rchr_qualitystandard_id
+and doffdate=$P{FromD} and btotal+sltotal >0) and  rchr_inspectiontype_id IN (select rchr_inspectiontype_id from rchr_inspectiontype
+where rchr_inspremarktype_id=remark.rchr_inspremarktype_id)
+) as total_mtr,
+(select sum(totalmtr) from rchr_inspectionsheet where doffdate  between $P{BeforeDate1}  and $P{BeforeDate2}) as siznyarn_tot_mtr,
+(select sum(totalmtr) from rchr_inspectionsheet where doffdate=$P{FromD}) as siznyarn_day_mtr,
+(select sum(totalmtr) from rchr_inspectionsheet where doffdate=$P{FromD} and rchr_qualitystandard_id=rchr_qualitystandard_id and rchr_inspclothtype_id=sort.rchr_inspclothtype_id) as total_mtr_cloth,
+(select sum(totalmtr) from rchr_inspectionsheet where doffdate  between $P{BeforeDate1}  and $P{BeforeDate2} and rchr_qualitystandard_id=sort.rchr_qualitystandard_id and rchr_inspclothtype_id=sort.rchr_inspclothtype_id) as grandtot_mtr_cloth,
+(select sum(a) from rchr_inspcategoryline where rchr_inspectionsheet_id IN (select rchr_inspectionsheet_id from rchr_inspectionsheet
+where rchr_qualitystandard_id=sort.rchr_qualitystandard_id
+and doffdate=$P{FromD} and btotal+sltotal >0) and  rchr_inspectiontype_id IN (select rchr_inspectiontype_id from rchr_inspectiontype
+where rchr_inspremarktype_id=remark.rchr_inspremarktype_id) ) as a_total,
+
+(select sum(aone) from rchr_inspcategoryline where rchr_inspectionsheet_id IN (select rchr_inspectionsheet_id from rchr_inspectionsheet
+where rchr_qualitystandard_id=sort.rchr_qualitystandard_id
+and doffdate=$P{FromD} and btotal+sltotal >0) and  rchr_inspectiontype_id IN (select rchr_inspectiontype_id from rchr_inspectiontype
+where rchr_inspremarktype_id=remark.rchr_inspremarktype_id) )as a1_total,
+
+COALESCE((select sum(b) from rchr_inspcategoryline where rchr_inspectionsheet_id IN (select rchr_inspectionsheet_id from rchr_inspectionsheet
+where rchr_qualitystandard_id=sort.rchr_qualitystandard_id
+and doffdate=$P{FromD} and btotal+sltotal >0) and  rchr_inspectiontype_id IN (select rchr_inspectiontype_id from rchr_inspectiontype
+where rchr_inspremarktype_id=remark.rchr_inspremarktype_id)),0)as b_total,
+
+COALESCE((select sum(sl) from rchr_inspcategoryline where rchr_inspectionsheet_id IN (select rchr_inspectionsheet_id from rchr_inspectionsheet
+where rchr_qualitystandard_id=sort.rchr_qualitystandard_id
+and doffdate=$P{FromD} and btotal+sltotal >0) and  rchr_inspectiontype_id IN (select rchr_inspectiontype_id from rchr_inspectiontype
+where rchr_inspremarktype_id=remark.rchr_inspremarktype_id)),0) as sl_total,
+
+ (CASE
+ when
+((select sum(b+sl) from rchr_inspcategoryline where rchr_inspectionsheet_id IN (select rchr_inspectionsheet_id from rchr_inspectionsheet
+where rchr_qualitystandard_id=sort.rchr_qualitystandard_id
+and doffdate=$P{FromD} and btotal+sltotal >0) and  rchr_inspectiontype_id IN (select rchr_inspectiontype_id from rchr_inspectiontype
+where rchr_inspremarktype_id=remark.rchr_inspremarktype_id))=0) THEN 0.00
+ELSE
+
+ (select round((sum(sl)/sum(b+sl))*100,2) from rchr_inspcategoryline where rchr_inspectionsheet_id IN (select rchr_inspectionsheet_id from rchr_inspectionsheet
+where rchr_qualitystandard_id=sort.rchr_qualitystandard_id
+and doffdate=$P{FromD} and btotal+sltotal >0) and  rchr_inspectiontype_id IN (select rchr_inspectiontype_id from rchr_inspectiontype
+where rchr_inspremarktype_id=remark.rchr_inspremarktype_id) )END) as sl_rej,
+
+(CASE
+ when
+((select sum(b+sl) from rchr_inspcategoryline where rchr_inspectionsheet_id IN (select rchr_inspectionsheet_id from rchr_inspectionsheet
+where rchr_qualitystandard_id=sort.rchr_qualitystandard_id
+and doffdate=$P{FromD} and btotal+sltotal >0) and  rchr_inspectiontype_id IN (select rchr_inspectiontype_id from rchr_inspectiontype
+where rchr_inspremarktype_id=remark.rchr_inspremarktype_id))=0) THEN 0.00
+ELSE
+
+(select round((sum(b+sl)/sum(b+sl))*100,2) from rchr_inspcategoryline where rchr_inspectionsheet_id IN (select rchr_inspectionsheet_id from rchr_inspectionsheet
+where rchr_qualitystandard_id=sort.rchr_qualitystandard_id
+and doffdate=$P{FromD} and btotal+sltotal >0) and  rchr_inspectiontype_id IN (select rchr_inspectiontype_id from rchr_inspectiontype
+where rchr_inspremarktype_id=remark.rchr_inspremarktype_id))END) as rej,
+
+
+
+(select sum(b+sl) from rchr_inspcategoryline where rchr_inspectionsheet_id IN (select rchr_inspectionsheet_id from rchr_inspectionsheet
+where rchr_qualitystandard_id=sort.rchr_qualitystandard_id
+and doffdate  between $P{BeforeDate1}  and $P{BeforeDate2} and btotal+sltotal >0) and  rchr_inspectiontype_id IN (select rchr_inspectiontype_id from rchr_inspectiontype
+where rchr_inspremarktype_id=remark.rchr_inspremarktype_id)) as grandtot_mtr,
+
+
+(select sum(a) from rchr_inspcategoryline where rchr_inspectionsheet_id IN (select rchr_inspectionsheet_id from rchr_inspectionsheet
+where rchr_qualitystandard_id=sort.rchr_qualitystandard_id
+and doffdate  between $P{BeforeDate1}  and $P{BeforeDate2} and btotal+sltotal >0) and  rchr_inspectiontype_id IN (select rchr_inspectiontype_id from rchr_inspectiontype
+where rchr_inspremarktype_id=remark.rchr_inspremarktype_id) ) as grand_a_tot,
+
+(select sum(aone) from rchr_inspcategoryline where rchr_inspectionsheet_id IN (select rchr_inspectionsheet_id from rchr_inspectionsheet
+where rchr_qualitystandard_id=sort.rchr_qualitystandard_id
+and doffdate  between $P{BeforeDate1}  and $P{BeforeDate2} and btotal+sltotal >0) and  rchr_inspectiontype_id IN (select rchr_inspectiontype_id from rchr_inspectiontype
+where rchr_inspremarktype_id=remark.rchr_inspremarktype_id)) as grand_a1_tot,
+
+
+(select sum(b) from rchr_inspcategoryline where rchr_inspectionsheet_id IN (select rchr_inspectionsheet_id from rchr_inspectionsheet
+where rchr_qualitystandard_id=sort.rchr_qualitystandard_id
+and doffdate  between $P{BeforeDate1}  and $P{BeforeDate2} and btotal+sltotal >0) and  rchr_inspectiontype_id IN (select rchr_inspectiontype_id from rchr_inspectiontype
+where rchr_inspremarktype_id=remark.rchr_inspremarktype_id)) as grand_b_tot,
+
+(select sum(sl) from rchr_inspcategoryline where rchr_inspectionsheet_id IN (select rchr_inspectionsheet_id from rchr_inspectionsheet
+where rchr_qualitystandard_id=sort.rchr_qualitystandard_id
+and doffdate  between $P{BeforeDate1}  and $P{BeforeDate2} and btotal+sltotal >0) and  rchr_inspectiontype_id IN (select rchr_inspectiontype_id from rchr_inspectiontype
+where rchr_inspremarktype_id=remark.rchr_inspremarktype_id) ) as grand_sl_tot,
+
+ (CASE
+ when
+((select sum(b+sl) from rchr_inspcategoryline where rchr_inspectionsheet_id IN (select rchr_inspectionsheet_id from rchr_inspectionsheet
+where rchr_qualitystandard_id=sort.rchr_qualitystandard_id
+and doffdate  between $P{BeforeDate1}  and $P{BeforeDate2} and btotal+sltotal >0) and  rchr_inspectiontype_id IN (select rchr_inspectiontype_id from rchr_inspectiontype
+where rchr_inspremarktype_id=remark.rchr_inspremarktype_id))=0) THEN 0.00
+ELSE
+
+ (select round((sum(b+sl)/sum(b+sl))*100,2) from rchr_inspcategoryline where rchr_inspectionsheet_id IN (select rchr_inspectionsheet_id from rchr_inspectionsheet
+where rchr_qualitystandard_id=sort.rchr_qualitystandard_id
+and doffdate  between $P{BeforeDate1}  and $P{BeforeDate2} and btotal+sltotal >0) and  rchr_inspectiontype_id IN (select rchr_inspectiontype_id from rchr_inspectiontype
+where rchr_inspremarktype_id=remark.rchr_inspremarktype_id) )END) as grand_rej,
+
+
+ (CASE
+ when
+((select sum(b+sl) from rchr_inspcategoryline where rchr_inspectionsheet_id IN (select rchr_inspectionsheet_id from rchr_inspectionsheet
+where rchr_qualitystandard_id=sort.rchr_qualitystandard_id
+and doffdate  between $P{BeforeDate1}  and $P{BeforeDate2} and btotal+sltotal >0) and  rchr_inspectiontype_id IN (select rchr_inspectiontype_id from rchr_inspectiontype
+where rchr_inspremarktype_id=remark.rchr_inspremarktype_id))=0) THEN 0.00
+ELSE
+
+ (select round((sum(sl)/sum(b+sl))*100,2) from rchr_inspcategoryline where rchr_inspectionsheet_id IN (select rchr_inspectionsheet_id from rchr_inspectionsheet
+where rchr_qualitystandard_id=sort.rchr_qualitystandard_id
+and doffdate  between $P{BeforeDate1}  and $P{BeforeDate2} and btotal+sltotal >0) and  rchr_inspectiontype_id IN (select rchr_inspectiontype_id from rchr_inspectiontype
+where rchr_inspremarktype_id=remark.rchr_inspremarktype_id) )END) as grand_sl_rej,
+
+
+100::numeric as percwnt,
+(select name from rchr_inspclothtype where rchr_inspclothtype_id=sort.rchr_inspclothtype_id) as clothtype,
+
+(select array_to_string(array_agg(rcpl_loom.name),',') from rcpl_loom where rcpl_loom_id IN
+(select rcpl_loom_id from rchr_inspectionsheet where rchr_qualitystandard_id=sort.rchr_qualitystandard_id
+and doffdate=$P{FromD} and btotal+sltotal >0
+and rchr_inspectionsheet_id IN (select rchr_inspectionsheet_id from rchr_inspcategoryline where rchr_inspectiontype_id IN (select rchr_inspectiontype_id from rchr_inspectiontype
+where rchr_inspremarktype_id=remark.rchr_inspremarktype_id))
+ )) as looms,
+
+(select array_to_string(array_agg(rchr_inspectiontype.code),',') from rchr_inspectiontype where rchr_inspectiontype_id IN
+(select rchr_inspectiontype_id from rchr_inspcategoryline where rchr_inspectionsheet_id IN (select rchr_inspectionsheet_id from rchr_inspectionsheet
+where rchr_qualitystandard_id=sort.rchr_qualitystandard_id
+and doffdate=$P{FromD} and btotal+sltotal >0)) and rchr_inspectiontype_id IN (select rchr_inspectiontype_id from rchr_inspectiontype
+where rchr_inspremarktype_id=remark.rchr_inspremarktype_id))
+as defect,
+
+COALESCE((select name from rchr_inspremarktype where rchr_inspremarktype_id=remark.rchr_inspremarktype_id),null) as remark_type
+
+ from rchr_qualitystandard sort
+ left join rchr_inspectionsheet sheet on sheet.rchr_qualitystandard_id=sort.rchr_qualitystandard_id
+ left join rchr_inspcategoryline line on line.rchr_inspectionsheet_id=sheet.rchr_inspectionsheet_id
+ left join rchr_inspectiontype insptype on insptype.rchr_inspectiontype_id=line.rchr_inspectiontype_id
+ left join rchr_inspremarktype remark on  remark.rchr_inspremarktype_id=insptype.rchr_inspremarktype_id
+where sheet.doffdate between $P{BeforeDate1} and $P{BeforeDate2}
+and 'Y'IN ( remark.issizing,isyarndyied)
+group by sort.qualityno , sort.qstandard,sort.rchr_qualitystandard_id,remark.rchr_inspremarktype_id,sort.rchr_inspclothtype_id
+order by (COALESCE((select name from rchr_inspremarktype where rchr_inspremarktype_id=remark.rchr_inspremarktype_id),null)),sort.qualityno]]>
+	</queryString>
+	<field name="qualityno" class="java.lang.String"/>
+	<field name="qstandard" class="java.lang.String"/>
+	<field name="tot" class="java.math.BigDecimal"/>
+	<field name="total_mtr" class="java.math.BigDecimal"/>
+	<field name="siznyarn_tot_mtr" class="java.math.BigDecimal"/>
+	<field name="siznyarn_day_mtr" class="java.math.BigDecimal"/>
+	<field name="total_mtr_cloth" class="java.math.BigDecimal"/>
+	<field name="grandtot_mtr_cloth" class="java.math.BigDecimal"/>
+	<field name="a_total" class="java.math.BigDecimal"/>
+	<field name="a1_total" class="java.math.BigDecimal"/>
+	<field name="b_total" class="java.math.BigDecimal"/>
+	<field name="sl_total" class="java.math.BigDecimal"/>
+	<field name="sl_rej" class="java.math.BigDecimal"/>
+	<field name="rej" class="java.math.BigDecimal"/>
+	<field name="grandtot_mtr" class="java.math.BigDecimal"/>
+	<field name="grand_a_tot" class="java.math.BigDecimal"/>
+	<field name="grand_a1_tot" class="java.math.BigDecimal"/>
+	<field name="grand_b_tot" class="java.math.BigDecimal"/>
+	<field name="grand_sl_tot" class="java.math.BigDecimal"/>
+	<field name="grand_rej" class="java.math.BigDecimal"/>
+	<field name="grand_sl_rej" class="java.math.BigDecimal"/>
+	<field name="percwnt" class="java.math.BigDecimal"/>
+	<field name="clothtype" class="java.lang.String"/>
+	<field name="looms" class="java.lang.String"/>
+	<field name="defect" class="java.lang.String"/>
+	<field name="remark_type" class="java.lang.String"/>
+	<variable name="sno" class="java.math.BigDecimal" calculation="Count"/>
+	<variable name="total" class="java.math.BigDecimal" resetType="Group" resetGroup="Remark_Group" calculation="Sum">
+		<variableExpression><![CDATA[$F{total_mtr}]]></variableExpression>
+		<initialValueExpression><![CDATA[$F{total_mtr}]]></initialValueExpression>
+	</variable>
+	<variable name="a_total" class="java.math.BigDecimal" resetType="Group" resetGroup="Remark_Group" calculation="Sum">
+		<variableExpression><![CDATA[$F{a_total}]]></variableExpression>
+		<initialValueExpression><![CDATA[$F{a_total}]]></initialValueExpression>
+	</variable>
+	<variable name="a1_total" class="java.math.BigDecimal" resetType="Group" resetGroup="Remark_Group" calculation="Sum">
+		<variableExpression><![CDATA[$F{a1_total}]]></variableExpression>
+		<initialValueExpression><![CDATA[$F{a1_total}]]></initialValueExpression>
+	</variable>
+	<variable name="b_total" class="java.math.BigDecimal" resetType="Group" resetGroup="Remark_Group" calculation="Sum">
+		<variableExpression><![CDATA[$F{b_total}]]></variableExpression>
+		<initialValueExpression><![CDATA[$F{b_total}]]></initialValueExpression>
+	</variable>
+	<variable name="sl_total" class="java.math.BigDecimal" resetType="Group" resetGroup="Remark_Group" calculation="Sum">
+		<variableExpression><![CDATA[$F{sl_total}]]></variableExpression>
+		<initialValueExpression><![CDATA[$F{sl_total}]]></initialValueExpression>
+	</variable>
+	<variable name="rej_per" class="java.math.BigDecimal" resetType="Group" resetGroup="Remark_Group">
+		<variableExpression><![CDATA[($V{b_total}.add($V{sl_total})).divide($F{siznyarn_day_mtr},5,RoundingMode.CEILING).multiply($F{percwnt})]]></variableExpression>
+		<initialValueExpression><![CDATA[($V{b_total}.add($V{sl_total})).divide($F{siznyarn_day_mtr},5,RoundingMode.CEILING).multiply($F{percwnt})]]></initialValueExpression>
+	</variable>
+	<variable name="sl_rej_per" class="java.math.BigDecimal" resetType="Group" resetGroup="Remark_Group">
+		<variableExpression><![CDATA[$V{sl_total}.divide($F{siznyarn_tot_mtr},5,RoundingMode.CEILING).multiply($F{percwnt})]]></variableExpression>
+		<initialValueExpression><![CDATA[$V{sl_total}.divide($F{siznyarn_tot_mtr},5,RoundingMode.CEILING).multiply($F{percwnt})]]></initialValueExpression>
+	</variable>
+	<variable name="grnd_total" class="java.math.BigDecimal" resetType="Group" resetGroup="Remark_Group" calculation="Sum">
+		<variableExpression><![CDATA[$F{grandtot_mtr}]]></variableExpression>
+		<initialValueExpression><![CDATA[$F{grandtot_mtr}]]></initialValueExpression>
+	</variable>
+	<variable name="a_gendtotal" class="java.math.BigDecimal" resetType="Group" resetGroup="Remark_Group" calculation="Sum">
+		<variableExpression><![CDATA[$F{grand_a_tot}]]></variableExpression>
+		<initialValueExpression><![CDATA[$F{grand_a_tot}]]></initialValueExpression>
+	</variable>
+	<variable name="a1_grand_total" class="java.math.BigDecimal" resetType="Group" resetGroup="Remark_Group" calculation="Sum">
+		<variableExpression><![CDATA[$F{grand_a1_tot}]]></variableExpression>
+		<initialValueExpression><![CDATA[$F{grand_a1_tot}]]></initialValueExpression>
+	</variable>
+	<variable name="b_grandtotal" class="java.math.BigDecimal" resetType="Group" resetGroup="Remark_Group" calculation="Sum">
+		<variableExpression><![CDATA[$F{grand_b_tot}]]></variableExpression>
+		<initialValueExpression><![CDATA[$F{grand_b_tot}]]></initialValueExpression>
+	</variable>
+	<variable name="sl_grandtotal" class="java.math.BigDecimal" resetType="Group" resetGroup="Remark_Group" calculation="Sum">
+		<variableExpression><![CDATA[$F{grand_sl_tot}]]></variableExpression>
+		<initialValueExpression><![CDATA[$F{grand_sl_tot}]]></initialValueExpression>
+	</variable>
+	<variable name="rej_grandtotal" class="java.math.BigDecimal" resetType="Group" resetGroup="Remark_Group">
+		<variableExpression><![CDATA[($V{b_grandtotal}.add($V{sl_grandtotal})).divide($F{siznyarn_tot_mtr},5,RoundingMode.CEILING).multiply($F{percwnt})]]></variableExpression>
+		<initialValueExpression><![CDATA[($V{b_grandtotal}.add($V{sl_grandtotal})).divide($F{siznyarn_tot_mtr},5,RoundingMode.CEILING).multiply($F{percwnt})]]></initialValueExpression>
+	</variable>
+	<variable name="sl_rej_grandtot" class="java.math.BigDecimal" resetType="Group" resetGroup="Remark_Group">
+		<variableExpression><![CDATA[$V{sl_grandtotal}.divide($F{siznyarn_tot_mtr},5,RoundingMode.CEILING).multiply($F{percwnt})]]></variableExpression>
+		<initialValueExpression><![CDATA[$V{sl_grandtotal}.divide($F{siznyarn_tot_mtr},5,RoundingMode.CEILING).multiply($F{percwnt})]]></initialValueExpression>
+	</variable>
+	<variable name="total_1" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{total_mtr}]]></variableExpression>
+		<initialValueExpression><![CDATA[$F{total_mtr}]]></initialValueExpression>
+	</variable>
+	<variable name="a_total_1" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{a_total}]]></variableExpression>
+		<initialValueExpression><![CDATA[$F{a_total}]]></initialValueExpression>
+	</variable>
+	<variable name="a1_total_1" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{a1_total}]]></variableExpression>
+		<initialValueExpression><![CDATA[$F{a1_total}]]></initialValueExpression>
+	</variable>
+	<variable name="b_total_1" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{b_total}]]></variableExpression>
+		<initialValueExpression><![CDATA[$F{b_total}]]></initialValueExpression>
+	</variable>
+	<variable name="sl_total_1" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{sl_total}]]></variableExpression>
+		<initialValueExpression><![CDATA[$F{sl_total}]]></initialValueExpression>
+	</variable>
+	<variable name="rej_per_1" class="java.math.BigDecimal">
+		<variableExpression><![CDATA[($V{b_total_1}.add($V{sl_total_1})).divide($F{siznyarn_day_mtr},5,RoundingMode.CEILING).multiply($F{percwnt})]]></variableExpression>
+		<initialValueExpression><![CDATA[($V{b_total_1}.add($V{sl_total_1})).divide($F{siznyarn_day_mtr},5,RoundingMode.CEILING).multiply($F{percwnt})]]></initialValueExpression>
+	</variable>
+	<variable name="sl_rej_per_1" class="java.math.BigDecimal">
+		<variableExpression><![CDATA[$V{sl_total_1}.divide($F{siznyarn_day_mtr},5,RoundingMode.CEILING).multiply($F{percwnt})]]></variableExpression>
+		<initialValueExpression><![CDATA[$V{sl_total_1}.divide($F{siznyarn_day_mtr},5,RoundingMode.CEILING).multiply($F{percwnt})]]></initialValueExpression>
+	</variable>
+	<variable name="grnd_total_1" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{grandtot_mtr}]]></variableExpression>
+		<initialValueExpression><![CDATA[$F{grandtot_mtr}]]></initialValueExpression>
+	</variable>
+	<variable name="a_gendtotal_1" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{grand_a_tot}]]></variableExpression>
+		<initialValueExpression><![CDATA[$F{grand_a_tot}]]></initialValueExpression>
+	</variable>
+	<variable name="a1_grand_total_1" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{grand_a1_tot}]]></variableExpression>
+		<initialValueExpression><![CDATA[$F{grand_a1_tot}]]></initialValueExpression>
+	</variable>
+	<variable name="b_grandtotal_1" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{grand_b_tot}]]></variableExpression>
+		<initialValueExpression><![CDATA[$F{grand_b_tot}]]></initialValueExpression>
+	</variable>
+	<variable name="sl_grandtotal_1" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{grand_sl_tot}]]></variableExpression>
+		<initialValueExpression><![CDATA[$F{grand_sl_tot}]]></initialValueExpression>
+	</variable>
+	<variable name="rej_grandtotal_1" class="java.math.BigDecimal">
+		<variableExpression><![CDATA[($V{b_grandtotal_1}.add($V{sl_grandtotal_1})).divide($F{siznyarn_tot_mtr},5,RoundingMode.CEILING).multiply($F{percwnt})]]></variableExpression>
+		<initialValueExpression><![CDATA[($V{b_grandtotal_1}.add($V{sl_grandtotal_1})).divide($F{siznyarn_tot_mtr},5,RoundingMode.CEILING).multiply($F{percwnt})]]></initialValueExpression>
+	</variable>
+	<variable name="sl_rej_grandtot_1" class="java.math.BigDecimal">
+		<variableExpression><![CDATA[$V{sl_grandtotal_1}.divide($F{siznyarn_tot_mtr},5,RoundingMode.CEILING).multiply($F{percwnt})]]></variableExpression>
+		<initialValueExpression><![CDATA[$V{sl_grandtotal_1}.divide($F{siznyarn_tot_mtr},5,RoundingMode.CEILING).multiply($F{percwnt})]]></initialValueExpression>
+	</variable>
+	<variable name="total_clothty" class="java.math.BigDecimal" resetType="Group" resetGroup="Cloth" calculation="Sum">
+		<variableExpression><![CDATA[$F{total_mtr}]]></variableExpression>
+		<initialValueExpression><![CDATA[$F{total_mtr}]]></initialValueExpression>
+	</variable>
+	<variable name="grnd_total_cloth" class="java.math.BigDecimal" resetType="Group" resetGroup="Cloth" calculation="Sum">
+		<variableExpression><![CDATA[$F{grandtot_mtr}]]></variableExpression>
+		<initialValueExpression><![CDATA[$F{grandtot_mtr}]]></initialValueExpression>
+	</variable>
+	<variable name="a_total_cloth" class="java.math.BigDecimal" resetType="Group" resetGroup="Cloth" calculation="Sum">
+		<variableExpression><![CDATA[$F{a_total}]]></variableExpression>
+		<initialValueExpression><![CDATA[$F{a_total}]]></initialValueExpression>
+	</variable>
+	<variable name="a1_total_cloth" class="java.math.BigDecimal" resetType="Group" resetGroup="Cloth" calculation="Sum">
+		<variableExpression><![CDATA[$F{a1_total}]]></variableExpression>
+		<initialValueExpression><![CDATA[$F{a1_total}]]></initialValueExpression>
+	</variable>
+	<variable name="b_total_cloth" class="java.math.BigDecimal" resetType="Group" resetGroup="Cloth" calculation="Sum">
+		<variableExpression><![CDATA[$F{b_total}]]></variableExpression>
+		<initialValueExpression><![CDATA[$F{b_total}]]></initialValueExpression>
+	</variable>
+	<variable name="sl_total_cloth" class="java.math.BigDecimal" resetType="Group" resetGroup="Cloth" calculation="Sum">
+		<variableExpression><![CDATA[$F{sl_total}]]></variableExpression>
+		<initialValueExpression><![CDATA[$F{sl_total}]]></initialValueExpression>
+	</variable>
+	<variable name="rej_per_cloth" class="java.math.BigDecimal" resetType="Group" resetGroup="Cloth">
+		<variableExpression><![CDATA[$V{total_clothty}.intValue()!=0 ? ($V{b_total}.add($V{sl_total})).divide($V{total_clothty},5,RoundingMode.CEILING).multiply($F{percwnt}): new BigDecimal(0)]]></variableExpression>
+		<initialValueExpression><![CDATA[$V{total_clothty}.intValue()!=0 ? ($V{b_total}.add($V{sl_total})).divide($V{total_clothty},5,RoundingMode.CEILING).multiply($F{percwnt}): new BigDecimal(0)]]></initialValueExpression>
+	</variable>
+	<variable name="sl_rej_per_cloth" class="java.math.BigDecimal" resetType="Group" resetGroup="Cloth">
+		<variableExpression><![CDATA[$V{total_clothty}.intValue()!=0 ? $V{sl_total}.divide($V{total_clothty},5,RoundingMode.CEILING).multiply($F{percwnt}) : new BigDecimal(0)]]></variableExpression>
+		<initialValueExpression><![CDATA[$V{total_clothty}.intValue()!=0 ? $V{sl_total}.divide($V{total_clothty},5,RoundingMode.CEILING).multiply($F{percwnt}) : new BigDecimal(0)]]></initialValueExpression>
+	</variable>
+	<variable name="a_gendtotal_cloth" class="java.math.BigDecimal" resetType="Group" resetGroup="Cloth" calculation="Sum">
+		<variableExpression><![CDATA[$F{grand_a_tot}]]></variableExpression>
+		<initialValueExpression><![CDATA[$F{grand_a_tot}]]></initialValueExpression>
+	</variable>
+	<variable name="a1_grand_total_cloth" class="java.math.BigDecimal" resetType="Group" resetGroup="Cloth" calculation="Sum">
+		<variableExpression><![CDATA[$F{grand_a1_tot}]]></variableExpression>
+		<initialValueExpression><![CDATA[$F{grand_a1_tot}]]></initialValueExpression>
+	</variable>
+	<variable name="b_grandtotal_cloth" class="java.math.BigDecimal" resetType="Group" resetGroup="Cloth" calculation="Sum">
+		<variableExpression><![CDATA[$F{grand_b_tot}]]></variableExpression>
+		<initialValueExpression><![CDATA[$F{grand_b_tot}]]></initialValueExpression>
+	</variable>
+	<variable name="sl_grandtotal_cloth" class="java.math.BigDecimal" resetType="Group" resetGroup="Cloth" calculation="Sum">
+		<variableExpression><![CDATA[$F{grand_sl_tot}]]></variableExpression>
+		<initialValueExpression><![CDATA[$F{grand_sl_tot}]]></initialValueExpression>
+	</variable>
+	<variable name="rej_grandtotal_cloth" class="java.math.BigDecimal" resetType="Group" resetGroup="Cloth">
+		<variableExpression><![CDATA[$V{grnd_total_cloth}.intValue()!=0? ($V{b_grandtotal}.add($V{sl_grandtotal})).divide($V{grnd_total_cloth},5,RoundingMode.CEILING).multiply($F{percwnt}) : new BigDecimal(0)]]></variableExpression>
+		<initialValueExpression><![CDATA[$V{grnd_total_cloth}.intValue()!=0? ($V{b_grandtotal}.add($V{sl_grandtotal})).divide($V{grnd_total_cloth},5,RoundingMode.CEILING).multiply($F{percwnt}) : new BigDecimal(0)]]></initialValueExpression>
+	</variable>
+	<variable name="sl_rej_grandtot_cloth" class="java.math.BigDecimal" resetType="Group" resetGroup="Cloth">
+		<variableExpression><![CDATA[$V{grnd_total_cloth}.intValue()!=0? $V{sl_grandtotal}.divide($V{grnd_total_cloth},5,RoundingMode.CEILING).multiply($F{percwnt}): new BigDecimal(0)]]></variableExpression>
+		<initialValueExpression><![CDATA[$V{grnd_total_cloth}.intValue()!=0? $V{sl_grandtotal}.divide($V{grnd_total_cloth},5,RoundingMode.CEILING).multiply($F{percwnt}): new BigDecimal(0)]]></initialValueExpression>
+	</variable>
+	<group name="Remark_Group">
+		<groupExpression><![CDATA[$F{remark_type}]]></groupExpression>
+		<groupHeader>
+			<band/>
+		</groupHeader>
+		<groupFooter>
+			<band height="12">
+				<staticText>
+					<reportElement x="141" y="0" width="26" height="10"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="7" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Totals :]]></text>
+				</staticText>
+				<textField pattern="###0" isBlankWhenNull="true">
+					<reportElement x="170" y="0" width="32" height="10"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="7" isBold="true"/>
+					</textElement>
+					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{total}]]></textFieldExpression>
+				</textField>
+				<textField pattern="###0" isBlankWhenNull="true">
+					<reportElement x="204" y="0" width="29" height="10"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="7" isBold="true"/>
+					</textElement>
+					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{a_total}]]></textFieldExpression>
+				</textField>
+				<textField pattern="###0" isBlankWhenNull="true">
+					<reportElement x="234" y="0" width="32" height="10"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="7" isBold="true"/>
+					</textElement>
+					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{a1_total}]]></textFieldExpression>
+				</textField>
+				<textField pattern="###0" isBlankWhenNull="true">
+					<reportElement x="267" y="0" width="27" height="10"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="7" isBold="true"/>
+					</textElement>
+					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{b_total}]]></textFieldExpression>
+				</textField>
+				<textField pattern="###0" isBlankWhenNull="true">
+					<reportElement x="294" y="0" width="30" height="10"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="7" isBold="true"/>
+					</textElement>
+					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{sl_total}]]></textFieldExpression>
+				</textField>
+				<textField pattern="###0.000" isBlankWhenNull="true">
+					<reportElement x="326" y="0" width="31" height="10"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="7" isBold="true"/>
+					</textElement>
+					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{rej_per}]]></textFieldExpression>
+				</textField>
+				<textField pattern="###0.000" isBlankWhenNull="true">
+					<reportElement x="358" y="0" width="32" height="10"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="7" isBold="true"/>
+					</textElement>
+					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{sl_rej_per}]]></textFieldExpression>
+				</textField>
+				<textField pattern="###0" isBlankWhenNull="true">
+					<reportElement x="564" y="0" width="35" height="10"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="7" isBold="true"/>
+					</textElement>
+					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{grnd_total}]]></textFieldExpression>
+				</textField>
+				<textField pattern="###0" isBlankWhenNull="true">
+					<reportElement x="601" y="0" width="34" height="10"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="7" isBold="true"/>
+					</textElement>
+					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{a_gendtotal}]]></textFieldExpression>
+				</textField>
+				<textField pattern="###0" isBlankWhenNull="true">
+					<reportElement x="636" y="0" width="28" height="10"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="7" isBold="true"/>
+					</textElement>
+					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{a1_grand_total}]]></textFieldExpression>
+				</textField>
+				<textField pattern="###0" isBlankWhenNull="true">
+					<reportElement x="666" y="0" width="29" height="10"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="7" isBold="true"/>
+					</textElement>
+					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{b_grandtotal}]]></textFieldExpression>
+				</textField>
+				<textField pattern="###0" isBlankWhenNull="true">
+					<reportElement x="698" y="0" width="29" height="10"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="7" isBold="true"/>
+					</textElement>
+					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{sl_grandtotal}]]></textFieldExpression>
+				</textField>
+				<textField pattern="###0.000" isBlankWhenNull="true">
+					<reportElement x="730" y="0" width="33" height="10"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="7" isBold="true"/>
+					</textElement>
+					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{rej_grandtotal}]]></textFieldExpression>
+				</textField>
+				<textField pattern="###0.000" isBlankWhenNull="true">
+					<reportElement x="765" y="0" width="35" height="10"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="7" isBold="true"/>
+					</textElement>
+					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{sl_rej_grandtot}]]></textFieldExpression>
+				</textField>
+				<line>
+					<reportElement x="0" y="11" width="802" height="1"/>
+				</line>
+				<textField isBlankWhenNull="true">
+					<reportElement x="81" y="0" width="59" height="10"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="7" isBold="true"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{remark_type}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupFooter>
+	</group>
+	<group name="Cloth">
+		<groupExpression><![CDATA[$F{clothtype}]]></groupExpression>
+		<groupHeader>
+			<band height="13">
+				<textField isBlankWhenNull="true">
+					<reportElement x="333" y="0" width="64" height="13"/>
+					<textElement verticalAlignment="Middle">
+						<font size="8" isBold="true"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{clothtype}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement x="258" y="0" width="73" height="13"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="8" isBold="true"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{remark_type}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="13">
+				<textField isBlankWhenNull="true">
+					<reportElement x="56" y="1" width="55" height="10"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="7" isBold="true"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{remark_type}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement x="111" y="1" width="24" height="10"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="7" isBold="true"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{clothtype}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="136" y="1" width="30" height="10"/>
+					<textElement verticalAlignment="Middle">
+						<font size="7" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Totals :]]></text>
+				</staticText>
+				<textField isBlankWhenNull="true">
+					<reportElement x="168" y="1" width="35" height="10"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="7" isBold="true"/>
+					</textElement>
+					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{total_clothty}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement x="565" y="1" width="36" height="10"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="7" isBold="true"/>
+					</textElement>
+					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{grnd_total_cloth}]]></textFieldExpression>
+				</textField>
+				<line>
+					<reportElement x="0" y="12" width="802" height="1"/>
+				</line>
+				<textField isBlankWhenNull="true">
+					<reportElement x="205" y="1" width="29" height="10"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="7" isBold="true"/>
+					</textElement>
+					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{a_total_cloth}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement x="234" y="1" width="33" height="10"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="7" isBold="true"/>
+					</textElement>
+					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{a1_total_cloth}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement x="267" y="1" width="28" height="10"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="7" isBold="true"/>
+					</textElement>
+					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{b_total_cloth}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement x="295" y="1" width="31" height="10"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="7" isBold="true"/>
+					</textElement>
+					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{sl_total_cloth}]]></textFieldExpression>
+				</textField>
+				<textField pattern="###0.000" isBlankWhenNull="true">
+					<reportElement x="327" y="1" width="32" height="10"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="7" isBold="true"/>
+					</textElement>
+					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{rej_per_cloth}]]></textFieldExpression>
+				</textField>
+				<textField pattern="###0.000" isBlankWhenNull="true">
+					<reportElement x="359" y="1" width="31" height="10"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="7" isBold="true"/>
+					</textElement>
+					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{sl_rej_per_cloth}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement x="601" y="1" width="35" height="10"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="7" isBold="true"/>
+					</textElement>
+					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{a_gendtotal_cloth}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement x="636" y="1" width="29" height="10"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="7" isBold="true"/>
+					</textElement>
+					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{a1_total_cloth}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement x="666" y="1" width="30" height="10"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="7" isBold="true"/>
+					</textElement>
+					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{b_grandtotal_cloth}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement x="697" y="1" width="32" height="10"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="7" isBold="true"/>
+					</textElement>
+					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{sl_grandtotal_cloth}]]></textFieldExpression>
+				</textField>
+				<textField pattern="###0.000" isBlankWhenNull="true">
+					<reportElement x="729" y="1" width="36" height="10"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="7" isBold="true"/>
+					</textElement>
+					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{rej_grandtotal_cloth}]]></textFieldExpression>
+				</textField>
+				<textField pattern="###0.000" isBlankWhenNull="true">
+					<reportElement x="765" y="1" width="37" height="10"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="7" isBold="true"/>
+					</textElement>
+					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{sl_rej_grandtot_cloth}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupFooter>
+	</group>
+	<pageHeader>
+		<band height="20">
+			<line>
+				<reportElement x="765" y="3" width="1" height="16"/>
+			</line>
+			<line>
+				<reportElement positionType="Float" x="0" y="19" width="802" height="1"/>
+			</line>
+			<staticText>
+				<reportElement x="361" y="2" width="29" height="16"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="6" isBold="true"/>
+				</textElement>
+				<text><![CDATA[SL-REJ %]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="427" y="3" width="59" height="16"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Looms]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="237" y="2" width="29" height="16"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ A1
+Grade]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="172" y="3" width="31" height="16"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Total]]></text>
+			</staticText>
+			<line>
+				<reportElement x="327" y="2" width="1" height="16"/>
+			</line>
+			<line>
+				<reportElement stretchType="RelativeToBandHeight" x="49" y="2" width="1" height="16"/>
+			</line>
+			<staticText>
+				<reportElement x="297" y="2" width="28" height="16"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[SL
+Garde]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="2" y="3" width="47" height="16"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Sort No.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="638" y="3" width="27" height="16"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ A1
+Grade]]></text>
+			</staticText>
+			<line>
+				<reportElement x="729" y="3" width="1" height="16"/>
+			</line>
+			<staticText>
+				<reportElement x="767" y="3" width="34" height="16"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[SL-REJ %]]></text>
+			</staticText>
+			<line>
+				<reportElement x="235" y="2" width="1" height="16"/>
+			</line>
+			<staticText>
+				<reportElement x="392" y="3" width="30" height="16"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="6" isBold="true"/>
+				</textElement>
+				<text><![CDATA[(A+A1)%]]></text>
+			</staticText>
+			<line>
+				<reportElement x="295" y="2" width="1" height="16"/>
+			</line>
+			<staticText>
+				<reportElement x="205" y="2" width="29" height="16"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ A
+Grade]]></text>
+			</staticText>
+			<line>
+				<reportElement x="564" y="2" width="1" height="16"/>
+			</line>
+			<staticText>
+				<reportElement x="567" y="3" width="33" height="16"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Total]]></text>
+			</staticText>
+			<line>
+				<reportElement x="636" y="2" width="1" height="16"/>
+			</line>
+			<staticText>
+				<reportElement x="329" y="3" width="28" height="16"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[REJ %]]></text>
+			</staticText>
+			<line>
+				<reportElement x="666" y="2" width="1" height="16"/>
+			</line>
+			<line>
+				<reportElement x="204" y="2" width="1" height="16"/>
+			</line>
+			<staticText>
+				<reportElement x="50" y="3" width="119" height="16"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Construction]]></text>
+			</staticText>
+			<line>
+				<reportElement x="390" y="3" width="1" height="16"/>
+			</line>
+			<line>
+				<reportElement x="170" y="2" width="1" height="16"/>
+			</line>
+			<staticText>
+				<reportElement x="269" y="2" width="25" height="16"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[B
+Garde]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="2" width="1" height="17"/>
+			</line>
+			<line>
+				<reportElement x="697" y="2" width="1" height="16"/>
+			</line>
+			<line>
+				<reportElement x="423" y="1" width="1" height="18"/>
+			</line>
+			<line>
+				<reportElement x="802" y="2" width="1" height="17"/>
+			</line>
+			<line>
+				<reportElement x="489" y="2" width="1" height="16"/>
+			</line>
+			<staticText>
+				<reportElement x="499" y="3" width="64" height="16"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Remarks]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="1" width="802" height="1"/>
+			</line>
+			<staticText>
+				<reportElement x="699" y="3" width="28" height="16"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[SL
+Garde]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="669" y="3" width="25" height="16"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[B
+Garde]]></text>
+			</staticText>
+			<line>
+				<reportElement x="359" y="2" width="1" height="16"/>
+			</line>
+			<line>
+				<reportElement x="600" y="2" width="1" height="16"/>
+			</line>
+			<staticText>
+				<reportElement x="733" y="3" width="28" height="16"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[REJ %]]></text>
+			</staticText>
+			<line>
+				<reportElement x="267" y="2" width="1" height="16"/>
+			</line>
+			<staticText>
+				<reportElement x="601" y="3" width="34" height="16"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ A
+Grade]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<detail>
+		<band height="14" splitType="Stretch">
+			<printWhenExpression><![CDATA[((($F{b_total}.longValue()+$F{sl_total}.longValue())==0)||$F{remark_type}.equals(null))  ? new Boolean(false) : new Boolean(true)]]></printWhenExpression>
+			<line>
+				<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="1" height="13"/>
+			</line>
+			<line>
+				<reportElement stretchType="RelativeToBandHeight" x="169" y="0" width="1" height="13"/>
+			</line>
+			<line>
+				<reportElement stretchType="RelativeToBandHeight" x="234" y="0" width="1" height="13"/>
+			</line>
+			<line>
+				<reportElement stretchType="RelativeToBandHeight" x="802" y="-1" width="1" height="13"/>
+			</line>
+			<line>
+				<reportElement positionType="Float" x="0" y="13" width="802" height="1"/>
+			</line>
+			<line>
+				<reportElement stretchType="RelativeToBandHeight" x="326" y="0" width="1" height="13"/>
+			</line>
+			<line>
+				<reportElement positionType="Float" x="0" y="-1" width="802" height="1"/>
+			</line>
+			<line>
+				<reportElement stretchType="RelativeToBandHeight" x="266" y="0" width="1" height="13"/>
+			</line>
+			<line>
+				<reportElement stretchType="RelativeToBandHeight" x="48" y="0" width="1" height="13"/>
+			</line>
+			<line>
+				<reportElement stretchType="RelativeToBandHeight" x="389" y="-1" width="1" height="14"/>
+			</line>
+			<line>
+				<reportElement x="358" y="-1" width="1" height="14"/>
+			</line>
+			<line>
+				<reportElement stretchType="RelativeToBandHeight" x="422" y="-1" width="1" height="13"/>
+			</line>
+			<line>
+				<reportElement stretchType="RelativeToBandHeight" x="294" y="0" width="1" height="13"/>
+			</line>
+			<line>
+				<reportElement stretchType="RelativeToBandHeight" x="203" y="0" width="1" height="13"/>
+			</line>
+			<line>
+				<reportElement stretchType="RelativeToBandHeight" x="489" y="0" width="1" height="14"/>
+			</line>
+			<line>
+				<reportElement stretchType="RelativeToBandHeight" x="563" y="0" width="1" height="13"/>
+			</line>
+			<line>
+				<reportElement stretchType="RelativeToBandHeight" x="600" y="0" width="1" height="12"/>
+			</line>
+			<line>
+				<reportElement stretchType="RelativeToBandHeight" x="635" y="0" width="1" height="12"/>
+			</line>
+			<line>
+				<reportElement stretchType="RelativeToBandHeight" x="664" y="0" width="1" height="13"/>
+			</line>
+			<line>
+				<reportElement stretchType="RelativeToBandHeight" x="696" y="0" width="1" height="13"/>
+			</line>
+			<line>
+				<reportElement stretchType="RelativeToBandHeight" x="728" y="0" width="1" height="12"/>
+			</line>
+			<line>
+				<reportElement stretchType="RelativeToBandHeight" x="764" y="0" width="1" height="13"/>
+			</line>
+			<textField>
+				<reportElement x="2" y="1" width="46" height="11"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{qualityno}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="50" y="0" width="118" height="12"/>
+				<textElement verticalAlignment="Middle">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{qstandard}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0" isBlankWhenNull="true">
+				<reportElement x="171" y="1" width="31" height="11"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{total_mtr}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0" isBlankWhenNull="true">
+				<reportElement x="204" y="1" width="29" height="11"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{a_total}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0" isBlankWhenNull="true">
+				<reportElement x="235" y="0" width="30" height="12"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{a1_total}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0" isBlankWhenNull="true">
+				<reportElement x="268" y="1" width="25" height="11"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{b_total}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0" isBlankWhenNull="true">
+				<reportElement x="296" y="0" width="29" height="12"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{sl_total}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.00" isBlankWhenNull="true">
+				<reportElement x="328" y="0" width="28" height="13"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{rej}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.00" isBlankWhenNull="true">
+				<reportElement x="359" y="0" width="29" height="12"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{sl_rej}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0" isBlankWhenNull="true">
+				<reportElement x="566" y="1" width="33" height="11"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{grandtot_mtr}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0" isBlankWhenNull="true">
+				<reportElement x="601" y="1" width="33" height="12"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{grand_a_tot}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0" isBlankWhenNull="true">
+				<reportElement x="637" y="1" width="26" height="12"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{grand_a1_tot}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0" isBlankWhenNull="true">
+				<reportElement x="666" y="1" width="28" height="11"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{grand_b_tot}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0" isBlankWhenNull="true">
+				<reportElement x="698" y="1" width="28" height="11"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{grand_sl_tot}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.00" isBlankWhenNull="true">
+				<reportElement x="729" y="1" width="33" height="11"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{grand_rej}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.00" isBlankWhenNull="true">
+				<reportElement x="766" y="1" width="34" height="11"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{grand_sl_rej}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="424" y="0" width="62" height="12"/>
+				<textElement verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{looms}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="491" y="0" width="74" height="12"/>
+				<textElement verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{defect}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<summary>
+		<band height="12" splitType="Stretch">
+			<staticText>
+				<reportElement x="40" y="0" width="60" height="10"/>
+				<textElement verticalAlignment="Middle">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Grand Totals :]]></text>
+			</staticText>
+			<textField pattern="" isBlankWhenNull="true">
+				<reportElement mode="Transparent" x="170" y="0" width="32" height="10"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{total_1}]]></textFieldExpression>
+			</textField>
+			<textField pattern="" isBlankWhenNull="true">
+				<reportElement mode="Transparent" x="205" y="0" width="30" height="10"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{a_total_1}]]></textFieldExpression>
+			</textField>
+			<textField pattern="" isBlankWhenNull="true">
+				<reportElement mode="Transparent" x="237" y="0" width="29" height="10"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{a1_total_1}]]></textFieldExpression>
+			</textField>
+			<textField pattern="" isBlankWhenNull="true">
+				<reportElement mode="Transparent" x="268" y="0" width="26" height="10"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{b_total_1}]]></textFieldExpression>
+			</textField>
+			<textField pattern="" isBlankWhenNull="true">
+				<reportElement mode="Transparent" x="295" y="0" width="31" height="10"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{sl_total_1}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.000" isBlankWhenNull="true">
+				<reportElement mode="Transparent" x="327" y="0" width="30" height="10"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{rej_per_1}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.000" isBlankWhenNull="true">
+				<reportElement mode="Transparent" x="358" y="0" width="31" height="10"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{sl_rej_per_1}]]></textFieldExpression>
+			</textField>
+			<textField pattern="" isBlankWhenNull="true">
+				<reportElement mode="Transparent" x="564" y="0" width="36" height="10"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{grnd_total_1}]]></textFieldExpression>
+			</textField>
+			<textField pattern="" isBlankWhenNull="true">
+				<reportElement mode="Transparent" x="602" y="0" width="33" height="10"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{a_gendtotal_1}]]></textFieldExpression>
+			</textField>
+			<textField pattern="" isBlankWhenNull="true">
+				<reportElement mode="Transparent" x="636" y="0" width="28" height="10"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{a1_grand_total_1}]]></textFieldExpression>
+			</textField>
+			<textField pattern="" isBlankWhenNull="true">
+				<reportElement mode="Transparent" x="666" y="0" width="30" height="10"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{b_grandtotal_1}]]></textFieldExpression>
+			</textField>
+			<textField pattern="" isBlankWhenNull="true">
+				<reportElement mode="Transparent" x="698" y="0" width="28" height="10"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{sl_grandtotal_1}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.000" isBlankWhenNull="true">
+				<reportElement mode="Transparent" x="729" y="0" width="36" height="10"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{rej_grandtotal_1}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.000" isBlankWhenNull="true">
+				<reportElement mode="Transparent" x="766" y="0" width="34" height="10"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{sl_rej_grandtot_1}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="492" y="0" width="72" height="10"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{siznyarn_tot_mtr}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="111" y="0" width="56" height="10"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{siznyarn_day_mtr}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="1" y="11" width="802" height="1"/>
+			</line>
+		</band>
+	</summary>
+</jasperReport>

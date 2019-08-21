@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="PurchaseAddCostVariables" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="C_ORDER_ID" class="java.lang.String" isForPrompting="false"/>
+	<queryString>
+		<![CDATA[select Case when discounttype = 'Percentage' Then '%' Else 'Rs' End as Discount,* from RCFR_Addcostvariables
+where RCFR_Addcostvariables.c_order_id=$P{C_ORDER_ID}]]>
+	</queryString>
+	<field name="discount" class="java.lang.String"/>
+	<field name="rcfr_addcostvariables_id" class="java.lang.String"/>
+	<field name="ad_client_id" class="java.lang.String"/>
+	<field name="ad_org_id" class="java.lang.String"/>
+	<field name="isactive" class="java.lang.String"/>
+	<field name="created" class="java.sql.Timestamp"/>
+	<field name="createdby" class="java.lang.String"/>
+	<field name="updated" class="java.sql.Timestamp"/>
+	<field name="updatedby" class="java.lang.String"/>
+	<field name="c_order_id" class="java.lang.String"/>
+	<field name="line" class="java.math.BigDecimal"/>
+	<field name="addcostvartype" class="java.lang.String"/>
+	<field name="discounttype" class="java.lang.String"/>
+	<field name="rate" class="java.math.BigDecimal"/>
+	<field name="costrule" class="java.lang.String"/>
+	<field name="iscreated" class="java.lang.String"/>
+	<field name="processing" class="java.lang.String"/>
+	<field name="processed" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="13" splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="15" splitType="Stretch">
+			<textField isBlankWhenNull="true">
+				<reportElement x="0" y="0" width="100" height="15"/>
+				<textElement textAlignment="Left">
+					<font size="8" isBold="false"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{addcostvartype}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="108" y="0" width="78" height="15"/>
+				<textElement>
+					<font size="8" isBold="false"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{discount}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00;(#,##0.00)">
+				<reportElement x="50" y="0" width="55" height="15"/>
+				<textElement textAlignment="Right">
+					<font size="8" isBold="false"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{rate}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>
