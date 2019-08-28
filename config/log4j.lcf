@@ -16,7 +16,7 @@
 # ************************************************************************
 
 # to enable logging in i.e. eclipse console add ", C" to the line below
-log4j.rootCategory=INFO, R
+log4j.rootCategory=INFO
 
 # Set our global levels
 log4j.category.org=WARN
@@ -90,14 +90,14 @@ log4j.appender.DB=org.apache.log4j.jdbc.JDBCAppender
 log4j.appender.DB.URL=jdbc:postgresql://172.16.1.3:5432/production
 
 # Set Database Driver
-log4j.appender.DB.driver=com.mysql.jdbc.Driver
+log4j.appender.DB.driver=org.postgresql.Driver
 
 # Set database user name and password
 log4j.appender.DB.user=postgres
-log4j.appender.DB.password=ksml@123
+log4j.appender.DB.password=rcss@123
 
 # Set the SQL statement to be executed.
-log4j.appender.DB.sql=INSERT INTO rchr_LOGS VALUES('%x','%d','%C','%p','%m')
+log4j.appender.DB.sql=INSERT INTO rchr_LOGS(message, logger, level, dated, user_id) VALUES('%m', '%c', '%p', to_timestamp('%d', 'YYYY-MM-DD HH24:MI:SS,MS'), '%x')
 #com.rcss.humanresource.ad_process.DailyAttendanceDemoTwo
 # Define the layout for file appender
 log4j.appender.DB.layout=org.apache.log4j.PatternLayout

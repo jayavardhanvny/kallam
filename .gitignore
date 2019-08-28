@@ -1,0 +1,17 @@
+# Don't track content of these folders
+*.class
+.classpath
+.classpath.template
+.idea/
+.project
+.settings/
+100_SAP_BASIS_INTERVIWE_QUESTIONS.pdf
+Activity Monitor Logs/
+Apowersoft/
+CONTRIBUTORS
+Material
+attachments/
+build/
+error.log
+errorlogs.log
+~$rus chinnes.docx
