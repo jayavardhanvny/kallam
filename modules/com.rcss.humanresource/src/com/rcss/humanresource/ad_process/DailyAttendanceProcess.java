@@ -238,7 +238,7 @@ public class DailyAttendanceProcess {
                 }
             }
             // Pre-Leave Pre-Dated... Leave/ CL/ SL/ COff's
-		System.out.println("Attendance Date: "+rchrDailyattend.getAttendanceDate());
+		System.out.println("Attendance Date: "+rchrDailyattend.getAttendanceDate() +" Emp ID : "+rchrDailyattend.getEmployeeId());
 	    if (rchrLeaveRequisitionLineList.size() > 0 || rchrDailyattend.isLeave()) {
                 //logger.info("In Leave  log 2");
                 RCHRDailyattenddemo rchrDailyattenddemo = OBProvider.getInstance().get(RCHRDailyattenddemo.class);
