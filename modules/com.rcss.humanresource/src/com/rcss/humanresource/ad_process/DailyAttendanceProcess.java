@@ -75,6 +75,7 @@ public class DailyAttendanceProcess {
                             } else {
                                 logger.info("Last Out punch is Missed "+rchrDailyattend.getEmployeeId());
                                 description = "Last Out punch is Missed";
+				    
     			                      isInserted = checkDates(rchrEmployeeHashMap,rchrDailyattend,employeeUtil);
                             }
                         } else {
@@ -112,10 +113,13 @@ public class DailyAttendanceProcess {
                // ValidateDate validateDate = new ValidateDate();
                 //check weekOffs, Leaves and Coff's()
             }
+		//System.out.println("Desription : "+description);
             if (isInserted.equals(Boolean.TRUE)){
                 this.deleteFromGrievance(rchrDailyattend);
             }
-            rchrDailyattend.setReasonForLeave(description);
+            rchrDailyattend.setReasonForLeave(
+	    
+	    );
         }
         logger.info("Inserted or Update lines are "+flag);
     }
@@ -236,7 +240,7 @@ public class DailyAttendanceProcess {
                 }
             }
             // Pre-Leave Pre-Dated... Leave/ CL/ SL/ COff's
-		System.out.println("Attendance Date: "+rchrDailyattend.isLeave());
+		System.out.println("Attendance Date: "+rchrDailyattend.getAttendanceDate());
 	    if (rchrLeaveRequisitionLineList.size() > 0 || rchrDailyattend.isLeave()) {
                 //logger.info("In Leave  log 2");
                 RCHRDailyattenddemo rchrDailyattenddemo = OBProvider.getInstance().get(RCHRDailyattenddemo.class);
