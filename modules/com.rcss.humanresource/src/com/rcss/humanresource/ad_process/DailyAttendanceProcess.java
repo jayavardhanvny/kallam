@@ -117,9 +117,7 @@ public class DailyAttendanceProcess {
             if (isInserted.equals(Boolean.TRUE)){
                 this.deleteFromGrievance(rchrDailyattend);
             }
-            rchrDailyattend.setReasonForLeave(
-	    
-	    );
+            rchrDailyattend.setReasonForLeave(description);
         }
         logger.info("Inserted or Update lines are "+flag);
     }
