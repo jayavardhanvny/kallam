@@ -50,7 +50,7 @@ public class DailyAttendanceProcess {
             Boolean isInserted = Boolean.FALSE;
             description = "";
             if (rchrDailyattend.getErrorLog()!=null && rchrDailyattend.getErrorLog().trim().length()> 0) {
-                logger.info("Punch Records are "+rchrDailyattend.getErrorLog()+" Date "+rchrDailyattend.getAttendanceDate()
+                System.out.println("Punch Records are "+rchrDailyattend.getErrorLog()+" Date "+rchrDailyattend.getAttendanceDate()
                 +" employee Id "+rchrDailyattend.getEmployeeId());
                 PunchValidationUtil punchValidationUtil = new PunchValidationUtil(rchrDailyattend.getErrorLog().trim());
                 if(punchValidationUtil.getStringArrayListPunches().size()>0) {
