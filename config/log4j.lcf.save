@@ -16,15 +16,13 @@
 # ************************************************************************
 
 # to enable logging in i.e. eclipse console add ", C" to the line below
-
-# to enable logging in i.e. eclipse console add ", C" to the line below
 log4j.rootCategory=INFO, R
 
 # Set our global levels
 log4j.category.org=WARN
 log4j.category.org.openbravo=INFO
 log4j.appender.R=org.apache.log4j.RollingFileAppender
-log4j.appender.R.File=${catalina.base}/logs/openbravo.log
+log4j.appender.R.File=${catalina.base}/logs/live1.log
 log4j.appender.R.MaxFileSize=10000KB
 
 # R uses PatternLayout.
@@ -48,7 +46,7 @@ log4j.category.reloadXml=ERROR
 # Hibernate
 #****************************************************
 log4j.appender.HB=org.apache.log4j.RollingFileAppender
-log4j.appender.HB.File=${catalina.base}/logs/openbravo_hibernate.log
+log4j.appender.HB.File=${catalina.base}/logs/live1_hibernate.log
 log4j.appender.HB.MaxFileSize=10000KB
 
 # R uses PatternLayout.
@@ -83,3 +81,23 @@ log4j.logger.org.hibernate.transaction=error, HB
 
 ### log JDBC resource acquisition
 log4j.logger.org.hibernate.jdbc=error, HB
+
+
+# Define the DB appender
+log4j.appender.DB=org.apache.log4j.jdbc.JDBCAppender
+
+# Set JDBC URL
+log4j.appender.DB.URL=jdbc:postgresql://172.16.1.3:5432/production
+
+# Set Database Driver
+log4j.appender.DB.driver=org.postgresql.Driver
+
+# Set database user name and password
+log4j.appender.DB.user=postgres
+log4j.appender.DB.password=rcss@123
+
+# Set the SQL statement to be executed.
+log4j.appender.DB.sql=INSERT INTO rchr_LOGS(message, logger, level, dated, user_id) VALUES('%m', '%c', '%p', to_timestamp('%d', 'YYYY-MM-DD HH24:MI:SS,MS')'%x')
+#com.rcss.humanresource.ad_process.DailyAttendanceDemoTwo
+# Define the layout for file appender
+log4j.appender.DB.layout=org.apache.log4j.PatternLayout
