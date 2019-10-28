@@ -107,8 +107,8 @@ public class DailyAttendanceIntegration extends DalBaseProcess {
 			 Statement st = sqlcon.createStatement();
 			 ResultSet rs = st.executeQuery("select convert(varchar(10),Id) as id, userid as stremployee, " +
 					 "convert(date,attendancedate,102), ReportPunchRecords,Ct_Num as count,Direction as direction,DeviceName as devicename," +
-					 "EmpName as employeename from AttendanceLogs_RCSS where attendancedate between '"+fromDate+"' and '"+toDate+"' " +
-					 //"EmpName as employeename from AttendanceLogs_RCSS where attendancedate between '2017-11-01' and '2017-11-04' " +
+					 //"EmpName as employeename from AttendanceLogs_RCSS where attendancedate between '"+fromDate+"' and '"+toDate+"' " +
+					 "EmpName as employeename from AttendanceLogs_RCSS where attendancedate between '2019-10-08' and '2019-10-08' and userid ='10005'" +
 					 "order by stremployee, attendancedate");
 			 return rs;
 		 }
