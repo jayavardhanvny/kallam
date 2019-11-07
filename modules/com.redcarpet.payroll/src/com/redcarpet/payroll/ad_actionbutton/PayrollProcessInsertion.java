@@ -135,6 +135,8 @@ public class PayrollProcessInsertion{
                                         HashMap<RCHR_Room, RoomPojo> roomRoomUtilHashMap) throws ServletException, Exception {
         PayCalculator calc = new PayCalculator(emp, templateLineId);
         double netSal = calc.calculateShiftSalaryDeductions(false,attandancePojo, rchrEmployeeListHashMap, roomRoomUtilHashMap);
+	    logger.info("Net Sal: "+netSal);
+        logger.info("Employee Id: "+emp.employeeId);
         return new BigDecimal(netSal);
     }
 
