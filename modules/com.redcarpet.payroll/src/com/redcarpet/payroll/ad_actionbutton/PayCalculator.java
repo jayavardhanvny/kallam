@@ -100,16 +100,16 @@ public class PayCalculator extends PayrollEmployee {
         	//if(empTemp.getEmployeeType().equals(PayrollTypesConstants.EMPLOYEE_TYPE_OS)||empTemp.getEmployeeType().equals(PayrollTypesConstants.EMPLOYEE_TYPE_PS)){
         			//double basic = getBasicComponent(empPayrollProcessId, employeeId);
                 if(rchrEmployeeListHashMap.containsKey(empTemp)){
-                    //logger.info("In If Condition "+empTemp.getDocumentNo());
+                    logger.info("In If Condition Employee punch number: "+empTemp.getDocumentNo());
                     HashMap<String, BigDecimal> stringBigDecimalHashMap = rchrEmployeeListHashMap.get(empTemp);
                     basic = stringBigDecimalHashMap.get(PayrollTypesConstants.BASIC).doubleValue();
                     //logger.info("Basic Staff Pf "+stringBigDecimalHashMap.get(PayrollTypesConstants.BASIC));
                 }
                 if (basic <= payrollTemplate.getPFLimit().doubleValue()) {
         				retVal = (basic * ((double) pLine.getGrossPercentage().doubleValue())) / 100;
-                      //  logger.info(" Return Value "+retVal);
+                        logger.info(" Return Value If basic <= payrollTemplate.getPFLimit().doubleValue() : "+retVal);
                 } else {
-                        //logger.info(" Return Value Else "+retVal);
+                        logger.info(" Return Value Else basic <= payrollTemplate.getPFLimit().doubleValue(): "+retVal);
         				retVal = (payrollTemplate.getPFLimit().doubleValue() * ((double) pLine.getGrossPercentage().doubleValue())) / 100;
         		}
         	//} else if(empTemp.getEmployeeType().equals(PayrollTypesConstants.EMPLOYEE_TYPE_WO)){
@@ -134,10 +134,10 @@ public class PayCalculator extends PayrollEmployee {
             //double netGrossSal = Double.valueOf(strNetSal);
             //basic = getBasicComponent(empPayrollProcessId, employeeId);
 		if(rchrEmployeeListHashMap.containsKey(empTemp)){
-                    //logger.info("In If Condition "+empTemp.getDocumentNo());
+                    logger.info("In If Condition "+empTemp.getDocumentNo());
                     HashMap<String, BigDecimal> stringBigDecimalHashMap = rchrEmployeeListHashMap.get(empTemp);
                     basic = stringBigDecimalHashMap.get(PayrollTypesConstants.BASIC).doubleValue();
-                    //logger.info("Basic Staff Pf "+stringBigDecimalHashMap.get(PayrollTypesConstants.BASIC));
+                    logger.info("Basic Staff Pf "+stringBigDecimalHashMap.get(PayrollTypesConstants.BASIC));
                 }
             logger.info("Basic ESI "+basic);
             //double percentage = (netGrossSal * ((double) pLine.getGrossPercentage().doubleValue())) / 100;
@@ -149,6 +149,7 @@ public class PayCalculator extends PayrollEmployee {
         	String strIncentive = PayrollDBUtilityData.selectIncenSalary(new DalConnectionProvider(), empPayrollProcessId);
           double netGrossSal = Double.valueOf(strNetSal)+Double.valueOf(strIncentive);
            retVal = getPTAmountFromSlab(netGrossSal);
+	logger.info("PT "+retVal);
         } else if (pLine.getPayDeductions().getCategory().equals(PayrollTypesConstants.LateAttendanceDisincentive)) {
         	//AttendanceUtil aUtil = new AttendanceUtil(this.payrollPeriodId, this.employeeId);
             double totalDaysInMonth = attandancePojo.getNoOfWorkingDays();
@@ -160,50 +161,69 @@ public class PayCalculator extends PayrollEmployee {
 	            retVal = new PayrollDBSessionUtil(employeeId, startDate, endDate).getLateAttendanceDisincentiveForStaff();
 	            retVal = retVal * perDaySal;
         	 }
+	logger.info("pLine.getPayDeductions().getCategory().equals(PayrollTypesConstants.LateAttendanceDisincentive) "+retVal);
          } else if (pLine.getPayDeductions().getCategory().equals(PayrollTypesConstants.LIC)
                 && OBDal.getInstance().get(RchrEmployee.class, employeeId).isLICApplicable()) {
             double temp = new PayrollDBSessionUtil(payrollTemplateId, employeeId, startDate).getSumofLICAmount();
             retVal = temp;
+	logger.info("PayrollTypesConstants.LIC "+retVal);
         } else if (pLine.getPayDeductions().getCategory().equals(PayrollTypesConstants.TOKENS)) {
             retVal = new PayrollDBSessionUtil(payrollTemplateId, employeeId, startDate, endDate).getSumofTokensAmount();
         } //else if (pLine.getPayDeductions().getCategory().equals(PayrollTypesConstants.POWER)) {
             //retVal = new PayrollDBSessionUtil(payrollTemplateId, employeeId, startDate).getSumofPowerAmount();
         //}
+	    logger.info("PayrollTypesConstants.TOKENS "+retVal);
         else if (pLine.getPayDeductions().getCategory().equals(PayrollTypesConstants.CLEANING)) {
             retVal = new PayrollDBSessionUtil(payrollTemplateId, employeeId, startDate).getCleaningAmount();
+		logger.info("PayrollTypesConstants.CLEANING "+retVal);
         } else if (pLine.getPayDeductions().getCategory().equals(PayrollTypesConstants.TDS)) {
             retVal = new PayrollDBSessionUtil(payrollTemplateId, employeeId, startDate).getTDSAmount();
+		logger.info("PayrollTypesConstants.TDS "+retVal);
         } else if (pLine.getPayDeductions().getCategory().equals(PayrollTypesConstants.LOANS_ADVANCES)) {
         	//logger.info("under advances");
             retVal = new PayrollDBSessionUtil(payrollTemplateId, employeeId, startDate,endDate).getLoans_AllowancesAmount();
+		logger.info("PayrollTypesConstants.LOANS_ADVANCES "+retVal);
         } else if (pLine.getPayDeductions().getCategory().equals(PayrollTypesConstants.DISH)) {
             retVal = new PayrollDBSessionUtil(payrollTemplateId, employeeId, startDate).getLoans_DishCharges();
+		logger.info("PayrollTypesConstants.DISH "+retVal);
         } else if (pLine.getPayDeductions().getCategory().equals(PayrollTypesConstants.VPF)) {
             retVal = new PayrollDBSessionUtil(payrollTemplateId, employeeId, startDate).getVPFAmount();
+		logger.info("PayrollTypesConstants.VPF "+retVal);
         } else if (pLine.getPayDeductions().getCategory().equals(PayrollTypesConstants.Instant_Over_Time)) {
             retVal = new PayrollDBSessionUtil(payrollTemplateId, employeeId, startDate, endDate).getInstantOverTimeAmount();
+		logger.info("PayrollTypesConstants.Instant_Over_Time "+retVal);
         } else if (pLine.getPayDeductions().getCategory().equals(PayrollTypesConstants.FINE)) {
             retVal = new PayrollDBSessionUtil(payrollTemplateId, employeeId, startDate, endDate).getFineAmount();
+		logger.info("PayrollTypesConstants.FINE "+retVal);
         } else if (pLine.getPayDeductions().getCategory().equals(PayrollTypesConstants.RENTBILL)) {
+		logger.info("PayrollTypesConstants.RENTBILL "+retVal);
         	retVal = new PayrollDBSessionUtil(payrollTemplateId, employeeId, startDate, endDate).getRentAmount(roomRoomUtilHashMap, attandancePojo);
         } else if (pLine.getPayDeductions().getCategory().equals(PayrollTypesConstants.MESSBILL)) {
+		logger.info("PayrollTypesConstants.MESSBILL "+retVal);
              retVal = new PayrollDBSessionUtil(payrollTemplateId, employeeId, startDate, endDate).getMessAmount();
            //  logger.info("mess bill.."+retVal);
          } else if (pLine.getPayDeductions().getCategory().equals(PayrollTypesConstants.ELECTRICITYBILL)) {
             retVal = new PayrollDBSessionUtil(payrollTemplateId, employeeId, startDate, endDate).getElectricityAmount(roomRoomUtilHashMap, attandancePojo);
+		logger.info("PayrollTypesConstants.ELECTRICITYBILL "+retVal);
         } else if (pLine.getPayDeductions().getCategory().equals(PayrollTypesConstants.WELFARE_FUND)) {
             retVal = new PayrollDBSessionUtil(payrollTemplateId, employeeId, startDate,endDate).getEmployeeWelfareFund(roomRoomUtilHashMap, attandancePojo);
+		logger.info("PayrollTypesConstants.WELFARE_FUND "+retVal);
         } else if(pLine.getPayDeductions().getCategory().equals(PayrollTypesConstants.DEPARTMENT_STORE)){
         	retVal = new PayrollDBSessionUtil(payrollTemplateId, employeeId, startDate, endDate).getDepartmentStoreRecovery();
+		logger.info("PayrollTypesConstants.DEPARTMENT_STORE "+retVal);
         } else if(pLine.getPayDeductions().getCategory().equals(PayrollTypesConstants.GAS_RECOVERY)){
         	retVal = new PayrollDBSessionUtil(payrollTemplateId, employeeId, startDate, endDate).getGasRecovery();
+		logger.info("PayrollTypesConstants.GAS_RECOVERY "+retVal);
         } else if(pLine.getPayDeductions().getCategory().equals(PayrollTypesConstants.OTHER_DEDUCTIONS)){
         	retVal = new PayrollDBSessionUtil(payrollTemplateId, employeeId, startDate, endDate).getOtherDeductions();
+		logger.info("PayrollTypesConstants.OTHER_DEDUCTIONS "+retVal);
         } else if(pLine.getPayDeductions().getCategory().equals(PayrollTypesConstants.EMPLOYEE_FINE)){
         	retVal = new PayrollDBSessionUtil(payrollTemplateId, employeeId, startDate, endDate).getEmployeeFine();
+		logger.info("PayrollTypesConstants.EMPLOYEE_FINE "+retVal);
         } else if(pLine.getPayDeductions().getCategory().equals(PayrollTypesConstants.Security_Deposit)){
             double presentDays = attandancePojo.getNoOfDaysPresent();
             retVal = new PayrollDBSessionUtil(payrollTemplateId, employeeId, startDate, endDate).getSecurityDeposit(presentDays);
+		logger.info("PayrollTypesConstants.Security_Deposit "+retVal);
         } else if(pLine.getPayDeductions().getCategory().equals(PayrollTypesConstants.LOSS_OF_PAY)){
         	//AttendanceUtil aUtil = new AttendanceUtil(this.payrollPeriodId, this.employeeId);
             double totalDaysInMonth = attandancePojo.getNoOfWorkingDays();
@@ -226,7 +246,7 @@ public class PayCalculator extends PayrollEmployee {
         			noOfCasualLeaves,LOP);
 
             retVal = (double)(perDaySal * noOfLop);
-
+	logger.info("PayrollTypesConstants.LOSS_OF_PAY "+retVal);
         } else if(pLine.getPayDeductions().getCategory().equals(PayrollTypesConstants.WEEKOFFS_NOT_APPLICABLE)){
         	//AttendanceUtil aUtil = new AttendanceUtil(this.payrollPeriodId, this.employeeId);
         	double noOfWeekOffsNotApplicable = attandancePojo.getNoOfWeekOffs();
@@ -234,6 +254,7 @@ public class PayCalculator extends PayrollEmployee {
             //double netSalary = 0;
             double perDaySal = netSalary/attandancePojo.getNoOfWorkingDays();
             retVal = new PayrollDBSessionUtil(payrollTemplateId, employeeId, startDate, endDate).getTotalWeeklyOffs(perDaySal,noOfWeekOffsNotApplicable);
+		logger.info("PayrollTypesConstants.WEEKOFFS_NOT_APPLICABLE "+retVal);
         }
 
         return retVal;
