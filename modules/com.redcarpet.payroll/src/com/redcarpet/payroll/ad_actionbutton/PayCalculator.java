@@ -169,10 +169,11 @@ public class PayCalculator extends PayrollEmployee {
 	logger.info("PayrollTypesConstants.LIC "+retVal);
         } else if (pLine.getPayDeductions().getCategory().equals(PayrollTypesConstants.TOKENS)) {
             retVal = new PayrollDBSessionUtil(payrollTemplateId, employeeId, startDate, endDate).getSumofTokensAmount();
+		logger.info("PayrollTypesConstants.TOKENS "+retVal);
         } //else if (pLine.getPayDeductions().getCategory().equals(PayrollTypesConstants.POWER)) {
             //retVal = new PayrollDBSessionUtil(payrollTemplateId, employeeId, startDate).getSumofPowerAmount();
         //}
-	    logger.info("PayrollTypesConstants.TOKENS "+retVal);
+	    
         else if (pLine.getPayDeductions().getCategory().equals(PayrollTypesConstants.CLEANING)) {
             retVal = new PayrollDBSessionUtil(payrollTemplateId, employeeId, startDate).getCleaningAmount();
 		logger.info("PayrollTypesConstants.CLEANING "+retVal);
